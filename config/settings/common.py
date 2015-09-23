@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 from __future__ import absolute_import, unicode_literals
 
-from config.settings.db_data import *
 import environ
 
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
@@ -100,7 +99,7 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-    'default': DATABASE_DATA,
+    'default': env.db("DATABASE_URL", default="postgres:///clock"),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
@@ -114,7 +113,7 @@ DATABASES['default']['ATOMIC_REQUESTS'] = True
 TIME_ZONE = 'UTC'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'de-de'
+LANGUAGE_CODE = 'en-us'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
