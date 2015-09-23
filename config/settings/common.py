@@ -45,6 +45,7 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     'clock.users',  # custom users app
     # Your stuff: custom apps go here
+    'clock.work',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

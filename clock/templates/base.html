@@ -30,7 +30,7 @@
   </head>
 
   <body>
-    
+
     <div class="m-b-lg">
       <nav class="navbar navbar-dark navbar-static-top bg-inverse">
         <div class="container">
@@ -45,7 +45,7 @@
               <a class="nav-link nav-item" href="{% url 'home' %}">Home</a></li>
               <a class="nav-link nav-item" href="{% url 'about' %}">About</a></li>
             </nav>
-        
+
             <nav class="nav navbar-nav pull-right">
               {% if request.user.is_authenticated %}
                 <a class="nav-link nav-item" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a></li>
@@ -93,4 +93,4 @@
     {% endblock javascript %}
   </body>
 </html>
- 
+
