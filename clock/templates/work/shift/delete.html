@@ -1,0 +1,26 @@
+﻿{% extends "work/shift/shift_base.html" %}
+{% load i18n %}{% load bootstrap3 %}{% load crispy_forms_tags %}
+
+{% block head_title %}{% trans "Delete shift?" %}{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        <form action="" method="post" role="form" class="form">
+            {% csrf_token %}
+            <div class="alert alert-danger">
+                <p>{% trans "Are you sure you want to delete the following shift?" %}</p>
+                <p>{{ object.shift_started }}, {{ object.shift_finished }}, Duration: {{ object.shift_duration }}</p>
+            </div>
+            {% buttons %}
+            <button type="submit" class="btn btn-danger">
+              {% trans "Confirm" %}
+            </button>
+            {% endbuttons %}
+            <a href="{% url 'work:shift_list' %}" class="btn btn-default" type="button">
+              {% trans "Abort" %}
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

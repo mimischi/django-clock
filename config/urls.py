@@ -5,11 +5,13 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.views.generic import TemplateView
+from django.views.generic import RedirectView, TemplateView
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name="home"),
-    url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name="about"),
+    url(r'^$', 'clock.work.views.home', name='home'),
+    url(r'^about/$', TemplateView.as_view(
+        template_name='pages/about.html'),
+        name="about"),
 
     # Django Admin
     url(r'^admin/', include(admin.site.urls)),
@@ -19,7 +21,12 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
 
     # Your stuff: custom urls includes go here
-    url(r'^work/', include("clock.work.urls", namespace="work")),
+    # Include urls fot the work module
+    url(r'^', include("clock.work.urls", namespace="work")),
+
+    # Favicon logic
+    # (r'^favicon\.ico$', RedirectView.as_view(
+    #     url=settings.STATIC_URL + 'images/favicon.ico', permanent=False)),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

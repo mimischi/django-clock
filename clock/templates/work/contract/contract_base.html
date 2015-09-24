@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block nav %}
+        <a class="nav-link nav-item" href="{% url 'home' %}">Home</a>
+        <a class="nav-link nav-item" href="{% url 'work:shift_list' %}">{% trans "Shifts" %}</a>
+        <a class="nav-link nav-item active" href="{% url 'work:contract_list' %}">{% trans "Contracts" %}</a>
+{% endblock %}

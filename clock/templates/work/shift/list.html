@@ -1,0 +1,48 @@
+﻿{% extends 'work/shift/shift_base.html' %}
+{% load i18n %}{% load l10n %}{% load format_duration %}
+
+{% block head_title %}{% trans "Shift list" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <table class="shift_list table table-hover"
+           data-toggle="table"
+           data-height="460"
+           data-show-columns="true"
+           data-search="true"
+           data-pagination="true"
+           data-page-size="10"
+           data-page-list="[5, 10, 25, 100, 250, 500]"
+           data-pagination-first-text="First"
+           data-pagination-pre-text="Previous"
+           data-pagination-next-text="Next"
+           data-pagination-last-text="Last"
+           data-mobile-responsive="true">
+        <thead>
+            <tr>
+                <th data-sortable="true">{% trans "Shift No." %}</th>
+                <th data-sortable="true">{% trans "Contract" %}</th>
+                <th data-sortable="true">{% trans "Shift started" %}</th>
+                <th data-sortable="true">{% trans "Shift finished" %}</th>
+                <th data-sortable="true">{% trans "Pause duration" %}</th>
+                <th data-sortable="true">{% trans "Shift duration" %}</th>
+            </tr>
+        </thead>
+        <tbody data-link="row" class="rowlink">
+            {% for shifts in object_list %}
+            <tr >
+                <td><a href="{% url 'work:shift_edit' shifts.pk %}">{{ forloop.revcounter }}</a></td>
+                <td>{{ shifts.contract }}</td>
+                <td>{{ shifts.shift_started }}</td>
+                <td>{{ shifts.shift_finished }}</td>
+                <td>{{ shifts.pause_duration|format_timedelta }}</td>
+                <td>{{ shifts.shift_duration|format_timedelta }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="container">
+        <a class="btn btn-lg btn-primary pull-right" href="{% url 'work:shift_add' %}" role="button">{% trans "Add new one" %}</a>
+    </div>
+</div>
+{% endblock %}
