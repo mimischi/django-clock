@@ -1,8 +1,21 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load staticfiles i18n %}
+
+{% block css %}{{ block.super }}
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.min.css">
+        <link href="{% static 'css/bootstrap-table.css' %}" rel="stylesheet" />
+{% endblock css %}
 
 {% block nav %}
         <a class="nav-link nav-item" href="{% url 'home' %}">Home</a>
         <a class="nav-link nav-item" href="{% url 'work:shift_list' %}">{% trans "Shifts" %}</a>
         <a class="nav-link nav-item active" href="{% url 'work:contract_list' %}">{% trans "Contracts" %}</a>
 {% endblock %}
+
+{% block extra_js %}
+      <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.min.js"></script>
+      <script src="http://issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap-table/src/extensions/mobile/bootstrap-table-mobile.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/locale/bootstrap-table-de-DE.min.js"></script>
+{% endblock extra_js %}
