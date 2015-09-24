@@ -1,0 +1,14 @@
+﻿{% extends "work/contract/contract_base.html" %}
+{% load i18n %}{% load bootstrap %}{% load crispy_forms_tags %}
+
+
+{% block head_title %}{% if form.instance.pk %}{% trans 'Update contract' %}{% else %}{% trans 'Create contract' %}{% endif %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-5">
+            <legend>{% if form.instance.pk %}{% trans 'Update contract' %}{% else %}{% trans 'Create contract' %}{% endif %}</legend>
+            {% crispy form %}
+        </div>
+    </div>
+{% endblock %}

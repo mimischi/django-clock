@@ -6,6 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
+
 class Contract(models.Model):
     """
     Employees may define a contract, which they assign their finished shifts to.
@@ -42,7 +43,7 @@ class Shift(models.Model):
 
     def __unicode__(self):
         """
-        Class returns the employees name as default
+        Class returns the employees name as default.
         """
         return str(self.employee)
 

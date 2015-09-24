@@ -1,0 +1,42 @@
+﻿#cf3 {
+  background-color: #f8f6f5;
+  /*background-color: #e4e3dd;*/
+  border-radius: 25px;
+  padding-top:11px;
+  position:relative;
+  height:144px;
+  width:420px;
+  margin:0 auto;
+}
+
+#cf3 img {
+  position:absolute;
+  left:10px;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+
+@keyframes cf3FadeInOut {
+    0% {
+      opacity:1;
+    }
+    45% {
+        opacity:1;
+    }
+    55% {
+        opacity:0;
+    }
+    100% {
+        opacity:0;
+    }
+}
+
+#cf3 img.top {
+    animation-name: cf3FadeInOut;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-duration: 10s;
+    animation-direction: alternate;
+}
