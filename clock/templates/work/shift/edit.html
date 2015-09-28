@@ -1,5 +1,5 @@
 ﻿{% extends "work/shift/shift_base.html" %}
-{% load i18n %}{% load bootstrap3 %}{% load crispy_forms_tags %}
+{% load i18n bootstrap3 crispy_forms_tags %}
 
 {% block extra_js %}
       <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
@@ -10,21 +10,15 @@
 
 {% block head_title %}{% if form.instance.pk %}{% trans 'Update shift' %}{% else %}{% trans 'Create shift' %}{% endif %}{% endblock %}
 
-{% block content %}
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
+{% block breadcrumbs %}{{ block.super }}
+<li>{% if form.instance.pk %}{% trans 'Update shift' %}{% else %}{% trans 'Create shift' %}{% endif %}</li>
+{% endblock breadcrumbs %}
 
-{# Read the documentation for more information #}
-<div class="jumbotron">
-    <div class="container">
-        {% if form.instance.pk %}<h2>{% trans 'Update shift' %}</h2>{% else %}<h2>{% trans 'Create shift' %}</h2>{% endif %}
-        {% crispy form %}
-        <a href="{% url 'work:shift_list' %}" class="btn btn-default" type="button">
-              {% trans "Abort" %}
-        </a>
-        {% if form.instance.pk %}
-        <a href="{% url 'work:shift_delete' form.instance.pk %}" class="btn btn-danger" role="button">{% trans "Delete?" %}</a>
-        {% endif %}
-    </div>
-</div>
-{% endblock %}
+{% block content %}{% crispy form %}{% endblock %}
+
+{% block box-footer %}
+{% if form.instance.pk %}
+<a href="{% url 'work:shift_delete' form.instance.pk %}" class="btn btn-danger pull-right" role="button"><span class="fa fa-trash-o"> {% trans "Delete?" %}</span></a>
+{% endif %}
+<a href="{% url 'work:shift_list' %}" class="btn btn-default pull-right" type="button"><i class="fa fa-ban fa-lg"></i>&nbsp; {% trans "Abort" %}</a>
+{% endblock box-footer%}

@@ -57,7 +57,7 @@ class ContractForm(forms.ModelForm):
         self.helper.add_input(
                               Submit('submit',
                                      add_input_text,
-                                     css_class='btn btn-lg btn-primary')
+                                     css_class='btn btn-primary pull-right')
                               )
 
 
@@ -100,7 +100,7 @@ class ShiftForm(forms.ModelForm):
         self.helper.add_input(Submit(
                                      'submit',
                                      add_input_text,
-                                     css_class='btn btn-lg btn-primary')
+                                     css_class='btn btn-primary pull-right')
                               )
 
     def clean(self):
