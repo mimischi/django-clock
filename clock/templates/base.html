@@ -1,121 +1,608 @@
-{% load staticfiles i18n %}<!DOCTYPE html>
-<html lang="en" ng-app>
+{% load staticfiles i18n %}{% load bootstrap3 %}{% load django_bootstrap_breadcrumbs %}<!DOCTYPE html>
+<html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}Clock{% endblock title %} | {% block head_title %}{% endblock head_title %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Clock Favicon -->
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'css/AdminLTE.min.css' %}">
+    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+          page. However, you can choose any other skin. Make sure you
+          apply the skin class to the body tag so the changes take effect.
+    -->
+    <link rel="stylesheet" href="{% static 'css/skins/skin-purple.min.css' %}">
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <link rel="stylesheet" href="{% static 'css/project.css' %}">
+
+    <!-- jQuery 2.1.4 -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+
+    {% block extra_css %}{% endblock extra_css %}
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-    {% block css %}
-    <!-- FontAwesome -->
-    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
-
-    <!-- Your stuff: Third-party css libraries go here -->
-
-    <!-- This file store project specific CSS -->
-    <link href="{% static 'css/project.css' %}" rel="stylesheet">
-    {% endblock %}
-
-    {% block angular %}
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
-    {% endblock %}
-
-    <!-- Latest JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
   </head>
+  <!--
+  BODY TAG OPTIONS:
+  =================
+  Apply one or more of the following classes to get the
+  desired effect
+  |---------------------------------------------------------|
+  | SKINS         | skin-blue                               |
+  |               | skin-black                              |
+  |               | skin-purple                             |
+  |               | skin-yellow                             |
+  |               | skin-red                                |
+  |               | skin-green                              |
+  |---------------------------------------------------------|
+  |LAYOUT OPTIONS | fixed                                   |
+  |               | layout-boxed                            |
+  |               | layout-top-nav                          |
+  |               | sidebar-collapse                        |
+  |               | sidebar-mini                            |
+  |---------------------------------------------------------|
+  -->
+{% block breadcrumbs %}
+{% breadcrumb_safe '<i class="fa fa-dashboard"></i> Clock' 'home' %}
+{% endblock breadcrumbs %}
+  <body class="hold-transition skin-purple sidebar-mini">
+    <div class="wrapper">
 
-  <body>
+      <!-- Main Header -->
+      <header class="main-header">
 
-    <div class="m-b-lg">
-      <nav class="navbar navbar-dark navbar-static-top bg-primary">
-        <div class="container">
-         <a class="navbar-brand" href="/">Clock</a>
-          <button type="button" class="navbar-toggler hidden-sm-up pull-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
-            &#9776;
-          </button>
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini">Cl<b>o</b>ck</span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg">Cl<b>o</b>ck</span>
+        </a>
 
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
-            <nav class="nav navbar-nav">
-              {% block nav %}
-                <a class="nav-link nav-item active" href="{% url 'home' %}">Home</a>
-                {% if request.user.is_authenticated %}
-                <a class="nav-link nav-item" href="{% url 'work:shift_list' %}">{% trans "Shifts" %}</a>
-                <a class="nav-link nav-item" href="{% url 'work:contract_list' %}">{% trans "Contracts" %}</a>
-                {% endif %}
-              {% endblock nav %}
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">{% trans "Toggle navigation" %}</span>
+          </a>
+          <!-- Navbar Right Menu -->
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <!-- Messages: style can be found in dropdown.less-->
+              <li class="dropdown messages-menu">
+                <!-- Menu toggle button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-envelope-o"></i>
+                  <span class="label label-success">4</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="header">You have 4 messages</li>
+                  <li>
+                    <!-- inner menu: contains the messages -->
+                    <ul class="menu">
+                      <li><!-- start message -->
+                        <a href="#">
+                          <div class="pull-left">
+                            <!-- User Image -->
+                            <img src="{% static 'img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+                          </div>
+                          <!-- Message title and timestamp -->
+                          <h4>
+                            Support Team
+                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                          </h4>
+                          <!-- The message -->
+                          <p>Why not buy a new awesome theme?</p>
+                        </a>
+                      </li><!-- end message -->
+                    </ul><!-- /.menu -->
+                  </li>
+                  <li class="footer"><a href="#">See All Messages</a></li>
+                </ul>
+              </li><!-- /.messages-menu -->
 
-            </nav>
-
-            <nav class="nav navbar-nav pull-right">
-              {% if request.user.is_authenticated %}
-                {% block account_bar %}
-                <li class="dropdown">
-                  <button class="btn btn-info-outline dropdown-toggle" type="button" id="account_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user }}</button>
-                  <div class="dropdown-menu" aria-labelledby="account_dropdown">
-                    <a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><i class="fa fa-user"></i> {% trans "My Profile" %}</a>
+              <!-- Notifications Menu -->
+              <li class="dropdown notifications-menu">
+                <!-- Menu toggle button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-bell-o"></i>
+                  <span class="label label-warning">10</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="header">You have 10 notifications</li>
+                  <li>
+                    <!-- Inner Menu: contains the notifications -->
+                    <ul class="menu">
+                      <li><!-- start notification -->
+                        <a href="#">
+                          <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                        </a>
+                      </li><!-- end notification -->
+                    </ul>
+                  </li>
+                  <li class="footer"><a href="#">View all</a></li>
+                </ul>
+              </li>
+              <!-- Tasks Menu -->
+              <li class="dropdown tasks-menu">
+                <!-- Menu Toggle Button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-flag-o"></i>
+                  <span class="label label-danger">9</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="header">You have 9 tasks</li>
+                  <li>
+                    <!-- Inner menu: contains the tasks -->
+                    <ul class="menu">
+                      <li><!-- Task item -->
+                        <a href="#">
+                          <!-- Task title and progress text -->
+                          <h3>
+                            Design some buttons
+                            <small class="pull-right">20%</small>
+                          </h3>
+                          <!-- The progress bar -->
+                          <div class="progress xs">
+                            <!-- Change the css width attribute to simulate progress -->
+                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                              <span class="sr-only">20% Complete</span>
+                            </div>
+                          </div>
+                        </a>
+                      </li><!-- end task item -->
+                    </ul>
+                  </li>
+                  <li class="footer">
+                    <a href="#">View all tasks</a>
+                  </li>
+                </ul>
+              </li>
+              <!-- User Account Menu -->
+              <li class="dropdown user user-menu">
+                <!-- Menu Toggle Button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <!-- The user image in the navbar-->
+                  <img src="{% static 'img/user2-160x160.jpg' %}" class="user-image" alt="User Image">
+                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                  <span class="hidden-xs">{{ request.user }}</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- The user image in the menu -->
+                  <li class="user-header">
+                    <img src="{% static 'img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+                    <p>
+                      {{ request.user }} - Web Developer
+                      <small>Member since Nov. 2012</small>
+                    </p>
+                  </li>
+                  <!-- Menu Body -->
+                  <li class="user-body">
                     {% if request.user.is_staff %}
-                    <a class="dropdown-item" href="{% url THEME_ADMIN_URL|default:"admin:index" %}"><i class="fa fa-cog"></i> {% trans "Admin" %}</a>
+                    <div class="col-xs-4 pull-right text-center">
+                      <a href="{% url THEME_ADMIN_URL|default:"admin:index" %}"><i class="fa fa-cog"></i>&nbsp; {% trans "Admin" %}</a>
+                    </div>
                     {% endif %}
-                    <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" id="account_logout" href="{% url 'account_logout' %}"><i class="fa fa-power-off"></i> {% trans "Log out" %}</a>
-                  </div>
-                </li>
-                <form id="accountLogOutForm" style="display: none;" action="{% url 'account_logout' %}" method="POST">
-                  {% csrf_token %}
+                  </li>
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                      <a href="{% url 'users:detail' request.user.username  %}" class="btn btn-default btn-flat">{% trans "Konto" %}</a>
+                    </div>
+                    <div class="pull-right">
+                      <a id="account_logout" href="{% url 'account_logout' %}" class="btn btn-default btn-flat">{% trans "Sign out" %}</a>
+                    </div>
+                  </li>
+                  <form id="accountLogOutForm" style="display: none;" action="{% url 'account_logout' %}" method="POST">
+                    {% csrf_token %}
                 </form>
-                {% endblock account_bar %}
-              {% else %}
-                <a class="nav-link nav-item" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
-                <a class="nav-link nav-item" href="{% url 'account_login' %}">{% trans "Log In" %}</a></li>
-              {% endif %}
-            </nav>
+                </ul>
+              </li>
+              <!-- Control Sidebar Toggle Button -->
+              <!-- <li>
+                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+              </li> -->
+            </ul>
           </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+
+          <!-- Sidebar user panel (optional) -->
+          <div class="user-panel">
+            <div class="pull-left image">
+              <img src="{% static 'img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+              <p>{{ request.user }}</p>
+              <!-- Status -->
+              <!-- <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
+            </div>
+          </div>
+
+          <!-- search form (Optional) -->
+          <!-- <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+              <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+              </span>
+            </div>
+          </form> -->
+          <!-- /.search form -->
+
+          <!-- Sidebar Menu -->
+          <ul class="sidebar-menu">
+            <li class="header">{% trans "Navigation" %}</li>
+            <!-- Optionally, you can add icons to the links -->
+            {% block nav %}
+            <li{% block home_link %} class="active" {% endblock home_link %}><a href="{% url 'home' %}"><i class="fa fa-dashboard"></i> <span>Home</span></a></li>
+            {% if request.user.is_authenticated %}
+            <li{% block shift_link %}{% endblock shift_link %}><a href="{% url 'work:shift_list' %}"><i class="fa fa-clock-o"></i> <span>{% trans "Shifts" %}</span></a></li>
+            <li{% block contract_link %}{% endblock contract_link %}><a href="{% url 'work:contract_list' %}"><i class="fa fa-files-o"></i> <span>{% trans "Contracts" %}</span> </a></li>
+            <li class="treeview{% block account_link %}{% endblock account_link %}">
+              <a href="#">
+                <i class="fa fa-share"></i> <span>{% trans "Account" %}</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu{% block account_link_menu %}{% endblock account_link_menu %}">
+                <li><a href="#"><i class="fa fa-circle-o"></i> {% trans "General" %}</a></li>
+                <li{% block security_link %}{% endblock security_link %}>
+                  <a href="#"><i class="fa fa-circle-o"></i> {% trans "Security" %} <i class="fa fa-angle-left pull-right"></i></a>
+                  <ul class="treeview-menu{% block security_link_menu %}{% endblock security_link_menu %}">
+                    <li{% block change_password_link %}{% endblock change_password_link %}><a href="{% url 'account_change_password' %}"><i class="fa fa-circle-o"></i> {% trans "Password" %}</a></li>
+                    <li{% block account_email_link %}{% endblock account_email_link %}><a href="{% url 'account_email' %}"><i class="fa fa-circle-o"></i> {% trans "E-mail" %}</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+           {% endif %}
+           {% endblock %}
+
+            </li>
+          </ul><!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            {% block page_header %}Page Header{% endblock page_header %}
+            {% block small_optional_head %}{% endblock small_optional_head %}
+          </h1>
+          <ol class="breadcrumb">
+            {% render_breadcrumbs "breadcrumbs.html" %}
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          {% bootstrap_messages %}
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box box-solid">
+                <div class="box-header with-border">
+                  <h3 class="box-title">{% trans "Michael, rename-this-box" %}</h3>
+                  <div class="box-tools pull-right">
+                    {% block box-tools %}
+                    <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
+                    {% endblock box-tools %}
+
+                  </div>
+                </div>
+                <div class="box-body" style="display: block;">
+                  <!-- Your Page Content Here -->
+              {% block content %}Michael hat hier wohl vergessen den Inhalt einzufügen..{% endblock content %}
+                </div><!-- /.box-body -->
+                <div class="box-footer" style="display: block;">
+                  {% block box-footer %}
+                    Footer
+                  {% endblock box-footer %}
+                </div><!-- /.box-footer-->
+              </div><!--- /.box -->
+            </div><!-- /.col-md-12 -->
+          </div><!-- /.row -->
+           <div class="box">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Monthly Recap Report</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <div class="btn-group">
+                      <button class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                      </ul>
+                    </div>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <p class="text-center">
+                        <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
+                      </p>
+                      <div class="chart">
+                        <!-- Sales Chart Canvas -->
+                        <canvas id="salesChart" style="height: 180px;"></canvas>
+                      </div><!-- /.chart-responsive -->
+                    </div><!-- /.col -->
+                    <div class="col-md-4">
+                      <p class="text-center">
+                        <strong>Goal Completion</strong>
+                      </p>
+                      <div class="progress-group">
+                        <span class="progress-text">Add Products to Cart</span>
+                        <span class="progress-number"><b>160</b>/200</span>
+                        <div class="progress sm">
+                          <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
+                        </div>
+                      </div><!-- /.progress-group -->
+                      <div class="progress-group">
+                        <span class="progress-text">Complete Purchase</span>
+                        <span class="progress-number"><b>310</b>/400</span>
+                        <div class="progress sm">
+                          <div class="progress-bar progress-bar-red" style="width: 80%"></div>
+                        </div>
+                      </div><!-- /.progress-group -->
+                      <div class="progress-group">
+                        <span class="progress-text">Visit Premium Page</span>
+                        <span class="progress-number"><b>480</b>/800</span>
+                        <div class="progress sm">
+                          <div class="progress-bar progress-bar-green" style="width: 80%"></div>
+                        </div>
+                      </div><!-- /.progress-group -->
+                      <div class="progress-group">
+                        <span class="progress-text">Send Inquiries</span>
+                        <span class="progress-number"><b>250</b>/500</span>
+                        <div class="progress sm">
+                          <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
+                        </div>
+                      </div><!-- /.progress-group -->
+                    </div><!-- /.col -->
+                  </div><!-- /.row -->
+                </div><!-- ./box-body -->
+                <div class="box-footer">
+                  <div class="row">
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block border-right">
+                        <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
+                        <h5 class="description-header">$35,210.43</h5>
+                        <span class="description-text">TOTAL REVENUE</span>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block border-right">
+                        <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
+                        <h5 class="description-header">$10,390.90</h5>
+                        <span class="description-text">TOTAL COST</span>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block border-right">
+                        <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
+                        <h5 class="description-header">$24,813.53</h5>
+                        <span class="description-text">TOTAL PROFIT</span>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block">
+                        <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
+                        <h5 class="description-header">1200</h5>
+                        <span class="description-text">GOAL COMPLETIONS</span>
+                      </div><!-- /.description-block -->
+                    </div>
+                  </div><!-- /.row -->
+                </div><!-- /.box-footer -->
+              </div><!-- /.box -->
+
+              <!-- row -->
+          <div class="row">
+            <div class="col-xs-12">
+              <!-- jQuery Knob -->
+              <div class="box box-solid">
+                <div class="box-header">
+                  <i class="fa fa-bar-chart-o"></i>
+                  <h3 class="box-title">jQuery Knob</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-default btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-default btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="30" data-width="90" data-height="90" data-fgColor="#3c8dbc">
+                      <div class="knob-label">New Visitors</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="70" data-width="90" data-height="90" data-fgColor="#f56954">
+                      <div class="knob-label">Bounce Rate</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="-80" data-min="-150" data-max="150" data-width="90" data-height="90" data-fgColor="#00a65a">
+                      <div class="knob-label">Server Load</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="40" data-width="90" data-height="90" data-fgColor="#00c0ef">
+                      <div class="knob-label">Disk Space</div>
+                    </div><!-- ./col -->
+                  </div><!-- /.row -->
+
+                  <div class="row">
+                    <div class="col-xs-6 text-center">
+                      <input type="text" class="knob" value="90" data-width="90" data-height="90" data-fgColor="#932ab6">
+                      <div class="knob-label">Bandwidth</div>
+                    </div><!-- ./col -->
+                    <div class="col-xs-6 text-center">
+                      <input type="text" class="knob" value="50" data-width="90" data-height="90" data-fgColor="#39CCCC">
+                      <div class="knob-label">CPU</div>
+                    </div><!-- ./col -->
+                  </div><!-- /.row -->
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="box box-solid">
+                <div class="box-header">
+                  <i class="fa fa-bar-chart-o"></i>
+                  <h3 class="box-title">jQuery Knob Different Sizes</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-default btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-default btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="30" data-width="90" data-height="90" data-fgColor="#3c8dbc" data-readonly="true">
+                      <div class="knob-label">data-width="90"</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="30" data-width="120" data-height="120" data-fgColor="#f56954">
+                      <div class="knob-label">data-width="120"</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="30" data-thickness="0.1" data-width="90" data-height="90" data-fgColor="#00a65a">
+                      <div class="knob-label">data-thickness="0.1"</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" value="30" data-width="120" data-height="120" data-fgColor="#00c0ef">
+                      <div class="knob-label">data-angleArc="250"</div>
+                    </div><!-- ./col -->
+                  </div><!-- /.row -->
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+      <!-- Main Footer -->
+      <footer class="main-footer">
+
+        <!-- To the right -->
+        <div class="pull-right hidden-xs">
+          Anything you want
         </div>
-      </nav>
-    </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2015 <a href="{% url 'home' %}">Clock</a>.</strong> All rights reserved.
+      </footer>
 
-    <div class="container">
+      <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+      <div class="control-sidebar-bg"></div>
+    </div><!-- ./wrapper -->
 
-      {% if messages %}
-          {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
-          {% endfor %}
-      {% endif %}
+    <!-- REQUIRED JS SCRIPTS -->
 
-      {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
-      {% endblock content %}
+    <!-- Bootstrap 3.3.5 -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+    <!-- ChartJS 1.0.1 -->
+    <script src="{% static 'plugins/chartjs/Chart.min.js' %}"></script>
+    <!-- jQuery Knob 1.2.11 -->
+    <script src="{% static 'plugins/knob/jquery.knob.js' %}"></script>
 
-    </div> <!-- /container -->
+    <script src="{% static 'js/project.js' %}"></script>
+    {% block extra_js %}
+    <script>
+      $(function () {
+        /* jQueryKnob */
 
-    {% block modal %}{% endblock modal %}
+        $(".knob").knob({
+          /*change : function (value) {
+           //console.log("change : " + value);
+           },
+           release : function (value) {
+           console.log("release : " + value);
+           },
+           cancel : function () {
+           console.log("cancel : " + this.value);
+           },*/
+          draw: function () {
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    {% block javascript %}
-            <!-- Latest compiled and minified JavaScript -->
-      <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script>
+            // "tron" case
+            if (this.$.data('skin') == 'tron') {
 
-      <!-- Your stuff: Third-party javascript libraries go here -->
+              var a = this.angle(this.cv)  // Angle
+                      , sa = this.startAngle          // Previous start angle
+                      , sat = this.startAngle         // Start angle
+                      , ea                            // Previous end angle
+                      , eat = sat + a                 // End angle
+                      , r = true;
 
-      <!-- place project specific Javascript in this file -->
-      <script src="{% static 'js/project.js' %}"></script>
-      {% block extra_js %}{% endblock extra_js %}
-    {% endblock javascript %}
+              this.g.lineWidth = this.lineWidth;
+
+              this.o.cursor
+                      && (sat = eat - 0.3)
+                      && (eat = eat + 0.3);
+
+              if (this.o.displayPrevious) {
+                ea = this.startAngle + this.angle(this.value);
+                this.o.cursor
+                        && (sa = ea - 0.3)
+                        && (ea = ea + 0.3);
+                this.g.beginPath();
+                this.g.strokeStyle = this.previousColor;
+                this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false);
+                this.g.stroke();
+              }
+
+              this.g.beginPath();
+              this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
+              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false);
+              this.g.stroke();
+
+              this.g.lineWidth = 2;
+              this.g.beginPath();
+              this.g.strokeStyle = this.o.fgColor;
+              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
+              this.g.stroke();
+
+              return false;
+            }
+          }
+        });
+        /* END JQUERY KNOB */
+      });
+
+    </script>{% endblock extra_js %}
+
+    <!-- Optionally, you can add Slimscroll and FastClick plugins.
+         Both of these plugins are recommended to enhance the
+         user experience. Slimscroll is required when using the
+         fixed layout. -->
   </body>
 </html>
-

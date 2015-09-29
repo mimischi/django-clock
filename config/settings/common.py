@@ -39,10 +39,12 @@ THIRD_PARTY_APPS = (
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
+    'django_bootstrap_breadcrumbs',
     'bootstrap3',
     'bootstrap3_datetime',
     'pinax_theme_bootstrap',
     'bootstrapform',
+    'rosetta',
 )
 
 # Apps specific for this project go here.
@@ -118,7 +120,7 @@ DATABASES['default']['ATOMIC_REQUESTS'] = True
 TIME_ZONE = 'UTC'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'de-de'
+LANGUAGE_CODE = 'de'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
@@ -163,6 +165,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 # Your stuff: custom template context processors go here
+                'django.core.context_processors.request',
             ],
         },
     },
@@ -220,7 +223,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # Custom user app defaults
 # Select the correct user model
 AUTH_USER_MODEL = 'users.User'
-LOGIN_REDIRECT_URL = 'users:redirect'
+LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'account_login'
 
 # SLUGLIFIER
