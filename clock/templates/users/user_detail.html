@@ -1,14 +1,10 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "account/base.html" %}
+{% load i18n static %}
 
 {% block title %}User: {{ object.username }}{% endblock %}
+{% block page_header %}{% trans "Your profile" %}{% endblock page_header %}
 
 {% block content %}
-<div class="container">
-
-  <div class="row">
-    <div class="col-sm-12">
-
       <h2>{{ object.username }}</h2>
       {% if object.name %}
         <p>{{ object.name }}</p>
@@ -21,8 +17,8 @@
 <div class="row">
 
   <div class="col-sm-12 ">
-    <a class="btn btn-primary" href="{% url 'users:update' %}">My Info</a>
-    <a class="btn btn-primary" href="{% url 'account_email' %}">E-Mail</a>
+    <a class="btn btn-primary" href="{% url 'users:update' %}">{% trans "My Info" %}</a>
+    <a class="btn btn-primary" href="{% url 'account_email' %}">{% trans "E-mail" %}</a>
     <!-- Your Stuff: Custom user template urls -->
   </div>
 
@@ -34,3 +30,6 @@
 </div>
 {% endblock content %}
 
+{% block nav %}{{ block.super }}
+
+{% endblock nav %}

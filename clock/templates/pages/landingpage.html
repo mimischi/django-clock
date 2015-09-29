@@ -1,4 +1,4 @@
-﻿{% load i18n %}{% load staticfiles %}
+﻿{% load i18n staticfiles bootstrap3 %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -48,10 +48,12 @@
             </div>
           </div>
 
+          {% bootstrap_messages %}
+
           <div class="inner cover">
             <div id="cf3" class="text-center">
-                <img class="top" src="{% static 'images/ClockLogo_V1_mit-Goethe_sm.png' %}" />
-                <img class="bottom" src="{% static 'images/ClockLogo_V1_ohne-Goethe_sm.png' %}" />
+                <img class="top" src="{% static 'img/ClockLogo_V1_mit-Goethe_sm.png' %}" />
+                <img class="bottom" src="{% static 'img/ClockLogo_V1_ohne-Goethe_sm.png' %}" />
             </div>
             <h1 class="cover-heading">{% trans "The solution to (almost) everything." %}</h1>
             <p class="lead">{% trans "Clock let's you track your work time, add different contracts and export your work data as a PDF on a montly basis." %}</p>

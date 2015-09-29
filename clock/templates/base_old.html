@@ -1,0 +1,121 @@
+{% load staticfiles i18n %}<!DOCTYPE html>
+<html lang="en" ng-app>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Clock{% endblock title %} | {% block head_title %}{% endblock head_title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    {% block css %}
+    <!-- FontAwesome -->
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
+
+    <!-- Your stuff: Third-party css libraries go here -->
+
+    <!-- This file store project specific CSS -->
+    <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    {% endblock %}
+
+    {% block angular %}
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+    {% endblock %}
+
+    <!-- Latest JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="m-b-lg">
+      <nav class="navbar navbar-dark navbar-static-top bg-primary">
+        <div class="container">
+         <a class="navbar-brand" href="/">Clock</a>
+          <button type="button" class="navbar-toggler hidden-sm-up pull-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
+            &#9776;
+          </button>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
+            <nav class="nav navbar-nav">
+              {% block nav %}
+                <a class="nav-link nav-item active" href="{% url 'home' %}">Home</a>
+                {% if request.user.is_authenticated %}
+                <a class="nav-link nav-item" href="{% url 'work:shift_list' %}">{% trans "Shifts" %}</a>
+                <a class="nav-link nav-item" href="{% url 'work:contract_list' %}">{% trans "Contracts" %}</a>
+                {% endif %}
+              {% endblock nav %}
+
+            </nav>
+
+            <nav class="nav navbar-nav pull-right">
+              {% if request.user.is_authenticated %}
+                {% block account_bar %}
+                <li class="dropdown">
+                  <button class="btn btn-info-outline dropdown-toggle" type="button" id="account_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user }}</button>
+                  <div class="dropdown-menu" aria-labelledby="account_dropdown">
+                    <a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><i class="fa fa-user"></i> {% trans "My Profile" %}</a>
+                    {% if request.user.is_staff %}
+                    <a class="dropdown-item" href="{% url THEME_ADMIN_URL|default:"admin:index" %}"><i class="fa fa-cog"></i> {% trans "Admin" %}</a>
+                    {% endif %}
+                    <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" id="account_logout" href="{% url 'account_logout' %}"><i class="fa fa-power-off"></i> {% trans "Log out" %}</a>
+                  </div>
+                </li>
+                <form id="accountLogOutForm" style="display: none;" action="{% url 'account_logout' %}" method="POST">
+                  {% csrf_token %}
+                </form>
+                {% endblock account_bar %}
+              {% else %}
+                <a class="nav-link nav-item" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
+                <a class="nav-link nav-item" href="{% url 'account_login' %}">{% trans "Log In" %}</a></li>
+              {% endif %}
+            </nav>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+
+      {% if messages %}
+          {% for message in messages %}
+              <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+          {% endfor %}
+      {% endif %}
+
+      {% block content %}
+        <p>Use this document as a way to quick start any new project.</p>
+      {% endblock content %}
+
+    </div> <!-- /container -->
+
+    {% block modal %}{% endblock modal %}
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    {% block javascript %}
+            <!-- Latest compiled and minified JavaScript -->
+      <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script>
+
+      <!-- Your stuff: Third-party javascript libraries go here -->
+
+      <!-- place project specific Javascript in this file -->
+      <script src="{% static 'js/project.js' %}"></script>
+      {% block extra_js %}{% endblock extra_js %}
+    {% endblock javascript %}
+  </body>
+</html>
+

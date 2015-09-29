@@ -1,30 +1,24 @@
 ﻿{% extends "work/contract/contract_base.html" %}
-
-{% load i18n %}
-{% load bootstrap3 %}
-{% load crispy_forms_tags %}
+{% load i18n bootstrap3 crispy_forms_tags django_bootstrap_breadcrumbs %}
 
 {% block head_title %}{% trans "Delete Contract" %}{% endblock %}
+{% block small_optional_head %}<small>{% trans "Delete Contract" %}</small>{% endblock small_optional_head %}
+
+{% block breadcrumbs %}{{ block.super }}
+{% breadcrumb_safe 'Delete' 'work:contract_delete' %}
+{% endblock breadcrumbs %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-5">
-            <legend>{% trans "Delete contract?" %}</legend>
-            <form action="" method="post" role="form" class="form">
-            {% csrf_token %}
-            <div class="alert alert-danger">
-                <p>{% trans "Are you sure you want to delete the contract?" %}</p>
-                {#<p>{{ object.shift_started }}, {{ object.shift_finished }}, Duration: {{ object.shift_duration }}</p>#}
-            </div>
-            {% buttons %}
-            <button type="submit" class="btn btn-danger">
-              {% trans "Confirm" %}
-            </button>
-            {% endbuttons %}
-            <a href="{% url 'work:contract_list' %}" class="btn btn-default" type="button">
-              {% trans "Abort" %}
-            </a>
-        </form>
-        </div>
+<form action="" method="post" role="form" class="form">
+    {% csrf_token %}
+    <div class="alert alert-danger">
+        <p>{% trans "Are you sure you want to delete the contract?" %}</p>
+        {#<p>{{ object.shift_started }}, {{ object.shift_finished }}, Duration: {{ object.shift_duration }}</p>#}
     </div>
+    {% buttons %}
+    <button type="submit" class="btn btn-danger pull-right"><i class="fa fa-trash-o"></i>&nbsp; {% trans "Confirm" %}</button>
+    {% endbuttons %}
+</form>
 {% endblock %}
+
+{% block box-footer %}<a href="{% url 'work:contract_list' %}" class="btn btn-default pull-right" type="button"><i class="fa fa-ban"></i>&nbsp; {% trans "Abort" %}</a>{% endblock box-footer %}
