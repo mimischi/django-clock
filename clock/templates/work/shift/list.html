@@ -1,36 +1,23 @@
 ﻿{% extends 'work/shift/shift_base.html' %}
-{% load i18n l10n format_duration %}
+{% load i18n %}{% load l10n %}{% load format_duration %}
 
 {% block head_title %}{% trans "Shift list" %}{% endblock %}
-{% block extra_js %}{{ block.super }}<script>
-$(document).ready(function() {
-    $('#shifts').DataTable( {
-        initComplete: function () {
-            this.api().columns().every( function () {
-                var column = this;
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo( $(column.footer()).empty() )
-                    .on( 'change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
-                        );
-
-                        column
-                            .search( val ? '^'+val+'$' : '', true, false )
-                            .draw();
-                    } );
-
-                column.data().unique().sort().each( function ( d, j ) {
-                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                } );
-            } );
-        }
-    } );
-} );
-</script>{% endblock extra_js %}
 
 {% block content %}
-    <table id="shifts" class="table table-bordered table-striped">
+<div class="container">
+    <table class="shift_list table table-hover"
+           data-toggle="table"
+           data-height="460"
+           data-show-columns="true"
+           data-search="true"
+           data-pagination="true"
+           data-page-size="10"
+           data-page-list="[5, 10, 25, 100, 250, 500]"
+           data-pagination-first-text="First"
+           data-pagination-pre-text="Previous"
+           data-pagination-next-text="Next"
+           data-pagination-last-text="Last"
+           data-mobile-responsive="true">
         <thead>
             <tr>
                 <th data-sortable="true">{% trans "Shift No." %}</th>
@@ -41,16 +28,6 @@ $(document).ready(function() {
                 <th data-sortable="true">{% trans "Shift duration" %}</th>
             </tr>
         </thead>
-        <tfoot>
-            <tr>
-                <th>&nbsp;</th>
-                <th>{% trans "Contract" %}</th>
-                <th>{% trans "Shift started" %}</th>
-                <th>{% trans "Shift finished" %}</th>
-                <th>{% trans "Pause duration" %}</th>
-                <th>{% trans "Shift duration" %}</th>
-            </tr>
-        </tfoot>
         <tbody data-link="row" class="rowlink">
             {% for shifts in object_list %}
             <tr >
@@ -64,8 +41,8 @@ $(document).ready(function() {
             {% endfor %}
         </tbody>
     </table>
+    <div class="container">
+        <a class="btn btn-lg btn-primary pull-right" href="{% url 'work:shift_add' %}" role="button">{% trans "Add new one" %}</a>
+    </div>
+</div>
 {% endblock %}
-
-{% block box-footer %}
-<a class="btn btn-primary pull-right" href="{% url 'work:shift_add' %}"><i class="fa fa-plus fa-lg"></i>&nbsp; {% trans "Create new shift" %}</a>
-{% endblock box-footer %}

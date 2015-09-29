@@ -1,24 +1,26 @@
 ﻿{% extends "work/shift/shift_base.html" %}
-{% load i18n bootstrap3 crispy_forms_tags %}
+{% load i18n %}{% load bootstrap3 %}{% load crispy_forms_tags %}
 
 {% block head_title %}{% trans "Delete shift?" %}{% endblock %}
-{% block small_optional_head %}<small>{% trans "Delete Contract" %}</small>{% endblock small_optional_head %}
-
-{% block breadcrumbs %}{{ block.super }}
-<li>Delete shift</li>
-{% endblock breadcrumbs %}
 
 {% block content %}
-<form action="" method="post" role="form" class="form">
-    {% csrf_token %}
-    <div class="alert alert-danger">
-        <p>{% trans "Are you sure you want to delete the following shift?" %}</p>
-        <p>{{ object.shift_started }}, {{ object.shift_finished }}, Duration: {{ object.shift_duration }}</p>
+<div class="jumbotron">
+    <div class="container">
+        <form action="" method="post" role="form" class="form">
+            {% csrf_token %}
+            <div class="alert alert-danger">
+                <p>{% trans "Are you sure you want to delete the following shift?" %}</p>
+                <p>{{ object.shift_started }}, {{ object.shift_finished }}, Duration: {{ object.shift_duration }}</p>
+            </div>
+            {% buttons %}
+            <button type="submit" class="btn btn-danger">
+              {% trans "Confirm" %}
+            </button>
+            {% endbuttons %}
+            <a href="{% url 'work:shift_list' %}" class="btn btn-default" type="button">
+              {% trans "Abort" %}
+            </a>
+        </form>
     </div>
-    {% buttons %}
-    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-trash-o"></i>&nbsp; {% trans "Confirm" %}</button>
-    {% endbuttons %}
-</form>
+</div>
 {% endblock %}
-
-{% block box-footer %}<a href="{% url 'work:shift_list' %}" class="btn btn-default pull-right" type="button"><i class="fa fa-ban"></i>&nbsp; {% trans "Abort" %}</a>{% endblock box-footer %}

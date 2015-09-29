@@ -1,36 +1,42 @@
 ﻿{% extends "work/contract/contract_base.html" %}
-{% load i18n crispy_forms_tags %}
+{% load i18n %}{% load crispy_forms_tags %}
 
+{% block extra_head %}{{ block.super }}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.min.js"></script>
+        <script src="http://issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap-table/src/extensions/mobile/bootstrap-table-mobile.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/locale/bootstrap-table-de-DE.min.js"></script>
+{% endblock %}
 {% block head_title %}{% trans "Manage contracts" %}{% endblock %}
-{% block extra_js %}{{ block.super }}<script>
-$(document).ready(function() {
-    $('#contracts').DataTable();
-} );
-</script>{% endblock extra_js %}
 
 {% block content %}
-<table id="contracts" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th data-sortable="true">{% trans "Contract No." %}</th>
-            <th data-sortable="true">{% trans "Contract name" %}</th>
-            <th data-sortable="true">{% trans "Hours per month" %}</th>
-            <th data-sortable="true">{% trans "Delete?" %}</th>
-        </tr>
-    </thead>
-    <tbody data-link="row" class="rowlink">
-        {% for contract in object_list %}
-        <tr >
-            <td><a href="{% url 'work:contract_edit' contract.pk %}">{{ forloop.revcounter }}</a></td>
-            <td>{{ contract }}</td>
-            <td>{{ contract.hours }}</td>
-            <td><a class="btn btn-danger" type="button" href="{% url 'work:contract_delete' contract.pk %}">X</a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="row">
+        <div class="col-md-9">
+            <legend>{% trans "Manage contracts" %}</legend>
+            <table class="table table-hover"
+            data-toggle="table"
+            data-height="460"
+            data-mobile-responsive="true">
+                <thead>
+                    <tr>
+                        <th data-sortable="true">{% trans "Contract No." %}</th>
+                        <th data-sortable="true">{% trans "Contract name" %}</th>
+                        <th data-sortable="true">{% trans "Hours per month" %}</th>
+                        <th data-sortable="true">{% trans "Delete?" %}</th>
+                    </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+                    {% for contract in object_list %}
+                    <tr >
+                        <td><a href="{% url 'work:contract_edit' contract.pk %}">{{ forloop.revcounter }}</a></td>
+                        <td>{{ contract }}</td>
+                        <td>{{ contract.hours }}</td>
+                        <td><a class="btn btn-danger" type="button" href="{% url 'work:contract_delete' contract.pk %}">X</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a class="btn btn-primary" role="button" href="{% url 'work:contract_add' %}">{% trans 'Add new contract' %}</a>
+        </div>
+    </div>
 {% endblock %}
-
-{% block box-footer %}
-<a class="btn btn-primary pull-right" role="button" href="{% url 'work:contract_add' %}"><i class="fa fa-plus fa-lg"></i>&nbsp; {% trans 'Add new contract' %}</span></a>
-{% endblock box-footer %}

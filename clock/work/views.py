@@ -79,8 +79,8 @@ def shift_action(request):
                                         shift_started=timezone.now()
                                         )
 
-        # Show a success message
-        messages.add_message(request, messages.SUCCESS, _('Your shift has started!'))
+            # Show a success message
+            messages.add_message(request, messages.SUCCESS, _('Your shift has started!'), 'success')
 
     # Stop current shift
     elif '_stop' in request.POST:
@@ -91,7 +91,7 @@ def shift_action(request):
         shift.save()
 
         # Add a success message
-        messages.add_message(request, messages.SUCCESS, _('Your shift has finished!'))
+        messages.add_message(request, messages.SUCCESS, _('Your shift has finished!'), 'success')
 
     # Toggle pause on current shift
     elif '_pause' in request.POST:
@@ -102,7 +102,11 @@ def shift_action(request):
         # Show a success message - either the pause was started or finished
         action = _('paused') if shift.is_paused else _('continued')
         message = 'Your shift was %s.' % action
-        messages.add_message(request, messages.SUCCESS, message)
+        messages.add_message(request, messages.ERROR, message, 'success')
+
+    elif '_info' in request.POST:
+        info_messages = _('Test message, please don\'t ignore and extend!')
+        messages.add_message(request, messages.INFO, info_messages, 'info')
 
     return redirect('home')
 
@@ -277,9 +281,17 @@ class ContractDeleteView(DeleteView):
 
     def get_queryset(self):
         """
-        Return our own contracts and not those of other employees.
+        Does two things:
+            - Only return our own contracts and not those of other employees.
+            - Check if the contract is the only one left for the user.
+              If yes, then abort the deletion.
         """
-        return self.request.user.contract_set.all()
+        queryset = self.request.user.contract_set.all()
+
+        if queryset.count() < 2:
+            raise ValueError('ASD')
+
+        return queryset
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
