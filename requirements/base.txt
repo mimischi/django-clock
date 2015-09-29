@@ -46,7 +46,6 @@ django-bootstrap3==6.2.2
 django-bootstrap3-datetimepicker==2.3
 django-bootstrap-form==3.2
 pinax-theme-bootstrap==7.1.0
-pytz==2015.4
 requests==2.7.0
 six==1.9.0
 wheel==0.24.0
