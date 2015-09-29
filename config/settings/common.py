@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = (
     'bootstrap3_datetime',
     'pinax_theme_bootstrap',
     'bootstrapform',
+    'rosetta',
 )
 
 # Apps specific for this project go here.
@@ -119,7 +120,7 @@ DATABASES['default']['ATOMIC_REQUESTS'] = True
 TIME_ZONE = 'UTC'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'de-de'
+LANGUAGE_CODE = 'de'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
