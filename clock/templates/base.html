@@ -258,16 +258,15 @@
                 <i class="fa fa-share"></i> <span>{% trans "Account" %}</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
-              <ul class="treeview-menu">
+              <ul class="treeview-menu{% block account_link_menu %}{% endblock account_link_menu %}">
                 <li><a href="#"><i class="fa fa-circle-o"></i> {% trans "General" %}</a></li>
-                <li>
+                <li{% block security_link %}{% endblock security_link %}>
                   <a href="#"><i class="fa fa-circle-o"></i> {% trans "Security" %} <i class="fa fa-angle-left pull-right"></i></a>
-                  <ul class="treeview-menu">
-                    <li><a href="{% url 'account_change_password' %}"><i class="fa fa-circle-o"></i> {% trans "Password" %}</a></li>
-                    <li><a href="{% url 'account_email' %}"><i class="fa fa-circle-o"></i> {% trans "E-mail" %}</a></li>
+                  <ul class="treeview-menu{% block security_link_menu %}{% endblock security_link_menu %}">
+                    <li{% block change_password_link %}{% endblock change_password_link %}><a href="{% url 'account_change_password' %}"><i class="fa fa-circle-o"></i> {% trans "Password" %}</a></li>
+                    <li{% block account_email_link %}{% endblock account_email_link %}><a href="{% url 'account_email' %}"><i class="fa fa-circle-o"></i> {% trans "E-mail" %}</a></li>
                   </ul>
                 </li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
               </ul>
             </li>
            {% endif %}
