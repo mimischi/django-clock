@@ -201,9 +201,7 @@
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      {% if request.user.is_authenticated %}
-                        <a href="{% url 'users:detail' request.user.username  %}" class="btn btn-default btn-flat">{% trans "Konto" %}</a>
-                      {% endif %}
+                      <a href="{% url 'users:detail' request.user.username  %}" class="btn btn-default btn-flat">{% trans "Konto" %}</a>
                     </div>
                     <div class="pull-right">
                       <a id="account_logout" href="{% url 'account_logout' %}" class="btn btn-default btn-flat">{% trans "Sign out" %}</a>
