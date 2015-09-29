@@ -249,18 +249,18 @@
             <li class="header">{% trans "Navigation" %}</li>
             <!-- Optionally, you can add icons to the links -->
             {% block nav %}
-            <li class="active"><a href="{% url 'home' %}"><i class="fa fa-dashboard"></i> <span>Home</span></a></li>
+            <li{% block home_link %} class="active" {% endblock home_link %}><a href="{% url 'home' %}"><i class="fa fa-dashboard"></i> <span>Home</span></a></li>
             {% if request.user.is_authenticated %}
-            <li><a href="{% url 'work:shift_list' %}"><i class="fa fa-clock-o"></i> <span>{% trans "Shifts" %}</span></a></li>
-            <li><a href="{% url 'work:contract_list' %}"><i class="fa fa-files-o"></i> <span>{% trans "Contracts" %}</span> </a></li>
-            <li class="treeview">
+            <li{% block shift_link %}{% endblock shift_link %}><a href="{% url 'work:shift_list' %}"><i class="fa fa-clock-o"></i> <span>{% trans "Shifts" %}</span></a></li>
+            <li{% block contract_link %}{% endblock contract_link %}><a href="{% url 'work:contract_list' %}"><i class="fa fa-files-o"></i> <span>{% trans "Contracts" %}</span> </a></li>
+            <li class="treeview{% block account_link %}{% endblock account_link %}">
               <a href="#">
                 <i class="fa fa-share"></i> <span>{% trans "Account" %}</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
                 <li><a href="#"><i class="fa fa-circle-o"></i> {% trans "General" %}</a></li>
-                <li class="active">
+                <li>
                   <a href="#"><i class="fa fa-circle-o"></i> {% trans "Security" %} <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
                     <li><a href="{% url 'account_change_password' %}"><i class="fa fa-circle-o"></i> {% trans "Password" %}</a></li>

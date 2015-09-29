@@ -8,15 +8,11 @@
 {% block page_header %}{% trans "Contracts" %}{% endblock page_header %}
 {% block small_optional_head %}<small>{% trans "Manage your contracts" %}</small>{% endblock small_optional_head %}
 
+{% block contract_link %} class="active" {% endblock contract_link %}
+
 {% block breadcrumbs %}{{ block.super }}
 <li>Contracts</li>
 {% endblock breadcrumbs %}
-
-{% block nav %}
-        <li><a href="{% url 'home' %}"><i class="fa fa-dashboard"></i> <span>Home</span></a></li>
-        <li><a href="{% url 'work:shift_list' %}"><i class="fa fa-clock-o"></i> <span>{% trans "Shifts" %}</span></a></li>
-        <li class="active"><a href="{% url 'work:contract_list' %}"><i class="fa fa-files-o"></i> <span>{% trans "Contracts" %}</span> </a></li>
-{% endblock %}
 
 {% block extra_js %}<!-- DataTables -->
     <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
