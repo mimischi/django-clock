@@ -9,8 +9,8 @@
             <button class="btn btn-app" type="submit" name="_start"><i class="fa fa-play-circle fa-3x"></i>{% trans "Start" %}</button>
         {% endif %}
             <button class="btn btn-app" type="submit" name="_stop"><i class="fa fa-stop fa-3x"></i>{% trans "Stop" %}</button>
-            <br /><br />
-            <select class="block form-control" style="width:300px" name="contract"{% if not all_contracts %}disabled{% endif %}>
+
+            <select class="block form-control work-select" name="contract"{% if not all_contracts %}disabled{% endif %}>
                 {% for institutes in all_contracts %}
                 <option value="{{ institutes.pk }}"{% if institutes == default_contract %} selected="selected"{% endif %}>{{ institutes }}</option>
                 {% endfor %}

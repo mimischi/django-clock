@@ -22,6 +22,8 @@
     -->
     <link rel="stylesheet" href="{% static 'css/skins/skin-purple.min.css' %}">
 
+    <link rel="stylesheet" href="{% static 'css/project.css' %}">
+
     <!-- jQuery 2.1.4 -->
     <script src="{% static 'js/jquery.min.js' %}"></script>
 
@@ -297,27 +299,212 @@
         <!-- Main content -->
         <section class="content">
           {% bootstrap_messages %}
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box box-solid">
+                <div class="box-header with-border">
+                  <h3 class="box-title">{% trans "Michael, rename-this-box" %}</h3>
+                  <div class="box-tools pull-right">
+                    {% block box-tools %}
+                    <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
+                    {% endblock box-tools %}
 
-          <div class="box">
-            <div class="box-header with-border">
-              <h3 class="box-title">{% trans "Michael, rename-this-box" %}</h3>
-              <div class="box-tools pull-right">
-                {% block box-tools %}
-                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
-                {% endblock box-tools %}
+                  </div>
+                </div>
+                <div class="box-body" style="display: block;">
+                  <!-- Your Page Content Here -->
+              {% block content %}Michael hat hier wohl vergessen den Inhalt einzufügen..{% endblock content %}
+                </div><!-- /.box-body -->
+                <div class="box-footer" style="display: block;">
+                  {% block box-footer %}
+                    Footer
+                  {% endblock box-footer %}
+                </div><!-- /.box-footer-->
+              </div><!--- /.box -->
+            </div><!-- /.col-md-12 -->
+          </div><!-- /.row -->
+           <div class="box">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Monthly Recap Report</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <div class="btn-group">
+                      <button class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                      </ul>
+                    </div>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <p class="text-center">
+                        <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
+                      </p>
+                      <div class="chart">
+                        <!-- Sales Chart Canvas -->
+                        <canvas id="salesChart" style="height: 180px;"></canvas>
+                      </div><!-- /.chart-responsive -->
+                    </div><!-- /.col -->
+                    <div class="col-md-4">
+                      <p class="text-center">
+                        <strong>Goal Completion</strong>
+                      </p>
+                      <div class="progress-group">
+                        <span class="progress-text">Add Products to Cart</span>
+                        <span class="progress-number"><b>160</b>/200</span>
+                        <div class="progress sm">
+                          <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
+                        </div>
+                      </div><!-- /.progress-group -->
+                      <div class="progress-group">
+                        <span class="progress-text">Complete Purchase</span>
+                        <span class="progress-number"><b>310</b>/400</span>
+                        <div class="progress sm">
+                          <div class="progress-bar progress-bar-red" style="width: 80%"></div>
+                        </div>
+                      </div><!-- /.progress-group -->
+                      <div class="progress-group">
+                        <span class="progress-text">Visit Premium Page</span>
+                        <span class="progress-number"><b>480</b>/800</span>
+                        <div class="progress sm">
+                          <div class="progress-bar progress-bar-green" style="width: 80%"></div>
+                        </div>
+                      </div><!-- /.progress-group -->
+                      <div class="progress-group">
+                        <span class="progress-text">Send Inquiries</span>
+                        <span class="progress-number"><b>250</b>/500</span>
+                        <div class="progress sm">
+                          <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
+                        </div>
+                      </div><!-- /.progress-group -->
+                    </div><!-- /.col -->
+                  </div><!-- /.row -->
+                </div><!-- ./box-body -->
+                <div class="box-footer">
+                  <div class="row">
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block border-right">
+                        <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
+                        <h5 class="description-header">$35,210.43</h5>
+                        <span class="description-text">TOTAL REVENUE</span>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block border-right">
+                        <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
+                        <h5 class="description-header">$10,390.90</h5>
+                        <span class="description-text">TOTAL COST</span>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block border-right">
+                        <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
+                        <h5 class="description-header">$24,813.53</h5>
+                        <span class="description-text">TOTAL PROFIT</span>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block">
+                        <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
+                        <h5 class="description-header">1200</h5>
+                        <span class="description-text">GOAL COMPLETIONS</span>
+                      </div><!-- /.description-block -->
+                    </div>
+                  </div><!-- /.row -->
+                </div><!-- /.box-footer -->
+              </div><!-- /.box -->
 
-              </div>
-            </div>
-            <div class="box-body" style="display: block;">
-              <!-- Your Page Content Here -->
-          {% block content %}Michael hat hier wohl vergessen den Inhalt einzufügen..{% endblock content %}
-            </div><!-- /.box-body -->
-            <div class="box-footer" style="display: block;">
-              {% block box-footer %}
-                Footer
-              {% endblock box-footer %}
-            </div><!-- /.box-footer-->
-          </div>
+              <!-- row -->
+          <div class="row">
+            <div class="col-xs-12">
+              <!-- jQuery Knob -->
+              <div class="box box-solid">
+                <div class="box-header">
+                  <i class="fa fa-bar-chart-o"></i>
+                  <h3 class="box-title">jQuery Knob</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-default btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-default btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="30" data-width="90" data-height="90" data-fgColor="#3c8dbc">
+                      <div class="knob-label">New Visitors</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="70" data-width="90" data-height="90" data-fgColor="#f56954">
+                      <div class="knob-label">Bounce Rate</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="-80" data-min="-150" data-max="150" data-width="90" data-height="90" data-fgColor="#00a65a">
+                      <div class="knob-label">Server Load</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="40" data-width="90" data-height="90" data-fgColor="#00c0ef">
+                      <div class="knob-label">Disk Space</div>
+                    </div><!-- ./col -->
+                  </div><!-- /.row -->
+
+                  <div class="row">
+                    <div class="col-xs-6 text-center">
+                      <input type="text" class="knob" value="90" data-width="90" data-height="90" data-fgColor="#932ab6">
+                      <div class="knob-label">Bandwidth</div>
+                    </div><!-- ./col -->
+                    <div class="col-xs-6 text-center">
+                      <input type="text" class="knob" value="50" data-width="90" data-height="90" data-fgColor="#39CCCC">
+                      <div class="knob-label">CPU</div>
+                    </div><!-- ./col -->
+                  </div><!-- /.row -->
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="box box-solid">
+                <div class="box-header">
+                  <i class="fa fa-bar-chart-o"></i>
+                  <h3 class="box-title">jQuery Knob Different Sizes</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-default btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-default btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="30" data-width="90" data-height="90" data-fgColor="#3c8dbc" data-readonly="true">
+                      <div class="knob-label">data-width="90"</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="30" data-width="120" data-height="120" data-fgColor="#f56954">
+                      <div class="knob-label">data-width="120"</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" value="30" data-thickness="0.1" data-width="90" data-height="90" data-fgColor="#00a65a">
+                      <div class="knob-label">data-thickness="0.1"</div>
+                    </div><!-- ./col -->
+                    <div class="col-md-3 col-sm-6 col-xs-6 text-center">
+                      <input type="text" class="knob" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" value="30" data-width="120" data-height="120" data-fgColor="#00c0ef">
+                      <div class="knob-label">data-angleArc="250"</div>
+                    </div><!-- ./col -->
+                  </div><!-- /.row -->
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
 
@@ -343,9 +530,75 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <!-- AdminLTE App -->
     <script src="{% static 'js/app.min.js' %}"></script>
+    <!-- ChartJS 1.0.1 -->
+    <script src="{% static 'plugins/chartjs/Chart.min.js' %}"></script>
+    <!-- jQuery Knob 1.2.11 -->
+    <script src="{% static 'plugins/knob/jquery.knob.js' %}"></script>
 
     <script src="{% static 'js/project.js' %}"></script>
-    {% block extra_js %}{% endblock extra_js %}
+    {% block extra_js %}
+    <script>
+      $(function () {
+        /* jQueryKnob */
+
+        $(".knob").knob({
+          /*change : function (value) {
+           //console.log("change : " + value);
+           },
+           release : function (value) {
+           console.log("release : " + value);
+           },
+           cancel : function () {
+           console.log("cancel : " + this.value);
+           },*/
+          draw: function () {
+
+            // "tron" case
+            if (this.$.data('skin') == 'tron') {
+
+              var a = this.angle(this.cv)  // Angle
+                      , sa = this.startAngle          // Previous start angle
+                      , sat = this.startAngle         // Start angle
+                      , ea                            // Previous end angle
+                      , eat = sat + a                 // End angle
+                      , r = true;
+
+              this.g.lineWidth = this.lineWidth;
+
+              this.o.cursor
+                      && (sat = eat - 0.3)
+                      && (eat = eat + 0.3);
+
+              if (this.o.displayPrevious) {
+                ea = this.startAngle + this.angle(this.value);
+                this.o.cursor
+                        && (sa = ea - 0.3)
+                        && (ea = ea + 0.3);
+                this.g.beginPath();
+                this.g.strokeStyle = this.previousColor;
+                this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false);
+                this.g.stroke();
+              }
+
+              this.g.beginPath();
+              this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
+              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false);
+              this.g.stroke();
+
+              this.g.lineWidth = 2;
+              this.g.beginPath();
+              this.g.strokeStyle = this.o.fgColor;
+              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
+              this.g.stroke();
+
+              return false;
+            }
+          }
+        });
+        /* END JQUERY KNOB */
+      });
+
+    </script>{% endblock extra_js %}
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
          Both of these plugins are recommended to enhance the
