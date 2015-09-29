@@ -79,8 +79,8 @@ def shift_action(request):
                                         shift_started=timezone.now()
                                         )
 
-            # Show a success message
-            messages.add_message(request, messages.SUCCESS, _('Your shift has started!'), 'success')
+        # Show a success message
+        messages.add_message(request, messages.SUCCESS, _('Your shift has started!'))
 
     # Stop current shift
     elif '_stop' in request.POST:
@@ -91,7 +91,7 @@ def shift_action(request):
         shift.save()
 
         # Add a success message
-        messages.add_message(request, messages.SUCCESS, _('Your shift has finished!'), 'success')
+        messages.add_message(request, messages.SUCCESS, _('Your shift has finished!'))
 
     # Toggle pause on current shift
     elif '_pause' in request.POST:
@@ -102,11 +102,7 @@ def shift_action(request):
         # Show a success message - either the pause was started or finished
         action = _('paused') if shift.is_paused else _('continued')
         message = 'Your shift was %s.' % action
-        messages.add_message(request, messages.ERROR, message, 'success')
-
-    elif '_info' in request.POST:
-        info_messages = _('Test message, please don\'t ignore and extend!')
-        messages.add_message(request, messages.INFO, info_messages, 'info')
+        messages.add_message(request, messages.SUCCESS, message)
 
     return redirect('home')
 
@@ -281,17 +277,9 @@ class ContractDeleteView(DeleteView):
 
     def get_queryset(self):
         """
-        Does two things:
-            - Only return our own contracts and not those of other employees.
-            - Check if the contract is the only one left for the user.
-              If yes, then abort the deletion.
+        Return our own contracts and not those of other employees.
         """
-        queryset = self.request.user.contract_set.all()
-
-        if queryset.count() < 2:
-            raise ValueError('ASD')
-
-        return queryset
+        return self.request.user.contract_set.all()
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
