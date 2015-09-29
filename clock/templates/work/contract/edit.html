@@ -1,11 +1,11 @@
 ﻿{% extends "work/contract/contract_base.html" %}
-{% load i18n bootstrap crispy_forms_tags %}
+{% load i18n bootstrap crispy_forms_tags django_bootstrap_breadcrumbs %}
 
 {% block head_title %}{% if form.instance.pk %}{% trans 'Update contract' %}{% else %}{% trans 'Create contract' %}{% endif %}{% endblock %}
 {% block small_optional_head %}<small>{% if form.instance.pk %}{% trans 'Update existing contract' %}{% else %}{% trans 'Create new contract' %}{% endif %}</small>{% endblock small_optional_head %}
 
 {% block breadcrumbs %}{{ block.super }}
-<li>{% if form.instance.pk %}{% trans 'Update contract' %}{% else %}{% trans 'Create contract' %}{% endif %}</li>
+{% breadcrumb_safe 'Manage' 'work:contract_list' %}
 {% endblock breadcrumbs %}
 
 {% block content %}{% crispy form %}{% endblock %}

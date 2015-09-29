@@ -39,6 +39,7 @@ THIRD_PARTY_APPS = (
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
+    'django_bootstrap_breadcrumbs',
     'bootstrap3',
     'bootstrap3_datetime',
     'pinax_theme_bootstrap',
@@ -163,6 +164,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 # Your stuff: custom template context processors go here
+                'django.core.context_processors.request',
             ],
         },
     },

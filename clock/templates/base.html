@@ -1,4 +1,4 @@
-{% load staticfiles i18n %}{% load bootstrap3 %}<!DOCTYPE html>
+{% load staticfiles i18n %}{% load bootstrap3 %}{% load django_bootstrap_breadcrumbs %}<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -54,6 +54,9 @@
   |               | sidebar-mini                            |
   |---------------------------------------------------------|
   -->
+{% block breadcrumbs %}
+{% breadcrumb_safe '<i class="fa fa-dashboard"></i> Clock' 'home' %}
+{% endblock breadcrumbs %}
   <body class="hold-transition skin-purple sidebar-mini">
     <div class="wrapper">
 
@@ -287,9 +290,7 @@
             {% block small_optional_head %}{% endblock small_optional_head %}
           </h1>
           <ol class="breadcrumb">
-            {% block breadcrumbs %}
-              <li><a href="{% url 'home' %}"><i class="fa fa-dashboard"></i> Clock</a></li>
-            {% endblock breadcrumbs %}
+            {% render_breadcrumbs "breadcrumbs.html" %}
           </ol>
         </section>
 
@@ -322,6 +323,7 @@
 
       <!-- Main Footer -->
       <footer class="main-footer">
+
         <!-- To the right -->
         <div class="pull-right hidden-xs">
           Anything you want

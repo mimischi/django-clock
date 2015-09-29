@@ -1,13 +1,16 @@
 {% extends "account/sub_security.html" %}
 
-{% load i18n %}
 {% load url from future %}
-{% load crispy_forms_tags %}
+{% load i18n crispy_forms_tags django_bootstrap_breadcrumbs %}
 
 {% block head_title %}{% trans "Account" %}{% endblock %}
 {% block page_header %}{% trans "E-mail Addresses" %}{% endblock page_header %}
 
 {% block account_email_link %} class="active"{% endblock account_email_link %}
+
+{% block breadcrumbs %}{{ block.super }}
+{% breadcrumb_safe 'E-mail' 'account_email' %}
+{% endblock breadcrumbs %}
 
 {% block content %}
 {% if user.emailaddress_set.all %}

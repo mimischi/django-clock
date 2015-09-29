@@ -1,5 +1,5 @@
 ﻿{% extends "work/shift/shift_base.html" %}
-{% load i18n bootstrap3 crispy_forms_tags %}
+{% load i18n bootstrap3 crispy_forms_tags django_bootstrap_breadcrumbs %}
 
 {% block extra_js %}
       <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
@@ -10,8 +10,9 @@
 
 {% block head_title %}{% if form.instance.pk %}{% trans 'Update shift' %}{% else %}{% trans 'Create shift' %}{% endif %}{% endblock %}
 
+
 {% block breadcrumbs %}{{ block.super }}
-<li>{% if form.instance.pk %}{% trans 'Update shift' %}{% else %}{% trans 'Create shift' %}{% endif %}</li>
+{% breadcrumb 'Manage' '#' %}
 {% endblock breadcrumbs %}
 
 {% block content %}{% crispy form %}{% endblock %}

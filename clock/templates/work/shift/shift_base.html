@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles i18n %}
+{% load staticfiles i18n django_bootstrap_breadcrumbs %}
 
 {% block extra_css %}<!-- DataTables -->
 <link rel="stylesheet" href="{% static 'plugins/datatables/dataTables.bootstrap.css' %}">
@@ -11,7 +11,7 @@
 {% block shift_link %} class="active" {% endblock shift_link %}
 
 {% block breadcrumbs %}{{ block.super }}
-<li>Shifts</li>
+{% breadcrumb_safe 'Shifts' 'work:shift_list' %}
 {% endblock breadcrumbs %}
 
 {% block extra_js %}<!-- DataTables -->

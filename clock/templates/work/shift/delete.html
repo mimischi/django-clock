@@ -1,11 +1,12 @@
 ﻿{% extends "work/shift/shift_base.html" %}
-{% load i18n bootstrap3 crispy_forms_tags %}
+{% load i18n bootstrap3 crispy_forms_tags django_bootstrap_breadcrumbs %}
+
 
 {% block head_title %}{% trans "Delete shift?" %}{% endblock %}
 {% block small_optional_head %}<small>{% trans "Delete Contract" %}</small>{% endblock small_optional_head %}
 
 {% block breadcrumbs %}{{ block.super }}
-<li>Delete shift</li>
+{% breadcrumb 'Delete' 'work:shift_edit' form.instance.pk %}
 {% endblock breadcrumbs %}
 
 {% block content %}
