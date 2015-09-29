@@ -22,23 +22,23 @@ def home(request):
 
     template_to_render = 'pages/landingpage.html'
 
-    # if request.user.is_authenticated():
-    #     context['all_contracts'] = get_all_contracts(request.user)
-    #     context['default_contract'] = get_default_contract(request.user)
-    #     template_to_render = 'pages/dashboard.html'
+    if request.user.is_authenticated():
+        context['all_contracts'] = get_all_contracts(request.user)
+        context['default_contract'] = get_default_contract(request.user)
+        template_to_render = 'pages/dashboard.html'
 
-    #     # Get the current shift to display the possible quick-actions.
-    #     shift = get_current_shift(request.user.id)
+        # Get the current shift to display the possible quick-actions.
+        shift = get_current_shift(request.user.id)
 
-    #     # Check if we have a current shift. Either fill the data for
-    #     # the template or use an empty context variable.
-    #     if shift:
-    #         context['shift_closed'] = bool(shift)
-    #         context['shift_paused'] = shift.is_paused
+        # Check if we have a current shift. Either fill the data for
+        # the template or use an empty context variable.
+        if shift:
+            context['shift_closed'] = bool(shift)
+            context['shift_paused'] = shift.is_paused
 
-    #         # Delete the 'all_contracts' key from the context dict,
-    #         # so we can hide the <select>-element in the template.
-    #         del context['all_contracts']
+            # Delete the 'all_contracts' key from the context dict,
+            # so we can hide the <select>-element in the template.
+            del context['all_contracts']
 
     # Render the template
     return render(request, template_to_render, context)
