@@ -44,7 +44,6 @@ THIRD_PARTY_APPS = (
     'bootstrap3_datetime',
     'pinax_theme_bootstrap',
     'bootstrapform',
-#    'rosetta',
 )
 
 # Apps specific for this project go here.
