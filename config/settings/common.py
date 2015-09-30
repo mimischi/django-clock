@@ -44,7 +44,6 @@ THIRD_PARTY_APPS = (
     'bootstrap3_datetime',
     'pinax_theme_bootstrap',
     'bootstrapform',
-#    'rosetta',
 )
 
 # Apps specific for this project go here.
@@ -288,3 +287,6 @@ BROKER_URL = env("CELERY_BROKER_URL", default='django://')
 ########## END CELERY
 
 # Your common stuff: Below this line define 3rd party library settings
+LOCALE_PATHS = (
+    str(ROOT_DIR('locale')),
+)
