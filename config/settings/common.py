@@ -287,3 +287,6 @@ BROKER_URL = env("CELERY_BROKER_URL", default='django://')
 ########## END CELERY
 
 # Your common stuff: Below this line define 3rd party library settings
+LOCALE_PATHS = (
+    str(ROOT_DIR('locale')),
+)
