@@ -19,8 +19,8 @@ class Contract(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        if self.department_short:
-            return self.department_short
+        # if self.department_short:
+        #     return self.department_short
         return self.department
 
 

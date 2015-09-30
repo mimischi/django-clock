@@ -33,10 +33,11 @@ def get_default_contract(user):
     """
 
     contracts = get_all_contracts(user)
-    finished_shifts = Shift.objects.filter(employee=user,
-                                           shift_finished__isnull=False)
+    finished_shifts = Shift.objects.filter(employee=user)
 
     if finished_shifts:
-        return finished_shifts[0].contract
+        if finished_shifts[0].contract == None:
+            return None
+        return finished_shifts[0].contract.department
 
     return contracts

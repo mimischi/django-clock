@@ -27,6 +27,9 @@ def home(request):
         context['default_contract'] = get_default_contract(request.user)
         template_to_render = 'pages/dashboard.html'
 
+        # Initialize the QuickActionForm
+        context['form'] = QuickActionForm(user=request.user)
+
         # Get the current shift to display the possible quick-actions.
         shift = get_current_shift(request.user.id)
 

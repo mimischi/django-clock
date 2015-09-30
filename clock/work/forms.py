@@ -14,14 +14,13 @@ class QuickActionForm(forms.Form):
     Small helper form for the selection of an institute/contract
     on the dashboard for the quick buttons.
     """
-    def __init__(self, *args, **kwargs):
-        # Pop the supplied user from the form, so we can retrieve
-        # the users signed contracts for the quick-action menu.
-        user = kwargs.pop('user')
-        super(QuickActionForm, self).__init__(*args, **kwargs)
-        self.fields['contract'].queryset = user.contract_set.all()
 
-    contract = forms.ModelChoiceField(queryset='')
+    contract = forms.ModelChoiceField(queryset = Contract.objects.none(), empty_label=_('None defined'))
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(QuickActionForm, self).__init__(*args, **kwargs)
+        self.fields['contract'].queryset = self.user.contract_set.all()
 
 
 class ContractForm(forms.ModelForm):
