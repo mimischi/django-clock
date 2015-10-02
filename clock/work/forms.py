@@ -68,7 +68,7 @@ class ContractForm(forms.ModelForm):
 class ShiftForm(forms.ModelForm):
     class Meta:
         model = Shift
-        fields = ('shift_started', 'contract', 'shift_finished', 'note',)
+        fields = ('shift_started', 'shift_finished', 'pause_duration', 'contract', 'note',)
         widgets = {
             'shift_started': DateTimePicker(
                 options={

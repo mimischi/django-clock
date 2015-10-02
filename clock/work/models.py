@@ -73,6 +73,8 @@ class Shift(models.Model):
         super(Shift, self).__init__(*args, **kwargs)
         self.__old_shift_started = self.shift_started
         self.__old_shift_finished = self.shift_finished
+        self.__old_pause_duration = self.pause_duration
+        self.__old_shift_duration = self.shift_duration
 
     def clean(self, *args, **kwargs):
         """
@@ -90,9 +92,10 @@ class Shift(models.Model):
         or dashboard-frontend.
         """
         if self.shift_finished != self.__old_shift_finished \
-            or self.shift_started != self.__old_shift_started:
-                self.shift_duration = (self.shift_finished -
-                self.shift_started) - self.pause_duration
+           or self.shift_started != self.__old_shift_started \
+           or self.pause_duration != self.__old_pause_duration:
+               self.shift_duration = (self.shift_finished -
+               self.shift_started) - self.pause_duration
         return super(Shift, self).save(*args, **kwargs)
 
     def shift_time_validation(self):
