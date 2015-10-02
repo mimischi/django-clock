@@ -92,6 +92,9 @@ class ShiftForm(forms.ModelForm):
         # Retrieve current user, supplied by the view
         self.requested_user = self.initial['user']
 
+        self.fields['contract'].queryset = Contract.objects.filter(employee=self.requested_user)
+
+
         # Determine if we're creating a new shift or updating an existing one
         if self.initial['view'] == 'shift_create':
             add_input_text = _('Create new shift')
