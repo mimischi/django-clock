@@ -26,17 +26,21 @@ def get_all_contracts(user):
 def get_default_contract(user):
     """
     Returns the default institute of the user.
-        - If the user only has one defined, then use this.
-        - If he has more than one defined, let us look into his
-          finished shifts and use the most recent one.
-        - Otherwise use the one with the smallest ID.
+        - If the user has any finished shifts, then return the contract
+          of the last finished shift.
+        - If no shifts were finished yet, but the user has defined contracts,
+          return the contract that was added first.
+        - If no contracts are defined, then return the NoneObject as default
     """
+    # Filter all shifts (finished or not) from the current user
+    finished_shifts = Shift.objects.filter(employee=user)
 
-    contracts = get_all_contracts(user)
-    finished_shifts = Shift.objects.filter(employee=user,
-                                           shift_finished__isnull=False)
-
+    # If the user has shifts
     if finished_shifts:
-        return finished_shifts[0].contract
+        # Are there any shifts finished for a non-default contract?
+        if finished_shifts[0].contract is not None:
+            # Return the contract of the latest shift
+            return finished_shifts[0].contract.department
 
-    return contracts
+    # Return NoneObject for the defaukt None-contract
+    return None
