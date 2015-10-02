@@ -19,7 +19,7 @@ urlpatterns = [
         ContractAddView.as_view(),
         name='contract_add'),
     # UpdateView to update an existing contract
-    url(r'^contract/(?P<pk>\d+)/edit/$',
+    url(r'^contract/(?P<pk>\d+)/update/$',
         ContractUpdateView.as_view(),
         name='contract_edit'
         ),
