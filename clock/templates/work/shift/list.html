@@ -5,7 +5,7 @@
 {% block extra_js %}{{ block.super }}<script>
 $(document).ready(function() {
     $('#shifts').DataTable({
-        "order": [[1, "desc"]],
+        "order": [[0, "desc"]],
         initComplete: function () {
             this.api().columns().every( function () {
                 var column = this;

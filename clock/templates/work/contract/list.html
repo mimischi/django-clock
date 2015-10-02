@@ -5,7 +5,7 @@
 {% block extra_js %}{{ block.super }}<script>
 $(document).ready(function() {
     $('#contracts').DataTable({
-        "order": [[1, "desc"]]
+        "order": [[0, "desc"]]
     });
 
     $('#contracts tbody').on( 'click', 'tr', function () {
