@@ -1,6 +1,5 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.helper import FormHelper
@@ -15,15 +14,21 @@ class QuickActionForm(forms.Form):
     on the dashboard for the quick buttons.
     """
 
-    contract = forms.ModelChoiceField(queryset = Contract.objects.none(), empty_label=_('None defined'))
+    contract = forms.ModelChoiceField(
+        queryset=Contract.objects.none(),
+        empty_label=_('None defined')
+        )
 
     def __init__(self, *args, **kwargs):
+        # Retrieve the logged in user, that we provide inside the view
         self.user = kwargs.pop('user', None)
         super(QuickActionForm, self).__init__(*args, **kwargs)
+        # Only show the users contracts
         self.fields['contract'].queryset = self.user.contract_set.all()
 
 
 class ContractForm(forms.ModelForm):
+
     class Meta:
         model = Contract
         fields = ('department', 'department_short', 'hours',)
@@ -118,7 +123,9 @@ class ShiftForm(forms.ModelForm):
                                     shift_finished
                                 )
             if check_for_overlaps:
-                raise ValidationError(_('Your selected starting/finishing time overlaps with at least one finished shift of yours. Please adjust the times.'))
+                raise ValidationError(
+                    _('Your selected starting/finishing time overlaps with at least one\
+                     finished shift of yours. Please adjust the times.'))
 
         return cleaned_data
 
@@ -135,7 +142,7 @@ class ShiftForm(forms.ModelForm):
                                       shift_finished__gte=shift_started
                                       )
 
-        # Check if the retrieved shifts contain the shift we're trying to update. If yes, then pass.
+        # Check if the retrieved shifts contain the shift we're trying to update. If yes: pass.
         for shift in shifts:
             if shift == self.instance:
                 pass

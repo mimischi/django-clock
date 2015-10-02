@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -54,10 +55,20 @@ def shift_action(request):
     shift = get_current_shift(request.user)
 
     if not shift and not '_start' in request.POST:
-        messages.add_message(request, messages.ERROR, _('You need an active shift to perform this action!'), 'danger')
+        messages.add_message(
+            request,
+            messages.ERROR,
+            _('You need an active shift to perform this action!'),
+            'danger'
+        )
         return redirect('home')
     elif shift and '_start' in request.POST:
-        messages.add_message(request, messages.ERROR, _('You already have an active shift!'), 'danger')
+        messages.add_message(
+            request,
+            messages.ERROR,
+            _('You already have an active shift!'),
+            'danger'
+        )
         return redirect('home')
 
     # Start a new shift
@@ -83,7 +94,11 @@ def shift_action(request):
                                         )
 
         # Show a success message
-        messages.add_message(request, messages.SUCCESS, _('Your shift has started!'))
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            _('Your shift has started!')
+        )
 
     # Stop current shift
     elif '_stop' in request.POST:
@@ -94,7 +109,11 @@ def shift_action(request):
         shift.save()
 
         # Add a success message
-        messages.add_message(request, messages.SUCCESS, _('Your shift has finished!'))
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            _('Your shift has finished!')
+        )
 
     # Toggle pause on current shift
     elif '_pause' in request.POST:
@@ -133,7 +152,11 @@ class ShiftManualCreate(CreateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(ShiftManualCreate, self).dispatch(request, *args, **kwargs)
+        return super(ShiftManualCreate, self).dispatch(
+                                                        request,
+                                                        *args,
+                                                        **kwargs
+                                                        )
 
     def get_initial(self):
         """
@@ -208,7 +231,11 @@ class ShiftManualDelete(DeleteView):
         if object.employee != self.request.user:
             raise Http404(_('404 - Shift not found!'))
 
-        return super(ShiftManualDelete, self).dispatch(request, *args, **kwargs)
+        return super(ShiftManualDelete, self).dispatch(
+                                                        request,
+                                                        *args,
+                                                        **kwargs
+                                                        )
 
     def get_object(self):
         # it doesn't matter how many times get_object is called per request
