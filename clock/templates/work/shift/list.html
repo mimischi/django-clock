@@ -4,8 +4,8 @@
 {% block head_title %}{% trans "Shift list" %}{% endblock %}
 {% block extra_js %}{{ block.super }}<script>
 $(document).ready(function() {
-    $('#shifts').DataTable( {
-        "order": [[3, "desc"]],
+    $('#shifts').DataTable({
+        "order": [[1, "desc"]],
         initComplete: function () {
             this.api().columns().every( function () {
                 var column = this;
@@ -59,7 +59,7 @@ $(document).ready(function() {
         <tbody data-link="row" class="rowlink">
             {% for shifts in object_list %}
             <tr id="{{ shifts.pk }}">
-                <td><a href="{% url 'work:shift_edit' shifts.pk %}">{{ forloop.revcounter }}</a></td>
+                <td>{{ forloop.revcounter }}</td>
                 <td>{{ shifts.contract }}</td>
                 <td>{{ shifts.shift_started }}</td>
                 <td>{{ shifts.shift_finished }}</td>
