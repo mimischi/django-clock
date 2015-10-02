@@ -4,7 +4,9 @@
 {% block head_title %}{% trans "Manage contracts" %}{% endblock %}
 {% block extra_js %}{{ block.super }}<script>
 $(document).ready(function() {
-    $('#contracts').DataTable();
+    $('#contracts').DataTable({
+        "order": [[1, "desc"]]
+    });
 
     $('#contracts tbody').on( 'click', 'tr', function () {
         window.location.href = this.id + "/update/";
@@ -25,7 +27,7 @@ $(document).ready(function() {
     <tbody data-link="row" class="rowlink">
         {% for contract in object_list %}
         <tr id="{{ contract.pk }}">
-            <td><a href="{% url 'work:contract_edit' contract.pk %}">{{ forloop.revcounter }}</a></td>
+            <td>{{ forloop.revcounter }}</td>
             <td>{{ contract }}</td>
             <td>{{ contract.hours }}</td>
             <td><a class="btn btn-danger" type="button" href="{% url 'work:contract_delete' contract.pk %}">X</a></td>
