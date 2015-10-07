@@ -1,6 +1,5 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.helper import FormHelper
@@ -14,17 +13,22 @@ class QuickActionForm(forms.Form):
     Small helper form for the selection of an institute/contract
     on the dashboard for the quick buttons.
     """
-    def __init__(self, *args, **kwargs):
-        # Pop the supplied user from the form, so we can retrieve
-        # the users signed contracts for the quick-action menu.
-        user = kwargs.pop('user')
-        super(QuickActionForm, self).__init__(*args, **kwargs)
-        self.fields['contract'].queryset = user.contract_set.all()
 
-    contract = forms.ModelChoiceField(queryset='')
+    contract = forms.ModelChoiceField(
+        queryset=Contract.objects.none(),
+        empty_label=_('None defined')
+        )
+
+    def __init__(self, *args, **kwargs):
+        # Retrieve the logged in user, that we provide inside the view
+        self.user = kwargs.pop('user', None)
+        super(QuickActionForm, self).__init__(*args, **kwargs)
+        # Only show the users contracts
+        self.fields['contract'].queryset = self.user.contract_set.all()
 
 
 class ContractForm(forms.ModelForm):
+
     class Meta:
         model = Contract
         fields = ('department', 'department_short', 'hours',)
@@ -64,7 +68,7 @@ class ContractForm(forms.ModelForm):
 class ShiftForm(forms.ModelForm):
     class Meta:
         model = Shift
-        fields = ('shift_started', 'contract', 'shift_finished', 'note',)
+        fields = ('shift_started', 'shift_finished', 'pause_duration', 'contract', 'note',)
         widgets = {
             'shift_started': DateTimePicker(
                 options={
@@ -88,7 +92,11 @@ class ShiftForm(forms.ModelForm):
         # Retrieve current user, supplied by the view
         self.requested_user = self.initial['user']
 
-        # Determine if we're creating a new shift or updating an existing one
+        self.fields['contract'].queryset = Contract.objects.filter(
+            employee=self.requested_user
+        )
+
+        # Are we creating a new shift or updating an existing one?
         if self.initial['view'] == 'shift_create':
             add_input_text = _('Create new shift')
         elif self.initial['view'] == 'shift_update':
@@ -119,7 +127,9 @@ class ShiftForm(forms.ModelForm):
                                     shift_finished
                                 )
             if check_for_overlaps:
-                raise ValidationError(_('Your selected starting/finishing time overlaps with at least one finished shift of yours. Please adjust the times.'))
+                raise ValidationError(
+                    _('Your selected starting/finishing time overlaps with at least one\
+                     finished shift of yours. Please adjust the times.'))
 
         return cleaned_data
 
@@ -136,7 +146,7 @@ class ShiftForm(forms.ModelForm):
                                       shift_finished__gte=shift_started
                                       )
 
-        # Check if the retrieved shifts contain the shift we're trying to update. If yes, then pass.
+        # Check if the retrieved shifts contain the shift we're trying to update. If yes: pass.
         for shift in shifts:
             if shift == self.instance:
                 pass

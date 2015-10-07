@@ -1,4 +1,4 @@
-﻿{% load i18n %}
+﻿{% load i18n crispy_forms_tags %}
         <form id="post-form" action="{% url 'work:quick_action' %}" method="post">
             {% csrf_token %}
         {% if shift_closed and shift_paused %}
@@ -11,9 +11,8 @@
             <button class="btn btn-app" type="submit" name="_stop"><i class="fa fa-stop fa-3x"></i>{% trans "Stop" %}</button>
 
             <select class="block form-control work-select" name="contract"{% if not all_contracts %}disabled{% endif %}>
-                {% for institutes in all_contracts %}
-                <option value="{{ institutes.pk }}"{% if institutes == default_contract %} selected="selected"{% endif %}>{{ institutes }}</option>
+                {% for options in form.contract.field.choices %}
+                <option value="{{ options.0 }}"{% if options.1 == default_contract %} selected="selected"{% endif %}>{{ options.1 }}</option>
                 {% endfor %}
-                <option value="None">{% trans 'Without assignment' %}</option>
             </select>
         </form>

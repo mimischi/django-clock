@@ -5,3 +5,7 @@ A simple clocking web-app for student assistants at the Goethe-University Frankf
 
 
 LICENSE: BSD
+
+.. image:: https://travis-ci.org/mimischi/django-clock.svg?branch=master
+     :target: https://travis-ci.org/mimischi/django-clock.svg?branch=master
+     :alt: Travis-CI Status

@@ -4,12 +4,18 @@
 {% block head_title %}{% trans "Manage contracts" %}{% endblock %}
 {% block extra_js %}{{ block.super }}<script>
 $(document).ready(function() {
-    $('#contracts').DataTable();
-} );
+    $('#contracts').DataTable({
+        "order": [[0, "desc"]]
+    });
+
+    $('#contracts tbody').on( 'click', 'tr', function () {
+        window.location.href = this.id + "/update/";
+    });
+});
 </script>{% endblock extra_js %}
 
 {% block content %}
-<table id="contracts" class="table table-bordered table-striped">
+<table id="contracts" class="table table-bordered table-hover table-striped">
     <thead>
         <tr>
             <th data-sortable="true">{% trans "Contract No." %}</th>
@@ -20,8 +26,8 @@ $(document).ready(function() {
     </thead>
     <tbody data-link="row" class="rowlink">
         {% for contract in object_list %}
-        <tr >
-            <td><a href="{% url 'work:contract_edit' contract.pk %}">{{ forloop.revcounter }}</a></td>
+        <tr id="{{ contract.pk }}">
+            <td>{{ forloop.revcounter }}</td>
             <td>{{ contract }}</td>
             <td>{{ contract.hours }}</td>
             <td><a class="btn btn-danger" type="button" href="{% url 'work:contract_delete' contract.pk %}">X</a></td>

@@ -4,7 +4,8 @@
 {% block head_title %}{% trans "Shift list" %}{% endblock %}
 {% block extra_js %}{{ block.super }}<script>
 $(document).ready(function() {
-    $('#shifts').DataTable( {
+    $('#shifts').DataTable({
+        "order": [[0, "desc"]],
         initComplete: function () {
             this.api().columns().every( function () {
                 var column = this;
@@ -18,19 +19,23 @@ $(document).ready(function() {
                         column
                             .search( val ? '^'+val+'$' : '', true, false )
                             .draw();
-                    } );
+                    });
 
                 column.data().unique().sort().each( function ( d, j ) {
                     select.append( '<option value="'+d+'">'+d+'</option>' )
-                } );
-            } );
+                });
+            });
         }
-    } );
-} );
+    });
+
+    $('#shifts tbody').on( 'click', 'tr', function () {
+        window.location.href = this.id + "/update/";
+    });
+});
 </script>{% endblock extra_js %}
 
 {% block content %}
-    <table id="shifts" class="table table-bordered table-striped">
+    <table id="shifts" class="table table-bordered table-hover table-striped">
         <thead>
             <tr>
                 <th data-sortable="true">{% trans "Shift No." %}</th>
@@ -53,8 +58,8 @@ $(document).ready(function() {
         </tfoot>
         <tbody data-link="row" class="rowlink">
             {% for shifts in object_list %}
-            <tr >
-                <td><a href="{% url 'work:shift_edit' shifts.pk %}">{{ forloop.revcounter }}</a></td>
+            <tr id="{{ shifts.pk }}">
+                <td>{{ forloop.revcounter }}</td>
                 <td>{{ shifts.contract }}</td>
                 <td>{{ shifts.shift_started }}</td>
                 <td>{{ shifts.shift_finished }}</td>
