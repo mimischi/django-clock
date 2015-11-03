@@ -5,10 +5,18 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic import RedirectView, TemplateView
 
 urlpatterns = [
     url(r'^$', 'clock.work.views.home', name='home'),
+    url(
+        r'^favicon.ico$',
+        RedirectView.as_view(
+            url=staticfiles_storage.url('favicon.ico'),
+            permanent=False),
+        name="favicon"
+    ),
     url(r'^about/$', TemplateView.as_view(
         template_name='pages/about.html'),
         name="about"),
