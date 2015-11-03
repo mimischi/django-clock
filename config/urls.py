@@ -32,10 +32,6 @@ urlpatterns = [
     # Include urls fot the work module
     url(r'^', include("clock.work.urls", namespace="work")),
 
-    # Favicon logic
-    # (r'^favicon\.ico$', RedirectView.as_view(
-    #     url=settings.STATIC_URL + 'images/favicon.ico', permanent=False)),
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
