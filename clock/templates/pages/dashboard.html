@@ -1,6 +1,6 @@
 ﻿{% extends 'base.html' %}
 
-{% load i18n %}
+{% load i18n staticfiles %}
 
 {% block head_title %}{% trans "Dashboard" %}{% endblock %}
 {% block page_header %}{% trans "Dashboard" %}{% endblock page_header %}
@@ -193,3 +193,5 @@
               </div><!-- /.col -->
             </div><!-- /.row -->
 {% endblock dashboard_content %}
+
+{% block extra_js %}<script src="{% static 'js/project.js' %}"></script>{% endblock extra_js %}
