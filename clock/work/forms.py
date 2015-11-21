@@ -92,6 +92,7 @@ class ShiftForm(forms.ModelForm):
         # Retrieve current user, supplied by the view
         self.requested_user = self.initial['user']
 
+        # Retrieve all contracts that belong to the user
         self.fields['contract'].queryset = Contract.objects.filter(
             employee=self.requested_user
         )
@@ -153,4 +154,4 @@ class ShiftForm(forms.ModelForm):
             else:
                 return shifts
 
-        return False
+        return None

@@ -153,10 +153,8 @@ class ShiftManualCreate(CreateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ShiftManualCreate, self).dispatch(
-                                                        request,
-                                                        *args,
-                                                        **kwargs
-                                                        )
+            request, *args, **kwargs
+        )
 
     def get_initial(self):
         """
