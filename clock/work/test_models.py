@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
+from django.contrib.messages import constants as MSG
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.test import Client, TestCase
@@ -122,19 +123,76 @@ class ShiftMethodsTest(TestCase):
         self.assertEqual(form5.is_valid(), True)
 
 
-# class ShiftPostTest(TestCase):
-#     def setUp(self):
-#         """
-#         Create an employee, so we can have someone to validate our
-#         shift system.
-#         """
-#         user = get_user_model().objects.create(username='john', is_active=True)
-#         user.set_password('doe')
-#         user.save()
+class ShiftPostTest(TestCase):
+    def setUp(self):
+        """
+        Create an employee, so we can have someone to validate our
+        shift system.
+        """
+        user = get_user_model().objects.create(username='john', is_active=True)
+        user.set_password('doe')
+        user.save()
 
-#         client = Client()
+        client = Client()
 
-#     def test_create_second_active_shift(self):
-#         response = self.client.post('/shift/quick_action/', {'_start': 'ASD'})
-#         m = list(response.context['messages'])
-#         self.assertEqual(m[0], 404)
+    def test_quick_action_shift_cases(self):
+        """
+        We're testing the quick-actions, that the view 'shift_action' is processing.
+        Only logged in users can use those and we're testing them by looking
+        for the level of the received message.
+        """
+
+        login = self.client.login(username='john', password='doe')
+        # User should be logged in
+        self.assertEqual(login, True)
+
+        # Start shift, while no other shift was started yet.
+        response = self.client.post('/shift/quick_action/', {'_start': ''}, follow=True)
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].level, MSG.SUCCESS)
+
+        # Start shift again, while other shift is running.
+        response = self.client.post('/shift/quick_action/', {'_start': ''}, follow=True)
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].level, MSG.ERROR)
+
+        # Pause current running shift
+        response = self.client.post('/shift/quick_action/', {'_pause': ''}, follow=True)
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].level, MSG.SUCCESS)
+
+        # Un-Pause current running shift
+        response = self.client.post('/shift/quick_action/', {'_pause': ''}, follow=True)
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].level, MSG.SUCCESS)
+
+        # Stop current shift
+        response = self.client.post('/shift/quick_action/', {'_stop': ''}, follow=True)
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].level, MSG.SUCCESS)
+
+        # Try to pause a not running shift
+        response = self.client.post('/shift/quick_action/', {'_pause': ''}, follow=True)
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].level, MSG.ERROR)
+
+        # Try to stop a not running shift
+        response = self.client.post('/shift/quick_action/', {'_stop': ''}, follow=True)
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].level, MSG.ERROR)
+
+        # Stop a currently paused shift: start a shift, pause it
+        # and then stop it.
+        response = self.client.post('/shift/quick_action/', {'_start': ''}, follow=True)
+        response2 = self.client.post('/shift/quick_action/', {'_pause': ''}, follow=True)
+        response3 = self.client.post('/shift/quick_action/', {'_stop': ''}, follow=True)
+        messages = list(response3.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].level, MSG.SUCCESS)

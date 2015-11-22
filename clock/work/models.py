@@ -91,9 +91,9 @@ class Shift(models.Model):
         quick-action buttons and manual edits in the admin-backend
         or dashboard-frontend.
         """
-        if self.shift_finished != self.__old_shift_finished \
+        if self.shift_finished is not None and (self.shift_finished != self.__old_shift_finished \
            or self.shift_started != self.__old_shift_started \
-           or self.pause_duration != self.__old_pause_duration:
+           or self.pause_duration != self.__old_pause_duration):
                self.shift_duration = (self.shift_finished -
                self.shift_started) - self.pause_duration
         return super(Shift, self).save(*args, **kwargs)
