@@ -290,3 +290,5 @@ BROKER_URL = env("CELERY_BROKER_URL", default='django://')
 LOCALE_PATHS = (
     str(ROOT_DIR('locale')),
 )
+
+ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
