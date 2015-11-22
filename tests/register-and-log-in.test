@@ -2,6 +2,7 @@
   scenario:
     - Load website
     - Click: djHideToolBarButton
+    - Click: login-signup-landingpage
     - Click: sign-up-link
     - Fill form:
         id_username: testuser

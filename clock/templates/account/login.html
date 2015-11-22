@@ -44,8 +44,8 @@
         {% endif %}
         <button class="btn btn-primary btn-block btn-flat" type="submit">{% trans "Sign In" %}</button>
 
-        <p><a href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a><br />
-        <a href="{% url 'account_signup' %}" class="text-center">{% trans "Register a new membership" %}</a></p>
+        <p><a id="forgot-password-link" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a><br />
+        <a id="sign-up-link" href="{% url 'account_signup' %}" class="text-center">{% trans "Register a new membership" %}</a></p>
       {% endblock content %}
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
