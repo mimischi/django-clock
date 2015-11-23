@@ -3,6 +3,10 @@
 
 {% block extra_css %}<!-- DataTables -->
 <link rel="stylesheet" href="{% static 'plugins/datatables/dataTables.bootstrap.css' %}">
+<!-- DateTimePicker -->
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.min.css' %}">
+<script src="{% static 'js/moment.js' %}"></script>
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock extra_css %}
 
 {% block page_header %}{% trans "Shifts" %}{% endblock page_header %}

@@ -73,15 +73,11 @@ class ShiftForm(forms.ModelForm):
             'shift_started': DateTimePicker(
                 options={
                     "format": "YYYY-MM-DD HH:mm:ss",
-                    "minuteStep": "5",
-                    "todayBtn": True,
-                    "pickSeconds": False
                 }
             ),
             'shift_finished': DateTimePicker(
                 options={
                     "format": "YYYY-MM-DD HH:mm:ss",
-                    "pickSeconds": False
                 }
             ),
         }
