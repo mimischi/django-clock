@@ -8,8 +8,6 @@ Local settings
 - Add django-extensions as app
 '''
 
-import subprocess
-
 from .common import *  # noqa
 
 # DEBUG
