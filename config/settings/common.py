@@ -291,4 +291,6 @@ LOCALE_PATHS = (
     str(ROOT_DIR('locale')),
 )
 
-ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
+GIT_STATUS = subprocess.check_output(['git', 'status'])
+GIT_REVISION_HASH = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
+GIT_COMMIT_TIMESTAMP = subprocess.check_output(['git', 'show', '-s', '--format=%ci'])

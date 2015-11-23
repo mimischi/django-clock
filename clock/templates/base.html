@@ -319,10 +319,10 @@
 
         <!-- To the right -->
         <div class="pull-right hidden-xs">
-          Anything you want
+          Last update: {{ git_commit_timestamp }}, Current git hash: <a href="https://github.com/mimischi/django-clock/commit/{{ git_revision_hash }}" title="Git Revision hash">{{ git_revision_hash }}</a>
         </div>
         <!-- Default to the left -->
-        <strong>Copyright &copy; 2015 <a href="{% url 'home' %}">Clock</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2015 <a href="{% url 'home' %}">Clock</a>. </strong> All rights reserved.
       </footer>
 
       <!-- Add the sidebar's background. This div must be placed

@@ -8,6 +8,8 @@ Local settings
 - Add django-extensions as app
 '''
 
+import subprocess
+
 from .common import *  # noqa
 
 # DEBUG
@@ -61,4 +63,3 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 # Your local stuff: Below this line define 3rd party library settings
 ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
 ROSETTA_GOOGLE_TRANSLATE = True
-#YANDEX_TRANSLATE_KEY = 'trnsl.1.1.20150930T164434Z.ec103244c3a1eb31.f8daed3acfac3eb763c3703340622f43e4aa6199'
