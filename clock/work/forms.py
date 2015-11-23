@@ -72,12 +72,18 @@ class ShiftForm(forms.ModelForm):
         widgets = {
             'shift_started': DateTimePicker(
                 options={
-                    "format": "YYYY-MM-DD HH:mm:ss",
+                    "format": "YYYY-MM-DD HH:mm",
+                    "locale": "de",
+                    "stepping": 5,
+                    "toolbarPlacement": "top",
                 }
             ),
             'shift_finished': DateTimePicker(
                 options={
-                    "format": "YYYY-MM-DD HH:mm:ss",
+                    "format": "YYYY-MM-DD HH:mm",
+                    "locale": "de",
+                    "stepping": 5,
+                    "toolbarPlacement": "top",
                 }
             ),
         }
