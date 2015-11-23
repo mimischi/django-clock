@@ -1,7 +1,6 @@
 - name: Sign up and log in
   scenario:
     - Load website
-    - Click: djHideToolBarButton
     - Click: login-signup-landingpage
     - Click: sign-up-link
     - Fill form:
