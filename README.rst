@@ -42,7 +42,7 @@ Standardmäßig zeigt requirements.txt auf die production.txt. Wir wollen allerd
 requirements.txt anpassen und für git als un-modifiziert markieren::
 
     $ -r requirements/local.txt
-    $ git update-index --assume-unchanged requirements.txt```
+    $ git update-index --assume-unchanged requirements.txt
 
 pip requirements installieren (bitte `virtualenv <https://virtualenv.pypa.io/en/latest/>`_ nutzen!)::
 
@@ -52,15 +52,14 @@ Node.js Pakete installieren (`node.js <https://nodejs.org/>`_ muss installiert s
 
     $ npm install
 
-Für die lokale Entwicklungsumgebung muss noch eine Environmentvariable gesetzt werden, die auf einen `PostgreSQL-Server <http://www.postgresql.org/>`_
- zeigt.::
+Für die lokale Entwicklungsumgebung muss noch eine Environmentvariable gesetzt werden, die auf einen `PostgreSQL-Server <http://www.postgresql.org/>`_ zeigt.::
 
     set DATABASE_URL=postgres://<db_user>:<db_pass>@<db_host>:<db_port>/<db_name>
 
 Linux/OS X Nutzer fügen die Zeile hier hinzu:::
 
     <path-to-the-Env>/<my-env-name-for-clock>/bin/activate
-    
+
 Windows Nutzer machen dies hier:::
 
     <path-to-the-Env>/<my-env-name-for-clock>/Scripts/activate.bat
