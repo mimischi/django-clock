@@ -22,21 +22,3 @@ nginx:
 
 redis:
   image: redis:3.0
-
-celeryworker:
-  build: .
-  user: django
-  env_file: .env
-  links:
-   - postgres
-   - redis
-  command: celery -A clock.taskapp worker -l INFO
-
-celerybeat:
-  build: .
-  user: django
-  env_file: .env
-  links:
-    - postgres
-    - redis
-  command: celery -A clock.taskapp beat -l INFO
