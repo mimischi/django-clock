@@ -18,7 +18,7 @@ ipython-genutils==0.1.0
 Jinja2==2.8
 MarkupSafe==0.23
 path.py==8.1.2
-patool==1.8
+patool==1.9
 pexpect==4.0.1
 pickleshare==0.5
 psutil==3.3.0
