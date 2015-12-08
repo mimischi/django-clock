@@ -28,8 +28,7 @@ Mitarbeit
 ---------
 
 Das Projekt ist offensichtlich öffentlich zugänglich und kann deswegen gerne geforked werden. Um es lokal zu nutzen sind allerdings einige Einstellungen zu erledigen.
-Das aktuelle Layout dieser Repository basiert auf `cookiecutter-django <https://github.com/pydanny/cookiecutter-django>`_
-. Dementsprechend findet sich die generelle Nutzungsanleitung in `deren ReadTheDocs <http://cookiecutter-django.readthedocs.org/en/latest/developing-locally.html>`_.
+Das aktuelle Layout dieser Repository basiert auf `cookiecutter-django <https://github.com/pydanny/cookiecutter-django>`_. Dementsprechend findet sich die generelle Nutzungsanleitung in `deren ReadTheDocs <http://cookiecutter-django.readthedocs.org/en/latest/developing-locally.html>`_.
 
 Anleitung (ohne Docker)
 -----------------------
@@ -41,7 +40,7 @@ Git repository initialisieren und aktuellen master-branch klonen::
 Standardmäßig zeigt requirements.txt auf die production.txt. Wir wollen allerdings im lokalen Development keine Dependencies für die Produktion installieren.
 requirements.txt anpassen und für git als un-modifiziert markieren::
 
-    $ -r requirements/local.txt
+    -r requirements/local.txt
     $ git update-index --assume-unchanged requirements.txt
 
 pip requirements installieren (bitte `virtualenv <https://virtualenv.pypa.io/en/latest/>`_ nutzen!)::
