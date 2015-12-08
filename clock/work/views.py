@@ -22,7 +22,7 @@ def home(request):
     Just render the home screen.
     """
     context = {}
-
+    
     template_to_render = 'pages/landingpage.html'
 
     if request.user.is_authenticated():

@@ -1,11 +1,5 @@
 from clock.work.models import Shift
 
-
-# class ActiveEntryError(Exception):
-#     """A user should have no more than one active entry at a given time."""
-#     pass
-
-
 def get_current_shift(user):
     entries = Shift.objects.filter(employee=user, shift_finished__isnull=True)
 

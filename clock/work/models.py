@@ -1,9 +1,12 @@
 from datetime import timedelta
+import datetime
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+
+from django.forms import fields
 
 
 class Contract(models.Model):
@@ -16,7 +19,7 @@ class Contract(models.Model):
     )
     department = models.CharField(max_length=200)
     department_short = models.CharField(max_length=100, blank=True, null=True)
-    hours = models.DurationField()
+    hours = models.IntegerField()
     contact = models.EmailField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
