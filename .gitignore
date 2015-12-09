@@ -55,3 +55,7 @@ node_modules/
 
 # virtual environments
 .env
+
+# Mailhog executable
+mailhog
+mailhog.exe
