@@ -1,11 +1,12 @@
-{% extends "account/login.html" %}
+{% extends "base.html" %}
 {% load url from future %}
 {% load i18n crispy_forms_tags %}
 
 {% block title %}{% trans "Sign up" %}{% endblock title %}
 {% block page_header %}{% trans "Sign up" %}{% endblock page_header %}
 
-{% block content %}
+{% block main_content %}{{ block.super }}
+<div class="container">
 <p class="login-box-msg">{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
@@ -16,4 +17,5 @@
   {% endif %}
   <button id="sign-up-button" class="btn btn-primary" type="submit">{% trans "Sign Up" %} &raquo;</button>
 </form>
-{% endblock content %}
+</div>
+{% endblock main_content %}

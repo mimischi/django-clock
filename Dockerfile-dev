@@ -8,6 +8,6 @@ RUN pip install -r /requirements/local.txt
 COPY ./compose/django/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-WORKDIR /app
+WORKDIR /app/clock
 
 ENTRYPOINT ["/bin/bash", "-e", "/entrypoint.sh"]

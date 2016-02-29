@@ -22,8 +22,8 @@ def home(request):
     Just render the home screen.
     """
     context = {}
-    
-    template_to_render = 'pages/landingpage.html'
+
+    template_to_render = 'frontend/home.html'
 
     if request.user.is_authenticated():
         context['all_contracts'] = get_all_contracts(request.user)

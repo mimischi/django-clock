@@ -8,9 +8,9 @@ postgres:
 django:
   dockerfile: Dockerfile-dev
   build: .
-  command: python /app/manage.py runserver_plus 0.0.0.0:8000
+  command: python /app/clock/manage.py runserver_plus 0.0.0.0:8000
   volumes:
-    - .:/app
+    - .:/app/clock
   ports:
     - "8000:8000"
   links:
