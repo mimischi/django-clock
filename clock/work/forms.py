@@ -8,6 +8,11 @@ from crispy_forms.layout import Layout, Field, Submit
 from clock.work.models import Contract, Shift
 
 
+class ContractFilterform(forms.Form):
+    start_date = forms.DateField()
+    finish_date = forms.DateField()
+
+
 class QuickActionForm(forms.Form):
     """
     Small helper form for the selection of an institute/contract

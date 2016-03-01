@@ -8,8 +8,11 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
 from django.views.generic.base import TemplateView
+from django.views.generic.dates import MonthArchiveView, WeekArchiveView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
+
+
 from clock.work.forms import ContractForm, ShiftForm, QuickActionForm
 from clock.work.models import Contract, Shift
 from clock.work.utils import get_all_contracts, get_current_shift, \
@@ -245,6 +248,18 @@ class ShiftManualDelete(DeleteView):
         if not hasattr(self, '_object'):
             self._object = super(ShiftManualDelete, self).get_object()
         return self._object
+
+class ShiftWeekView(WeekArchiveView):
+    queryset = Shift.objects.all()
+    date_field = "shift_started"
+    week_format = "%W"
+    allow_future = False
+
+
+class ShiftMonthView(MonthArchiveView):
+    queryset = Shift.objects.all()
+    date_field = "shift_started"
+    allow_future = False
 
 
 class ContractListView(ListView):
