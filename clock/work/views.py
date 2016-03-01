@@ -23,7 +23,7 @@ def home(request):
     """
     context = {}
 
-    template_to_render = 'frontend/home.html'
+    template_to_render = 'pages/home.html'
 
     if request.user.is_authenticated():
         context['all_contracts'] = get_all_contracts(request.user)

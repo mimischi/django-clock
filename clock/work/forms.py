@@ -32,16 +32,11 @@ class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
         fields = ('department', 'department_short', 'hours',)
-        widgets = {
-            # 'hours': DateTimePicker(
-            #    options={
-            #        "format": "HH:mm:ss",
-            #        #"minuteStep": "10",
-            #        "pickDate": False,
-            #        "pickSeconds": False
-            #    }
-            # ),
-            }
+        # widgets = {
+        #     'hours': forms.TextInput(
+        #                             attrs={'type': 'number', 'step': '0.15'}
+        #             )
+        #     }
 
     def __init__(self, *args, **kwargs):
         super(ContractForm, self).__init__(*args, **kwargs)
