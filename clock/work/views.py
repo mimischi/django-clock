@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
@@ -243,23 +243,34 @@ class ShiftManualDelete(DeleteView):
                                                         )
 
     def get_object(self):
+        # We can also do all user permission checking inside here!
+        # See: http://stackoverflow.com/a/12474135/4791226
+
+
         # it doesn't matter how many times get_object is called per request
         # it should not do more than one request
         if not hasattr(self, '_object'):
             self._object = super(ShiftManualDelete, self).get_object()
         return self._object
 
+from django.contrib.auth import get_user_model
+
 class ShiftWeekView(WeekArchiveView):
-    queryset = Shift.objects.all()
     date_field = "shift_started"
     week_format = "%W"
     allow_future = False
 
+    def get_queryset(self):
+        return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
+
 
 class ShiftMonthView(MonthArchiveView):
-    queryset = Shift.objects.all()
+    # queryset = Shift.objects.all()
     date_field = "shift_started"
     allow_future = False
+
+    def get_queryset(self):
+        return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
 
 
 class ContractListView(ListView):

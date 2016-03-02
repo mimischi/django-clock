@@ -17,11 +17,11 @@
 
 <p>
     {% if previous_week %}
-        Previous Week: {{ previous_week|date:"W" }} of year {{ previous_week|date:"Y" }}
+        <a href="{% url "work:archive_week" year=previous_week|date:"Y" week=previous_week|date:"W" %}">Previous Week: {{ previous_week|date:"W" }} of year {{ previous_week|date:"Y" }}</a>
     {% endif %}
     {% if previous_week and next_week %}--{% endif %}
     {% if next_week %}
-        Next week: {{ next_week|date:"W" }} of year {{ next_week|date:"Y" }}
+      <a href="{% url "work:archive_week" year=next_week|date:"Y" week=next_week|date:"W" %}">Next week: {{ next_week|date:"W" }} of year {{ next_week|date:"Y" }}</a>
     {% endif %}
 </p>
 {% endblock content %}
