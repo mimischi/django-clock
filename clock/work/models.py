@@ -96,11 +96,16 @@ class Shift(models.Model):
         quick-action buttons and manual edits in the admin-backend
         or dashboard-frontend.
         """
-        if self.shift_finished is not None and (self.shift_finished != self.__old_shift_finished \
+        # Lets check if this shift is just being updated
+        if self.pk is not None and (self.shift_finished != self.__old_shift_finished \
            or self.shift_started != self.__old_shift_started \
            or self.pause_duration != self.__old_pause_duration):
                self.shift_duration = (self.shift_finished -
                self.shift_started) - self.pause_duration
+        # Lets check if this shift did not exists before and was just added from the shell!
+        elif self.pk is None and self.shift_finished is not None:
+            self.shift_duration = (self.shift_finished -
+            self.shift_started) - self.pause_duration
         return super(Shift, self).save(*args, **kwargs)
 
     def shift_time_validation(self):

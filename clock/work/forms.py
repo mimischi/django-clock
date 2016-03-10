@@ -8,6 +8,11 @@ from crispy_forms.layout import Layout, Field, Submit
 from clock.work.models import Contract, Shift
 
 
+class ContractFilterform(forms.Form):
+    start_date = forms.DateField()
+    finish_date = forms.DateField()
+
+
 class QuickActionForm(forms.Form):
     """
     Small helper form for the selection of an institute/contract
@@ -131,6 +136,8 @@ class ShiftForm(forms.ModelForm):
 
         return cleaned_data
 
+    # This could go into models.. at some point? When we create a shift through
+    # the shell, no checks will be performed for overlaps!
     def check_for_overlaps(self, employee, shift_started, shift_finished):
         """
         Check if the supplied starting/finishing DateTimes
