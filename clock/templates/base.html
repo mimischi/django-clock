@@ -24,6 +24,8 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   <link rel="stylesheet" href="{% static 'common/css/clock.css' %}" media="screen" charset="utf-8">
+
+  {% block extra_head %}<link rel="stylesheet" href="{% static 'libraries/fontawesome/css/font-awesome.min.css' %}">{% endblock extra_head %}
 </head>
 
 <body>
@@ -36,11 +38,21 @@
     </header> <!-- /header -->
     {% endblock header %}
     <div class="container">
+          {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         {% block container %}There is no content in this container!{% endblock container %}
     </div> <!-- /.container -->
   </div> <!-- /#wrap -->
 
   <div id="footer">
+     <div class="pull-right hidden-xs">
+      Last update: {{ git_commit_timestamp }}, Current git hash: <a href="https://github.com/mimischi/django-clock/commit/{{ git_revision_hash }}" title="Git Revision hash">{{ git_revision_hash }}</a>
+    </div>
     <div class="container">
       <p class="pull-right"><a href="#">Back to top</a></p>
       <p>&copy; 2015 Clock &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a> &middot; <a href="#">Status</a></p>

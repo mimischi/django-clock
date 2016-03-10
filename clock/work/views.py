@@ -33,7 +33,7 @@ def home(request):
         context['default_contract'] = get_default_contract(request.user)
         context['git_revision_hash'] = GIT_REVISION_HASH
         context['git_commit_timestamp'] = GIT_COMMIT_TIMESTAMP
-        template_to_render = 'frontend/index.html'
+        template_to_render = 'backend/index.html'
 
         # Initialize the QuickActionForm
         context['form'] = QuickActionForm(user=request.user)
