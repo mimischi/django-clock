@@ -1,10 +1,15 @@
-{% extends "account/login.html" %}
+{% extends "base.html" %}
+{% load i18n crispy_forms_tags %}
 
-{% load url from future %}
-{% load i18n %}
+{% block container%}
+    <div class="row">
+        <div class="col-md-7">
+            <div class="container"><p>{% trans "We are sorry, but the sign up is currently closed." %}</p>{% endblock %}
+        </div>
+    </div>
 
-{% block head_title %}{% trans "Sign Up Closed" %}{% endblock %}
-{% block page_header %}{% trans "Sign Uo Closed" %}{% endblock page_header %}
+<div class="container">
+<p class="login-box-msg"></p>
 
-{% block content %}
-<div class="container"><p>{% trans "We are sorry, but the sign up is currently closed." %}</p>{% endblock %}
+</div>
+{% endblock container %}

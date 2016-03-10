@@ -280,13 +280,6 @@ LOGGING = {
     }
 }
 
-########## CELERY
-INSTALLED_APPS += ('clock.taskapp.celery.CeleryConfig',)
-# if you are not using the django database broker (e.g. rabbitmq, redis, memcached), you can remove the next line.
-INSTALLED_APPS += ('kombu.transport.django',)
-BROKER_URL = env("CELERY_BROKER_URL", default='django://')
-########## END CELERY
-
 # Your common stuff: Below this line define 3rd party library settings
 LOCALE_PATHS = (
     str(ROOT_DIR('locale')),
@@ -295,3 +288,7 @@ LOCALE_PATHS = (
 GIT_STATUS = subprocess.check_output(['git', 'status'])
 GIT_REVISION_HASH = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
 GIT_COMMIT_TIMESTAMP = subprocess.check_output(['git', 'show', '-s', '--format=%ci'])
+
+ACCOUNT_FORMS = {
+    'login': 'clock.work.forms.ClockLoginForm'
+}
