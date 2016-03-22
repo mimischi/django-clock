@@ -4,7 +4,7 @@
 <h2>{{ year|date:"Y" }}</h2>
 <ul>
     {% for date in date_list %}
-        <li><a href="{% url 'work:archive_month_numeric' year=date|date:"Y" month=date|date:"m" %}">{{ date|date }}</a></li>
+        <li><a href="{% url 'work:archive_month_numeric' year=date|date:"Y" month=date|date:"m" %}">{{ date|date:"F Y" }}</a></li>
     {% endfor %}
 </ul>
 
