@@ -1,9 +1,9 @@
-.. image:: https://travis-ci.org/mimischi/django-clock.svg?branch=master
-     :target: https://travis-ci.org/mimischi/django-clock.svg?branch=master
+.. image:: https://travis-ci.org/mimischi/django-clock.svg?branch=develop
+     :target: https://travis-ci.org/mimischi/django-clock.svg?branch=develop
      :alt: Travis-CI Status
 
-.. image:: https://requires.io/github/mimischi/django-clock/requirements.svg?branch=master
-     :target: https://requires.io/github/mimischi/django-clock/requirements/?branch=master
+.. image:: https://requires.io/github/mimischi/django-clock/requirements.svg?branch=develop
+     :target: https://requires.io/github/mimischi/django-clock/requirements/?branch=develop
      :alt: Requirements Status
 
 Clock
