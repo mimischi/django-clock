@@ -1,7 +1,9 @@
 - name: Sign up and log in
   scenario:
     - Load website
+    - Click: djHideToolBarButton
     - Click: login-signup-landingpage
+    - Click: sign-up-link
     - Fill form:
         id_username: testuser
         id_email: testuser@domain.com

@@ -40,12 +40,12 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
             shutdown_timeout=float(self.settings["shutdown_timeout"]),
         )
 
-        postgres_user = hitchpostgres.PostgresUser("clock", "password")
+        postgres_user = hitchpostgres.PostgresUser("geomat", "password")
 
         self.services['Postgres'] = hitchpostgres.PostgresService(
             postgres_package=postgres_package,
             users=[postgres_user, ],
-            databases=[hitchpostgres.PostgresDatabase("clock", postgres_user), ]
+            databases=[hitchpostgres.PostgresDatabase("geomat", postgres_user), ]
         )
 
         self.services['HitchSMTP'] = hitchsmtp.HitchSMTPService(port=1025)
@@ -93,7 +93,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         self.click_and_dont_wait_for_page_load = self.webapp.click_and_dont_wait_for_page_load
 
         # Configure selenium driver
-        self.driver.set_window_size(self.settings['window_size']['width'], self.settings['window_size']['height'])
+        self.driver.set_window_size(self.settings['window_size']['height'], self.settings['window_size']['width'])
         self.driver.set_window_position(0, 0)
         self.driver.implicitly_wait(2.0)
         self.driver.accept_next_alert = True
@@ -109,7 +109,6 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
     def load_website(self):
         """Navigate to website in Firefox."""
         self.driver.get(self.services['Django'].url())
-        self.click("djHideToolBarButton")
 
     def fill_form(self, **kwargs):
         """Fill in a form with id=value."""

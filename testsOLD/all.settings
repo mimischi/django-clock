@@ -7,13 +7,13 @@ pause_on_failure: false
 startup_timeout: 45
 shutdown_timeout: 5
 environment_variables:
-  DATABASE_URL: postgres://clock:password@127.0.0.1:15432/clock
+  DATABASE_URL: postgres://geomat:password@127.0.0.1:15432/geomat
   SECRET_KEY: cj5^uos4tfCdfghjkf5hq$9$(@-79^e9&x$3vyf#igvsfm4d=+
   CELERY_BROKER_URL: redis://localhost:16379
   DJANGO_EMAIL_BACKEND: django.core.mail.backends.smtp.EmailBackend
 window_size:
   width: 1024
-  height: 600
+  height: 768
 python_version: 2.7.10
 environment:
   - approved_platforms:
