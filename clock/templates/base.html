@@ -38,13 +38,7 @@
     </header> <!-- /header -->
     {% endblock header %}
     <div class="container">
-          {% if messages %}
-        <ul class="messages" style="list-style: none;">
-            {% for message in messages %}
-            <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+        {% bootstrap_messages %}
         {% block container %}There is no content in this container!{% endblock container %}
     </div> <!-- /.container -->
   </div> <!-- /#wrap -->
@@ -55,7 +49,7 @@
     </div>
     <div class="container">
       <p class="pull-right"><a href="#">Back to top</a></p>
-      <p>&copy; 2015 Clock &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a> &middot; <a href="#">Status</a></p>
+      <p>&copy; 2016 Clock &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a> &middot; <a href="#">Status</a></p>
     </div> <!-- /.container -->
   </div> <!-- /#footer -->
 

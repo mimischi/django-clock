@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
 from django.views.generic.base import TemplateView
-from django.views.generic.dates import MonthArchiveView, WeekArchiveView
+from django.views.generic.dates import MonthArchiveView, WeekArchiveView, YearArchiveView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
@@ -255,10 +255,12 @@ class ShiftManualDelete(DeleteView):
 
 from django.contrib.auth import get_user_model
 
+
 class ShiftWeekView(WeekArchiveView):
     date_field = "shift_started"
     week_format = "%W"
     allow_future = False
+    template_name = 'work/shift/week_archive_view.html'
 
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
@@ -268,10 +270,19 @@ class ShiftMonthView(MonthArchiveView):
     # queryset = Shift.objects.all()
     date_field = "shift_started"
     allow_future = False
+    template_name = 'work/shift/month_archive_view.html'
 
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
 
+
+class ShiftYearView(YearArchiveView):
+    date_field = "shift_started"
+    allow_future = False
+    template_name = 'work/shift/year_archive_view.html'
+
+    def get_queryset(self):
+        return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
 
 class ContractListView(ListView):
     model = Contract

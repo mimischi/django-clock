@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<h2>{{ year|date:"Y" }}</h2>
+<ul>
+    {% for date in date_list %}
+        <li><a href="{% url 'work:archive_month_numeric' year=date|date:"Y" month=date|date:"m" %}">{{ date|date }}</a></li>
+    {% endfor %}
+</ul>
+
+<p>
+    {% if previous_year %}
+        Previous Year: <a href="{% url 'work:article_year_archive' year=previous_year|date:"Y" %}">{{ previous_year|date:"Y" }}</a>
+    {% endif %}
+    {% if next_year %}
+        Next Year: <a href="{% url 'work:article_year_archive' year=next_year|date:"Y" %}">{{ next_year|date:"Y" }}</a>
+    {% endif %}
+</p>
+{% endblock container %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load format_duration %}
+{% block container %}
+<ul>
+    {% for shift in object_list %}
+        <li>{{ forloop.counter }} - Start: {{ shift.shift_started }} - Ende: {{ shift.shift_finished }} - {{ shift.shift_duration|format_timedelta }}</li>
+    {% endfor %}
+</ul>
+
+<p>
+    {% if previous_month %}
+        Previous Month: <a href="{% url 'work:archive_month_numeric' year=previous_month|date:"Y" month=previous_month|date:"m" %}">{{ previous_month|date:"F Y" }}</a>
+    {% endif %}
+    {% if next_month %}
+        Next Month: <a href="{% url 'work:archive_month_numeric' year=next_month|date:"Y" month=next_month|date:"m" %}">{{ next_month|date:"F Y" }}</a>
+    {% endif %}
+</p>
+{% endblock container %}

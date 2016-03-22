@@ -4,19 +4,25 @@ from __future__ import unicode_literals
 from django.conf.urls import url
 
 from clock.work.views import ShiftListView, ShiftManualCreate, \
-    ShiftManualEdit, ShiftManualDelete
+    ShiftManualEdit, ShiftManualDelete, ShiftYearView
 from clock.work.views import ContractListView, ContractAddView, \
     ContractUpdateView, ContractDeleteView
 
-from clock.work.views import ShiftMonthView, ShiftWeekView
+from clock.work.views import ShiftMonthView, ShiftWeekView, ShiftYearView
 
 urlpatterns = [
-    url(r'^(?P<year>[0-9]{4})/week/(?P<week>[0-9]+)/$',
+    url(r'^shift/(?P<year>[0-9]{4})/week/(?P<week>[0-9]+)/$',
         ShiftWeekView.as_view(),
         name="archive_week"),
-    url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
+    # url(r'^shift/(?P<year>[0-9]{4})/(?P<month>[-\w]+)/$',
+    #     ShiftMonthView.as_view(),
+    #     name="archive_month"),
+    url(r'^shift/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
         ShiftMonthView.as_view(month_format='%m'),
         name="archive_month_numeric"),
+    url(r'^shift/(?P<year>[0-9]{4})/$',
+        ShiftYearView.as_view(),
+        name="article_year_archive"),
 
     # Contract URLs
     # ListView for all contracts of one employee
