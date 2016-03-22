@@ -1,3 +1,4 @@
+from allauth.account.views import LoginView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
@@ -12,7 +13,6 @@ from django.views.generic.dates import MonthArchiveView, WeekArchiveView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-
 from clock.work.forms import ContractForm, ShiftForm, QuickActionForm
 from clock.work.models import Contract, Shift
 from clock.work.utils import get_all_contracts, get_current_shift, \
@@ -26,14 +26,14 @@ def home(request):
     """
     context = {}
 
-    template_to_render = 'pages/home.html'
+    template_to_render = 'frontend/index.html'
 
     if request.user.is_authenticated():
         context['all_contracts'] = get_all_contracts(request.user)
         context['default_contract'] = get_default_contract(request.user)
         context['git_revision_hash'] = GIT_REVISION_HASH
         context['git_commit_timestamp'] = GIT_COMMIT_TIMESTAMP
-        template_to_render = 'pages/dashboard.html'
+        template_to_render = 'backend/index.html'
 
         # Initialize the QuickActionForm
         context['form'] = QuickActionForm(user=request.user)

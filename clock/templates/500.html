@@ -1,12 +1,10 @@
-{% extends "base.html" %}
-{% load django_bootstrap_breadcrumbs %}
+{% extends 'base.html' %}
 
-{% block title %}Server Error{% endblock %}
-
-{% block splashpage %}
-<h1>Ooops!!! 500</h1>
-
-<h3>Looks like something went wrong!</h3>
-
-<p>We track these errors automatically, but if the problem persists feel free to contact us. In the meantime, try refreshing.</p>
-{% endblock splashpage %}
+{% block container %}
+    <div class="row">
+        <div class="col-md-12 text-center error-page">
+          <img src="static/img/500.svg" alt="500 - Server error!" />
+          <h1>Clock resulted in an error!</h1>
+        </div>
+    </div>
+{% endblock container %}

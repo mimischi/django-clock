@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
-{% load i18n %}
-
 {% block container %}
-    <p>{% trans 'Your password is now changed.' %}</p>
+    {% include 'backend/quick_action.html' %}
 {% endblock container %}

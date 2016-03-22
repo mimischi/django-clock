@@ -18,7 +18,6 @@ urlpatterns = [
         ShiftMonthView.as_view(month_format='%m'),
         name="archive_month_numeric"),
 
-
     # Contract URLs
     # ListView for all contracts of one employee
     url(r'^contract/$', ContractListView.as_view(),

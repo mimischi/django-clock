@@ -1,10 +1,10 @@
-{% extends "base.html" %}
-{% load django_bootstrap_breadcrumbs %}
+{% extends 'base.html' %}
 
-{% block title %}Page Not found{% endblock %}
-
-{% block splashpage %}
-<h1>Page Not found</h1>
-
-<p>This is not the page you were looking for.</p>
-{% endblock splashpage %}
+{% block container %}
+    <div class="row">
+        <div class="col-md-12 text-center error-page">
+          <img src="static/img/404.svg" alt="404 - File not found!" />
+          <h1>Clock not found!</h1>
+        </div>
+    </div>
+{% endblock container %}
