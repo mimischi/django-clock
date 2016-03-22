@@ -1,3 +1,4 @@
+
 FROM python:2.7
 ENV PYTHONUNBUFFERED 1
 
@@ -6,8 +7,9 @@ COPY ./requirements /requirements
 RUN pip install -r /requirements/local.txt
 
 COPY ./compose/django/entrypoint.sh /entrypoint.sh
+RUN sed -i 's/\r//' /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-WORKDIR /app/clock
+WORKDIR /app
 
-ENTRYPOINT ["/bin/bash", "-e", "/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
