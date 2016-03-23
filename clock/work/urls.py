@@ -11,30 +11,17 @@ from clock.work.views import ContractListView, ContractAddView, \
 from clock.work.views import ShiftMonthView, ShiftWeekView, ShiftYearView
 
 urlpatterns = [
-    url(r'^shift/(?P<year>[0-9]{4})/week/(?P<week>[0-9]+)/$',
-        ShiftWeekView.as_view(),
-        name="archive_week"),
-    # url(r'^shift/(?P<year>[0-9]{4})/(?P<month>[-\w]+)/$',
-    #     ShiftMonthView.as_view(),
-    #     name="archive_month"),
-    url(r'^shift/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
-        ShiftMonthView.as_view(month_format='%m'),
-        name="archive_month_numeric"),
-    url(r'^shift/(?P<year>[0-9]{4})/$',
-        ShiftYearView.as_view(),
-        name="article_year_archive"),
-
     # Contract URLs
     # ListView for all contracts of one employee
     url(r'^contract/$', ContractListView.as_view(),
         name="contract_list"
         ),
     # CreateView to add a new contract
-    url(r'^contract/add/$',
+    url(r'^contract/new/$',
         ContractAddView.as_view(),
         name='contract_add'),
     # UpdateView to update an existing contract
-    url(r'^contract/(?P<pk>\d+)/update/$',
+    url(r'^contract/(?P<pk>\d+)/edit/$',
         ContractUpdateView.as_view(),
         name='contract_edit'
         ),
@@ -53,12 +40,12 @@ urlpatterns = [
     url(r'^shift/quick_action/$', 'clock.work.views.shift_action',
         name='quick_action'),
     # CreateView to add a new shift
-    url(r'^shift/add/$',
+    url(r'^shift/new/$',
         ShiftManualCreate.as_view(),
         name='shift_add'
         ),
     # UpdateView to update an existing shift
-    url(r'^shift/(?P<pk>\d+)/update/$',
+    url(r'^shift/(?P<pk>\d+)/edit/$',
         ShiftManualEdit.as_view(),
         name='shift_edit'
         ),
@@ -67,4 +54,18 @@ urlpatterns = [
         ShiftManualDelete.as_view(),
         name='shift_delete'
         ),
+
+    # Shift Archive URLs
+    url(r'^shift/archive/(?P<year>[0-9]{4})/week/(?P<week>[0-9]+)/$',
+        ShiftWeekView.as_view(),
+        name="archive_week"),
+    # url(r'^shift/(?P<year>[0-9]{4})/(?P<month>[-\w]+)/$',
+    #     ShiftMonthView.as_view(),
+    #     name="archive_month"),
+    url(r'^shift/archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
+        ShiftMonthView.as_view(month_format='%m'),
+        name="archive_month_numeric"),
+    url(r'^shift/archive/(?P<year>[0-9]{4})/$',
+        ShiftYearView.as_view(),
+        name="article_year_archive"),
     ]
