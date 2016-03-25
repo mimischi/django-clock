@@ -138,6 +138,7 @@ class ShiftForm(forms.ModelForm):
                     "locale": "de",
                     "stepping": 5,
                     "toolbarPlacement": "top",
+                    "calendarWeeks": True
                 }
             ),
             'shift_finished': DateTimePicker(
@@ -146,6 +147,7 @@ class ShiftForm(forms.ModelForm):
                     "locale": "de",
                     "stepping": 5,
                     "toolbarPlacement": "top",
+                    "calendarWeeks": True
                 }
             ),
         }
@@ -166,6 +168,40 @@ class ShiftForm(forms.ModelForm):
             add_input_text = _('Create new shift')
         elif self.initial['view'] == 'shift_update':
             add_input_text = _('Update shift')
+
+            # So if we are updating an already existing entry, we may also set some restrictions on the DateTimePicker
+            # The shift_finished picker can't be set BEFORE the shift_started datetime. Updating either of both
+            # will update the restriction dynamically via JavaScript.
+            self.fields.update({
+                'shift_finished': forms.DateTimeField(
+                    widget=DateTimePicker(
+                        options={
+                            "format": "YYYY-MM-DD HH:mm",
+                            "locale": "de",
+                            "stepping": 5,
+                            "toolbarPlacement": "top",
+                            "calendarWeeks": False,
+                            "minDate": unicode(self.initial['shift_started'].strftime("%Y-%m-%d %H:%M"))
+                        }
+                    ),
+                ),
+                # This one does not seem to work, so we disable it.
+                # Enabling it will set the shift_started field to the same value as the shift_finished..
+                # This seems to be caused by the embedded JavaScript, as the replacement happens after a full page load.
+
+                # 'shift_started': forms.DateTimeField(
+                #     widget=DateTimePicker(
+                #         options={
+                #             "format": "YYYY-MM-DD HH:mm",
+                #             "locale": "de",
+                #             "stepping": 5,
+                #             "toolbarPlacement": "top",
+                #             "calendarWeeks": False,
+                #             "maxDate": unicode(self.initial['shift_finished'].strftime("%Y-%m-%d %H:%M"))
+                #         }
+                #     ),
+                # ),
+            })
 
         self.helper = FormHelper()
         self.helper.form_action = '.'

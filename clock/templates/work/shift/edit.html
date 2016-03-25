@@ -1,6 +1,29 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load staticfiles crispy_forms_tags %}
+
+{% block extra_head %}{{ block.super }}
+  <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'libraries/eonasdan-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'libraries/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}" />
+{% endblock extra_head %}
 
 {% block container %}
 {% crispy form %}
 {% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+    $(function () {
+        $('#id_shift_started_pickers').datetimepicker();
+        $('#id_shift_finished_pickers').datetimepicker({
+            useCurrent: false //Important! See issue #1075
+        });
+        $("#id_shift_started_pickers").on("dp.change", function (e) {
+            $('#id_shift_finished_pickers').data("DateTimePicker").minDate(e.date);
+        });
+        $("#id_shift_finished_pickers").on("dp.change", function (e) {
+            $('#id_shift_started_pickers').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+</script>
+{% endblock extra_js %}
