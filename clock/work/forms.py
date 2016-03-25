@@ -135,7 +135,6 @@ class ShiftForm(forms.ModelForm):
             'shift_started': DateTimePicker(
                 options={
                     "format": "YYYY-MM-DD HH:mm",
-                    "locale": "de",
                     "stepping": 5,
                     "toolbarPlacement": "top",
                     "calendarWeeks": True
@@ -144,7 +143,6 @@ class ShiftForm(forms.ModelForm):
             'shift_finished': DateTimePicker(
                 options={
                     "format": "YYYY-MM-DD HH:mm",
-                    "locale": "de",
                     "stepping": 5,
                     "toolbarPlacement": "top",
                     "calendarWeeks": True
@@ -177,7 +175,6 @@ class ShiftForm(forms.ModelForm):
                     widget=DateTimePicker(
                         options={
                             "format": "YYYY-MM-DD HH:mm",
-                            "locale": "de",
                             "stepping": 5,
                             "toolbarPlacement": "top",
                             "calendarWeeks": False,

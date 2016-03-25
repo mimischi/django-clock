@@ -281,6 +281,9 @@ class ShiftMonthView(MonthArchiveView):
     allow_future = False
     template_name = 'work/shift/month_archive_view.html'
 
+    class Meta:
+        ordering = ["shift_started"]
+
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
 

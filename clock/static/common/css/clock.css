@@ -27,6 +27,11 @@ header {
     padding: 0 0 110px;
 }
 
+.container > h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
 /* Set the fixed height of the footer here */
 #footer {
     background-color: #f5f5f5;
@@ -289,7 +294,11 @@ div.row.featurette p.lead {
 -------------------------------------------------- */
 
 .shift-datepicker {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+}
+
+.shift-datepicker .form-group {
+    margin-bottom: 0;
 }
 
 /* RESPONSIVE CSS
