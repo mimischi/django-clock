@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags i18n bootstrap3 %}
+
+
+{% block container %}
+<form action="" method="post" role="form" class="form">
+    {% csrf_token %}
+    <div class="alert alert-danger">
+        <p>{% trans "Are you sure you want to delete the following shift?" %}</p>
+        <p>{{ object.shift_started }}, {{ object.shift_finished }}, Duration: {{ object.shift_duration }}</p>
+    </div>
+    {% buttons %}
+    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-trash-o"></i>&nbsp; {% trans "Confirm" %}</button>
+    {% endbuttons %}
+</form>{% endblock %}

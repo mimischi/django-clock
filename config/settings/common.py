@@ -177,8 +177,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # STATIC FILE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-#STATIC_ROOT = str(ROOT_DIR('staticfiles'))
-STATIC_ROOT = "/var/www/virtual/mischi/clock.idiotism.us/static/"
+STATIC_ROOT = str(ROOT_DIR('staticfiles'))
+#STATIC_ROOT = "/var/www/virtual/mischi/clock.idiotism.us/static/"
 
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url

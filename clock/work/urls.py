@@ -8,7 +8,7 @@ from clock.work.views import ShiftListView, ShiftManualCreate, \
 from clock.work.views import ContractListView, ContractAddView, \
     ContractUpdateView, ContractDeleteView
 
-from clock.work.views import ShiftMonthView, ShiftWeekView, ShiftYearView
+from clock.work.views import ShiftMonthView, ShiftWeekView, ShiftYearView, ShiftDayView
 
 urlpatterns = [
     # Contract URLs
@@ -56,12 +56,12 @@ urlpatterns = [
         ),
 
     # Shift Archive URLs
+    url(r'^shift/archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
+        ShiftDayView.as_view(),
+        name="archive_day"),
     url(r'^shift/archive/(?P<year>[0-9]{4})/week/(?P<week>[0-9]+)/$',
         ShiftWeekView.as_view(),
         name="archive_week"),
-    # url(r'^shift/(?P<year>[0-9]{4})/(?P<month>[-\w]+)/$',
-    #     ShiftMonthView.as_view(),
-    #     name="archive_month"),
     url(r'^shift/archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
         ShiftMonthView.as_view(month_format='%m'),
         name="archive_month_numeric"),

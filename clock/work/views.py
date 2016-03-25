@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
 from django.views.generic.base import TemplateView
-from django.views.generic.dates import MonthArchiveView, WeekArchiveView, YearArchiveView
+from django.views.generic.dates import DayArchiveView, MonthArchiveView, WeekArchiveView, YearArchiveView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
@@ -254,6 +254,15 @@ class ShiftManualDelete(DeleteView):
         return self._object
 
 from django.contrib.auth import get_user_model
+
+
+class ShiftDayView(DayArchiveView):
+    date_field = "shift_started"
+    allow_future = False
+    template_name= 'work/shift/day_archive_view.html'
+
+    def get_queryset(self):
+        return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
 
 
 class ShiftWeekView(WeekArchiveView):
