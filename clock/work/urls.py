@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from datetime import datetime
+
 from django.conf.urls import url
 
 from clock.work.views import ShiftListView, ShiftManualCreate, \
@@ -9,6 +11,11 @@ from clock.work.views import ContractListView, ContractAddView, \
     ContractUpdateView, ContractDeleteView
 
 from clock.work.views import ShiftMonthView, ShiftWeekView, ShiftYearView, ShiftDayView
+
+# Data to display the current year-month inside the shift_list
+currentDate = datetime.now()
+currentYear = currentDate.strftime("%Y")
+currentMonth = currentDate.strftime("%m")
 
 urlpatterns = [
     # Contract URLs
@@ -33,7 +40,12 @@ urlpatterns = [
 
     # Shift URLs
     # ListView for all finished shifts of one employee
-    url(r'^shift/$', ShiftListView.as_view(),
+    # url(r'^shift/$', ShiftListView.as_view(),
+    #     name="shift_list"
+    #     ),
+
+    # Display the ShiftMonthView as default with the current year-month
+    url(r'^shift/$', ShiftMonthView.as_view(month_format='%m', year=currentYear, month=currentMonth),
         name="shift_list"
         ),
     # View to handle all the quick-actions from the dashboard
