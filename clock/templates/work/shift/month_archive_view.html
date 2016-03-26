@@ -32,6 +32,27 @@
                 </div>
             </div>
         </div>
+        {% if previous_month or next_month %}
+            <div class="col-sm-4">
+                {% if not previous_month %}
+                    <a class="btn btn-default disabled"><span class="fa fa-chevron-left"></span> {{ month|date:"F Y" }}
+                    </a>
+                {% else %}
+                    <a href="{% url 'work:archive_month_numeric' year=previous_month|date:"Y" month=previous_month|date:"m" %}"
+                       class="btn btn-default"><span class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}
+                    </a>
+                {% endif %}
+                {% if not next_month %}
+                    <a class="btn btn-default disabled">{{ month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
+                {% else %}
+                    <a href="{% url 'work:archive_month_numeric' year=next_month|date:"Y" month=next_month|date:"m" %}"
+                       class="btn btn-default">{{ next_month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
+                {% endif %}
+            </div>
+        {% endif %}
+    <div class="col-sm-4">
+        <a href="{% url 'work:shift_add' %}" class="btn btn-primary pull-right"><span class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
+    </div>
     </div>
     <table id="shift_table" class="table table-striped table-bordered display nowrap" cellspacing="0" width="100%">
         <thead>
@@ -93,20 +114,22 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var displayedMonth = false;
+            var monthPicker = $('#monthpicker');
             // Check if the displayed month is equal to the current month. If not, set the default month to the displayed one.
             if ("{{ month|date:"Y-m" }}" != moment().format("YYYY-MM")) {
                 displayedMonth = "{{ month|date:"Y-m" }}";
             }
-            $('#monthpicker').datetimepicker({
+            monthPicker.datetimepicker({
                 'defaultDate': displayedMonth,
                 'allowInputToggle': true,
                 'format': 'MMMM YYYY',
                 'focusOnShow': false,
                 'viewMode': 'months',
+                'enabledDates': [moment().format("YYYY-MM")]
             });
 
             // We want to change the page, when the date inside the picker was changed!
-            $("#monthpicker").on("dp.change", function (e) {
+            monthPicker.on("dp.change", function (e) {
                 // Grab the current date using moment.js
                 var currentDate = moment();
                 // If the displayed date is set, then we are not on the current date. Redirecting is OK!
@@ -119,7 +142,7 @@
                 }
             });
             // Hide the current value, so the placeholder is always shown!
-            $("#monthpicker .form-control").val("");
+            monthPicker.find(".form-control").val("");
 
             // Now the magic with the datatables comes into play.
             $('#shift_table').DataTable({

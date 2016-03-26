@@ -301,6 +301,11 @@ div.row.featurette p.lead {
     margin-bottom: 0;
 }
 
+/* Add margin to the bottom of the top menu, except for the last item! */
+.shift-datepicker .col-sm-4:not(:last-of-type) {
+    margin-bottom: 10px;
+}
+
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 

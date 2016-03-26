@@ -186,18 +186,17 @@ class ShiftForm(forms.ModelForm):
                 # Enabling it will set the shift_started field to the same value as the shift_finished..
                 # This seems to be caused by the embedded JavaScript, as the replacement happens after a full page load.
 
-                # 'shift_started': forms.DateTimeField(
-                #     widget=DateTimePicker(
-                #         options={
-                #             "format": "YYYY-MM-DD HH:mm",
-                #             "locale": "de",
-                #             "stepping": 5,
-                #             "toolbarPlacement": "top",
-                #             "calendarWeeks": False,
-                #             "maxDate": unicode(self.initial['shift_finished'].strftime("%Y-%m-%d %H:%M"))
-                #         }
-                #     ),
-                # ),
+                'shift_started': forms.DateTimeField(
+                    widget=DateTimePicker(
+                        options={
+                            "format": "YYYY-MM-DD HH:mm",
+                            "stepping": 5,
+                            "toolbarPlacement": "top",
+                            "calendarWeeks": False,
+                            # "maxDate": unicode(self.initial['shift_finished'].strftime("%Y-%m-%d %H:%M"))
+                        }
+                    ),
+                ),
             })
 
         self.helper = FormHelper()
