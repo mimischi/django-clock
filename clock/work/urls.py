@@ -10,7 +10,7 @@ from clock.work.views import ShiftListView, ShiftManualCreate, \
 from clock.work.views import ContractListView, ContractAddView, \
     ContractUpdateView, ContractDeleteView
 
-from clock.work.views import ShiftMonthView, ShiftWeekView, ShiftYearView, ShiftDayView
+from clock.work.views import ShiftMonthView, ShiftWeekView, ShiftYearView, ShiftDayView, shift_action
 
 # Data to display the current year-month inside the shift_list
 currentDate = datetime.now()
@@ -49,7 +49,7 @@ urlpatterns = [
         name="shift_list"
         ),
     # View to handle all the quick-actions from the dashboard
-    url(r'^shift/quick_action/$', 'clock.work.views.shift_action',
+    url(r'^shift/quick_action/$', shift_action,
         name='quick_action'),
     # CreateView to add a new shift
     url(r'^shift/new/$',

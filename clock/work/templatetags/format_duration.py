@@ -13,7 +13,7 @@ def format_timedelta(td):
 
 
 @register.filter
-def format_timedelta2(td):
+def format_hhmm(td):
     minutes, seconds = divmod(td.seconds + td.days * 86400, 60)
     hours, minutes = divmod(minutes, 60)
     return '{:02d}:{:02d}'.format(hours, minutes)

@@ -1,15 +1,14 @@
-from allauth.account.views import LoginView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
-from django.views.generic.base import TemplateView
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, WeekArchiveView, YearArchiveView
+from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
@@ -91,15 +90,15 @@ def shift_action(request):
             # Create a new shift, if the data is valid
             # (shouldn't this always be the case..?)
             Shift.objects.create(
-                                        employee=request.user,
-                                        contract=form.cleaned_data['contract'],
-                                        shift_started=timezone.now()
-                                        )
+                employee=request.user,
+                contract=form.cleaned_data['contract'],
+                shift_started=timezone.now()
+            )
         else:
             Shift.objects.create(
-                                        employee=request.user,
-                                        shift_started=timezone.now()
-                                        )
+                employee=request.user,
+                shift_started=timezone.now()
+            )
 
         # Show a success message
         messages.add_message(
@@ -137,32 +136,33 @@ def shift_action(request):
     return redirect('home')
 
 
+class UserObjectOwnerMixin(SingleObjectMixin):
+    """
+    Overrides SingleObjectMixin and checks if the user actually created the requested object.
+    """
+
+    def get_object(self, queryset=None):
+        obj = super(UserObjectOwnerMixin, self).get_object(queryset)
+        if obj.employee != self.request.user:
+            raise Http404
+        return obj
+
+
+@method_decorator(login_required, name="dispatch")
 class ShiftListView(ListView):
     model = Shift
     template_name = 'work/shift/list.html'
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(ShiftListView, self).dispatch(request, *args, **kwargs)
-
     def get_queryset(self):
-        return Shift.objects.filter(
-                                    employee=self.request.user.id,
-                                    shift_finished__isnull=False
-                                    )
+        return Shift.objects.filter(employee=self.request.user.id, shift_finished__isnull=False)
 
 
+@method_decorator(login_required, name="dispatch")
 class ShiftManualCreate(CreateView):
     model = Shift
     form_class = ShiftForm
     success_url = reverse_lazy('work:shift_list')
     template_name = 'work/shift/edit.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(ShiftManualCreate, self).dispatch(
-            request, *args, **kwargs
-        )
 
     def get_initial(self):
         """
@@ -183,24 +183,12 @@ class ShiftManualCreate(CreateView):
         return super(ShiftManualCreate, self).form_valid(form)
 
 
-class ShiftManualEdit(UpdateView):
+@method_decorator(login_required, name="dispatch")
+class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
     model = Shift
     form_class = ShiftForm
     success_url = reverse_lazy('work:shift_list')
     template_name = 'work/shift/edit.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        """
-        Decorate the dispatch method with a login_required decorator.
-        Also check if the requested shift belongs to the
-        authenticated user.
-        """
-        object = self.get_object()
-        if object.employee != self.request.user:
-            raise Http404(_('404 - Shift not found!'))
-
-        return super(ShiftManualEdit, self).dispatch(request, *args, **kwargs)
 
     def get_initial(self):
         """
@@ -213,59 +201,25 @@ class ShiftManualEdit(UpdateView):
             'view': 'shift_update',
         }
 
-    def get_object(self):
-        # it doesn't matter how many times get_object is called per request
-        # it should not do more than one request
-        if not hasattr(self, '_object'):
-            self._object = super(ShiftManualEdit, self).get_object()
-        return self._object
 
-
-class ShiftManualDelete(DeleteView):
+@method_decorator(login_required, name="dispatch")
+class ShiftManualDelete(DeleteView, UserObjectOwnerMixin):
     model = Shift
     success_url = reverse_lazy('work:shift_list')
     template_name = 'work/shift/delete.html'
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        """
-        Decorate the dispatch method with a login_required decorator.
-        Also check if the requested shift belongs to the
-        authenticated user.
-        """
-        object = self.get_object()
-        if object.employee != self.request.user:
-            raise Http404(_('404 - Shift not found!'))
 
-        return super(ShiftManualDelete, self).dispatch(
-                                                        request,
-                                                        *args,
-                                                        **kwargs
-                                                        )
-
-    def get_object(self):
-        # We can also do all user permission checking inside here!
-        # See: http://stackoverflow.com/a/12474135/4791226
-
-
-        # it doesn't matter how many times get_object is called per request
-        # it should not do more than one request
-        if not hasattr(self, '_object'):
-            self._object = super(ShiftManualDelete, self).get_object()
-        return self._object
-
-from django.contrib.auth import get_user_model
-
-
+@method_decorator(login_required, name="dispatch")
 class ShiftDayView(DayArchiveView):
     date_field = "shift_started"
     allow_future = False
-    template_name= 'work/shift/day_archive_view.html'
+    template_name = 'work/shift/day_archive_view.html'
 
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
 
 
+@method_decorator(login_required, name="dispatch")
 class ShiftWeekView(WeekArchiveView):
     date_field = "shift_started"
     week_format = "%W"
@@ -276,8 +230,8 @@ class ShiftWeekView(WeekArchiveView):
         return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
 
 
+@method_decorator(login_required, name="dispatch")
 class ShiftMonthView(MonthArchiveView):
-    # queryset = Shift.objects.all()
     date_field = "shift_started"
     allow_future = False
     template_name = 'work/shift/month_archive_view.html'
@@ -286,9 +240,10 @@ class ShiftMonthView(MonthArchiveView):
         ordering = ["shift_started"]
 
     def get_queryset(self):
-        return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
+        return Shift.objects.filter(employee=self.request.user, shift_finished__isnull=False).order_by('shift_started')
 
 
+@method_decorator(login_required, name="dispatch")
 class ShiftYearView(YearArchiveView):
     date_field = "shift_started"
     allow_future = False
@@ -298,18 +253,16 @@ class ShiftYearView(YearArchiveView):
         return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
 
 
+@method_decorator(login_required, name="dispatch")
 class ContractListView(ListView):
     model = Contract
     template_name = 'work/contract/list.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(ContractListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         return Contract.objects.filter(employee=self.request.user.id)
 
 
+@method_decorator(login_required, name="dispatch")
 class ContractAddView(CreateView):
     model = Contract
     template_name = 'work/contract/edit.html'
@@ -335,7 +288,8 @@ class ContractAddView(CreateView):
         return super(ContractAddView, self).form_valid(form)
 
 
-class ContractUpdateView(UpdateView):
+@method_decorator(login_required, name="dispatch")
+class ContractUpdateView(UpdateView, UserObjectOwnerMixin):
     model = Contract
     template_name = 'work/contract/edit.html'
     form_class = ContractForm
@@ -343,9 +297,8 @@ class ContractUpdateView(UpdateView):
 
     def get_initial(self):
         """
-        Sets initial data for the ModelForm, so we can use the user
-        object and know which view created this form (CreateView in
-        this case)
+        Sets initial data for the ModelForm, so we can use the user object and know which view created this form
+        (CreateView in this case)
         """
         return {
             'user': self.request.user,
@@ -353,7 +306,8 @@ class ContractUpdateView(UpdateView):
         }
 
 
-class ContractDeleteView(DeleteView):
+@method_decorator(login_required, name="dispatch")
+class ContractDeleteView(DeleteView, UserObjectOwnerMixin):
     model = Contract
     success_url = reverse_lazy('work:contract_list')
     template_name = 'work/contract/delete.html'
@@ -363,14 +317,3 @@ class ContractDeleteView(DeleteView):
         Return our own contracts and not those of other employees.
         """
         return self.request.user.contract_set.all()
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        """
-        Decorate the dispatch method with a login_required decorator.
-        """
-        return super(ContractDeleteView, self).dispatch(
-                                                        request,
-                                                        *args,
-                                                        **kwargs
-                                                        )
