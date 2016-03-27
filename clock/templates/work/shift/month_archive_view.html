@@ -68,24 +68,24 @@
         <tr>
             <th></th>
             <th></th>
-            <th>{% trans 'Shift No.' %}</th>
-            <th>{% trans 'Contract' %}</th>
-            <th>{% trans 'Shift started' %}</th>
-            <th>{% trans 'Shift finished' %}</th>
-            <th>{% trans 'Pause duration' %}</th>
-            <th>{% trans 'Shift duration' %}</th>
+            <th class="text-right">{% trans 'Shift No.' %}</th>
+            <th class="text-right">{% trans 'Contract' %}</th>
+            <th class="text-right">{% trans 'Shift started' %}</th>
+            <th class="text-right">{% trans 'Shift finished' %}</th>
+            <th class="text-right">{% trans 'Pause duration' %}</th>
+            <th class="text-right">{% trans 'Shift duration' %}</th>
         </tr>
         </thead>
         <tfoot>
         <tr>
             <th></th>
             <th></th>
-            <th>{% trans 'Shift No.' %}</th>
-            <th>{% trans 'Contract' %}</th>
-            <th>{% trans 'Shift started' %}</th>
-            <th>{% trans 'Shift finished' %}</th>
-            <th>{% trans 'Pause duration' %}</th>
-            <th>{% trans 'Shift duration' %}</th>
+            <th class="text-right">{% trans 'Shift No.' %}</th>
+            <th class="text-right">{% trans 'Contract' %}</th>
+            <th class="text-right">{% trans 'Shift started' %}</th>
+            <th class="text-right">{% trans 'Shift finished' %}</th>
+            <th class="text-right">{% trans 'Pause duration' %}</th>
+            <th class="text-right">{% trans 'Shift duration' %}</th>
         </tr>
         </tfoot>
         <tbody>
@@ -93,12 +93,12 @@
             <tr id="{{ shift.pk }}">
                 <td></td>
                 <td></td>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ shift.contract }}</td>
-                <td>{{ shift.shift_started }}</td>
-                <td>{{ shift.shift_finished }}</td>
-                <td>{{ shift.pause_duration }}</td>
-                <td>{{ shift.shift_duration|format_timedelta }}</td>
+                <td class="text-right">{{ forloop.counter }}</td>
+                <td class="text-right">{{ shift.contract }}</td>
+                <td class="text-right">{{ shift.shift_started }}</td>
+                <td class="text-right">{{ shift.shift_finished }}</td>
+                <td class="text-right">{{ shift.pause_duration|format_timedelta2 }}</td>
+                <td class="text-right">{{ shift.shift_duration|format_timedelta2 }}</td>
             </tr>
         {% endfor %}
         </tbody>
