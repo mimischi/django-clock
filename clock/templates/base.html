@@ -41,10 +41,11 @@
         </header> <!-- /header -->
     {% endblock header %}
     <div class="container">
-        {% bootstrap_messages %}
         {% block breadcrumbs %}
             {% breadcrumb "Home" "/" %}
         {% endblock breadcrumbs %}
+        {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
+        {% bootstrap_messages %}
         {% block container %}There is no content in this container!{% endblock container %}
     </div> <!-- /.container -->
 </div> <!-- /#wrap -->

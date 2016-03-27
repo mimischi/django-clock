@@ -1,4 +1,4 @@
-{% extends 'work/shift/list.html' %}
+{% extends 'work/shift/base.html' %}
 {% load staticfiles i18n django_bootstrap_breadcrumbs format_duration %}
 
 {% block extra_head %}{{ block.super }}
@@ -23,7 +23,6 @@
 {% endblock breadcrumbs %}
 
 {% block container %}
-    {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
     <h2>{% trans 'Shifts in' %} {{ month|date:"F Y" }}</h2>
     <div class="shift-datepicker row">
         <div class='col-sm-4'>
@@ -97,8 +96,8 @@
                 <td class="text-right">{{ shift.contract }}</td>
                 <td class="text-right">{{ shift.shift_started }}</td>
                 <td class="text-right">{{ shift.shift_finished }}</td>
-                <td class="text-right">{{ shift.pause_duration|format_timedelta2 }}</td>
-                <td class="text-right">{{ shift.shift_duration|format_timedelta2 }}</td>
+                <td class="text-right">{{ shift.pause_duration|format_hhmm }}</td>
+                <td class="text-right">{{ shift.shift_duration|format_hhmm }}</td>
             </tr>
         {% endfor %}
         </tbody>

@@ -1,5 +1,5 @@
-{% extends 'work/shift/base.html' %}
-{% load django_bootstrap_breadcrumbs %}
+{% extends 'base.html' %}
+{% load i18n django_bootstrap_breadcrumbs %}
 
 {% block breadcrumbs %}{{ block.super }}
     {% breadcrumb "Shift list" "work:shift_list" %}
