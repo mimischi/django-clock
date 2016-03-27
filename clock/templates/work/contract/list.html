@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load staticfiles i18n django_bootstrap_breadcrumbs crispy_forms_tags %}
+
+{% block extra_head %}{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'libraries/datatables/css/buttons.dataTables.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libraries/datatables/css/datatables.bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/css/clock-datatables.css' %}">
+{% endblock extra_head %}
+
+{% block breadcrumbs %}{{ block.super }}
+    {% breadcrumb "Contracts" "work:contract_list" %}
+{% endblock breadcrumbs %}
+
+{% block container %}
+    {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
+    <table id="shift_table" class="table table-striped table-bordered display nowrap" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th class="text-right">{% trans 'Contract No.' %}</th>
+            <th class="text-right">{% trans 'Contract' %}</th>
+            <th class="text-right">{% trans 'Hours' %}</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th class="text-right">{% trans 'Contract No.' %}</th>
+            <th class="text-right">{% trans 'Contract' %}</th>
+            <th class="text-right">{% trans 'Hours' %}</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        {% for contract in object_list %}
+            <tr id="{{ contract.pk }}">
+                <td></td>
+                <td></td>
+                <td class="text-right">{{ forloop.counter }}</td>
+                <td class="text-right">{{ contract.department }}</td>
+                <td class="text-right">{{ contract.hours }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock container %}
+
+
+{% block extra_js %}
+    <script type="text/javascript" charset="utf8"
+            src="{% static 'libraries/datatables/js/jquery.dataTables.js' %}"></script>
+    <script type="text/javascript" charset="utf8"
+            src="{% static 'libraries/datatables/js/dataTables.bootstrap.js' %}"></script>
+    <script type="text/javascript" charset="utf8"
+            src="{% static 'libraries/datatables/js/dataTables.responsive.min.js' %}"></script>
+    <script type="text/javascript" charset="utf8"
+            src="{% static 'libraries/datatables/js/responsive.bootstrap.min.js' %}"></script>
+    <script type="text/javascript" charset="utf8"
+            src="{% static 'libraries/datatables/js/dataTables.buttons.min.js' %}"></script>
+    <script type="text/javascript" charset="utf8"
+            src="{% static 'libraries/datatables/js/buttons.html5.min.js' %}"></script>
+    <script type="text/javascript" charset="utf8"
+            src="{% static 'libraries/datatables/js/dataTables.select.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Now the magic with the datatables comes into play.
+            $('#shift_table').DataTable({
+                dom: 'Bfrtip',
+                responsive: true,
+                {#        ajax: "static/json/shift_data.json",#}
+                columns: [{ // Responsive control column
+                    data: null,
+                    defaultContent: '',
+                    className: 'control',
+                    orderable: false
+                }, { // Checkbox select column
+                    data: null,
+                    defaultContent: '',
+                    className: 'select-checkbox',
+                    orderable: false
+                }, {
+                    data: "forloop.counter"
+                }, {
+                    data: "contract"
+                }, {
+                    data: "hours"
+                }],
+                columnDefs: [{
+                    responsivePriority: 1,
+                    targets: 3
+                }, {
+                    responsivePriority: 2,
+                    targets: -1
+                }],
+                order: [4, 'desc'],
+                select: {
+                    style: 'os',
+                    selector: 'td.select-checkbox'
+                },
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        });
+
+        $('#shift_table').on('click', 'tbody tr', function (evt) {
+
+            // Handles the functionality around redirecting users to the clicked shift
+
+            // Save element the click is performed on
+            var target = $(evt.target);
+            {#            console.log($(evt.target));#}
+            {#            console.log(target.closest('td').index());#}
+
+            var newPage;
+
+            // Extremely quick-and-dirty method to get the whole click-thing running. There should be a better way!
+            // This basically checks which element was clicked and then redirects to the edit page
+            // The edit page should be /shift/<pk>/edit/
+            // Every element is nested differently, but the <pk> is inside the original table <tr> ID-attribute
+            // The first two cells (the expendable on mobile devices and the checkbox cell) are ignored.
+
+            // If the row has a cell with a class .control and is visible
+            if ($(this).find('td.control:visible').length) {
+                // If clicked cell was not the control cell
+                if (target.closest('td').index() > 1) {
+                    newPage = target.parent().attr('id');
+                    window.location.href = "/contract/" + newPage + "/edit/"
+                }
+                // Another check if we are clicking on the extra info shown on mobile devices!
+            } else if (target.is('td.child')) {
+                newPage = target.parent().prev().attr('id');
+                window.location.href = "/contract/" + newPage + "/edit/"
+            } else if (target.is("li")) {
+                newPage = target.parent().parent().parent().prev().attr('id');
+                window.location.href = "/contract/" + newPage + "/edit/"
+            } else if (target.is('span.dtr-data') || target.is('span.dtr-title')) {
+                newPage = target.parent().parent().parent().parent().prev().attr('id');
+                window.location.href = "/contract/" + newPage + "/edit/"
+                // If .control class is not visible, we're obviously on a bigger screen.
+                // Check if we are clicking on the .select-checkbox td or any other!
+            } else if (target.closest('td').index() > 1) {
+                newPage = target.parent().attr('id');
+                window.location.href = "/contract/" + newPage + "/edit/"
+            }
+        });
+    </script>
+{% endblock extra_js %}

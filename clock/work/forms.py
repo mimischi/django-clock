@@ -40,11 +40,6 @@ class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
         fields = ('department', 'department_short', 'hours',)
-        # widgets = {
-        #     'hours': forms.TextInput(
-        #                             attrs={'type': 'number', 'step': '0.15'}
-        #             )
-        #     }
 
     def __init__(self, *args, **kwargs):
         super(ContractForm, self).__init__(*args, **kwargs)
@@ -52,20 +47,30 @@ class ContractForm(forms.ModelForm):
         # Retrieve current user, supplied by the view
         self.requested_user = self.initial['user']
 
+        delete_html_inject = ""
+
         # Determine if we're creating a new shift or updating an existing one
         if self.initial['view'] == 'contract_create':
             add_input_text = _('Create new contract')
         elif self.initial['view'] == 'contract_update':
             add_input_text = _('Update contract')
+            delete_html_inject = '<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
+            %(delete_translation)s</a>' % {'delete_url': reverse_lazy('work:contract_delete',
+                                                                      kwargs={
+                                                                          'pk': self.instance.pk}),
+                                           'delete_translation': _('DELete')}
 
-        self.helper = FormHelper()
+        cancel_html_inject = '<a href="%(cancel_url)s" class="btn btn-default">%(cancel_translation)s</a>' % \
+                             {'cancel_url': reverse_lazy('work:contract_list'), 'cancel_translation': _('Cancel')}
+
+        self.helper = FormHelper(self)
         self.helper.form_action = '.'
         self.helper.form_method = 'post'
-        self.helper.add_input(
-            Submit('submit',
-                   add_input_text,
-                   css_class='btn btn-primary pull-right')
-        )
+        self.helper.layout.append(FormActions(
+            HTML(cancel_html_inject),
+            Submit('submit', add_input_text, css_class='btn btn-primary pull-right'),
+            HTML(delete_html_inject),
+        ))
 
 
 class ShiftForm(forms.ModelForm):

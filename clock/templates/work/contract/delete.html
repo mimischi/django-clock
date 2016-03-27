@@ -1,0 +1,24 @@
+{% extends 'work/contract/list.html' %}
+{% load crispy_forms_tags i18n bootstrap3 django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}{{ block.super }}
+    {% breadcrumb "Delete contract" "contract_delete" object.pk %}
+{% endblock breadcrumbs %}
+
+
+{% block container %}
+    {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
+    <h2>{% trans 'Delete contract' %}</h2>
+    <form action="" method="post" role="form" class="form">
+        {% csrf_token %}
+        <div class="alert alert-danger">
+            <p>{% trans "Are you sure you want to delete the following contract?" %} <strong>{% trans "All shifts associated with this contract will also be deleted!" %}</strong></p>
+            <p></p>
+            <p>{{ contract.department }}, Hours: {{ contract.hours }}</p>
+        </div>
+        {% buttons %}
+            <button type="submit" class="btn btn-danger pull-right"><i
+                    class="fa fa-trash-o"></i>&nbsp; {% trans "Confirm" %}</button>
+            <a class="btn btn-default pull-right second-button" href="{% url 'work:shift_list' %}">{% trans 'Cancel' %}</a>
+        {% endbuttons %}
+    </form>{% endblock %}

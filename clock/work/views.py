@@ -297,6 +297,7 @@ class ShiftYearView(YearArchiveView):
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
 
+
 class ContractListView(ListView):
     model = Contract
     template_name = 'work/contract/list.html'

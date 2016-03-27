@@ -86,6 +86,6 @@ class WorkingHoursField(IntegerField):
     # This is somehow needed, as otherwise the form will not work correctly!
     def formfield(self, form_class=WorkingHoursFieldForm, **kwargs):
         defaults = {'help_text': _('Please specify your working hours in the format HH:MM \
-                                (eg. 12:15 - meaning 12 hours and 15 minutes)')}
+                                (eg. 12.15 - meaning 12 hours and 15 minutes)')}
         defaults.update(kwargs)
         return form_class(**defaults)
