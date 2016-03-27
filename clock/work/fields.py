@@ -12,6 +12,8 @@ http://charlesleifer.com/blog/writing-custom-field-django/
 and some Google-foo, to understand everything behind it and to make it working
 with Django >=1.8.
 """
+
+
 class WorkingHoursFieldForm(CharField):
     """
     Implementation of a CharField to handle validation of data from WorkingHoursField.
@@ -78,7 +80,7 @@ class WorkingHoursField(IntegerField):
             raise ValidationError('Unable to convert %s to timedelta.' % value)
         return value
 
-    def get_db_prep_value(self, value, connection, prepared):
+    def get_db_prep_value(self, value, connection, prepared=False):
         return value
 
     # This is somehow needed, as otherwise the form will not work correctly!

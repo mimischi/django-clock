@@ -1,32 +1,55 @@
-{% extends 'base.html' %}
-{% load staticfiles crispy_forms_tags %}
+{% extends 'work/shift/list.html' %}
+{% load staticfiles i18n django_bootstrap_breadcrumbs crispy_forms_tags %}
 
 {% block extra_head %}{{ block.super }}
-  <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'libraries/eonasdan-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
-  <link rel="stylesheet" href="{% static 'libraries/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}" />
+    <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'libraries/eonasdan-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libraries/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <link rel="stylesheet"
+          href="{% static 'libraries/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'libraries/bootstrap-select/css/bootstrap-select.min.css' %}">
 {% endblock extra_head %}
 
+{% block breadcrumbs %}{{ block.super }}
+    {% if shift %}
+        {% breadcrumb "Update shift" "work:shift_list" %}
+    {% else %}
+        {% breadcrumb "New shift" "work:shift_list" %}
+    {% endif %}
+{% endblock breadcrumbs %}
+
 {% block container %}
-{% crispy form %}
+    {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
+    <div class="row">
+        <div class="col-md-6">
+            {% if shift %}
+                <h2>{% trans 'Update shift' %} {{ month|date:"F Y" }}</h2>
+            {% else %}
+                <h2>{% trans 'New shift' %}</h2>
+            {% endif %}
+
+            {% crispy form %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block extra_js %}
-<script type="text/javascript">
-    $(function () {
-        var shiftStartedPicker = $("#id_shift_started_pickers");
-        var shiftFinishedPicker = $("#id_shift_finished_pickers");
-        shiftStartedPicker.datetimepicker();
-        shiftFinishedPicker.datetimepicker({
-            useCurrent: false //Important! See issue #1075
+    <script type="text/javascript">
+        $(function () {
+            var shiftStartedPicker = $("#id_shift_started_pickers");
+            var shiftFinishedPicker = $("#id_shift_finished_pickers");
+            shiftStartedPicker.datetimepicker();
+            shiftFinishedPicker.datetimepicker({
+                useCurrent: false //Important! See issue #1075
+            });
+            shiftStartedPicker.on("dp.change", function (e) {
+                shiftFinishedPicker.data("DateTimePicker").minDate(e.date);
+            });
+            {# Lets disable this. Otherwise the user may get confused! #}
+            {#        shiftFinishedPicker.on("dp.change", function (e) {#}
+            {#            shiftStartedPicker.data("DateTimePicker").maxDate(e.date);#}
+            {#        });#}
         });
-        shiftStartedPicker.on("dp.change", function (e) {
-            shiftFinishedPicker.data("DateTimePicker").minDate(e.date);
-        });
-{# Lets disable this. Otherwise the user may get confused! #}
-{#        shiftFinishedPicker.on("dp.change", function (e) {#}
-{#            shiftStartedPicker.data("DateTimePicker").maxDate(e.date);#}
-{#        });#}
-    });
-</script>
+    </script>
 {% endblock extra_js %}

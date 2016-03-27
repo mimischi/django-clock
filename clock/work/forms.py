@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.helper import FormHelper
@@ -84,7 +85,7 @@ class QuickActionForm(forms.Form):
     contract = forms.ModelChoiceField(
         queryset=Contract.objects.none(),
         empty_label=_('None defined')
-        )
+    )
 
     def __init__(self, *args, **kwargs):
         # Retrieve the logged in user, that we provide inside the view
@@ -95,7 +96,6 @@ class QuickActionForm(forms.Form):
 
 
 class ContractForm(forms.ModelForm):
-
     class Meta:
         model = Contract
         fields = ('department', 'department_short', 'hours',)
@@ -121,10 +121,10 @@ class ContractForm(forms.ModelForm):
         self.helper.form_action = '.'
         self.helper.form_method = 'post'
         self.helper.add_input(
-                              Submit('submit',
-                                     add_input_text,
-                                     css_class='btn btn-primary pull-right')
-                              )
+            Submit('submit',
+                   add_input_text,
+                   css_class='btn btn-primary pull-right')
+        )
 
 
 class ShiftForm(forms.ModelForm):
@@ -148,10 +148,21 @@ class ShiftForm(forms.ModelForm):
                     "calendarWeeks": True
                 }
             ),
+            'pause_duration': DateTimePicker(
+                options={
+                    "format": "HH:mm",
+                    "stepping": 5
+                }
+            ),
+            'contract': forms.Select(
+                attrs={
+                    'class': 'selectpicker'
+                }
+            ),
         }
 
     def __init__(self, *args, **kwargs):
-        super(ShiftForm, self).__init__(*args, **kwargs)
+        value = super(ShiftForm, self).__init__(*args, **kwargs)
 
         # Retrieve current user, supplied by the view
         self.requested_user = self.initial['user']
@@ -161,11 +172,19 @@ class ShiftForm(forms.ModelForm):
             employee=self.requested_user
         )
 
+        # Set the delete input to be empty. If we are not on an update page, the button will not be shown!
+        delete_html_inject = ""
+
         # Are we creating a new shift or updating an existing one?
         if self.initial['view'] == 'shift_create':
             add_input_text = _('Create new shift')
         elif self.initial['view'] == 'shift_update':
-            add_input_text = _('Update shift')
+            add_input_text = _('Update')
+            delete_html_inject = '<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
+                                %(delete_translation)s</a>' % {'delete_url': reverse_lazy('work:shift_delete',
+                                                                                          kwargs={
+                                                                                              'pk': self.instance.pk}),
+                                                               'delete_translation': _('DELete')}
 
             # So if we are updating an already existing entry, we may also set some restrictions on the DateTimePicker
             # The shift_finished picker can't be set BEFORE the shift_started datetime. Updating either of both
@@ -199,14 +218,22 @@ class ShiftForm(forms.ModelForm):
                 ),
             })
 
-        self.helper = FormHelper()
+        cancel_html_inject = '<a href="%(cancel_url)s" class="btn btn-default">%(cancel_translation)s</a>' % \
+                             {'cancel_url': reverse_lazy('work:shift_list'), 'cancel_translation': _('Cancel')}
+
+        self.helper = FormHelper(self)
         self.helper.form_action = '.'
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit(
-                                     'submit',
-                                     add_input_text,
-                                     css_class='btn btn-primary pull-right')
-                              )
+        self.helper.layout.append(FormActions(
+            HTML(cancel_html_inject),
+            Submit('submit', add_input_text, css_class='btn btn-primary pull-right'),
+            HTML(delete_html_inject),
+        ))
+
+    def clean_pause_duration(self):
+        pause_duration = self.cleaned_data.get('pause_duration')
+
+        return pause_duration*60
 
     def clean(self):
         cleaned_data = super(ShiftForm, self).clean()
@@ -214,19 +241,23 @@ class ShiftForm(forms.ModelForm):
         employee = self.requested_user
         shift_started = cleaned_data.get('shift_started')
         shift_finished = cleaned_data.get('shift_finished')
+        pause_duration = cleaned_data.get('pause_duration')
 
         # If both values were entered into the form,
         # check if they overlap with any other shifts
         if shift_finished and shift_started:
             check_for_overlaps = self.check_for_overlaps(
-                                    employee,
-                                    shift_started,
-                                    shift_finished
-                                )
+                employee,
+                shift_started,
+                shift_finished
+            )
             if check_for_overlaps:
                 raise ValidationError(
                     _('Your selected starting/finishing time overlaps with at least one\
                      finished shift of yours. Please adjust the times.'))
+
+            if (shift_finished - shift_started) < pause_duration:
+                raise ValidationError(_('A pause may not be longer than your actual shift.'))
 
         return cleaned_data
 
@@ -240,10 +271,10 @@ class ShiftForm(forms.ModelForm):
         Quick reference: (StartA <= EndB)  and  (EndA >= StartB)
         """
         shifts = Shift.objects.filter(
-                                      employee=employee,
-                                      shift_started__lte=shift_finished,
-                                      shift_finished__gte=shift_started
-                                      )
+            employee=employee,
+            shift_started__lte=shift_finished,
+            shift_finished__gte=shift_started
+        )
 
         # Check if the retrieved shifts contain the shift we're trying to update. If yes: pass.
         for shift in shifts:

@@ -1,15 +1,23 @@
-{% extends 'base.html' %}
-{% load crispy_forms_tags i18n bootstrap3 %}
+{% extends 'work/shift/list.html' %}
+{% load crispy_forms_tags i18n bootstrap3 django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}{{ block.super }}
+    {% breadcrumb "Delete shift" "shift_delete" object.pk %}
+{% endblock breadcrumbs %}
 
 
 {% block container %}
-<form action="" method="post" role="form" class="form">
-    {% csrf_token %}
-    <div class="alert alert-danger">
-        <p>{% trans "Are you sure you want to delete the following shift?" %}</p>
-        <p>{{ object.shift_started }}, {{ object.shift_finished }}, Duration: {{ object.shift_duration }}</p>
-    </div>
-    {% buttons %}
-    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-trash-o"></i>&nbsp; {% trans "Confirm" %}</button>
-    {% endbuttons %}
-</form>{% endblock %}
+    {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
+    <h2>{% trans 'Delete shift' %}</h2>
+    <form action="" method="post" role="form" class="form">
+        {% csrf_token %}
+        <div class="alert alert-danger">
+            <p>{% trans "Are you sure you want to delete the following shift?" %}</p>
+            <p>{{ object.shift_started }}, {{ object.shift_finished }}, Duration: {{ object.shift_duration }}</p>
+        </div>
+        {% buttons %}
+            <button type="submit" class="btn btn-danger pull-right"><i
+                    class="fa fa-trash-o"></i>&nbsp; {% trans "Confirm" %}</button>
+            <a class="btn btn-default pull-right second-button" href="{% url 'work:shift_list' %}">{% trans 'Cancel' %}</a>
+        {% endbuttons %}
+    </form>{% endblock %}

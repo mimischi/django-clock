@@ -20,6 +20,7 @@ from clock.work.utils import get_all_contracts, get_current_shift, \
 
 from config.settings.common import GIT_STATUS, GIT_REVISION_HASH, GIT_COMMIT_TIMESTAMP
 
+
 def home(request):
     """
     Just render the home screen.

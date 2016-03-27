@@ -1,5 +1,5 @@
-{% extends 'base.html' %}
-{% load staticfiles i18n format_duration %}
+{% extends 'work/shift/list.html' %}
+{% load staticfiles i18n django_bootstrap_breadcrumbs format_duration %}
 
 {% block extra_head %}{{ block.super }}
     <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
@@ -18,7 +18,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'common/css/clock-datatables.css' %}">
 {% endblock extra_head %}
 
+{% block breadcrumbs %}{{ block.super }}
+    {% breadcrumb month|date:"F Y" "shift_list" %}
+{% endblock breadcrumbs %}
+
 {% block container %}
+    {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
     <h2>{% trans 'Shifts in' %} {{ month|date:"F Y" }}</h2>
     <div class="shift-datepicker row">
         <div class='col-sm-4'>
@@ -49,8 +54,12 @@
                        class="btn btn-default">{{ next_month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
                 {% endif %}
             </div>
+            <div class="col-sm-4">
+
+            {% else %}
+                <div class="col-sm-8">
+
         {% endif %}
-    <div class="col-sm-4">
         <a href="{% url 'work:shift_add' %}" class="btn btn-primary pull-right"><span class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
     </div>
     </div>
