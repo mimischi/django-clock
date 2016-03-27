@@ -7,9 +7,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic import RedirectView, TemplateView
+from django.views import defaults
+
+from clock.work import views
 
 urlpatterns = [
-    url(r'^$', 'clock.work.views.home', name='home'),
+    url(r'^$', views.home, name='home'),
     url(
         r'^favicon.ico$',
         RedirectView.as_view(
@@ -38,10 +41,10 @@ if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
     # these url in browser to see how these error pages look like.
     urlpatterns += [
-        url(r'^400/$', 'django.views.defaults.bad_request'),
-        url(r'^403/$', 'django.views.defaults.permission_denied'),
-        url(r'^404/$', 'django.views.defaults.page_not_found'),
-        url(r'^500/$', 'django.views.defaults.server_error'),
+        url(r'^400/$', defaults.bad_request),
+        url(r'^403/$', defaults.permission_denied),
+        url(r'^404/$', defaults.page_not_found),
+        url(r'^500/$', defaults.server_error),
     ]
 
 if 'rosetta' in settings.INSTALLED_APPS:

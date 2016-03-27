@@ -1,9 +1,10 @@
 # Bleeding edge Django
-django==1.8.11  # rq.filter: >=1.8,<1.9
+django==1.9.4  # rq.filter: >=1.8,<1.9
 
 # Configuration
 django-environ==0.4.0
 django-secure==1.0.1
+whitenoise==2.0.6
 
 # Forms
 django-braces==1.8.1
@@ -36,11 +37,9 @@ redis>=2.10.0
 
 
 # Your custom requirements go here
-django-appconf==1.0.1
 django-bootstrap-breadcrumbs
 django-bootstrap3==7.0.0
 django-bootstrap3-datetimepicker-2==2.4.2
-django-bootstrap-form==3.2
 #requests==2.9.1
 #six==1.10.0
 #wheel==0.29.0
