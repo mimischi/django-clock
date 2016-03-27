@@ -25,4 +25,3 @@ maildump==0.5.3
 
 # Own stuff
 django-rosetta=0.7.10
-goslate
