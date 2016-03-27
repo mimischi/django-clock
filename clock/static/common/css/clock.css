@@ -27,7 +27,7 @@ header {
     padding: 0 0 110px;
 }
 
-.container > h2 {
+.container > .row h2 {
     margin-top: 0;
     margin-bottom: 20px;
 }
@@ -304,6 +304,10 @@ div.row.featurette p.lead {
 /* Add margin to the bottom of the top menu, except for the last item! */
 .shift-datepicker .col-sm-4:not(:last-of-type) {
     margin-bottom: 10px;
+}
+
+.second-button {
+    margin: 0 10px;
 }
 
 /* RESPONSIVE CSS
