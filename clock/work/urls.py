@@ -26,7 +26,7 @@ urlpatterns = [
     # CreateView to add a new contract
     url(r'^contract/new/$',
         ContractAddView.as_view(),
-        name='contract_add'),
+        name='contract_new'),
     # UpdateView to update an existing contract
     url(r'^contract/(?P<pk>\d+)/edit/$',
         ContractUpdateView.as_view(),
@@ -54,7 +54,7 @@ urlpatterns = [
     # CreateView to add a new shift
     url(r'^shift/new/$',
         ShiftManualCreate.as_view(),
-        name='shift_add'
+        name='shift_new'
         ),
     # UpdateView to update an existing shift
     url(r'^shift/(?P<pk>\d+)/edit/$',

@@ -27,7 +27,13 @@ class WorkingHoursFieldForm(CharField):
         value = super(CharField, self).clean(value)
 
         # Split submitted duration into list
-        hour_value = value.split('.')
+        try:
+            hour_value = value.split('.')
+        except ValueError:
+            try:
+                hour_value = value.split(':')
+            except ValueError:
+                raise ValidationError(_('Working hours entered must be in format HH.MM'))
 
         # If list does not have two values, let us do some more validation
         if len(hour_value) != 2:
@@ -73,7 +79,10 @@ class WorkingHoursField(IntegerField):
             return value
         # Split into two values and return the duration in minutes!
         if isinstance(value, basestring):
-            hours, minutes = map(int, value.split('.'))
+            try:
+                hours, minutes = map(int, value.split('.'))
+            except ValueError:
+                raise ValidationError(_('Working hours entered must be in format HH.MM'))
             return (hours * 60) + minutes
         # I do not know if this is really relevant here?
         elif not isinstance(value, datetime.timedelta):

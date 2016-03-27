@@ -293,16 +293,16 @@ div.row.featurette p.lead {
 /* Shift Datepicker
 -------------------------------------------------- */
 
-.shift-datepicker {
+.objectList-topbar {
     margin-bottom: 10px;
 }
 
-.shift-datepicker .form-group {
+.objectList-topbar .form-group {
     margin-bottom: 0;
 }
 
 /* Add margin to the bottom of the top menu, except for the last item! */
-.shift-datepicker .col-sm-4:not(:last-of-type) {
+.objectList-topbar .col-sm-4:not(:last-of-type) {
     margin-bottom: 10px;
 }
 

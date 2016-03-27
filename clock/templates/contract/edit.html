@@ -1,0 +1,32 @@
+{% extends 'contract/base.html' %}
+{% load staticfiles i18n django_bootstrap_breadcrumbs crispy_forms_tags %}
+
+{# May be used if we figure out how to use the datetimepicker widget with more than 24 hour intervals! #}
+{#{% block extra_head %}{{ block.super }}#}
+{#    <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>#}
+{#    <script type="text/javascript"#}
+{#            src="{% static 'libraries/eonasdan-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>#}
+{#    <link rel="stylesheet"#}
+{#          href="{% static 'libraries/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}"/>#}
+{#{% endblock extra_head %}#}
+
+{% block breadcrumbs %}{{ block.super }}
+    {% if contract %}
+        {% breadcrumb "Update contract" "work:contract_edit" contract.pk %}
+    {% else %}
+        {% breadcrumb "New contract" "work:contract_new" %}
+    {% endif %}
+{% endblock breadcrumbs %}
+
+{% block container %}
+    <div class="row">
+        <div class="col-sm-6">
+            {% if contract %}
+                <h2>{% trans 'Update contract' %}</h2>
+            {% else %}
+                <h2>{% trans 'New contract' %}</h2>
+            {% endif %}
+            {% crispy form %}
+        </div>
+    </div>
+{% endblock container %}

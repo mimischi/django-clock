@@ -151,7 +151,7 @@ class UserObjectOwnerMixin(SingleObjectMixin):
 @method_decorator(login_required, name="dispatch")
 class ShiftListView(ListView):
     model = Shift
-    template_name = 'work/shift/list.html'
+    template_name = 'shift/list.html'
 
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user.id, shift_finished__isnull=False)
@@ -162,7 +162,7 @@ class ShiftManualCreate(CreateView):
     model = Shift
     form_class = ShiftForm
     success_url = reverse_lazy('work:shift_list')
-    template_name = 'work/shift/edit.html'
+    template_name = 'shift/edit.html'
 
     def get_initial(self):
         """
@@ -188,7 +188,7 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
     model = Shift
     form_class = ShiftForm
     success_url = reverse_lazy('work:shift_list')
-    template_name = 'work/shift/edit.html'
+    template_name = 'shift/edit.html'
 
     def get_initial(self):
         """
@@ -206,14 +206,14 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
 class ShiftManualDelete(DeleteView, UserObjectOwnerMixin):
     model = Shift
     success_url = reverse_lazy('work:shift_list')
-    template_name = 'work/shift/delete.html'
+    template_name = 'shift/delete.html'
 
 
 @method_decorator(login_required, name="dispatch")
 class ShiftDayView(DayArchiveView):
     date_field = "shift_started"
     allow_future = False
-    template_name = 'work/shift/day_archive_view.html'
+    template_name = 'shift/day_archive_view.html'
 
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
@@ -224,7 +224,7 @@ class ShiftWeekView(WeekArchiveView):
     date_field = "shift_started"
     week_format = "%W"
     allow_future = False
-    template_name = 'work/shift/week_archive_view.html'
+    template_name = 'shift/week_archive_view.html'
 
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
@@ -234,7 +234,7 @@ class ShiftWeekView(WeekArchiveView):
 class ShiftMonthView(MonthArchiveView):
     date_field = "shift_started"
     allow_future = False
-    template_name = 'work/shift/month_archive_view.html'
+    template_name = 'shift/month_archive_view.html'
 
     class Meta:
         ordering = ["shift_started"]
@@ -247,7 +247,7 @@ class ShiftMonthView(MonthArchiveView):
 class ShiftYearView(YearArchiveView):
     date_field = "shift_started"
     allow_future = False
-    template_name = 'work/shift/year_archive_view.html'
+    template_name = 'shift/year_archive_view.html'
 
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
@@ -256,7 +256,7 @@ class ShiftYearView(YearArchiveView):
 @method_decorator(login_required, name="dispatch")
 class ContractListView(ListView):
     model = Contract
-    template_name = 'work/contract/list.html'
+    template_name = 'contract/list.html'
 
     def get_queryset(self):
         return Contract.objects.filter(employee=self.request.user.id)
@@ -265,7 +265,7 @@ class ContractListView(ListView):
 @method_decorator(login_required, name="dispatch")
 class ContractAddView(CreateView):
     model = Contract
-    template_name = 'work/contract/edit.html'
+    template_name = 'contract/edit.html'
     form_class = ContractForm
     success_url = reverse_lazy('work:contract_list')
 
@@ -291,7 +291,7 @@ class ContractAddView(CreateView):
 @method_decorator(login_required, name="dispatch")
 class ContractUpdateView(UpdateView, UserObjectOwnerMixin):
     model = Contract
-    template_name = 'work/contract/edit.html'
+    template_name = 'contract/edit.html'
     form_class = ContractForm
     success_url = reverse_lazy('work:contract_list')
 
@@ -310,7 +310,7 @@ class ContractUpdateView(UpdateView, UserObjectOwnerMixin):
 class ContractDeleteView(DeleteView, UserObjectOwnerMixin):
     model = Contract
     success_url = reverse_lazy('work:contract_list')
-    template_name = 'work/contract/delete.html'
+    template_name = 'contract/delete.html'
 
     def get_queryset(self):
         """

@@ -1,4 +1,4 @@
-{% extends 'work/shift/base.html' %}
+{% extends 'shift/base.html' %}
 {% load staticfiles i18n django_bootstrap_breadcrumbs crispy_forms_tags %}
 
 {% block extra_head %}{{ block.super }}
@@ -15,7 +15,7 @@
     {% if shift %}
         {% breadcrumb "Update shift" "work:shift_edit" object.pk %}
     {% else %}
-        {% breadcrumb "New shift" "work:shift_add" %}
+        {% breadcrumb "New shift" "work:shift_new" %}
     {% endif %}
 {% endblock breadcrumbs %}
 

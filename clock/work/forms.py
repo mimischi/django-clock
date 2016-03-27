@@ -94,6 +94,17 @@ class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
         fields = ('department', 'department_short', 'hours',)
+        # This could be used to select working hours with a widget. Right now it does not support values above 24 hours
+        # widgets = {
+        #     'hours': DateTimePicker(
+        #         options={
+        #             "format": "HH.mm",
+        #             "stepping": 10,
+        #             "toolbarPlacement": "top",
+        #             "maxDate": 80,
+        #         }
+        #     ),
+        # }
 
     def __init__(self, *args, **kwargs):
         super(ContractForm, self).__init__(*args, **kwargs)
