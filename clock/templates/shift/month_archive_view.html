@@ -42,14 +42,14 @@
                 <a class="btn btn-default disabled"><span class="fa fa-chevron-left"></span> {{ month|date:"F Y" }}
                 </a>
             {% else %}
-                <a href="{% url 'work:archive_month_numeric' year=previous_month|date:"Y" month=previous_month|date:"m" %}"
+                <a href="{% url 'shift:archive_month_numeric' year=previous_month|date:"Y" month=previous_month|date:"m" %}"
                    class="btn btn-default"><span class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}
                 </a>
             {% endif %}
             {% if not next_month %}
                 <a class="btn btn-default disabled">{{ month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
             {% else %}
-                <a href="{% url 'work:archive_month_numeric' year=next_month|date:"Y" month=next_month|date:"m" %}"
+                <a href="{% url 'shift:archive_month_numeric' year=next_month|date:"Y" month=next_month|date:"m" %}"
                    class="btn btn-default">{{ next_month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
             {% endif %}
         </div>
@@ -59,7 +59,7 @@
         <div class="col-sm-8">
 
     {% endif %}
-<a href="{% url 'work:shift_new' %}" class="btn btn-primary pull-right"><span
+<a href="{% url 'shift:new' %}" class="btn btn-primary pull-right"><span
         class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
 </div>
 </div>

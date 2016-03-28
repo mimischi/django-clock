@@ -4,17 +4,17 @@
 {% block container %}
 <ul>
     {% for shift in object_list %}
-        <li><a href="{% url 'work:shift_edit' pk=shift.pk %}">{{ forloop.counter }} - Start: {{ shift.shift_started }} - Ende: {{ shift.shift_finished }} - {{ shift.shift_duration|format_timedelta }}</a></li>
+        <li><a href="{% url 'shift:edit' pk=shift.pk %}">{{ forloop.counter }} - Start: {{ shift.shift_started }} - Ende: {{ shift.shift_finished }} - {{ shift.shift_duration|format_timedelta }}</a></li>
     {% endfor %}
 </ul>
 
 <p>
     {% if previous_week %}
-        Previous Week: <a href="{% url 'work:archive_week' year=previous_week|date:"Y" week=previous_week|format_week %}">{{ previous_week|format_week }} of year {{ previous_week|date:"Y" }}</a>
+        Previous Week: <a href="{% url 'shift:archive_week' year=previous_week|date:"Y" week=previous_week|format_week %}">{{ previous_week|format_week }} of year {{ previous_week|date:"Y" }}</a>
     {% endif %}
     {% if previous_week and next_week %}--{% endif %}
     {% if next_week %}
-        Next week: <a href="{% url 'work:archive_week' year=next_week|date:"Y" week=next_week|format_week %}">{{ next_week|format_week }} of year {{ next_week|date:"Y" }}</a>
+        Next week: <a href="{% url 'shift:archive_week' year=next_week|date:"Y" week=next_week|format_week %}">{{ next_week|format_week }} of year {{ next_week|date:"Y" }}</a>
     {% endif %}
 </p>
 {% endblock container %}

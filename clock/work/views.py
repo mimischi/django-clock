@@ -161,7 +161,7 @@ class ShiftListView(ListView):
 class ShiftManualCreate(CreateView):
     model = Shift
     form_class = ShiftForm
-    success_url = reverse_lazy('work:shift_list')
+    success_url = reverse_lazy('shift:list')
     template_name = 'shift/edit.html'
 
     def get_initial(self):
@@ -187,7 +187,7 @@ class ShiftManualCreate(CreateView):
 class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
     model = Shift
     form_class = ShiftForm
-    success_url = reverse_lazy('work:shift_list')
+    success_url = reverse_lazy('shift:list')
     template_name = 'shift/edit.html'
 
     def get_initial(self):
@@ -205,7 +205,7 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
 @method_decorator(login_required, name="dispatch")
 class ShiftManualDelete(DeleteView, UserObjectOwnerMixin):
     model = Shift
-    success_url = reverse_lazy('work:shift_list')
+    success_url = reverse_lazy('shift:list')
     template_name = 'shift/delete.html'
 
 
@@ -267,7 +267,7 @@ class ContractAddView(CreateView):
     model = Contract
     template_name = 'contract/edit.html'
     form_class = ContractForm
-    success_url = reverse_lazy('work:contract_list')
+    success_url = reverse_lazy('contract:list')
 
     def get_initial(self):
         """
@@ -293,7 +293,7 @@ class ContractUpdateView(UpdateView, UserObjectOwnerMixin):
     model = Contract
     template_name = 'contract/edit.html'
     form_class = ContractForm
-    success_url = reverse_lazy('work:contract_list')
+    success_url = reverse_lazy('contract:list')
 
     def get_initial(self):
         """
@@ -309,7 +309,7 @@ class ContractUpdateView(UpdateView, UserObjectOwnerMixin):
 @method_decorator(login_required, name="dispatch")
 class ContractDeleteView(DeleteView, UserObjectOwnerMixin):
     model = Contract
-    success_url = reverse_lazy('work:contract_list')
+    success_url = reverse_lazy('contract:list')
     template_name = 'contract/delete.html'
 
     def get_queryset(self):

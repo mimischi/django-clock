@@ -51,7 +51,9 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     'clock.users',  # custom users app
     # Your stuff: custom apps go here
-    'clock.work',
+    'clock.pages',
+    'clock.shifts',
+    'clock.contracts',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -296,5 +298,5 @@ GIT_REVISION_HASH = subprocess.check_output(['git', 'rev-parse', '--short', 'HEA
 GIT_COMMIT_TIMESTAMP = subprocess.check_output(['git', 'show', '-s', '--format=%ci'])
 
 ACCOUNT_FORMS = {
-    'login': 'clock.work.forms.ClockLoginForm'
+    'login': 'clock.pages.forms.ClockLoginForm'
 }

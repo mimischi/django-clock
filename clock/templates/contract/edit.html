@@ -14,9 +14,9 @@
 
 {% block breadcrumbs %}{{ block.super }}
     {% if contract %}
-        {% breadcrumb "Update contract" "work:contract_edit" contract.pk %}
+        {% breadcrumb "Update contract" "contract:edit" contract.pk %}
     {% else %}
-        {% breadcrumb "New contract" "work:contract_new" %}
+        {% breadcrumb "New contract" "contract:new" %}
     {% endif %}
 {% endblock breadcrumbs %}
 

@@ -1,7 +1,7 @@
 {% load i18n crispy_forms_tags %}
     <div class="row">
         <div class="col-md-6 col-md-offset-3 text-center">
-            <form id="post-form" action="{% url 'work:quick_action' %}" method="post">
+            <form id="post-form" action="{% url 'shift:quick_action' %}" method="post">
                 {% csrf_token %}
                 {% if shift_closed and shift_paused %}
                     <button class="btn btn-app" type="submit" name="_pause"><i class="fa fa-play-circle fa-3x"></i>{% trans "Resume" %}</button>

@@ -4,17 +4,17 @@
 {% block container %}
 <ul>
     {% for shift in object_list %}
-        <li><a href="{% url 'work:shift_edit' pk=shift.pk %}">{{ forloop.counter }} - Start: {{ shift.shift_started }} - Ende: {{ shift.shift_finished }} - {{ shift.shift_duration|format_timedelta }}</a></li>
+        <li><a href="{% url 'shift:edit' pk=shift.pk %}">{{ forloop.counter }} - Start: {{ shift.shift_started }} - Ende: {{ shift.shift_finished }} - {{ shift.shift_duration|format_timedelta }}</a></li>
     {% endfor %}
 </ul>
 
 <p>
     {% if previous_day %}
-        Previous day: <a href="{% url 'work:archive_day' year=previous_day|date:"Y" day=previous_day|format_day %}">{{ previous_day|format_day }} of year {{ previous_day|date:"Y" }}</a>
+        Previous day: <a href="{% url 'shift:archive_day' year=previous_day|date:"Y" day=previous_day|format_day %}">{{ previous_day|format_day }} of year {{ previous_day|date:"Y" }}</a>
     {% endif %}
     {% if previous_day and next_day %}--{% endif %}
     {% if next_day %}
-        Next day: <a href="{% url 'work:archive_day' year=next_day|date:"Y" day=next_day|format_day %}">{{ next_day|format_day }} of year {{ next_day|date:"Y" }}</a>
+        Next day: <a href="{% url 'shift:archive_day' year=next_day|date:"Y" day=next_day|format_day %}">{{ next_day|format_day }} of year {{ next_day|date:"Y" }}</a>
     {% endif %}
 </p>
 {% endblock container %}

@@ -120,13 +120,13 @@ class ContractForm(forms.ModelForm):
         elif self.initial['view'] == 'contract_update':
             add_input_text = _('Update contract')
             delete_html_inject = '<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
-            %(delete_translation)s</a>' % {'delete_url': reverse_lazy('work:contract_delete',
+            %(delete_translation)s</a>' % {'delete_url': reverse_lazy('contract:delete',
                                                                       kwargs={
                                                                           'pk': self.instance.pk}),
                                            'delete_translation': _('DELete')}
 
         cancel_html_inject = '<a href="%(cancel_url)s" class="btn btn-default">%(cancel_translation)s</a>' % \
-                             {'cancel_url': reverse_lazy('work:contract_list'), 'cancel_translation': _('Cancel')}
+                             {'cancel_url': reverse_lazy('contract:list'), 'cancel_translation': _('Cancel')}
 
         self.helper = FormHelper(self)
         self.helper.form_action = '.'
@@ -192,7 +192,7 @@ class ShiftForm(forms.ModelForm):
         elif self.initial['view'] == 'shift_update':
             add_input_text = _('Update')
             delete_html_inject = '<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
-                                %(delete_translation)s</a>' % {'delete_url': reverse_lazy('work:shift_delete',
+                                %(delete_translation)s</a>' % {'delete_url': reverse_lazy('shift:delete',
                                                                                           kwargs={
                                                                                               'pk': self.instance.pk}),
                                                                'delete_translation': _('DELete')}
@@ -230,7 +230,7 @@ class ShiftForm(forms.ModelForm):
             })
 
         cancel_html_inject = '<a href="%(cancel_url)s" class="btn btn-default">%(cancel_translation)s</a>' % \
-                             {'cancel_url': reverse_lazy('work:shift_list'), 'cancel_translation': _('Cancel')}
+                             {'cancel_url': reverse_lazy('shift:list'), 'cancel_translation': _('Cancel')}
 
         self.helper = FormHelper(self)
         self.helper.form_action = '.'

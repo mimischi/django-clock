@@ -13,9 +13,9 @@
 
 {% block breadcrumbs %}{{ block.super }}
     {% if shift %}
-        {% breadcrumb "Update shift" "work:shift_edit" object.pk %}
+        {% breadcrumb "Update shift" "shift:edit" object.pk %}
     {% else %}
-        {% breadcrumb "New shift" "work:shift_new" %}
+        {% breadcrumb "New shift" "shift:new" %}
     {% endif %}
 {% endblock breadcrumbs %}
 
