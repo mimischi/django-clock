@@ -290,6 +290,17 @@ div.row.featurette p.lead {
     font-weight: 600;
 }
 
+/* Account settings
+-------------------------------------------------- */
+
+#add-mail {
+    margin-top: 20px;
+}
+
+#change-mail {
+
+}
+
 /* Shift Datepicker
 -------------------------------------------------- */
 

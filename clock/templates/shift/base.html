@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load i18n django_bootstrap_breadcrumbs %}
 
+{% block extra_title %}{% trans 'Shifts' %}{% endblock extra_title %}
+
 {% block breadcrumbs %}{{ block.super }}
     {% breadcrumb "Shift list" "work:shift_list" %}
 {% endblock breadcrumbs %}

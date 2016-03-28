@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="{% static 'common/images/favicon.ico' %}">
 
-    <title>Clock | Goethe-Universität</title>
+    <title>{% block title %}Clock | {% endblock title %}{% block extra_title %}Goethe-Universität{% endblock extra_title %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'libraries/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">

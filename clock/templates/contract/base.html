@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load i18n django_bootstrap_breadcrumbs %}
 
+{% block extra_title %}{% trans 'Contracts' %}{% endblock extra_title %}
+
 {% block breadcrumbs %}{{ block.super }}
     {% breadcrumb "Contracts" "work:contract_list" %}
 {% endblock breadcrumbs %}

@@ -10,7 +10,7 @@ urlpatterns = [
     url(
         regex=r'^$',
         view=views.UserListView.as_view(),
-        name='list'
+        name='account_view'
     ),
 
     # URL pattern for the UserRedirectView

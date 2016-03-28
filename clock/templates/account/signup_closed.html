@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-{% load i18n crispy_forms_tags %}
+{% load i18n crispy_forms_tags django_bootstrap_breadcrumbs %}
 
-{% block container%}
+{% block breadcrumbs %}{{ block.super }}
+    {% breadcrumb "Signup" "account_signup" %}
+{% endblock breadcrumbs %}
+
+{% block container %}
     <div class="row">
         <div class="col-md-7">
-            <div class="container"><p>{% trans "We are sorry, but the sign up is currently closed." %}</p>{% endblock %}
+            <h2>{% trans 'Signup closed' %}</h2>
+            <div class="container"><p>{% trans "We are sorry, but the sign up is currently closed." %}</p>
         </div>
     </div>
-
-<div class="container">
-<p class="login-box-msg"></p>
-
-</div>
 {% endblock container %}

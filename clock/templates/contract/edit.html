@@ -1,6 +1,8 @@
 {% extends 'contract/base.html' %}
 {% load staticfiles i18n django_bootstrap_breadcrumbs crispy_forms_tags %}
 
+{% block extra_title %}{% trans 'Edit contract' %}{% endblock extra_title %}
+
 {# May be used if we figure out how to use the datetimepicker widget with more than 24 hour intervals! #}
 {#{% block extra_head %}{{ block.super }}#}
 {#    <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>#}

@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
-{% load i18n crispy_forms_tags %}
+{% load i18n crispy_forms_tags django_bootstrap_breadcrumbs %}
+
+{% block extra_title %}{% trans 'Logout' %}{% endblock extra_title %}
+
+{% block breadcrumbs %}{{ block.super }}
+    {% breadcrumb "Logout" "account_logout" %}
+{% endblock breadcrumbs %}
 
 {% block container %}
     <div class="row">
         <div class="col-md-12">
+            <h2>{% trans 'Logout' %}</h2>
             <p>{% trans 'Are you sure you want to sign out?' %}</p>
-
             <form method="post" action="{% url 'account_logout' %}">
               {% csrf_token %}
               {% if redirect_field_value %}

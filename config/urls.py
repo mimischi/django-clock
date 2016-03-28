@@ -28,11 +28,12 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     # User management
-    url(r'^users/', include("clock.users.urls", namespace="users")),
+    url(r'^accounts/', include("clock.account.urls", namespace="account")),
     url(r'^accounts/', include('allauth.urls')),
 
     # Your stuff: custom urls includes go here
     # Include urls fot the work module
+    url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^', include("clock.work.urls", namespace="work")),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
