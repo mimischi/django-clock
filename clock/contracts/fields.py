@@ -2,14 +2,13 @@ import datetime
 
 from django.core.exceptions import ValidationError
 from django.db.models.fields import IntegerField
-from django.db import models
 from django.forms.fields import CharField
 from django.utils.translation import ugettext_lazy as _
 
 """
 All credit for WorkingHoursFieldForm and WorkingHoursField go to
 http://charlesleifer.com/blog/writing-custom-field-django/
-and some Google-foo, to understand everything behind it and to make it working
+and some Google-foo, to understand everything behind it and to make it work
 with Django >=1.8.
 """
 
@@ -30,17 +29,14 @@ class WorkingHoursFieldForm(CharField):
         try:
             hour_value = value.split('.')
         except ValueError:
-            try:
-                hour_value = value.split(':')
-            except ValueError:
-                raise ValidationError(_('Working hours entered must be in format HH.MM'))
+            raise ValidationError(_('Working hours entered must be in format HH.MM'))
 
         # If list does not have two values, let us do some more validation
         if len(hour_value) != 2:
             # In this case the user did not supply the form with the correct format.
             # Therefore we are going to assume that he does not care about
             # the minutes and we will just append those for him!
-            if len(hour_value)<2:
+            if len(hour_value) < 2:
                 value = hour_value[0] + ".00"
             # This case should only arise when the format was not correct at all.
             else:
@@ -49,7 +45,11 @@ class WorkingHoursFieldForm(CharField):
         # If the value is in the correct format, check if the total working hours
         # exceed 80 hours per month (this equals 288.000 seconds)
         if len(hour_value) == 2:
-            hours, minutes = map(int, value.split('.'))
+            try:
+                hours, minutes = map(int, value.split('.'))
+            except ValueError:
+                raise ValidationError(_('Working hours entered must be in format HH.MM'))
+
             total_seconds = hours*3600 + minutes*60
             if total_seconds > 80 * 3600:
                 raise ValidationError(_('Contracts may not be longer than 80 hours!'))
@@ -83,6 +83,11 @@ class WorkingHoursField(IntegerField):
                 hours, minutes = map(int, value.split('.'))
             except ValueError:
                 raise ValidationError(_('Working hours entered must be in format HH.MM'))
+
+            # If the user entered a value like '30.3' we will convert it into '30.30'.
+            # Otherwise it would be interpreted as '30.03'.
+            if minutes < 10:
+                minutes *= 10
             return (hours * 60) + minutes
         # I do not know if this is really relevant here?
         elif not isinstance(value, datetime.timedelta):
