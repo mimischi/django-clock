@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 from __future__ import absolute_import, unicode_literals
 
 import environ
-import subprocess
 
 from django.utils.translation import ugettext_lazy as _
 

@@ -7,17 +7,17 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic import RedirectView, TemplateView
-from django.views import defaults
+from django.views import defaults as default_views
 
 urlpatterns = [
                   url(r'^', include("clock.pages.urls"), name='pages'),
-                  url(
-                      r'^favicon.ico$',
-                      RedirectView.as_view(
-                          url=staticfiles_storage.url('img/favicon.ico'),
-                          permanent=False),
-                      name="favicon"
-                  ),
+                  # url(
+                  #     r'^favicon.ico$',
+                  #     RedirectView.as_view(
+                  #         url=staticfiles_storage.url('img/favicon.ico'),
+                  #         permanent=False),
+                  #     name="favicon"
+                  # ),
                   url(r'^about/$', TemplateView.as_view(
                       template_name='pages/about.html'),
                       name="about"),
@@ -42,10 +42,10 @@ if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
     # these url in browser to see how these error pages look like.
     urlpatterns += [
-        url(r'^400/$', defaults.bad_request),
-        url(r'^403/$', defaults.permission_denied),
-        url(r'^404/$', defaults.page_not_found),
-        url(r'^500/$', defaults.server_error),
+        url(r'^400/$', default_views.bad_request, kwargs={'exception': Exception("Bad Request!")}),
+        url(r'^403/$', default_views.permission_denied, kwargs={'exception': Exception("Permission Denied")}),
+        url(r'^404/$', default_views.page_not_found, kwargs={'exception': Exception("Page not Found")}),
+        url(r'^500/$', default_views.server_error),
     ]
 
 if 'rosetta' in settings.INSTALLED_APPS:
