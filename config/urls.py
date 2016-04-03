@@ -11,13 +11,13 @@ from django.views import defaults as default_views
 
 urlpatterns = [
                   url(r'^', include("clock.pages.urls"), name='pages'),
-                  # url(
-                  #     r'^favicon.ico$',
-                  #     RedirectView.as_view(
-                  #         url=staticfiles_storage.url('img/favicon.ico'),
-                  #         permanent=False),
-                  #     name="favicon"
-                  # ),
+                  url(
+                      r'^favicon.ico$',
+                      RedirectView.as_view(
+                          url=staticfiles_storage.url('common/images/favicon.ico'),
+                          permanent=False),
+                      name="favicon"
+                  ),
                   url(r'^about/$', TemplateView.as_view(
                       template_name='pages/about.html'),
                       name="about"),
