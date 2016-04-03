@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block container %}
     <div class="row">
         <div class="col-md-12 text-center error-page">
-          <img src="static/img/404.svg" alt="404 - File not found!" />
+          <img src="{% static 'common/images/404.svg' %}" alt="404 - File not found!" />
           <h1>Clock not found!</h1>
         </div>
     </div>
