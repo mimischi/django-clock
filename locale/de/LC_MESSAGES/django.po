@@ -538,11 +538,11 @@ msgstr "Deutsch"
 msgid "English"
 msgstr "Englisch"
 
-#~ msgid "Sign In"
-#~ msgstr "Anmelden"
+msgid "Sign In"
+msgstr "Anmelden"
 
-#~ msgid "Sign in to start your session"
-#~ msgstr "Melde Dich an, um Deine Sitzung zu starten"
+msgid "Sign in to start your session"
+msgstr "Melde Dich an, um Deine Sitzung zu starten"
 
 #~ msgid "Forgot Password?"
 #~ msgstr "Passwort vergessen?"
