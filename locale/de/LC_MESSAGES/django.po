@@ -1,4 +1,4 @@
-# SOME DESCRIPTIVE TITLE.
+# CLOCK German Language Messages
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
@@ -91,7 +91,7 @@ msgstr "E-Mail hinzufügen"
 
 #: clock/templates/account/email.html:88
 msgid "Do you really want to remove the selected e-mail address?"
-msgstr "Möchten Sie wirklich die folgende(n) E-Mail-Adresse(n) entfernen?"
+msgstr "Möchtest Du wirklich die folgende(n) E-Mail-Adresse(n) entfernen?"
 
 #: clock/templates/account/email_confirm.html:4
 msgid "Confirm e-mail"
@@ -167,8 +167,8 @@ msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll send you"
 " an e-mail allowing you to reset it."
 msgstr ""
-"Passwort vergessen? Geben Sie einfach Ihre E-Mail-Adresse ein und wir "
-"schicken Ihnen eine E-Mail zu senden mit der Sie es zurückzusetzen können."
+"Passwort vergessen? Gib  einfach Deine E-Mail-Adresse ein und wir "
+"senden Dir eine E-Mail zu, mit der Du das Passwort zurückzusetzen kannst."
 
 #: clock/templates/account/password_reset.html:14
 msgid "Reset My Password"
@@ -257,9 +257,9 @@ msgid ""
 "                within a few minutes."
 msgstr ""
 "Wir haben eine E-Mail zur Überprüfung an <a "
-"href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folgen Sie dem Link, um "
-"den Vorgang abzuschließen. Bitte kontaktieren Sie uns, wenn Sie keine E-Mail"
-" innerhalb der nächsten Minuten erhalten."
+"href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folge dem Link, um "
+"den Vorgang abzuschließen. Bitte kontaktiere uns, wenn Du"
+" innerhalb der nächsten Minuten keine E-Mail erhalten hast."
 
 #: clock/templates/account/verified_email_required.html:14
 msgid ""
@@ -276,9 +276,9 @@ msgid ""
 "            contact us if you do not receive it within a few minutes."
 msgstr ""
 "Wir haben eine E-Mail zur Überprüfung an <a "
-"href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folgen Sie dem Link, um "
-"den Vorgang abzuschließen. Bitte kontaktieren Sie uns, wenn Sie keine E-Mail"
-" innerhalb der nächsten Minuten erhalten."
+"href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folge dem Link, um "
+"den Vorgang abzuschließen. Bitte kontaktiere uns, wenn Du"
+" innerhalb der nächsten Minuten keine E-Mail erhalten hast."
 
 #: clock/templates/account/verified_email_required.html:22
 #, python-format
@@ -315,7 +315,7 @@ msgstr "Vertrag löschen"
 
 #: clock/templates/contract/delete.html:14
 msgid "Are you sure you want to delete the following contract?"
-msgstr "Sind Sie sicher, dass Sie den Vertrag löschen möchten?"
+msgstr "Bist Du sicher, dass Du den Vertrag löschen möchtest?"
 
 #: clock/templates/contract/delete.html:14
 msgid "All shifts associated with this contract will also be deleted!"
@@ -500,7 +500,7 @@ msgstr "Ihre Schicht darf nicht in der Zukunft enden!"
 #: clock/work/models.py:125
 msgid ""
 "A shift must not finish, before                     it has even started!"
-msgstr "Eine Schicht darf nicht Enden, bevor sie überhaupt begonnen hat!"
+msgstr "Eine Schicht darf nicht enden, bevor sie überhaupt begonnen hat!"
 
 #: clock/work/models.py:150
 msgid "Shift currently paused?"
@@ -542,7 +542,7 @@ msgstr "Englisch"
 #~ msgstr "Anmelden"
 
 #~ msgid "Sign in to start your session"
-#~ msgstr "Melden Sie sich an, um Ihre Sitzung zu starten"
+#~ msgstr "Melde Dich an, um Deine Sitzung zu starten"
 
 #~ msgid "Forgot Password?"
 #~ msgstr "Passwort vergessen?"
@@ -562,7 +562,7 @@ msgstr "Englisch"
 #~ msgid ""
 #~ "Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
 #~ msgstr ""
-#~ "Haben Sie schon ein Konto? Dann <a href=\"%(login_url)s\">hier entlang</a>."
+#~ "Hast Du bereits ein Konto? Dann <a href=\"%(login_url)s\">melde Dich an</a>."
 
 #~ msgid "Verify Your E-mail Address"
 #~ msgstr "Bestätige deine E-Mail-Adresse"
