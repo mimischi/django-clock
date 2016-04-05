@@ -41,7 +41,7 @@ class ContractForm(forms.ModelForm):
             %(delete_translation)s</a>' % {'delete_url': reverse_lazy('contract:delete',
                                                                       kwargs={
                                                                           'pk': self.instance.pk}),
-                                           'delete_translation': _('DELete')}
+                                           'delete_translation': _('Delete')}
 
         cancel_html_inject = '<a href="%(cancel_url)s" class="btn btn-default">%(cancel_translation)s</a>' % \
                              {'cancel_url': reverse_lazy('contract:list'), 'cancel_translation': _('Cancel')}

@@ -87,7 +87,7 @@ class ShiftForm(forms.ModelForm):
                                 %(delete_translation)s</a>' % {'delete_url': reverse_lazy('shift:delete',
                                                                                           kwargs={
                                                                                               'pk': self.instance.pk}),
-                                                               'delete_translation': _('DELete')}
+                                                               'delete_translation': _('Delete')}
 
             # So if we are updating an already existing entry, we may also set some restrictions on the DateTimePicker
             # The shift_finished picker can't be set BEFORE the shift_started datetime. Updating either of both
