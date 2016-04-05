@@ -32,7 +32,7 @@ msgstr "Mein Profil"
 #: clock/templates/account/base.html:20
 #: clock/templates/account/password_change.html:4
 msgid "Change password"
-msgstr "Kennwort ändern"
+msgstr "Kennwort &auml;ndern"
 
 #: clock/templates/account/base.html:21 clock/templates/account/email.html:4
 #: clock/templates/account/email.html:11
@@ -49,7 +49,7 @@ msgstr "Verifiziert"
 
 #: clock/templates/account/email.html:36
 msgid "Unverified"
-msgstr "Ungeprüft"
+msgstr "Ungepr&uuml;ft"
 
 #: clock/templates/account/email.html:42
 msgid "Primary"
@@ -61,7 +61,7 @@ msgstr "Als Standard setzen"
 
 #: clock/templates/account/email.html:52
 msgid "Re-send Verification"
-msgstr "Bestätigung erneut senden"
+msgstr "Best&auml;tigung erneut senden"
 
 #: clock/templates/account/email.html:54
 msgid "Remove"
@@ -78,29 +78,29 @@ msgid ""
 "etc."
 msgstr ""
 "Du hast aktuell keine E-Mail Adresse eingerichtet. Du solltest unbedingt "
-"eine eintragen, damit du Benachrichtigungen erhälst und dein Passwort "
-"zurücksetzen kannst."
+"eine eintragen, damit du Benachrichtigungen erh&auml;lst und dein Passwort "
+"zur&uuml;cksetzen kannst."
 
 #: clock/templates/account/email.html:71
 msgid "Add E-mail Address"
-msgstr "E-Mail-Adresse hinzufügen"
+msgstr "E-Mail-Adresse hinzuf&uuml;gen"
 
 #: clock/templates/account/email.html:76
 msgid "Add E-mail"
-msgstr "E-Mail hinzufügen"
+msgstr "E-Mail hinzuf&uuml;gen"
 
 #: clock/templates/account/email.html:88
 msgid "Do you really want to remove the selected e-mail address?"
-msgstr "Möchtest Du wirklich die folgende(n) E-Mail-Adresse(n) entfernen?"
+msgstr "M&ouml;chtest Du wirklich die folgende(n) E-Mail-Adresse(n) entfernen?"
 
 #: clock/templates/account/email_confirm.html:4
 msgid "Confirm e-mail"
-msgstr "E-Mail-Adresse bestätigen"
+msgstr "E-Mail-Adresse best&auml;tigen"
 
 #: clock/templates/account/email_confirm.html:13
 #: clock/templates/account/email_confirmed.html:12
 msgid "Confirm your e-mail address"
-msgstr "Bestätige deine E-Mail Adresse"
+msgstr "Best&auml;tige deine E-Mail Adresse"
 
 #: clock/templates/account/email_confirm.html:16
 #: clock/templates/account/email_confirmed.html:15
@@ -109,7 +109,7 @@ msgid ""
 "Please confirm that\n"
 "            <a href=\"mailto:%(email)s\">%(email)s</a> is your e-mail address."
 msgstr ""
-"Bitte bestätige, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine "
+"Bitte best&auml;tige, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine "
 "E-Mail ist."
 
 #: clock/templates/account/email_confirm.html:21
@@ -117,7 +117,7 @@ msgstr ""
 #: clock/templates/contract/delete.html:20
 #: clock/templates/shift/delete.html:19
 msgid "Confirm"
-msgstr "Bestätigen"
+msgstr "Best&auml;tigen"
 
 #: clock/templates/account/email_confirm.html:28
 #, python-format
@@ -125,8 +125,8 @@ msgid ""
 "This e-mail confirmation link expired or is invalid. Please\n"
 "            <a href=\"%(email_url)s\">issue a new e-mail confirmation request</a>."
 msgstr ""
-"Der Bestätigungslink ist abgelaufen oder ist ungültig. Bitte beantrage <a "
-"href=\"%(email_url)s\">einen neuen Bestätigungslink per E-Mail</a>."
+"Der Best&auml;tigungslink ist abgelaufen oder ist ung&uuml;ltig. Bitte beantrage <a "
+"href=\"%(email_url)s\">einen neuen Best&auml;tigungslink per E-Mail</a>."
 
 #: clock/templates/account/email_confirmed.html:27
 #, python-format
@@ -134,7 +134,7 @@ msgid ""
 "You have confirmed that\n"
 "            <a href=\"mailto:%(email)s\">%(email)s</a> is your e-mail address."
 msgstr ""
-"Du hast bestätigt, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine "
+"Du hast best&auml;tigt, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine "
 "E-Mail ist."
 
 #: clock/templates/account/login.html:4 clock/templates/nav.html.py:20
@@ -152,7 +152,7 @@ msgstr "Abmelden"
 
 #: clock/templates/account/logout.html:14
 msgid "Are you sure you want to sign out?"
-msgstr "Sicher, dass du dich abmelden möchtest?"
+msgstr "Sicher, dass du dich abmelden m&ouml;chtest?"
 
 #: clock/templates/account/logout.html:20
 msgid "Sign Out"
@@ -160,7 +160,7 @@ msgstr "Abmelden"
 
 #: clock/templates/account/password_change.html:14
 msgid "Change Password"
-msgstr "Kennwort ändern"
+msgstr "Kennwort &auml;ndern"
 
 #: clock/templates/account/password_reset.html:9
 msgid ""
@@ -168,16 +168,16 @@ msgid ""
 " an e-mail allowing you to reset it."
 msgstr ""
 "Passwort vergessen? Gib  einfach Deine E-Mail-Adresse ein und wir "
-"senden Dir eine E-Mail zu, mit der Du das Passwort zurückzusetzen kannst."
+"senden Dir eine E-Mail zu, mit der Du das Passwort zur&uuml;ckzusetzen kannst."
 
 #: clock/templates/account/password_reset.html:14
 msgid "Reset My Password"
-msgstr "Setze mein Passwort zurück"
+msgstr "Setze mein Passwort zur&uuml;ck"
 
 #: clock/templates/account/password_reset.html:17
 msgid "Please contact us if you have any trouble resetting your password."
 msgstr ""
-"Bitte kontaktiere uns, falls du irgendwelche Probleme beim Zurücksetzen "
+"Bitte kontaktiere uns, falls du irgendwelche Probleme beim Zur&uuml;cksetzen "
 "deines Passworts hast."
 
 #: clock/templates/account/password_reset_done.html:10
@@ -186,7 +186,7 @@ msgid ""
 "within a few minutes."
 msgstr ""
 "Wir haben dir eine E-Mail geschickt. Bitte kontaktiere uns, falls du sie "
-"nicht innerhalb der nächsten Minuten erhälst."
+"nicht innerhalb der n&auml;chsten Minuten erh&auml;lst."
 
 #: clock/templates/account/password_reset_from_key.html:8
 #, python-format
@@ -195,17 +195,17 @@ msgid ""
 "used.  Please request a <a href=\"%(passwd_reset_url)s\">new password "
 "reset</a>."
 msgstr ""
-"Der Link zum Zurücksetzen des Passworts war ungültig. <a "
+"Der Link zum Zur&uuml;cksetzen des Passworts war ung&uuml;ltig. <a "
 "href=\"%(passwd_reset_url)s\">Neues Passwort beantragen</a>."
 
 #: clock/templates/account/password_reset_from_key.html:14
 msgid "change password"
-msgstr "Passwort ändern"
+msgstr "Passwort &auml;ndern"
 
 #: clock/templates/account/password_reset_from_key.html:17
 #: clock/templates/account/password_reset_from_key_done.html:6
 msgid "Your password is now changed."
-msgstr "Ihr Passwort wurde soeben geändert."
+msgstr "Ihr Passwort wurde soeben ge&auml;ndert."
 
 #: clock/templates/account/password_set.html:9
 msgid "Set Password"
@@ -219,7 +219,7 @@ msgstr ""
 
 #: clock/templates/account/profile.html:18
 msgid "Set site language"
-msgstr "Sprache ändern"
+msgstr "Sprache &auml;ndern"
 
 #: clock/templates/account/profile.html:32
 msgid "Submit"
@@ -247,7 +247,7 @@ msgstr "Es tut uns leid, aber die Anmeldung ist derzeit geschlossen."
 
 #: clock/templates/account/verification_sent.html:11
 msgid "Confirmation email sent."
-msgstr "E-Mail-Adresse bestätigen"
+msgstr "E-Mail-Adresse best&auml;tigen"
 
 #: clock/templates/account/verification_sent.html:12
 #, python-format
@@ -256,10 +256,10 @@ msgid ""
 "                Follow the link provided to finalize the signup process. Please contact us if you do not receive it\n"
 "                within a few minutes."
 msgstr ""
-"Wir haben eine E-Mail zur Überprüfung an <a "
+"Wir haben eine E-Mail zur &Uuml;berpr&uuml;fung an <a "
 "href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folge dem Link, um "
-"den Vorgang abzuschließen. Bitte kontaktiere uns, wenn Du"
-" innerhalb der nächsten Minuten keine E-Mail erhalten hast."
+"den Vorgang abzuschlie&szlig;en. Bitte kontaktiere uns, wenn Du"
+" innerhalb der n&auml;chsten Minuten keine E-Mail erhalten hast."
 
 #: clock/templates/account/verified_email_required.html:14
 msgid ""
@@ -267,7 +267,7 @@ msgid ""
 "            you are who you claim to be. For this purpose, we require that you\n"
 "            verify ownership of your e-mail address. "
 msgstr ""
-"Diesen Bereich kannst du nur betreten, wenn du eine E-Mail bestätigt hast."
+"Diesen Bereich kannst du nur betreten, wenn du eine E-Mail best&auml;tigt hast."
 
 #: clock/templates/account/verified_email_required.html:18
 msgid ""
@@ -275,10 +275,10 @@ msgid ""
 "            verification. Please click on the link inside this e-mail. Please\n"
 "            contact us if you do not receive it within a few minutes."
 msgstr ""
-"Wir haben eine E-Mail zur Überprüfung an <a "
+"Wir haben eine E-Mail zur &Uuml;berpr&uuml;fung an <a "
 "href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folge dem Link, um "
-"den Vorgang abzuschließen. Bitte kontaktiere uns, wenn Du"
-" innerhalb der nächsten Minuten keine E-Mail erhalten hast."
+"den Vorgang abzuschlie&szlig;en. Bitte kontaktiere uns, wenn Du"
+" innerhalb der n&auml;chsten Minuten keine E-Mail erhalten hast."
 
 #: clock/templates/account/verified_email_required.html:22
 #, python-format
@@ -287,7 +287,7 @@ msgid ""
 "e-mail address</a>."
 msgstr ""
 "Du kannst deine <a href=\"%(email_url)s\">E-Mail Adressen immer noch "
-"ändern</a>!"
+"&auml;ndern</a>!"
 
 #: clock/templates/backend/quick_action.html:7
 msgid "Resume"
@@ -307,20 +307,20 @@ msgstr "Stop"
 
 #: clock/templates/contract/base.html:4 clock/templates/contract/list.html:11
 msgid "Contracts"
-msgstr "Verträge"
+msgstr "Vertr&auml;ge"
 
 #: clock/templates/contract/delete.html:10
 msgid "Delete contract"
-msgstr "Vertrag löschen"
+msgstr "Vertrag l&ouml;schen"
 
 #: clock/templates/contract/delete.html:14
 msgid "Are you sure you want to delete the following contract?"
-msgstr "Bist Du sicher, dass Du den Vertrag löschen möchtest?"
+msgstr "Bist Du sicher, dass Du den Vertrag l&ouml;schen m&ouml;chtest?"
 
 #: clock/templates/contract/delete.html:14
 msgid "All shifts associated with this contract will also be deleted!"
 msgstr ""
-"Es werden alle Schichten gelöscht, die mit diesem Vertrag assoziiert sind!"
+"Es werden alle Schichten gel&ouml;scht, die mit diesem Vertrag assoziiert sind!"
 
 #: clock/templates/contract/delete.html:21
 #: clock/templates/shift/delete.html:20 clock/work/forms.py:129
@@ -338,11 +338,11 @@ msgstr "Vertrag aktualisieren"
 
 #: clock/templates/contract/edit.html:29
 msgid "New contract"
-msgstr "Neuen Vertrag hinzufügen"
+msgstr "Neuen Vertrag hinzuf&uuml;gen"
 
 #: clock/templates/contract/list.html:15
 msgid "Add new contract"
-msgstr "Neuen Vertrag hinzufügen"
+msgstr "Neuen Vertrag hinzuf&uuml;gen"
 
 #: clock/templates/contract/list.html:23 clock/templates/contract/list.html:32
 msgid "Contract No."
@@ -381,11 +381,11 @@ msgstr "Schichten"
 
 #: clock/templates/shift/delete.html:10
 msgid "Delete shift"
-msgstr "Schicht löschen?"
+msgstr "Schicht l&ouml;schen?"
 
 #: clock/templates/shift/delete.html:14
 msgid "Are you sure you want to delete the following shift?"
-msgstr "Bist du dir sicher, dass du die Schicht löschen möchtest?"
+msgstr "Bist du dir sicher, dass du die Schicht l&ouml;schen m&ouml;chtest?"
 
 #: clock/templates/shift/edit.html:26
 msgid "Update shift"
@@ -401,7 +401,7 @@ msgstr "Schichten"
 
 #: clock/templates/shift/month_archive_view.html:32
 msgid "Change month..."
-msgstr "Monat ändern..."
+msgstr "Monat &auml;ndern..."
 
 #: clock/templates/shift/month_archive_view.html:63
 msgid "Add new shift"
@@ -442,7 +442,7 @@ msgstr "Die Stundenzahl muss im Format HH.MM (z.B. 23.15) eingegeben werden."
 
 #: clock/work/fields.py:55
 msgid "Contracts may not be longer than 80 hours!"
-msgstr "Verträge können sich nicht auf mehr als 80 Stunden im Monat belaufen!"
+msgstr "Vertr&auml;ge k&ouml;nnen sich nicht auf mehr als 80 Stunden im Monat belaufen!"
 
 #: clock/work/fields.py:97
 msgid ""
@@ -463,7 +463,7 @@ msgstr "Neuen Vertrag erstellen"
 
 #: clock/work/forms.py:126 clock/work/forms.py:198
 msgid "DELete"
-msgstr "Löschen"
+msgstr "L&ouml;schen"
 
 #: clock/work/forms.py:191
 msgid "Create new shift"
@@ -478,12 +478,12 @@ msgid ""
 "Your selected starting/finishing time overlaps with at least one"
 "                     finished shift of yours. Please adjust the times."
 msgstr ""
-"Deine Start-/Endzeit überlappt mit einer deiner schon beendeten Schichten. "
+"Deine Start-/Endzeit &uuml;berlappt mit einer deiner schon beendeten Schichten. "
 "Bitte passe die Zeiten an."
 
 #: clock/work/forms.py:271
 msgid "A pause may not be longer than your actual shift."
-msgstr "Eine Pause kann nicht länger als eine Schicht sein."
+msgstr "Eine Pause kann nicht l&auml;nger als eine Schicht sein."
 
 #: clock/work/models.py:61
 msgid "Note"
@@ -500,7 +500,7 @@ msgstr "Ihre Schicht darf nicht in der Zukunft enden!"
 #: clock/work/models.py:125
 msgid ""
 "A shift must not finish, before                     it has even started!"
-msgstr "Eine Schicht darf nicht enden, bevor sie überhaupt begonnen hat!"
+msgstr "Eine Schicht darf nicht enden, bevor sie &uuml;berhaupt begonnen hat!"
 
 #: clock/work/models.py:150
 msgid "Shift currently paused?"
@@ -508,7 +508,7 @@ msgstr "Schicht derzeit pausiert?"
 
 #: clock/work/views.py:68
 msgid "You need an active shift to perform this action!"
-msgstr "Du brauchst eine aktive Schicht um diese Aktion auszuführen!"
+msgstr "Du brauchst eine aktive Schicht um diese Aktion auszuf&uuml;hren!"
 
 #: clock/work/views.py:76
 msgid "You already have an active shift!"
@@ -551,10 +551,10 @@ msgid "Register a new membership"
 msgstr "Neues Konto erstellen"
 
 msgid "Password Reset"
-msgstr "Passwort zurücksetzen"
+msgstr "Passwort zur&uuml;cksetzen"
 
 msgid "Password reset"
-msgstr "Passwort zurücksetzen"
+msgstr "Passwort zur&uuml;cksetzen"
 
 msgid "Bad Token"
 msgstr "Bad Token"
@@ -565,10 +565,10 @@ msgstr ""
 "Hast Du bereits ein Konto? Dann <a href=\"%(login_url)s\">melde Dich an</a>."
 
 msgid "Verify Your E-mail Address"
-msgstr "Bestätige deine E-Mail-Adresse"
+msgstr "Best&auml;tige deine E-Mail-Adresse"
 
 msgid "Verify Your E-Mail Address"
-msgstr "Bestätige deine E-Mail-Adresse"
+msgstr "Best&auml;tige deine E-Mail-Adresse"
 
 msgid "Toggle navigation"
 msgstr "Toggle-Navigation"
@@ -619,7 +619,7 @@ msgid "My Info"
 msgstr "Meine Infos"
 
 msgid "Manage your contracts"
-msgstr "Ihre Verträge verwalten"
+msgstr "Ihre Vertr&auml;ge verwalten"
 
 msgid "Abort"
 msgstr "Abbrechen"
@@ -631,10 +631,10 @@ msgid "Update existing contract"
 msgstr "Existierenden Vertrag aktualisieren"
 
 msgid "Delete?"
-msgstr "Löschen?"
+msgstr "L&ouml;schen?"
 
 msgid "Manage contracts"
-msgstr "Verträge verwalten"
+msgstr "Vertr&auml;ge verwalten"
 
 msgid "Create shift"
 msgstr "Schicht erstellen"
