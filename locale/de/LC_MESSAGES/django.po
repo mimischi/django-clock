@@ -1,4 +1,4 @@
-# SOME DESCRIPTIVE TITLE.
+# CLOCK German Language Messages
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
@@ -91,7 +91,7 @@ msgstr "E-Mail hinzufügen"
 
 #: clock/templates/account/email.html:88
 msgid "Do you really want to remove the selected e-mail address?"
-msgstr "Möchten Sie wirklich die folgende(n) E-Mail-Adresse(n) entfernen?"
+msgstr "Möchtest Du wirklich die folgende(n) E-Mail-Adresse(n) entfernen?"
 
 #: clock/templates/account/email_confirm.html:4
 msgid "Confirm e-mail"
@@ -167,8 +167,8 @@ msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll send you"
 " an e-mail allowing you to reset it."
 msgstr ""
-"Passwort vergessen? Geben Sie einfach Ihre E-Mail-Adresse ein und wir "
-"schicken Ihnen eine E-Mail zu senden mit der Sie es zurückzusetzen können."
+"Passwort vergessen? Gib  einfach Deine E-Mail-Adresse ein und wir "
+"senden Dir eine E-Mail zu, mit der Du das Passwort zurückzusetzen kannst."
 
 #: clock/templates/account/password_reset.html:14
 msgid "Reset My Password"
@@ -257,9 +257,9 @@ msgid ""
 "                within a few minutes."
 msgstr ""
 "Wir haben eine E-Mail zur Überprüfung an <a "
-"href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folgen Sie dem Link, um "
-"den Vorgang abzuschließen. Bitte kontaktieren Sie uns, wenn Sie keine E-Mail"
-" innerhalb der nächsten Minuten erhalten."
+"href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folge dem Link, um "
+"den Vorgang abzuschließen. Bitte kontaktiere uns, wenn Du"
+" innerhalb der nächsten Minuten keine E-Mail erhalten hast."
 
 #: clock/templates/account/verified_email_required.html:14
 msgid ""
@@ -276,9 +276,9 @@ msgid ""
 "            contact us if you do not receive it within a few minutes."
 msgstr ""
 "Wir haben eine E-Mail zur Überprüfung an <a "
-"href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folgen Sie dem Link, um "
-"den Vorgang abzuschließen. Bitte kontaktieren Sie uns, wenn Sie keine E-Mail"
-" innerhalb der nächsten Minuten erhalten."
+"href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folge dem Link, um "
+"den Vorgang abzuschließen. Bitte kontaktiere uns, wenn Du"
+" innerhalb der nächsten Minuten keine E-Mail erhalten hast."
 
 #: clock/templates/account/verified_email_required.html:22
 #, python-format
@@ -315,7 +315,7 @@ msgstr "Vertrag löschen"
 
 #: clock/templates/contract/delete.html:14
 msgid "Are you sure you want to delete the following contract?"
-msgstr "Sind Sie sicher, dass Sie den Vertrag löschen möchten?"
+msgstr "Bist Du sicher, dass Du den Vertrag löschen möchtest?"
 
 #: clock/templates/contract/delete.html:14
 msgid "All shifts associated with this contract will also be deleted!"
@@ -500,7 +500,7 @@ msgstr "Ihre Schicht darf nicht in der Zukunft enden!"
 #: clock/work/models.py:125
 msgid ""
 "A shift must not finish, before                     it has even started!"
-msgstr "Eine Schicht darf nicht Enden, bevor sie überhaupt begonnen hat!"
+msgstr "Eine Schicht darf nicht enden, bevor sie überhaupt begonnen hat!"
 
 #: clock/work/models.py:150
 msgid "Shift currently paused?"
@@ -538,112 +538,112 @@ msgstr "Deutsch"
 msgid "English"
 msgstr "Englisch"
 
-#~ msgid "Sign In"
-#~ msgstr "Anmelden"
+msgid "Sign In"
+msgstr "Anmelden"
 
-#~ msgid "Sign in to start your session"
-#~ msgstr "Melden Sie sich an, um Ihre Sitzung zu starten"
+msgid "Sign in to start your session"
+msgstr "Melde Dich an, um Deine Sitzung zu starten"
 
-#~ msgid "Forgot Password?"
-#~ msgstr "Passwort vergessen?"
+msgid "Forgot Password?"
+msgstr "Passwort vergessen?"
 
-#~ msgid "Register a new membership"
-#~ msgstr "Neues Konto erstellen"
+msgid "Register a new membership"
+msgstr "Neues Konto erstellen"
 
-#~ msgid "Password Reset"
-#~ msgstr "Passwort zurücksetzen"
+msgid "Password Reset"
+msgstr "Passwort zurücksetzen"
 
-#~ msgid "Password reset"
-#~ msgstr "Passwort zurücksetzen"
+msgid "Password reset"
+msgstr "Passwort zurücksetzen"
 
-#~ msgid "Bad Token"
-#~ msgstr "Bad Token"
+msgid "Bad Token"
+msgstr "Bad Token"
 
-#~ msgid ""
-#~ "Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
-#~ msgstr ""
-#~ "Haben Sie schon ein Konto? Dann <a href=\"%(login_url)s\">hier entlang</a>."
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+"Hast Du bereits ein Konto? Dann <a href=\"%(login_url)s\">melde Dich an</a>."
 
-#~ msgid "Verify Your E-mail Address"
-#~ msgstr "Bestätige deine E-Mail-Adresse"
+msgid "Verify Your E-mail Address"
+msgstr "Bestätige deine E-Mail-Adresse"
 
-#~ msgid "Verify Your E-Mail Address"
-#~ msgstr "Bestätige deine E-Mail-Adresse"
+msgid "Verify Your E-Mail Address"
+msgstr "Bestätige deine E-Mail-Adresse"
 
-#~ msgid "Toggle navigation"
-#~ msgstr "Toggle-Navigation"
+msgid "Toggle navigation"
+msgstr "Toggle-Navigation"
 
-#~ msgid "Admin"
-#~ msgstr "Admin"
+msgid "Admin"
+msgstr "Admin"
 
-#~ msgid "Sign out"
-#~ msgstr "Abmelden"
+msgid "Sign out"
+msgstr "Abmelden"
 
-#~ msgid "Navigation"
-#~ msgstr "Schifffahrt"
+msgid "Navigation"
+msgstr "Schifffahrt"
 
-#~ msgid "General"
-#~ msgstr "Allgemein"
+msgid "General"
+msgstr "Allgemein"
 
-#~ msgid "Security"
-#~ msgstr "Sicherheit"
+msgid "Security"
+msgstr "Sicherheit"
 
-#~ msgid "Password"
-#~ msgstr "Passwort"
+msgid "Password"
+msgstr "Passwort"
 
-#~ msgid "E-mail"
-#~ msgstr "E-Mail"
+msgid "E-mail"
+msgstr "E-Mail"
 
-#~ msgid "Log out"
-#~ msgstr "Abmelden"
+msgid "Log out"
+msgstr "Abmelden"
 
-#~ msgid "Log In"
-#~ msgstr "Einloggen"
+msgid "Log In"
+msgstr "Einloggen"
 
-#~ msgid "Dashboard"
-#~ msgstr "Dashboard"
+msgid "Dashboard"
+msgstr "Dashboard"
 
-#~ msgid "Let's do some work!"
-#~ msgstr "Ab an die Arbeit!"
+msgid "Let's do some work!"
+msgstr "Ab an die Arbeit!"
 
-#~ msgid "Login or Sign up, it's free!"
-#~ msgstr "Einloggen oder Registrieren, es ist kostenlos!"
+msgid "Login or Sign up, it's free!"
+msgstr "Einloggen oder Registrieren, es ist kostenlos!"
 
-#~ msgid "Without assignment"
-#~ msgstr "Ohne Zuweisung"
+msgid "Without assignment"
+msgstr "Ohne Zuweisung"
 
-#~ msgid "Your profile"
-#~ msgstr "Dein Profil"
+msgid "Your profile"
+msgstr "Dein Profil"
 
-#~ msgid "My Info"
-#~ msgstr "Meine Infos"
+msgid "My Info"
+msgstr "Meine Infos"
 
-#~ msgid "Manage your contracts"
-#~ msgstr "Ihre Verträge verwalten"
+msgid "Manage your contracts"
+msgstr "Ihre Verträge verwalten"
 
-#~ msgid "Abort"
-#~ msgstr "Abbrechen"
+msgid "Abort"
+msgstr "Abbrechen"
 
-#~ msgid "Create contract"
-#~ msgstr "Vertrag erstellen"
+msgid "Create contract"
+msgstr "Vertrag erstellen"
 
-#~ msgid "Update existing contract"
-#~ msgstr "Existierenden Vertrag aktualisieren"
+msgid "Update existing contract"
+msgstr "Existierenden Vertrag aktualisieren"
 
-#~ msgid "Delete?"
-#~ msgstr "Löschen?"
+msgid "Delete?"
+msgstr "Löschen?"
 
-#~ msgid "Manage contracts"
-#~ msgstr "Verträge verwalten"
+msgid "Manage contracts"
+msgstr "Verträge verwalten"
 
-#~ msgid "Create shift"
-#~ msgstr "Schicht erstellen"
+msgid "Create shift"
+msgstr "Schicht erstellen"
 
-#~ msgid "Shift list"
-#~ msgstr "Schichtliste"
+msgid "Shift list"
+msgstr "Schichtliste"
 
-#~ msgid "Edit your finished shifts"
-#~ msgstr "Fertige Schichten bearbeiten"
+msgid "Edit your finished shifts"
+msgstr "Fertige Schichten bearbeiten"
 
-#~ msgid "404 - Shift not found!"
-#~ msgstr "404 - Schicht nicht gefunden!"
+msgid "404 - Shift not found!"
+msgstr "404 - Schicht nicht gefunden!"
