@@ -1,5 +1,5 @@
 {% extends 'shift/base.html' %}
-{% load staticfiles i18n django_bootstrap_breadcrumbs format_duration %}
+{% load staticfiles i18n django_bootstrap_breadcrumbs format_duration base_extras %}
 
 {% block extra_head %}{{ block.super }}
     <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
@@ -95,7 +95,7 @@
                 <td></td>
                 <td></td>
                 <td class="text-right">{{ forloop.counter }}</td>
-                <td class="text-right">{{ shift.contract|default_if_none:"Contract" }}</td>
+                <td class="text-right">{{ shift.contract|format_contract }}</td>
                 <td class="text-right">{{ shift.shift_started }}</td>
                 <td class="text-right">{{ shift.shift_finished }}</td>
                 <td class="text-right">{{ shift.pause_duration|format_hhmm }}</td>

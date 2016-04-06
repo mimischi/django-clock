@@ -2,6 +2,7 @@ import re
 
 from django import template
 from django.core.urlresolvers import reverse, NoReverseMatch
+from django.utils.translation import ugettext_lazy as _
 
 register = template.Library()
 
@@ -16,3 +17,10 @@ def active(context, pattern_or_urlname):
     if re.search(pattern, path):
         return 'active'
     return ''
+
+
+@register.filter
+def format_contract(contract):
+    if contract is None:
+        contract = _('None defined')
+    return contract
