@@ -94,17 +94,15 @@
                     responsivePriority: 2,
                     targets: -1
                 }],
-                order: [4, 'desc'],
+                order: [2, 'desc'],
                 select: {
                     style: 'os',
                     selector: 'td.select-checkbox'
                 },
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5'
-                ]
+                buttons: [],
+                language: {
+			        url: "{% static 'libraries/datatables/locale/de.json' %}"
+		        }
             });
         });
 

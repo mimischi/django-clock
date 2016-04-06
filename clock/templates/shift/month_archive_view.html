@@ -25,44 +25,40 @@
 {% block container %}
     <h2>{% trans 'Shifts in' %} {{ month|date:"F Y" }}</h2>
     <div class="objectList-topbar row">
-    <div class='col-sm-4'>
-        <div class="form-group">
-            <div class='input-group date' id='monthpicker'>
-                <input type='text' class="form-control"
-                       placeholder="{% trans 'Change month...' %}"/>
+        <div class='col-sm-4'>
+            <div class="form-group">
+                <div class='input-group date' id='monthpicker'>
+                    <input type='text' class="form-control"
+                           placeholder="{% trans 'Change month...' %}"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
+                </div>
             </div>
         </div>
-    </div>
-    {% if previous_month or next_month %}
         <div class="col-sm-4">
-            {% if not previous_month or not shift %}
-                <a class="btn btn-default disabled"><span class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}
-                </a>
-            {% else %}
+{#            {% if not previous_month or not shift %}#}
+{#                <a class="btn btn-default disabled"><span#}
+{#                        class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}#}
+{#                </a>#}
+{#            {% else %}#}
                 <a href="{% url 'shift:archive_month_numeric' year=previous_month|date:"Y" month=previous_month|date:"m" %}"
                    class="btn btn-default"><span class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}
                 </a>
-            {% endif %}
-            {% if not next_month or not shift %}
-                <a class="btn btn-default disabled">{{ next_month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
-            {% else %}
+{#            {% endif %}#}
+{#            {% if not next_month or not shift %}#}
+{#                <a class="btn btn-default disabled">{{ next_month|date:"F Y" }} <span#}
+{#                        class="fa fa-chevron-right"></span></a>#}
+{#            {% else %}#}
                 <a href="{% url 'shift:archive_month_numeric' year=next_month|date:"Y" month=next_month|date:"m" %}"
                    class="btn btn-default">{{ next_month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
-            {% endif %}
+{#            {% endif %}#}
         </div>
         <div class="col-sm-4">
-
-    {% else %}
-        <div class="col-sm-8">
-
-    {% endif %}
-<a href="{% url 'shift:new' %}" class="btn btn-primary pull-right"><span
-        class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
-</div>
-</div>
+            <a href="{% url 'shift:new' %}" class="btn btn-primary pull-right"><span
+                    class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
+        </div>
+    </div>
     <table id="shift_table" class="table table-striped table-bordered display nowrap" cellspacing="0" width="100%">
         <thead>
         <tr>
@@ -193,12 +189,10 @@
                     style: 'os',
                     selector: 'td.select-checkbox'
                 },
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5'
-                ]
+                buttons: [],
+                language: {
+                    url: "{% static 'libraries/datatables/locale/de.json' %}"
+                }
             });
         });
 
