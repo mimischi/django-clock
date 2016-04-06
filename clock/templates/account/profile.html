@@ -8,9 +8,7 @@
     <link rel="stylesheet" href="{% static 'libraries/bootstrap-select/css/bootstrap-select.min.css' %}">
 {% endblock extra_head %}
 
-{% block breadcrumbs %}{{ block.super }}
-    {% breadcrumb "Profile" "account:account_view" %}
-{% endblock breadcrumbs %}
+{% block breadcrumbs %}{{ block.super }}{% endblock breadcrumbs %}
 
 {% block content_account %}
     <h2>{% trans 'Profile' %}</h2>

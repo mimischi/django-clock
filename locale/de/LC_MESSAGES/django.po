@@ -528,6 +528,10 @@ msgstr "Schicht aktualisieren"
 msgid "New shift"
 msgstr "Neue Schicht hinzuf&uuml;gen"
 
+#: clock/templates/shift/month_archive_view.html:22
+msgid "Shift list"
+msgstr "Schichten"
+
 #: clock/templates/shift/month_archive_view.html:26
 msgid "Shifts in"
 msgstr "Schichten"
