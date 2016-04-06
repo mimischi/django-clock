@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-05 18:55+0000\n"
-"PO-Revision-Date: 2016-04-05 18:57+0000\n"
+"POT-Creation-Date: 2016-04-06 06:47+0000\n"
+"PO-Revision-Date: 2016-04-06 06:47+0000\n"
 "Last-Translator:   <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -47,29 +47,48 @@ msgstr "Neuen Vertrag erstellen"
 msgid "Update contract"
 msgstr "Vertrag aktualisieren"
 
-#: clock/contracts/forms.py:44 clock/shifts/forms.py:90
+#: clock/contracts/forms.py:44 clock/shifts/forms.py:92
 msgid "Delete"
 msgstr "L&ouml;chen"
 
-#: clock/contracts/forms.py:47 clock/shifts/forms.py:125
+#: clock/contracts/forms.py:47 clock/shifts/forms.py:127
 #: clock/templates/contract/delete.html:21
 #: clock/templates/shift/delete.html:20
 msgid "Cancel"
 msgstr "Abbrechen"
 
+#: clock/contracts/models.py:16
+msgid "Department"
+msgstr "Abteilung"
+
+#: clock/contracts/models.py:17
+msgid "Abbreviation"
+msgstr "Kürzel"
+
+#: clock/contracts/models.py:18
+msgid "Work hours"
+msgstr "Stundenzahl"
+
+#: clock/contracts/models.py:19 clock/templates/contract/list.html.py:24
+#: clock/templates/contract/list.html:33 clock/templates/nav.html.py:24
+#: clock/templates/shift/month_archive_view.html:72
+#: clock/templates/shift/month_archive_view.html:84
+msgid "Contract"
+msgstr "Vertrag"
+
 #: clock/shifts/forms.py:22
 msgid "None defined"
 msgstr "Ohne Vertrag"
 
-#: clock/shifts/forms.py:83
+#: clock/shifts/forms.py:85
 msgid "Create new shift"
 msgstr "Neue Schicht erstellen"
 
-#: clock/shifts/forms.py:85
+#: clock/shifts/forms.py:87
 msgid "Update"
 msgstr "Schicht aktualisieren"
 
-#: clock/shifts/forms.py:159
+#: clock/shifts/forms.py:161
 msgid ""
 "Your selected starting/finishing time overlaps with at least one"
 "                     finished shift of yours. Please adjust the times."
@@ -77,7 +96,7 @@ msgstr ""
 "Deine Start-/Endzeit &uuml;berlappt mit einer deiner schon beendeten "
 "Schichten. Bitte passe die Zeiten an."
 
-#: clock/shifts/forms.py:163
+#: clock/shifts/forms.py:165
 msgid "A pause may not be longer than your actual shift."
 msgstr "Eine Pause kann nicht l&auml;nger als eine Schicht sein."
 
@@ -452,13 +471,6 @@ msgstr "Neuen Vertrag hinzuf&uuml;gen"
 #: clock/templates/contract/list.html:23 clock/templates/contract/list.html:32
 msgid "Contract No."
 msgstr "Vertrag #"
-
-#: clock/templates/contract/list.html:24 clock/templates/contract/list.html:33
-#: clock/templates/nav.html.py:24
-#: clock/templates/shift/month_archive_view.html:72
-#: clock/templates/shift/month_archive_view.html:84
-msgid "Contract"
-msgstr "Vertrag"
 
 #: clock/templates/contract/list.html:25 clock/templates/contract/list.html:34
 msgid "Hours"

@@ -18,9 +18,9 @@ class WorkingHoursFieldForm(CharField):
     Implementation of a CharField to handle validation of data from WorkingHoursField.
 
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, label=_('Work hours'), *args, **kwargs):
         kwargs['max_length'] = 5
-        super(WorkingHoursFieldForm, self).__init__(*args, **kwargs)
+        super(WorkingHoursFieldForm, self).__init__(label=label, *args, **kwargs)
 
     def clean(self, value):
         value = super(CharField, self).clean(value)
