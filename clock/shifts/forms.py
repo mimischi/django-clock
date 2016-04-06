@@ -40,6 +40,7 @@ class ShiftForm(forms.ModelForm):
                     "format": "YYYY-MM-DD HH:mm",
                     "stepping": 5,
                     "toolbarPlacement": "top",
+                    "keepInvalid": True,
                     "calendarWeeks": True
                 }
             ),
@@ -48,6 +49,7 @@ class ShiftForm(forms.ModelForm):
                     "format": "YYYY-MM-DD HH:mm",
                     "stepping": 5,
                     "toolbarPlacement": "top",
+                    "keepInvalid": True,
                     "calendarWeeks": True
                 }
             ),
@@ -100,7 +102,7 @@ class ShiftForm(forms.ModelForm):
                             "stepping": 5,
                             "toolbarPlacement": "top",
                             "calendarWeeks": False,
-                            "minDate": unicode(self.initial['shift_started'].strftime("%Y-%m-%d %H:%M"))
+                            # "minDate": unicode(self.initial['shift_started'].strftime("%Y-%m-%d %H:%M"))
                         }
                     ),
                 ),

@@ -36,15 +36,15 @@
 {% block extra_js %}
     <script type="text/javascript">
         $(function () {
-            var shiftStartedPicker = $("#id_shift_started_pickers");
-            var shiftFinishedPicker = $("#id_shift_finished_pickers");
-            shiftStartedPicker.datetimepicker();
-            shiftFinishedPicker.datetimepicker({
-                useCurrent: false //Important! See issue #1075
-            });
-            shiftStartedPicker.on("dp.change", function (e) {
-                shiftFinishedPicker.data("DateTimePicker").minDate(e.date);
-            });
+{#            var shiftStartedPicker = $("#id_shift_started_pickers");#}
+{#            var shiftFinishedPicker = $("#id_shift_finished_pickers");#}
+{#            shiftStartedPicker.datetimepicker();#}
+{#            shiftFinishedPicker.datetimepicker({#}
+{#                useCurrent: false //Important! See issue #1075#}
+{#            });#}
+{#            shiftStartedPicker.on("dp.change", function (e) {#}
+{#                shiftFinishedPicker.data("DateTimePicker").minDate(e.date);#}
+{#            });#}
             {# Lets disable this. Otherwise the user may get confused! #}
             {#        shiftFinishedPicker.on("dp.change", function (e) {#}
             {#            shiftStartedPicker.data("DateTimePicker").maxDate(e.date);#}

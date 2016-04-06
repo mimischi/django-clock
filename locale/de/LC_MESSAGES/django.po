@@ -514,7 +514,7 @@ msgstr "Schicht aktualisieren"
 
 #: clock/templates/shift/edit.html:28
 msgid "New shift"
-msgstr "Schicht aktualisieren"
+msgstr "Neue Schicht hinzuf&uuml;gen"
 
 #: clock/templates/shift/month_archive_view.html:26
 msgid "Shifts in"
