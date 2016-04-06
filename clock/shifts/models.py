@@ -40,7 +40,7 @@ class Shift(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-shift_started']
+        ordering = ['shift_finished']
 
     def __unicode__(self):
         """

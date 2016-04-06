@@ -188,7 +188,7 @@
                     responsivePriority: 2,
                     targets: -1
                 }],
-                order: [4, 'desc'],
+                order: [2, 'desc'],
                 select: {
                     style: 'os',
                     selector: 'td.select-checkbox'
@@ -224,23 +224,23 @@
                 // If clicked cell was not the control cell
                 if (target.closest('td').index() > 1) {
                     newPage = target.parent().attr('id');
-                    window.location.href = "/shift/" + newPage + "/edit/"
+                    window.location.href = "/shift/" + newPage + "/edit/";
                 }
                 // Another check if we are clicking on the extra info shown on mobile devices!
             } else if (target.is('td.child')) {
                 newPage = target.parent().prev().attr('id');
-                window.location.href = "/shift/" + newPage + "/edit/"
+                window.location.href = "/shift/" + newPage + "/edit/";
             } else if (target.is("li")) {
                 newPage = target.parent().parent().parent().prev().attr('id');
-                window.location.href = "/shift/" + newPage + "/edit/"
+                window.location.href = "/shift/" + newPage + "/edit/";
             } else if (target.is('span.dtr-data') || target.is('span.dtr-title')) {
                 newPage = target.parent().parent().parent().parent().prev().attr('id');
-                window.location.href = "/shift/" + newPage + "/edit/"
+                window.location.href = "/shift/" + newPage + "/edit/";
                 // If .control class is not visible, we're obviously on a bigger screen.
                 // Check if we are clicking on the .select-checkbox td or any other!
             } else if (target.closest('td').index() > 1) {
                 newPage = target.parent().attr('id');
-                window.location.href = "/shift/" + newPage + "/edit/"
+                window.location.href = "/shift/" + newPage + "/edit/";
             }
         });
     </script>
