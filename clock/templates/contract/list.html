@@ -12,14 +12,16 @@
     <div class="objectList-topbar row">
         <div class="col-md-4 pull-right">
             <a href="{% url 'contract:new' %}" class="btn btn-primary pull-right"><span
-        class="fa fa-plus"></span> {% trans 'Add new contract' %}</a>
+                    class="fa fa-plus"></span> {% trans 'Add new contract' %}</a>
         </div>
     </div>
     <table id="shift_table" class="table table-striped table-bordered display nowrap" cellspacing="0" width="100%">
         <thead>
         <tr>
-            <th></th>
-            <th></th>
+            {% if object_list %}
+                <th></th>
+                <th></th>
+            {% endif %}
             <th class="text-right">{% trans 'Contract No.' %}</th>
             <th class="text-right">{% trans 'Contract' %}</th>
             <th class="text-right">{% trans 'Hours' %}</th>
@@ -27,8 +29,10 @@
         </thead>
         <tfoot>
         <tr>
-            <th></th>
-            <th></th>
+            {% if object_list %}
+                <th></th>
+                <th></th>
+            {% endif %}
             <th class="text-right">{% trans 'Contract No.' %}</th>
             <th class="text-right">{% trans 'Contract' %}</th>
             <th class="text-right">{% trans 'Hours' %}</th>
@@ -70,30 +74,36 @@
                 dom: 'Bfrtip',
                 responsive: true,
                 {#        ajax: "static/json/shift_data.json",#}
-                columns: [{ // Responsive control column
-                    data: null,
-                    defaultContent: '',
-                    className: 'control',
-                    orderable: false
-                }, { // Checkbox select column
-                    data: null,
-                    defaultContent: '',
-                    className: 'select-checkbox',
-                    orderable: false
-                }, {
-                    data: "forloop.counter"
-                }, {
-                    data: "contract"
-                }, {
-                    data: "hours"
-                }],
-                columnDefs: [{
-                    responsivePriority: 1,
-                    targets: 3
-                }, {
-                    responsivePriority: 2,
-                    targets: -1
-                }],
+                columns: [
+                    {% if object_list %}
+                        { // Responsive control column
+                            data: null,
+                            defaultContent: '',
+                            className: 'control',
+                            orderable: false
+                        }, { // Checkbox select column
+                        data: null,
+                        defaultContent: '',
+                        className: 'select-checkbox',
+                        orderable: false
+                    },
+                    {% endif %}
+                    {
+                        data: "forloop.counter"
+                    }, {
+                        data: "contract"
+                    }, {
+                        data: "hours"
+                    }],
+                {% if object_list %}
+                    columnDefs: [{
+                        responsivePriority: 1,
+                        targets: 3
+                    }, {
+                        responsivePriority: 2,
+                        targets: -1
+                    }],
+                {% endif %}
                 order: [2, 'desc'],
                 select: {
                     style: 'os',
@@ -102,9 +112,9 @@
                 buttons: [],
                 {% get_current_language as LANGUAGE_CODE %}
                 {% if LANGUAGE_CODE == 'de' %}
-                language: {
-                    url: "{% static 'libraries/datatables/locale/de.json' %}"
-                }
+                    language: {
+                        url: "{% static 'libraries/datatables/locale/de.json' %}"
+                    }
                 {% endif %}
             });
         });

@@ -37,33 +37,36 @@
             </div>
         </div>
         <div class="col-sm-4">
-{#            {% if not previous_month or not shift %}#}
-{#                <a class="btn btn-default disabled"><span#}
-{#                        class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}#}
-{#                </a>#}
-{#            {% else %}#}
-                <a href="{% url 'shift:archive_month_numeric' year=previous_month|date:"Y" month=previous_month|date:"m" %}"
-                   class="btn btn-default"><span class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}
-                </a>
-{#            {% endif %}#}
-{#            {% if not next_month or not shift %}#}
-{#                <a class="btn btn-default disabled">{{ next_month|date:"F Y" }} <span#}
-{#                        class="fa fa-chevron-right"></span></a>#}
-{#            {% else %}#}
-                <a href="{% url 'shift:archive_month_numeric' year=next_month|date:"Y" month=next_month|date:"m" %}"
-                   class="btn btn-default">{{ next_month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
-{#            {% endif %}#}
+            {#            {% if not previous_month or not shift %}#}
+            {#                <a class="btn btn-default disabled"><span#}
+            {#                        class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}#}
+            {#                </a>#}
+            {#            {% else %}#}
+            <a href="{% url 'shift:archive_month_numeric' year=previous_month|date:"Y" month=previous_month|date:"m" %}"
+               class="btn btn-default"><span class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}
+            </a>
+            {#            {% endif %}#}
+            {#            {% if not next_month or not shift %}#}
+            {#                <a class="btn btn-default disabled">{{ next_month|date:"F Y" }} <span#}
+            {#                        class="fa fa-chevron-right"></span></a>#}
+            {#            {% else %}#}
+            <a href="{% url 'shift:archive_month_numeric' year=next_month|date:"Y" month=next_month|date:"m" %}"
+               class="btn btn-default">{{ next_month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
+            {#            {% endif %}#}
         </div>
         <div class="col-sm-4">
             <a href="{% url 'shift:new' %}" class="btn btn-primary pull-right"><span
                     class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
         </div>
     </div>
-    <table id="shift_table" class="table table-striped table-bordered display nowrap" cellspacing="0" width="100%">
+    <table id="shift_table" class="dataTable table table-striped table-bordered display nowrap" cellspacing="0"
+           width="100%">
         <thead>
         <tr>
-            <th></th>
-            <th></th>
+            {% if object_list %}
+                <th></th>
+                <th></th>
+            {% endif %}
             <th class="text-right">{% trans 'Shift No.' %}</th>
             <th class="text-right">{% trans 'Contract' %}</th>
             <th class="text-right">{% trans 'Shift started' %}</th>
@@ -74,8 +77,10 @@
         </thead>
         <tfoot>
         <tr>
-            <th></th>
-            <th></th>
+            {% if object_list %}
+                <th></th>
+                <th></th>
+            {% endif %}
             <th class="text-right">{% trans 'Shift No.' %}</th>
             <th class="text-right">{% trans 'Contract' %}</th>
             <th class="text-right">{% trans 'Shift started' %}</th>
@@ -90,7 +95,7 @@
                 <td></td>
                 <td></td>
                 <td class="text-right">{{ forloop.counter }}</td>
-                <td class="text-right">{{ shift.contract }}</td>
+                <td class="text-right">{{ shift.contract|default_if_none:"Contract" }}</td>
                 <td class="text-right">{{ shift.shift_started }}</td>
                 <td class="text-right">{{ shift.shift_finished }}</td>
                 <td class="text-right">{{ shift.pause_duration|format_hhmm }}</td>
@@ -154,36 +159,50 @@
                 dom: 'Bfrtip',
                 responsive: true,
                 {#        ajax: "static/json/shift_data.json",#}
-                columns: [{ // Responsive control column
-                    data: null,
-                    defaultContent: '',
-                    className: 'control',
-                    orderable: false
-                }, { // Checkbox select column
-                    data: null,
-                    defaultContent: '',
-                    className: 'select-checkbox',
-                    orderable: false
-                }, {
-                    data: "forloop.counter"
-                }, {
-                    data: "contract"
-                }, {
-                    data: "shift_started"
-                }, {
-                    data: "shift_finished"
-                }, {
-                    data: "pause_duration"
-                }, {
-                    data: "shift_duration"
-                }],
-                columnDefs: [{
-                    responsivePriority: 1,
-                    targets: 4
-                }, {
-                    responsivePriority: 2,
-                    targets: -1
-                }],
+                columns: [
+                    {% if object_list %}
+                        { // Responsive control column
+                            data: null,
+                            defaultContent: '',
+                            className: 'control',
+                            orderable: false
+                        }, { // Checkbox select column
+                        data: null,
+                        defaultContent: '',
+                        className: 'select-checkbox',
+                        orderable: false
+                    },
+                    {% endif %}
+                    {
+                        data: "forloop.counter"
+                    }, {
+                        data: "contract"
+                    }, {
+                        data: "shift_started"
+                    }, {
+                        data: "shift_finished"
+                    }, {
+                        data: "pause_duration"
+                    }, {
+                        data: "shift_duration"
+                    }],
+                {% if object_list %}
+                    columnDefs: [{
+                        responsivePriority: 1,
+                        targets: 4
+                    }, {
+                        responsivePriority: 2,
+                        targets: -1
+                    }],
+                {% else %}
+                    columnDefs: [{
+                        responsivePriority: 1,
+                        targets: 2
+                    }, {
+                        responsivePriority: 2,
+                        targets: -1
+                    }],
+                {% endif %}
                 order: [2, 'desc'],
                 select: {
                     style: 'os',
@@ -192,9 +211,9 @@
                 buttons: [],
                 {% get_current_language as LANGUAGE_CODE %}
                 {% if LANGUAGE_CODE == 'de' %}
-                language: {
-                    url: "{% static 'libraries/datatables/locale/de.json' %}"
-                }
+                    language: {
+                        url: "{% static 'libraries/datatables/locale/de.json' %}"
+                    }
                 {% endif %}
             });
         });

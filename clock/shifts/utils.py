@@ -1,5 +1,6 @@
 from clock.shifts.models import Shift
 
+
 def get_current_shift(user):
     entries = Shift.objects.filter(employee=user, shift_finished__isnull=True)
 
@@ -36,5 +37,5 @@ def get_default_contract(user):
             # Return the contract of the latest shift
             return finished_shifts[0].contract.department
 
-    # Return NoneObject for the defaukt None-contract
+    # Return NoneObject for the default None-contract
     return None
