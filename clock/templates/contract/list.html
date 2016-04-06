@@ -100,9 +100,12 @@
                     selector: 'td.select-checkbox'
                 },
                 buttons: [],
+                {% get_current_language as LANGUAGE_CODE %}
+                {% if LANGUAGE_CODE == 'de' %}
                 language: {
-			        url: "{% static 'libraries/datatables/locale/de.json' %}"
-		        }
+                    url: "{% static 'libraries/datatables/locale/de.json' %}"
+                }
+                {% endif %}
             });
         });
 
