@@ -7,15 +7,10 @@
             src="{% static 'libraries/eonasdan-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
     <link rel="stylesheet"
           href="{% static 'libraries/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'libraries/datatables/css/buttons.dataTables.min.css' %}">
-
-    <link rel="stylesheet" type="text/css" href="{% static 'libraries/datatables/css/select.bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'libraries/datatables/css/datatables.min.css' %}"/>
 
     <link rel="stylesheet" href="{% static 'libraries/bootstrap-select/css/bootstrap-select.min.css' %}" media="screen"
           title="no title" charset="utf-8">
-
-    <link rel="stylesheet" type="text/css" href="{% static 'libraries/datatables/css/dataTables.bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/css/clock-datatables.css' %}">
 {% endblock extra_head %}
 
 {% block breadcrumbs %}{{ block.super }}
@@ -59,7 +54,7 @@
                     class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
         </div>
     </div>
-    <table id="shift_table" class="dataTable table table-striped table-bordered display nowrap" cellspacing="0"
+    <table id="clockTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0"
            width="100%">
         <thead>
         <tr>
@@ -67,12 +62,12 @@
                 <th></th>
                 <th></th>
             {% endif %}
-            <th class="text-right">{% trans 'Shift No.' %}</th>
-            <th class="text-right">{% trans 'Contract' %}</th>
-            <th class="text-right">{% trans 'Shift started' %}</th>
-            <th class="text-right">{% trans 'Shift finished' %}</th>
-            <th class="text-right">{% trans 'Pause duration' %}</th>
-            <th class="text-right">{% trans 'Shift duration' %}</th>
+            <th>{% trans 'Shift No.' %}</th>
+            <th>{% trans 'Contract' %}</th>
+            <th>{% trans 'Shift started' %}</th>
+            <th>{% trans 'Shift finished' %}</th>
+            <th>{% trans 'Pause duration' %}</th>
+            <th>{% trans 'Shift duration' %}</th>
         </tr>
         </thead>
         <tfoot>
@@ -81,12 +76,12 @@
                 <th></th>
                 <th></th>
             {% endif %}
-            <th class="text-right">{% trans 'Shift No.' %}</th>
-            <th class="text-right">{% trans 'Contract' %}</th>
-            <th class="text-right">{% trans 'Shift started' %}</th>
-            <th class="text-right">{% trans 'Shift finished' %}</th>
-            <th class="text-right">{% trans 'Pause duration' %}</th>
-            <th class="text-right">{% trans 'Shift duration' %}</th>
+            <th>{% trans 'Shift No.' %}</th>
+            <th>{% trans 'Contract' %}</th>
+            <th>{% trans 'Shift started' %}</th>
+            <th>{% trans 'Shift finished' %}</th>
+            <th>{% trans 'Pause duration' %}</th>
+            <th>{% trans 'Shift duration' %}</th>
         </tr>
         </tfoot>
         <tbody>
@@ -107,20 +102,7 @@
 {% endblock container %}
 
 {% block extra_js %}
-    <script type="text/javascript" charset="utf8"
-            src="{% static 'libraries/datatables/js/jquery.dataTables.js' %}"></script>
-    <script type="text/javascript" charset="utf8"
-            src="{% static 'libraries/datatables/js/dataTables.bootstrap.js' %}"></script>
-    <script type="text/javascript" charset="utf8"
-            src="{% static 'libraries/datatables/js/dataTables.responsive.min.js' %}"></script>
-    <script type="text/javascript" charset="utf8"
-            src="{% static 'libraries/datatables/js/responsive.bootstrap.min.js' %}"></script>
-    <script type="text/javascript" charset="utf8"
-            src="{% static 'libraries/datatables/js/dataTables.buttons.min.js' %}"></script>
-    <script type="text/javascript" charset="utf8"
-            src="{% static 'libraries/datatables/js/buttons.html5.min.js' %}"></script>
-    <script type="text/javascript" charset="utf8"
-            src="{% static 'libraries/datatables/js/dataTables.select.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libraries/datatables/js/dataTables.min.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             var displayedMonth = false;
@@ -155,7 +137,7 @@
             monthPicker.find(".form-control").val("");
 
             // Now the magic with the datatables comes into play.
-            $('#shift_table').DataTable({
+            $('#clockTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
                 {#        ajax: "static/json/shift_data.json",#}
@@ -218,7 +200,7 @@
             });
         });
 
-        $('#shift_table').on('click', 'tbody tr', function (evt) {
+        $('#clockTable').on('click', 'tbody tr', function (evt) {
 
             // Handles the functionality around redirecting users to the clicked shift
 

@@ -301,6 +301,63 @@ div.row.featurette p.lead {
 
 }
 
+/* DataTables modifications
+-------------------------------------------------- */
+
+#clockTable > tbody > tr {
+    cursor: pointer;
+    text-align: center;
+}
+
+#clockTable > tbody > tr:active,
+#clockTable > tbody > tr:focus,
+#clockTable > tbody > tr:hover {
+    background-color: rgb(17, 146, 201);
+    color: white;
+}
+
+/* Only change color of the plus/minus sign, if the parent tr is focussed/active/hovered over! */
+#clockTable > tbody > tr:active td.control:before,
+#clockTable > tbody > tr:focus td.control:before,
+#clockTable > tbody > tr:hover td.control:before {
+    color: rgb(255, 255, 255);
+}
+
+#clockTable > tbody td {
+    vertical-align: middle;
+}
+
+#clockTable > tbody td.select-checkbox {
+    /*margin-left: 5px;*/
+    /*margin-right: 5px;*/
+    width: 30px;
+}
+
+tr.child > td.child > ul > li {
+    color: rgb(0, 0, 0);
+    text-align: left;
+}
+
+@media screen and (max-width: 640px) {
+    div.dt-buttons {
+        text-align: inherit;
+    }
+
+}
+
+@media screen and (max-width: 767px) {
+    div.dataTables_wrapper div.dataTables_filter {
+        text-align: right;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    /* Align the pseudo-element checkbox to be in the middle of the cell! */
+    #clockTable > tbody td::before {
+        margin-top: 5px;
+    }
+}
+
 /* Shift Datepicker
 -------------------------------------------------- */
 
