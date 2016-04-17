@@ -11,12 +11,12 @@ Clock erlaubt dem Nutzer seine Arbeitszeit zu stechen, nachträglich hinzuzufüg
 
 ## Nutzung
 
-Kommt noch.
+Folgt.
 
 
 ## Zukunft
 
-Im fertigen Produkt soll gerade der Export der eingetragenen Arbeitszeit in ein gewünschtes Dateiformat möglich sein. Dies lässt sich dann beim Arbeitgeber bzw. der Personalabteilung der Goethe-Universität einreichen, um seinen Soll als HiWi zu erfüllen. Für die genaue Thematik siehe: `Mindestlohngesetz <https://de.wikipedia.org/wiki/Mindestlohngesetz_%28Deutschland%29>`_ oder `MiLoG <http://www.gesetze-im-internet.de/milog/>`_.
+Im fertigen Produkt soll gerade der Export der eingetragenen Arbeitszeit in ein gewünschtes Dateiformat möglich sein. Dies lässt sich dann beim Arbeitgeber bzw. der Personalabteilung der Goethe-Universität einreichen, um seinen Soll als HiWi zu erfüllen. Für die genaue Thematik siehe: [Mindestlohngesetz](https://de.wikipedia.org/wiki/Mindestlohngesetz_%28Deutschland%29) oder [MiLoG](http://www.gesetze-im-internet.de/milog/).
 
 ## Mitarbeit
 
