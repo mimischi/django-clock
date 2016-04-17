@@ -1,11 +1,11 @@
 # Test dependencies go here.
 -r base.txt
 coverage==4.0.3
-django_coverage_plugin==1.2.2
+django_coverage_plugin==1.3
 flake8==2.5.4
 django-test-plus==1.0.12
 factory_boy==2.6.1
 
 # pytest!
 pytest-django==2.9.1
-pytest-sugar==0.6.0
+pytest-sugar==0.7.1

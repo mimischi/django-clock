@@ -1,10 +1,10 @@
 # Local development dependencies go here
 -r base.txt
 coverage==4.0.3
-django_coverage_plugin==1.2.2
+django_coverage_plugin==1.3
 Sphinx
 django-extensions==1.6.1
-Werkzeug==0.11.5
+Werkzeug==0.11.8
 django-test-plus==1.0.12
 factory_boy==2.6.1
 
@@ -12,16 +12,16 @@ factory_boy==2.6.1
 django-debug-toolbar==1.4
 
 # improved REPL
-ipdb==0.9.0
+ipdb==0.9.3
 
 # pytest!
 pytest-django==2.9.1
-pytest-sugar==0.6.0
+pytest-sugar==0.7.1
 
 # Required by maildump. Need to pin dependency to gevent beta to be Python 3-compatible.
-gevent==1.1.0
+gevent==1.1.1
 # Enables better email testing
 maildump==0.5.3
 
 # Own stuff
-django-rosetta==0.7.10
+django-rosetta==0.7.11
