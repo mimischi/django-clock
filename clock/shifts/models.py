@@ -19,7 +19,8 @@ class Shift(models.Model):
         Contract,
         null=True,
         blank=True,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name=_('Contract')
     )
     shift_started = models.DateTimeField(verbose_name=_('Shift started'))
     shift_finished = models.DateTimeField(

@@ -77,6 +77,16 @@ class ShiftForm(forms.ModelForm):
             employee=self.requested_user
         )
 
+        if not self.fields['contract'].queryset:
+            self.fields.update({
+                'contract': forms.Select(
+                    attrs={
+                        'class': 'selectpicker',
+                        'disabled': True
+                    }
+                ),
+            })
+
         # Set the delete input to be empty. If we are not on an update page, the button will not be shown!
         delete_html_inject = ""
 
