@@ -14,7 +14,7 @@ hitchsmtp==0.2.1
 hitchsystem==0.1.4
 hitchtest==0.9.9
 humanize==0.5.1
-ipython==4.1.2
+ipython==4.2.0
 ipython-genutils==0.1.0
 Jinja2==2.8
 jupyter-client==4.2.2
@@ -33,7 +33,7 @@ pyuv==1.2.0
 PyYAML==3.11
 pyzmq==15.2.0
 requests==2.9.1
-selenium==2.53.1
+selenium==2.53.2
 simplegeneric==0.8.1
 six==1.10.0
 tblib==1.3.0
