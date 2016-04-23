@@ -1,41 +1,52 @@
-{% load staticfiles i18n account base_extras %}
-<!-- Static navbar -->
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar top-bar"></span>
-                <span class="icon-bar middle-bar"></span>
-                <span class="icon-bar bottom-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'common/images/logo.svg' %}"
-                                                                 alt="Clock Logo"/></a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                {% if not request.user.is_authenticated %}
-                    <li class="{% active 'home' %}"><a href="about.html">About</a></li>
-                    <li class="{% active 'account_login' %}"><a href="{% url 'account_login' %}">{% trans 'Login' %}</a></li>
-                    <li class="{% active 'account_signup' %}"><a href="{% url 'account_signup' %}">{% trans 'Try it now!' %}</a></li>
-                {% else %}
-                    <li class="{% active 'shift:list' %}"><a href="{% url 'shift:list' %}">{% trans 'Shift' %}</a></li>
-                    <li class="{% active 'contract:list' %}"><a href="{% url 'contract:list' %}">{% trans 'Contract' %}</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">{% user_display user %} <span class="caret"></span></a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li class="dropdown-header">{% trans 'Account' %}</li>
-                            <li><a href="{% url 'account:account_view' %}">{% trans 'Profile' %}</a></li>
-                            <li><a href="{% url 'account:account_view' %}">{% trans 'Settings' %}</a></li>
-                            <li class="divider"></li>
-                            <li class="dropdown-header">{% trans 'Current session' %}</li>
-                            <li><a href="{% url 'account_logout' %}">{% trans 'Logout' %}</a></li>
+{% load staticfiles i18n account base_extras %}  <!-- Static navbar -->
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                                aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar top-bar"></span>
+                            <span class="icon-bar middle-bar"></span>
+                            <span class="icon-bar bottom-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'common/images/logo.svg' %}"
+                                                                             alt="Clock Logo"/></a>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if not request.user.is_authenticated %}
+                                <li class="{% active 'about' %}"><a href="{% url 'about' %}">About</a></li>
+                                <li class="{% active 'account_login' %}"><a href="{% url 'account_login' %}">{% trans 'Login' %}</a>
+                                </li>
+                                <li class="{% active 'account_signup' %}"><a
+                                        href="{% url 'account_signup' %}">{% trans 'Try it now!' %}</a></li>
+                            {% else %}
+                                <li class="{% active 'shift:list' %}"><a href="{% url 'shift:list' %}">{% trans 'Shift' %}</a></li>
+                                <li class="{% active 'contract:list' %}"><a
+                                        href="{% url 'contract:list' %}">{% trans 'Contract' %}</a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                                       aria-expanded="false">{% user_display user %} <span class="caret"></span></a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        {% if request.user.is_superuser %}
+                                            <li class="dropdown-header">{% trans 'Superuser' %}</li>
+                                            <li><a href="{% url 'admin:index' %}">{% trans 'Admin' %}</a></li>
+                                            <li class="divider"></li>
+                                        {% endif %}
+                                        <li class="dropdown-header">{% trans 'Account' %}</li>
+                                        <li><a href="{% url 'account:account_view' %}">{% trans 'Profile' %}</a></li>
+                                        <li><a href="{% url 'account:account_view' %}">{% trans 'Settings' %}</a></li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown-header">{% trans 'Current session' %}</li>
+                                        <li><a id="account_logout" href="{% url 'account_logout' %}">{% trans 'Logout' %}</a></li>
+                                        <form id="accountLogOutForm" style="display: none;" action="{% url 'account_logout' %}"
+                                              method="POST">
+                                        {% csrf_token %}
+                                        </form>
+                                    </ul>
+                                </li>
+                            {% endif %}
                         </ul>
-                    </li>
-                {% endif %}
-            </ul>
-        </div> <!-- /.nav-collapse -->
-    </div> <!-- /.container-fluid -->
-</nav> <!-- /nav -->
+                    </div> <!-- /.nav-collapse -->
+                </div> <!-- /.container-fluid -->
+            </nav> <!-- /nav -->

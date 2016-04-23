@@ -7,5 +7,4 @@ from clock.pages import views
 
 urlpatterns = [
                   url(r'^$', views.home, name='home'),
-
               ]

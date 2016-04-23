@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-04-06 06:47+0000\n"
-"PO-Revision-Date: 2016-04-06 06:47+0000\n"
+"PO-Revision-Date: 2016-04-23 12:10+0000\n"
 "Last-Translator:   <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Translated-Using: django-rosetta 0.7.10\n"
+"X-Translated-Using: django-rosetta 0.7.11\n"
 
 #: clock/contracts/fields.py:32 clock/contracts/fields.py:43
 #: clock/contracts/fields.py:51 clock/contracts/fields.py:85

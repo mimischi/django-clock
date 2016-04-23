@@ -38,5 +38,7 @@ def home(request):
             # so we can hide the <select>-element in the template.
             del context['all_contracts']
 
+    context['template_to_render'] = template_to_render
+
     # Render the template
     return render(request, template_to_render, context)

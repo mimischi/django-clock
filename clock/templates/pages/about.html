@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load i18n django_bootstrap_breadcrumbs %}
+
+{% block extra_title %}{% trans 'About' %}{% endblock extra_title %}
+
+{% block breadcrumbs %}{{ block.super }}
+    {% breadcrumb "About" "about" %}
+{% endblock breadcrumbs %}
+
+{% block container %}
+    {{ flatpage.content }}
+{% endblock container %}

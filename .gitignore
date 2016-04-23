@@ -21,7 +21,6 @@ sftp-config.json
 
 # Basics
 *.py[cod]
-*.pyc
 __pycache__
 
 # Logs
@@ -39,7 +38,17 @@ htmlcov
 *.pot
 
 # Pycharm
-.idea
+.idea/*
+
+# Provided default Pycharm Run/Debug Configurations should be tracked by git
+# In case of local modifications made by Pycharm, use update-index command
+# for each changed file, like this:
+# git update-index --assume-unchanged .idea/clocktest.iml
+!.idea/runConfigurations/
+!.idea/clocktest.iml
+!.idea/vcs.xml
+!.idea/webResources.xml
+
 
 # Vim
 
@@ -56,9 +65,14 @@ node_modules/
 # virtual environments
 .env
 
-# Mailhog executable
-mailhog
-mailhog.exe
+# User-uploaded media
+clocktest/media/
 
-# Initial test data
+# Hitch directory
+tests/.hitch
+
+# MailHog binary
+mailhog
+
+# Initial data
 initial_*.json

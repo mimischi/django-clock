@@ -1,6 +1,5 @@
-{% load staticfiles i18n bootstrap3 django_bootstrap_breadcrumbs %}<!DOCTYPE html>
+{% load staticfiles i18n bootstrap3 django_bootstrap_breadcrumbs base_extras %}<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +9,8 @@
     <meta name="author" content="">
     <link rel="icon" href="{% static 'common/images/favicon.ico' %}">
 
-    <title>{% block title %}Clock | {% endblock title %}{% block extra_title %}Goethe-Universität{% endblock extra_title %}</title>
+    <title>{% block title %}Clock | {% endblock title %}{% block extra_title %}
+        Goethe-Universität{% endblock extra_title %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'libraries/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -35,17 +35,17 @@
 <div id="wrap">
     {% block header %}
         <header>
-            <div class="container">
-                {% include 'nav.html' %}
-            </div> <!-- /.container -->
+            <div class="container">{% include 'nav.html' %}</div> <!-- /.container -->
         </header> <!-- /header -->
     {% endblock header %}
     <div class="container">
         {% block breadcrumbs %}
             {% breadcrumb "Home" "/" %}
         {% endblock breadcrumbs %}
+        {% if not 'frontend/index.html' in template_to_render %}
         {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
         {% bootstrap_messages %}
+        {% endif %}
         {% block container %}There is no content in this container!{% endblock container %}
     </div> <!-- /.container -->
 </div> <!-- /#wrap -->
@@ -70,7 +70,8 @@
 <script src="{% static 'libraries/holder.min.js' %}"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="{% static 'libraries/bootstrap/js/ie10-viewport-bug-workaround.js' %}"></script>
+<!-- Clock JS -->
+<script src="{% static 'common/js/clock.js' %}"></script>
 {% block extra_js %}{% endblock extra_js %}
 </body>
-
 </html>
