@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load i18n staticfiles %}
 
 {% block extra_head %}{{ block.super }}
     <script type="text/javascript" src="{% static 'libraries/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
@@ -7,5 +7,45 @@
 {% endblock extra_head %}
 
 {% block container %}
+    {% if active_shift %}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 text-center">
+            <h4>{% trans 'You currently have an active shift.' %}</h4>
+            <h4>Started: {{ active_shift.shift_started }}, Contract: {{ active_shift.contract }}</h4>
+        </div>
+    </div>
+    {% endif %}
     {% include 'pages/backend/quick_action.html' %}
+    {% if last_shifts %}
+    <h4>Last five finished shifts</h4>
+    <ul>
+    {% for shift in last_shifts %}
+        <li>{{ shift.contract }} - {{ shift.shift_started }} - {{ shift.shift_finished }} - {{ shift.shift_duration }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% if contracts %}
+    <h4>Your contracts and current completion</h4>
+    <table width="100%">
+        <thead>
+            <th>Department</th>
+            <th>Progress (current month)</th>
+        </thead>
+    {% for contract in contracts %}
+        <tbody>
+            <tr>
+                <td>{{ contract.department }}</td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="{{ contract.completed_work_hours_percentage }}" aria-valuemin="0"
+                             aria-valuemax="100" style="min-width: 2em; width: {% if contract.completed_work_hours_percentage > 100 %}100{% elif contract.completed_work_hours_percentage < 25 %}25{% else %}{{ contract.completed_work_hours_percentage }}{% endif %}%;">
+                            {{ contract.completed_hours_per_month }} / {{ contract.hours }} ({{ contract.completed_work_hours_percentage }}%)
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    {% endfor %}
+    </table>
+    {% endif %}
 {% endblock container %}

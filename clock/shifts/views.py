@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
@@ -14,7 +16,7 @@ from django.views.generic.list import ListView
 from clock.pages.mixins import UserObjectOwnerMixin
 from clock.shifts.forms import ShiftForm, QuickActionForm
 from clock.shifts.models import Shift
-from clock.shifts.utils import get_current_shift
+from clock.shifts.utils import get_current_shift, shifts_in_month, get_all_shifts, month_with_shift
 
 
 @require_POST
@@ -189,6 +191,22 @@ class ShiftMonthView(MonthArchiveView):
 
     class Meta:
         ordering = ["shift_started"]
+
+    @property
+    def prev_next_shift(self):
+        context = {}
+        try:
+            month = int(self.kwargs['month'])
+            year = int(self.kwargs['year'])
+        except KeyError:
+            d = date.today()
+            month = d.month
+            year = d.year
+
+        context['shifts_prev_month'] = month_with_shift(self.request.user, month, year, "prev")
+        context['shifts_next_month'] = month_with_shift(self.request.user, month, year, "next")
+
+        return context
 
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user, shift_finished__isnull=False).order_by('shift_started')

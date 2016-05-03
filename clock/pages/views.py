@@ -1,8 +1,9 @@
 from django.shortcuts import render
 
+from clock.contracts.models import Contract
 from clock.shifts.forms import QuickActionForm
 from clock.shifts.utils import get_all_contracts, get_current_shift, \
-    get_default_contract
+    get_default_contract, get_last_shifts, get_all_shifts
 
 # from config.settings.common import GIT_STATUS, GIT_REVISION_HASH, GIT_COMMIT_TIMESTAMP
 
@@ -33,10 +34,16 @@ def home(request):
         if shift:
             context['shift_closed'] = bool(shift)
             context['shift_paused'] = shift.is_paused
-
+            context['active_shift'] = shift
             # Delete the 'all_contracts' key from the context dict,
             # so we can hide the <select>-element in the template.
             del context['all_contracts']
+
+        context['last_shifts'] = get_last_shifts(request.user)
+        contracts = Contract.objects.filter(employee=request.user)
+
+        if contracts:
+            context['contracts'] = contracts
 
     context['template_to_render'] = template_to_render
 
