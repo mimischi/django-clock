@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from clock.contracts.models import Contract
+from clock.pages.utils import round_time
 
 
 class Shift(models.Model):
@@ -76,16 +77,41 @@ class Shift(models.Model):
         quick-action buttons and manual edits in the admin-backend
         or dashboard-frontend.
         """
+
+        """
+        The following code block does some rounding to the start and end times of the shifts.
+        It does it as following and only if the shift is newly added:
+            #1) Check shift_started against all other shifts of this employee. If there is one with a shift_finished
+            #after the current start time, then round the whole thing up. Otherwise do an avarage (down/up) rounding.
+            2) The shift_finished is set to the most logic (up/down) value. Now check if it is the same as the
+            shift_started value (if shift_started and shift_finished were set to the same value). In this case, add 5
+            minutes to the shift_finished value.
+            3) If shift_started is somehow bigger than shift_finished, set shift_finished to be 5 minutes bigger.
+        """
+        if self.pk is not None:
+            # if round_time(self.shift_started) != self.__old_shift_started:
+                # prev_shifts = Shift.objects.filter(employee=self.employee, shift_finished__isnull=False)
+                # for shift in prev_shifts:
+                #     if shift.shift_finished > round_time(self.shift_started, to='down'):
+                #         self.shift_started = round_time(self.shift_started, to='up')
+                #     else:
+                #         self.shift_started = round_time(self.shift_started)
+            self.shift_started = round_time(self.shift_started)
+
+            self.shift_finished = round_time(self.shift_finished)
+            if self.shift_started == self.shift_finished:
+                self.shift_finished += timedelta(minutes=5)
+            elif self.shift_started > self.shift_finished:
+                self.shift_finished = self.shift_started + timedelta(minutes=5)
+
         # Lets check if this shift is just being updated
-        if self.pk is not None and (self.shift_finished != self.__old_shift_finished \
-                                        or self.shift_started != self.__old_shift_started \
-                                        or self.pause_duration != self.__old_pause_duration):
-            self.shift_duration = (self.shift_finished -
-                                   self.shift_started) - self.pause_duration
+        if self.pk is not None and (self.shift_finished != self.__old_shift_finished
+                                    or self.shift_started != self.__old_shift_started
+                                    or self.pause_duration != self.__old_pause_duration):
+            self.shift_duration = (self.shift_finished - self.shift_started) - self.pause_duration
         # Lets check if this shift did not exists before and was just added from the shell!
         elif self.pk is None and self.shift_finished is not None:
-            self.shift_duration = (self.shift_finished -
-                                   self.shift_started) - self.pause_duration
+            self.shift_duration = (self.shift_finished - self.shift_started) - self.pause_duration
         return super(Shift, self).save(*args, **kwargs)
 
     def shift_time_validation(self):

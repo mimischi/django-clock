@@ -195,7 +195,9 @@ class ShiftForm(forms.ModelForm):
 
         # Check if the retrieved shifts contain the shift we're trying to update. If yes: pass.
         for shift in shifts:
-            if shift == self.instance:
+            if shift.pk == self.instance.pk:
+                pass
+            elif shift.shift_finished == shift_started or shift.shift_started == shift_finished:
                 pass
             else:
                 return shifts
