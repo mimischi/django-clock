@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse_lazy
 
 from clock.shifts.models import Shift
@@ -19,16 +20,12 @@ def get_return_url(request, default_success):
             except KeyError:
                 pass
 
-            #  TODO: Das hier ist etwas blöd, da wir immer nur von einem View ohne die Contract-Filtrierung ausgehen.
-            # Ein etwas längerer Kommentar steht dazu auch in clock.pages.middleware
-            # Wahrscheinlich sollte irgendwo ein Check hin, welchen View wir ausspucken
-            # Man könnte das auch rein im Template lösen, allerdings ist es dann auf keinen Fall DRY und die selben
-            # Code-Teile wiederholen sich dann dauernd!
-            last_view = "shift:archive_month_numeric"
+            last_view = "shift:archive_month_contract_numeric"
 
             return_kwargs = {
                 'year': request.session['last_kwargs']['year'],
                 'month': request.session['last_kwargs']['month'],
+                'contract': '00',
             }
 
             try:

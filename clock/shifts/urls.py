@@ -23,7 +23,7 @@ urlpatterns = [
     #     ),
 
     # Display the ShiftMonthView as default with the current year-month
-    url(r'^$', ShiftMonthView.as_view(month_format='%m', year=currentYear, month=currentMonth),
+    url(r'^$', ShiftMonthContractView.as_view(month_format='%m', year=currentYear, month=currentMonth),
         name="list"
         ),
     # View to handle all the quick-actions from the dashboard
@@ -53,9 +53,9 @@ urlpatterns = [
         ShiftWeekView.as_view(),
         name="archive_week"),
     url(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
-        ShiftMonthView.as_view(month_format='%m'),
+        ShiftMonthContractView.as_view(month_format='%m'),
         name="archive_month_numeric"),
-    url(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<pk>\d+)/$',
+    url(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<contract>\d+)/$',
         ShiftMonthContractView.as_view(month_format='%m'),
         name="archive_month_contract_numeric"),
     url(r'^archive/(?P<year>[0-9]{4})/$',

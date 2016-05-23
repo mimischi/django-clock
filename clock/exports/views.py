@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -11,10 +11,12 @@ from clock.shifts.models import Shift
 from clock.exports.mixins import PdfResponseMixin
 from clock.exports.serializers import ShiftJSONEncoder
 
+from clock.exports.timesheets.standupstrategy import StandupStrategy
+
 
 @method_decorator(login_required, name="dispatch")
 class ExportMonth(PdfResponseMixin, MonthArchiveView):
-    Model = Shift
+    model = Shift
     date_field = "shift_started"
 
     def get_context_data(self, **kwargs):
@@ -29,6 +31,54 @@ class ExportMonth(PdfResponseMixin, MonthArchiveView):
     def get_queryset(self):
         contract_pk = self.kwargs['pk']
         return Shift.objects.filter(employee=self.request.user.pk, contract=contract_pk, shift_finished__isnull=False)
+
+
+@method_decorator(login_required, name="dispatch")
+class ExportNuke(PdfResponseMixin, MonthArchiveView):
+    model = Shift
+    date_field = "shift_started"
+
+    def get_context_data(self, **kwargs):
+        context = super(ExportNuke, self).get_context_data(**kwargs)
+
+        nuke_data = {
+            'INSTITUT': '',
+            'NAME': '',
+            'MONAT': context['view'].kwargs['month'] + " / " + context['view'].kwargs['year'],
+            'PERSNR': '',  # just left blank
+
+            # these parameters drive the simulation
+            'month': int(context['view'].kwargs['month']), 'year': int(context['view'].kwargs['year']),
+            'monthly_hours': int(context['view'].kwargs['hours']), 'hours': int(context['view'].kwargs['hours'])
+        }
+
+        nuke = StandupStrategy(nuke_data)
+        test = nuke.createSchedule()
+
+        total_shift_duration = timedelta(seconds=0)
+        shift_list = []
+        for shifts in test:
+            total_shift_duration += timedelta(seconds=shifts['working_hours']*3600)
+
+            shift_total_pause_duration = timedelta(seconds=0)
+            if shifts['break_start'] is not None:
+                start = (shifts['break_start'] - datetime(1970, 1, 1)).total_seconds()
+                end = (shifts['break_end'] - datetime(1970, 1, 1)).total_seconds()
+                shift_pause = end - start
+
+                shift_total_pause_duration = timedelta(seconds=shift_pause)
+            shift_list.append(Shift(
+                shift_started=shifts['daystart'],
+                shift_finished=shifts['work_end'],
+                shift_duration=timedelta(seconds=shifts['working_hours']*3600),
+                pause_duration=shift_total_pause_duration,
+                )
+            )
+
+        context['total_shift_duration'] = total_shift_duration
+        context['shift_list'] = shift_list
+
+        return context
 
 
 @method_decorator(login_required, name="dispatch")
@@ -55,10 +105,6 @@ class ExportMonthClass(JSONResponseMixin, MonthArchiveView):
                 u"pause_duration": shift.pause_duration,
                 u"shift_duration": shift.shift_duration
             } for shift in self.object]
-
-        # gen = StundenzettelGenerator(example_template, example_target, example_data, context_dict)
-        #
-        # gen.make()
 
         return self.render_json_response(context_dict)
 

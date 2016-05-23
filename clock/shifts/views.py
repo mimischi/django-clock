@@ -125,6 +125,7 @@ class ShiftManualCreate(CreateView):
         """
         return {
             'user': self.request.user,
+            'request': self.request,
             'view': 'shift_create',
         }
 
@@ -151,6 +152,7 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
         """
         return {
             'user': self.request.user,
+            'request': self.request,
             'view': 'shift_update',
         }
 
@@ -207,13 +209,28 @@ class ShiftMonthView(MonthArchiveView):
 
 @method_decorator(login_required, name="dispatch")
 class ShiftMonthContractView(ShiftMonthView):
+    """
+    Show all shifts assigned to a contract of a specific date.
+    The contract pk may be either:
+        '0': Show shifts not assigned to any contract
+        '00': Show all shifts without any contract filtering (default)
+        '<contract>': Show shifts assigned to contract with the id <contract>
+    """
+    contract = '00'
+
     def get_queryset(self):
-        contract_pk = self.kwargs['pk']
+        try:
+            self.contract = str(self.kwargs['contract'])
+        except KeyError:
+            pass
+
         queryset = Shift.objects.filter(employee=self.request.user.pk, shift_finished__isnull=False)
-        if contract_pk == "0":
+        if self.contract == "0":
             queryset = queryset.filter(contract__isnull=True)
+        elif self.contract == "00":
+            pass
         else:
-            queryset = queryset.filter(contract=contract_pk)
+            queryset = queryset.filter(contract=self.contract)
         return queryset
 
 

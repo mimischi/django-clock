@@ -9,6 +9,7 @@ from crispy_forms.bootstrap import FormActions
 
 from clock.contracts.models import Contract
 from clock.shifts.models import Shift
+from clock.shifts.utils import get_return_url
 
 
 class QuickActionForm(forms.Form):
@@ -134,7 +135,8 @@ class ShiftForm(forms.ModelForm):
             })
 
         cancel_html_inject = '<a href="%(cancel_url)s" class="btn btn-default">%(cancel_translation)s</a>' % \
-                             {'cancel_url': reverse_lazy('shift:list'), 'cancel_translation': _('Cancel')}
+                             {'cancel_url': get_return_url(kwargs['initial']['request'], 'shift:list'),
+                              'cancel_translation': _('Cancel')}
 
         self.helper = FormHelper(self)
         self.helper.form_action = '.'

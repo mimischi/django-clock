@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-# Modified from https://djangosnippets.org/snippets/248/
+# Adapted from https://djangosnippets.org/snippets/248/
 class LastVisitedMiddleware(object):
     """This middleware sets the last visited url as session field"""
 
@@ -23,12 +23,6 @@ class LastVisitedMiddleware(object):
         request_path = request.get_full_path()
         request_kwargs = view_kwargs
         request_view_name = request.resolver_match.view_name
-
-        #  TODO: Aktuell sind die Links in den Templates blöd. Es wird nicht unterschieden, ob wir auf einer
-        # Schicht-Seite mit Contract ohne ohne sind. Ich denke aktuell, dass ein Template-tag am Besten ist, der den
-        # url-tag simuliert. Davon abhängig ob es einen contract-pk kwarg gibt wird entweder der eine (mit Contract pk)
-        # oder der andere (ohne Contract pk) Link in die Templates gesetzt zum weiteren Filtrieren (gerade bei der
-        # Monatsauswahl).
 
         try:
             if request.session['currently_visiting'] != request_path:
