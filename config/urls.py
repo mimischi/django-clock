@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.flatpages import views
 from django.contrib.staticfiles.storage import staticfiles_storage
-from django.views.generic import RedirectView, TemplateView
+from django.views.generic import RedirectView
 from django.views import defaults as default_views
 
 urlpatterns = [
@@ -33,6 +33,7 @@ urlpatterns = [
                   url(r'^i18n/', include('django.conf.urls.i18n')),
                   url(r'^shift/', include("clock.shifts.urls", namespace="shift")),
                   url(r'^contract/', include("clock.contracts.urls", namespace="contract")),
+                  url(r'^export/', include("clock.exports.urls", namespace="export")),
                   # url(r'^', include("clock.work.urls", namespace="work")),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

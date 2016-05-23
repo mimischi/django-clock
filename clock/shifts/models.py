@@ -1,4 +1,5 @@
 from datetime import timedelta
+import time
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -77,14 +78,14 @@ class Shift(models.Model):
         """
         # Lets check if this shift is just being updated
         if self.pk is not None and (self.shift_finished != self.__old_shift_finished \
-           or self.shift_started != self.__old_shift_started \
-           or self.pause_duration != self.__old_pause_duration):
-               self.shift_duration = (self.shift_finished -
-               self.shift_started) - self.pause_duration
+                                        or self.shift_started != self.__old_shift_started \
+                                        or self.pause_duration != self.__old_pause_duration):
+            self.shift_duration = (self.shift_finished -
+                                   self.shift_started) - self.pause_duration
         # Lets check if this shift did not exists before and was just added from the shell!
         elif self.pk is None and self.shift_finished is not None:
             self.shift_duration = (self.shift_finished -
-            self.shift_started) - self.pause_duration
+                                   self.shift_started) - self.pause_duration
         return super(Shift, self).save(*args, **kwargs)
 
     def shift_time_validation(self):
@@ -125,8 +126,27 @@ class Shift(models.Model):
         Returns a bool value whether the current shift is paused.
         """
         return bool(self.pause_started)
+
     is_shift_currently_paused.boolean = True
     is_shift_currently_paused.short_description = _("Shift currently paused?")
+
+    @property
+    def pause_start_end(self):
+        if self.pause_duration.total_seconds() > 0:
+            pause_begin = self.shift_finished - self.pause_duration
+            return time.strftime("%H:%M", pause_begin.utctimetuple()) + " - " + \
+                time.strftime("%H:%M", self.shift_finished.utctimetuple())
+        return "-"
+
+    @property
+    def contract_or_none(self):
+        """
+        Returns the name of the contract connected to the shift or a string containing "None".
+        :return: Contract name or "None"-string
+        """
+        if self.contract is None:
+            return "None"
+        return self.contract.department
 
     @property
     def is_finished(self):

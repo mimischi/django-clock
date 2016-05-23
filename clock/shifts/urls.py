@@ -4,9 +4,11 @@ from datetime import datetime
 
 from django.conf.urls import url
 
+from clock.shifts.utils import get_default_contract
 from clock.shifts.views import ShiftListView, ShiftManualCreate, \
     ShiftManualEdit, ShiftManualDelete, ShiftYearView
-from clock.shifts.views import ShiftMonthView, ShiftWeekView, ShiftYearView, ShiftDayView, shift_action
+from clock.shifts.views import ShiftMonthView, ShiftMonthContractView, ShiftWeekView, ShiftYearView, ShiftDayView, \
+    shift_action
 
 # Data to display the current year-month inside the shift_list
 currentDate = datetime.now()
@@ -53,6 +55,9 @@ urlpatterns = [
     url(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
         ShiftMonthView.as_view(month_format='%m'),
         name="archive_month_numeric"),
+    url(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<pk>\d+)/$',
+        ShiftMonthContractView.as_view(month_format='%m'),
+        name="archive_month_contract_numeric"),
     url(r'^archive/(?P<year>[0-9]{4})/$',
         ShiftYearView.as_view(),
         name="article_year_archive"),

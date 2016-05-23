@@ -14,8 +14,7 @@ from django.views.generic.list import ListView
 from clock.pages.mixins import UserObjectOwnerMixin
 from clock.shifts.forms import ShiftForm, QuickActionForm
 from clock.shifts.models import Shift
-from clock.shifts.utils import get_current_shift
-
+from clock.shifts.utils import get_all_contracts, get_current_shift, get_default_contract, get_return_url
 
 @require_POST
 @login_required
@@ -111,8 +110,12 @@ class ShiftListView(ListView):
 class ShiftManualCreate(CreateView):
     model = Shift
     form_class = ShiftForm
-    success_url = reverse_lazy('shift:list')
+    # success_url = reverse_lazy('shift:list')
+    #success_url = get_return_url(self.get_request, 'shift:list')
     template_name = 'shift/edit.html'
+
+    def get_success_url(self):
+        return get_return_url(self.request, 'shift:list')
 
     def get_initial(self):
         """
@@ -188,10 +191,30 @@ class ShiftMonthView(MonthArchiveView):
     template_name = 'shift/month_archive_view.html'
 
     class Meta:
-        ordering = ["shift_started"]
+        ordering = ["-shift_started"]
 
     def get_queryset(self):
-        return Shift.objects.filter(employee=self.request.user, shift_finished__isnull=False).order_by('shift_started')
+        return Shift.objects.filter(employee=self.request.user, shift_finished__isnull=False)
+
+    @property
+    def get_all_contracts(self):
+        return get_all_contracts(self.request.user)
+
+    @property
+    def get_default_contract(self):
+        return get_default_contract(self.request.user)
+
+
+@method_decorator(login_required, name="dispatch")
+class ShiftMonthContractView(ShiftMonthView):
+    def get_queryset(self):
+        contract_pk = self.kwargs['pk']
+        queryset = Shift.objects.filter(employee=self.request.user.pk, shift_finished__isnull=False)
+        if contract_pk == "0":
+            queryset = queryset.filter(contract__isnull=True)
+        else:
+            queryset = queryset.filter(contract=contract_pk)
+        return queryset
 
 
 @method_decorator(login_required, name="dispatch")

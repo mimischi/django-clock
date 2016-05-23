@@ -361,10 +361,6 @@ tr.child > td.child > ul > li {
 /* Shift Datepicker
 -------------------------------------------------- */
 
-.objectList-topbar {
-    margin-bottom: 10px;
-}
-
 .objectList-topbar .form-group {
     margin-bottom: 0;
 }

@@ -71,6 +71,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'clock.pages.middleware.LastVisitedMiddleware',
 )
 
 # MIGRATIONS CONFIGURATION

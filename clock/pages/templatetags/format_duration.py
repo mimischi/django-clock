@@ -1,4 +1,6 @@
-﻿from django import template
+﻿import time
+
+from django import template
 
 register = template.Library()
 
@@ -20,6 +22,10 @@ def format_hhmm(td):
     # time = td - timedelta(microseconds=td.microseconds)
     # return time
 
+
+@register.filter
+def format_hhmm2(td):
+    return time.strftime('%H:%M:%S', time.gmtime(td.seconds + td.days * 86400))
 
 # Django docs says we should not use built-in |date template filter to display week numbers.
 # See: https://docs.djangoproject.com/en/1.9/ref/class-based-views/generic-date-based/#weekarchiveview
