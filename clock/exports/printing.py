@@ -182,9 +182,9 @@ class ShiftExport:
         # Go through all shifts and format them accordingly
         for i, shift in enumerate(shifts):
             b1_date = shift.shift_started.strftime('%d.%m.%Y')      # e.g. 24.12.2016
-            b2_start = shift.shift_started.strftime("%H:%M:%S")     # e.g. 08:15:59
+            b2_start = shift.shift_started.strftime("%H:%M")        # e.g. 08:15
             b3_pause = shift.pause_start_end                        # e.g. 08:15 - 15:55
-            b4_end = shift.shift_finished.strftime("%H:%M:%S")      # e.g. 15:55:31
+            b4_end = shift.shift_finished.strftime("%H:%M")         # e.g. 15:55
             b5_total = format_hhmm(shift.shift_duration)            # e.g. 07:40
             b6_cmnt = ""                                            # e.g. "K" or "U"
 
