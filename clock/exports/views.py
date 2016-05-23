@@ -11,7 +11,7 @@ from clock.shifts.models import Shift
 from clock.exports.mixins import PdfResponseMixin
 from clock.exports.serializers import ShiftJSONEncoder
 
-from clock.exports.timesheets.standupstrategy import StandupStrategy
+from clock.exports.stundenzettel_generator.standupstrategy import StandupStrategy
 
 
 @method_decorator(login_required, name="dispatch")

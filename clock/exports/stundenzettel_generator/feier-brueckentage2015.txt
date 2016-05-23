@@ -1,0 +1,39 @@
+#
+# Liste von Feier- und Brückentagen in Hessen für das Kalenderjahr 2015
+# =====================================================================
+#
+# Diese Liste wurde händisch zusammengestellt aus nicht-maschinenlesbaren
+# Webseiten. Sie listet Tage auf, an denen nicht gearbeitet wird (Feiertage)
+# oder wo sich typischerweise Urlaub genommen wird (Brückentage, zB. um
+# Neujahr herum).
+#
+# Das Format zum Einlesen ist einfach: Zeilenweise %d.%m.%Y. Leerzeilen
+# und Kommentare müssen übersprungen werden.
+#
+# -- SK, 2015, CC0
+
+# Feiertage
+
+01.01.2015
+03.04.2015
+06.04.2015
+01.05.2015
+14.05.2015
+25.05.2015
+04.06.2015
+03.10.2015
+25.12.2015
+26.12.2015
+
+# Echte Brückentage
+
+21.12.2015
+22.12.2015
+23.12.2015
+24.12.2015
+28.12.2015
+29.12.2015
+30.12.2015
+31.12.2015
+15.05.2015
+05.06.2015
