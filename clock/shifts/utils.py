@@ -64,7 +64,11 @@ def get_default_contract(user):
         - If no contracts are defined, then return the NoneObject as default
     """
     # Filter all shifts (finished or not) from the current user
-    finished_shifts = Shift.objects.filter(employee=user).latest('shift_started')
+    try:
+        finished_shifts = Shift.objects.filter(employee=user).latest('shift_started')
+    except Shift.DoesNotExist:
+        # If the user just registered and does not have any shifts!
+        return None
 
     # If the user has shifts
     if finished_shifts:
