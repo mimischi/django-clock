@@ -46,12 +46,6 @@
         {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
         {% bootstrap_messages %}
         {% endif %}
-        {% block asd %}
-            MICHAEL REMOVE THIS BLOCK!
-                <h3>Last visited: {{ request.session.last_visited }} -- Current: {{ request.session.currently_visiting }}</h3>
-    <h3>Last kwargs: {{ request.session.last_kwargs }} --- Current: {{ request.session.current_kwargs }}</h3>
-
-        {% endblock asd %}
         {% block container %}There is no content in this container!{% endblock container %}
     </div> <!-- /.container -->
 </div> <!-- /#wrap -->

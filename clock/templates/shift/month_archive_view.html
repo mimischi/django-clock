@@ -56,7 +56,7 @@
         </div>
         <div class="col-sm-4 pull-right">
             {% if view.kwargs.contract %}
-            <a href="{% url 'export:contract' year=view.kwargs.year month=view.kwargs.month contract=view.kwargs.contract %}" class="btn btn-default pull-right"><span
+            <a href="{% url 'export:contract' year=view.kwargs.year month=view.kwargs.month pk=view.kwargs.contract %}" class="btn btn-default pull-right"><span
                     class="fa fa-archive"></span> {% trans 'Export month' %}</a>
             {% endif %}
         </div>

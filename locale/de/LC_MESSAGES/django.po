@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-04-06 06:47+0000\n"
-"PO-Revision-Date: 2016-04-23 12:10+0000\n"
-"Last-Translator:   <mgecht@stud.uni-frankfurt.de>\n"
+"PO-Revision-Date: 2016-05-25 14:27+0000\n"
+"Last-Translator: Michael Gecht <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,7 +49,7 @@ msgstr "Vertrag aktualisieren"
 
 #: clock/contracts/forms.py:44 clock/shifts/forms.py:92
 msgid "Delete"
-msgstr "L&ouml;chen"
+msgstr "L&ouml;schen"
 
 #: clock/contracts/forms.py:47 clock/shifts/forms.py:127
 #: clock/templates/contract/delete.html:21
@@ -93,8 +93,8 @@ msgid ""
 "Your selected starting/finishing time overlaps with at least one"
 "                     finished shift of yours. Please adjust the times."
 msgstr ""
-"Deine Start-/Endzeit &uuml;berlappt mit einer deiner schon beendeten "
-"Schichten. Bitte passe die Zeiten an."
+"Deine Start-/Endzeit überlappt mit einer deiner schon beendeten Schichten. "
+"Bitte passe die Zeiten an."
 
 #: clock/shifts/forms.py:165
 msgid "A pause may not be longer than your actual shift."
