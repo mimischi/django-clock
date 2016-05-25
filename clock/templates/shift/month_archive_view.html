@@ -55,8 +55,8 @@
                     class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
         </div>
         <div class="col-sm-4 pull-right">
-            {% if view.kwargs.pk %}
-            <a href="{% url 'export:contract' year=view.kwargs.year month=view.kwargs.month pk=view.kwargs.pk %}" class="btn btn-default pull-right"><span
+            {% if view.kwargs.contract %}
+            <a href="{% url 'export:contract' year=view.kwargs.year month=view.kwargs.month contract=view.kwargs.contract %}" class="btn btn-default pull-right"><span
                     class="fa fa-archive"></span> {% trans 'Export month' %}</a>
             {% endif %}
         </div>
