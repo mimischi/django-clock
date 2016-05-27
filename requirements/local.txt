@@ -22,6 +22,3 @@ pytest-sugar==0.7.1
 gevent==1.1.1
 # Enables better email testing
 maildump==0.5.3
-
-# Own stuff
-django-rosetta==0.7.11
