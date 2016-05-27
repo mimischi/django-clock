@@ -30,14 +30,10 @@ django-autoslug==1.9.3
 # Time zones support
 pytz==2016.4
 
-# Redis support
-django-redis==4.4.3
-redis>=2.10.0
-
 
 # Your custom requirements go here
-django-bootstrap-breadcrumbs
+django-bootstrap-breadcrumbs=0.7.3
 django-bootstrap3==7.0.1
 django-bootstrap3-datetimepicker-2==2.4.2
-reportlab
-lxml
+reportlab=3.2.0
+lxml=3.5.0

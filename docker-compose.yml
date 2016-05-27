@@ -19,12 +19,10 @@ services:
     user: django
     depends_on:
       - postgres
-      - redis
     command: /gunicorn.sh
     env_file: .env
     depends_on:
       - postgres
-      - redis
 
   nginx:
     build: ./compose/nginx
@@ -32,6 +30,3 @@ services:
       - django
     ports:
       - "0.0.0.0:80:80"
-
-  redis:
-    image: redis:3.0

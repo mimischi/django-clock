@@ -60,4 +60,3 @@ INSTALLED_APPS += ('django_extensions', 'rosetta')
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Your local stuff: Below this line define 3rd party library settings
-ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True

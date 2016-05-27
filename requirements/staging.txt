@@ -1,5 +1,4 @@
-# Pro-tip: Try not to put anything here. There should be no dependency in
-#	production that isn't in development.
+# Own requirements file for staging deployment
 -r base.txt
 
 # WSGI Handler
@@ -19,3 +18,6 @@ django-mailgun==0.9.1
 # Raven is the Sentry client
 # --------------------------
 raven
+
+# Collaboratory translations
+django-rosetta==0.7.11
