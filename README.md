@@ -32,19 +32,7 @@ Hier für muss die aktuelle Version von Docker installiert sein. Am einfachsten 
 
     git clone https://github.com/mimischi/django-clock.git --branch develop
 
-#### 2. Requirements-Datei anpassen
-
-Standardmäßig zeigt requirements.txt auf die production.txt. Wir wollen allerdings im lokalen Development keine Dependencies für die Produktion installieren.
-
-Zu erst muss die requirements.txt angepasst werden:
-    
-    -r requirements/local.txt
-
-Anschließend wird folgender Befehl im Terminal ausgeführt:
-
-    git update-index --assume-unchanged requirements.txt
-
-#### 3. Für OS X (nicht nötig auf Linux)
+#### 2. Für OS X (nicht nötig auf Linux)
 
 Aktuell muss auf OS X (und Windows) eine extra VM eingerichtet werden, damit Docker läuft. Dazu muss auch [VirtualBox](https://www.virtualbox.org/) installiert sein.
 
@@ -54,12 +42,12 @@ Danach muss die soeben erstellte Maschine zur aktuell genutzten gesetzt werden:
 
     eval "$(docker-machine env clock)"
 
-#### 4. System aufbauen & starten
+#### 3. System aufbauen & starten
 
     docker-compose -f dev.yml build
     docker-compose -f dev.yml up -d
    
-#### Datenbank migrieren
+#### 4. Datenbank migrieren
 
     docker-compose -f dev.yml run django python manage.py migrate
 
