@@ -1,4 +1,6 @@
 # coding=utf-8
+from datetime import timedelta
+
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.platypus import SimpleDocTemplate, Flowable, Paragraph, Table, TableStyle, Spacer, Frame, KeepInFrame
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -153,7 +155,7 @@ class ShiftExport:
 
         # Add boxes above the table
         boxes = [BoxyLine(width=doc.width, height=20, text_label="FB / Institut / Abteilung",
-                          text_box=self.context['object_list'][0].contract_or_none), Spacer(1, 4),
+                          text_box=self.context['department']), Spacer(1, 4),
                  BoxyLine(width=doc.width, height=20, text_label="Name des Mitarbeiters",
                           text_box=""), Spacer(1, 4),
                  BoxyLine(width=100 + 155, height=20, text_label="Pers. Nr. (falls vorhanden)",
@@ -177,7 +179,11 @@ class ShiftExport:
         shifts = self.context['shift_list']
 
         # Go through all shifts and format them accordingly
+        i = 0
         for i, shift in enumerate(shifts):
+            #         a = i
+            #         if a > 18:
+            #             break
             b1_date = shift.shift_started.strftime('%d.%m.%Y')      # e.g. 24.12.2016
             b2_start = shift.shift_started.strftime("%H:%M")        # e.g. 08:15
             b3_pause = shift.pause_start_end                        # e.g. 08:15 - 15:55
@@ -200,7 +206,10 @@ class ShiftExport:
                 table_data.append(['', '', '', '', '', ''])
                 f += 1
 
-        table_data.append(['', '', '', 'Summe:', format_hhmm(self.context['total_shift_duration']), ''])
+        total_shift_duration = ''
+        if self.context['total_shift_duration'] > timedelta(seconds=0):
+            total_shift_duration = format_hhmm(self.context['total_shift_duration'])
+        table_data.append(['', '', '', 'Summe:', total_shift_duration, ''])
 
         # Create the table. Column width are set to fit the current data correctly.
         shift_table = Table(table_data, colWidths=(22.5*mm, 22.5*mm, 27.5*mm, 22.5*mm, 45*mm, 12.5*mm))

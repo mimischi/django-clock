@@ -55,11 +55,8 @@
                     class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
         </div>
         <div class="col-sm-4 pull-right">
-            {% if view.kwargs.contract %}
-            <a href="{% url 'export:contract' year=view.kwargs.year month=view.kwargs.month pk=view.kwargs.contract %}" class="btn btn-default pull-right"><span
-                    class="fa fa-archive"></span> {% trans 'Export month' %}</a>
-            {% endif %}
-        </div>
+            <a href="{% if not view.kwargs.contract or view.kwargs.contract|add:0 < 1 %}#{% else %}{% url 'export:contract' year=view.kwargs.year month=view.kwargs.month pk=view.kwargs.contract %}{% endif %}" class="btn btn-default pull-right{% if not view.kwargs.contract or view.kwargs.contract|add:0 < 1 %} disabled{% endif %}"><span
+                class="fa fa-archive"></span> {% trans 'Export month' %}</a></div>
         <div class="col-sm-12">
             <select id="contractSelect" class="block form-control work-select selectpicker" name="contractSelect"
                     {% if not view.get_all_contracts %}disabled{% endif %}>
@@ -67,7 +64,7 @@
                     <option value="0"{% if view.contract == '0' %}selected="selected"{% endif %}>{% trans 'Shifts without contracts' %}</option>
                     <option value="00"{% if view.contract == '00' %}selected="selected"{% endif %}>{% trans 'All contracts' %}</option>
                     {% for contract in view.get_all_contracts %}
-                    <option value="{{ contract.pk }}"{% if contract.pk == view.contract|add:0 %}selected="selected"{% endif %}{% if not view.kwargs.contract and contract.department == view.get_default_contract %}selected="selected"{% endif %}>{{ contract }}</option>
+                    <option value="{{ contract.pk }}"{% if contract.pk == view.contract|add:0 %}selected="selected"{% endif %}{% if not view.kwargs.contract and not view.contract == '00' and contract.department == view.get_default_contract %}selected="selected"{% endif %}>{{ contract }}</option>
                     {% endfor %}
                 </optgroup>
             </select>
@@ -124,6 +121,9 @@
     <script type="text/javascript" src="{% static 'libraries/datatables/js/datatables.min.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+
+
             $('#contractSelect').change(function() {
                 var year = moment().format("YYYY");
                 var month = moment().format("MM");

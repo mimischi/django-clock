@@ -2,14 +2,17 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic.dates import MonthArchiveView
 
 from braces.views import JSONResponseMixin
 
-from clock.shifts.models import Shift
+from clock.contracts.models import Contract
 from clock.exports.mixins import PdfResponseMixin
 from clock.exports.serializers import ShiftJSONEncoder
+from clock.shifts.models import Shift
 
 from clock.exports.stundenzettel_generator.standupstrategy import StandupStrategy
 
@@ -18,9 +21,16 @@ from clock.exports.stundenzettel_generator.standupstrategy import StandupStrateg
 class ExportMonth(PdfResponseMixin, MonthArchiveView):
     model = Shift
     date_field = "shift_started"
+    allow_empty = True
 
     def get_context_data(self, **kwargs):
         context = super(ExportMonth, self).get_context_data(**kwargs)
+
+        if not context['shift_list']:
+            context['department'] = Contract.objects.get(pk=int(self.kwargs['pk'])).department
+            context['total_shift_duration'] = timedelta(seconds=0)
+        else:
+            context['department'] = context['object_list'][0].contract_or_none
 
         total_shift_duration = timedelta(seconds=0)
         for shift in context['shift_list']:
@@ -40,6 +50,9 @@ class ExportNuke(PdfResponseMixin, MonthArchiveView):
 
     def get_context_data(self, **kwargs):
         context = super(ExportNuke, self).get_context_data(**kwargs)
+
+        if int(context['view'].kwargs['hours']) > 80:
+            raise Http404(_('Whoops!'))
 
         nuke_data = {
             'INSTITUT': '',
