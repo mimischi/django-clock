@@ -7,12 +7,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.flatpages import views
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.http import HttpResponse
 from django.views.generic import RedirectView
 from django.views import defaults as default_views
 
 urlpatterns = [
                   url(r'^', include("clock.pages.urls"), name='pages'),
                   url(r'^about/$', views.flatpage, {'url': '/about/'}, name='about'),
+                  url(r'^robots.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", content_type="text/plain")),
                   url(
                       r'^favicon.ico$',
                       RedirectView.as_view(
@@ -35,7 +37,6 @@ urlpatterns = [
                   url(r'^contract/', include("clock.contracts.urls", namespace="contract")),
                   url(r'^export/', include("clock.exports.urls", namespace="export")),
                   # url(r'^', include("clock.work.urls", namespace="work")),
-
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
