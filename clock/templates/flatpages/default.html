@@ -4,7 +4,7 @@
 {% block extra_title %}{% trans flatpage.title %}{% endblock extra_title %}
 
 {% block breadcrumbs %}{{ block.super }}
-    {% breadcrumb "About" "flatpage.url" %}
+    {% breadcrumb flatpage.title "flatpage.url" %}
 {% endblock breadcrumbs %}
 
 {% block container %}

@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import HttpResponseBadRequest
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.dates import MonthArchiveView
@@ -52,7 +52,7 @@ class ExportNuke(PdfResponseMixin, MonthArchiveView):
         context = super(ExportNuke, self).get_context_data(**kwargs)
 
         if int(context['view'].kwargs['hours']) > 80:
-            raise Http404(_('Whoops!'))
+            raise HttpResponseBadRequest(_('We can\'t export more than 80 hours per month!'))
 
         nuke_data = {
             'INSTITUT': '',

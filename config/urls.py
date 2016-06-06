@@ -5,7 +5,6 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.flatpages import views
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.http import HttpResponse
 from django.views.generic import RedirectView
@@ -13,7 +12,6 @@ from django.views import defaults as default_views
 
 urlpatterns = [
                   url(r'^', include("clock.pages.urls"), name='pages'),
-                  # url(r'^about/$', views.flatpage, {'url': '/about/'}, name='about'),
                   url(r'^robots.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", content_type="text/plain")),
                   url(
                       r'^favicon.ico$',
