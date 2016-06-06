@@ -10,11 +10,11 @@ from django.views.generic.dates import DayArchiveView, MonthArchiveView, WeekArc
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-
 from clock.pages.mixins import UserObjectOwnerMixin
 from clock.shifts.forms import ShiftForm, QuickActionForm
 from clock.shifts.models import Shift
 from clock.shifts.utils import get_all_contracts, get_current_shift, get_default_contract, get_return_url
+
 
 @require_POST
 @login_required
@@ -195,6 +195,14 @@ class ShiftMonthView(MonthArchiveView):
     class Meta:
         ordering = ["-shift_started"]
 
+    def get_context_data(self, **kwargs):
+        context = super(ShiftMonthView, self).get_context_data()
+
+        if 'year' not in self.kwargs and 'month' not in self.kwargs:
+            self.kwargs['year'] = self.year
+            self.kwargs['month'] = self.month
+        return context
+
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user, shift_finished__isnull=False)
 
@@ -217,6 +225,13 @@ class ShiftMonthContractView(ShiftMonthView):
         '<contract>': Show shifts assigned to contract with the id <contract>
     """
     contract = '00'
+
+    def get_context_data(self, **kwargs):
+        context = super(ShiftMonthContractView, self).get_context_data()
+
+        if 'contract' not in self.kwargs:
+            self.kwargs['contract'] = self.contract
+        return context
 
     def get_queryset(self):
         try:

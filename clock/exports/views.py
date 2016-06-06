@@ -30,7 +30,7 @@ class ExportMonth(PdfResponseMixin, MonthArchiveView):
             context['department'] = Contract.objects.get(pk=int(self.kwargs['pk'])).department
             context['total_shift_duration'] = timedelta(seconds=0)
         else:
-            context['department'] = context['object_list'][0].contract_or_none
+            context['department'] = context['shift_list'][0].contract_or_none
 
         total_shift_duration = timedelta(seconds=0)
         for shift in context['shift_list']:
