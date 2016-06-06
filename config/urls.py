@@ -13,7 +13,7 @@ from django.views import defaults as default_views
 
 urlpatterns = [
                   url(r'^', include("clock.pages.urls"), name='pages'),
-                  url(r'^about/$', views.flatpage, {'url': '/about/'}, name='about'),
+                  # url(r'^about/$', views.flatpage, {'url': '/about/'}, name='about'),
                   url(r'^robots.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", content_type="text/plain")),
                   url(
                       r'^favicon.ico$',
