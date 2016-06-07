@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
+from crispy_forms.bootstrap import FormActions
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, HTML
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, HTML
-from crispy_forms.bootstrap import FormActions
 
 from clock.contracts.models import Contract
 
@@ -37,7 +38,7 @@ class ContractForm(forms.ModelForm):
             add_input_text = _('Create new contract')
         elif self.initial['view'] == 'contract_update':
             add_input_text = _('Update contract')
-            delete_html_inject = '<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
+            delete_html_inject = u'<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
             %(delete_translation)s</a>' % {'delete_url': reverse_lazy('contract:delete',
                                                                       kwargs={
                                                                           'pk': self.instance.pk}),
