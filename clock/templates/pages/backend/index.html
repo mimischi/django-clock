@@ -1,11 +1,61 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load i18n staticfiles format_duration %}
 
 {% block extra_head %}{{ block.super }}
+    <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'libraries/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'libraries/bootstrap-select/css/bootstrap-select.min.css' %}">
 {% endblock extra_head %}
 
 {% block container %}
+    <div class="text-center">
+        {% if not shift_closed %}
+            <h3>{% trans 'No active shift running!' %}</h3>
+        {% else %}
+            <h4>{% trans 'Current duration:' %} <span id="current_duration">{{ current_duration|format_hhmm2 }}</span>
+            </h4>
+            <p>{% trans 'Your current shift started at' %}<br/>
+                {{ current_shift.shift_started }}</p>
+        {% endif %}
+    </div>
     {% include 'pages/backend/quick_action.html' %}
 {% endblock container %}
+
+{% block extra_js %}
+    {% if shift_closed %}
+        <script type="application/javascript">
+            (function () {
+                // JS from here: http://cssdeck.com/labs/minimal-css3-digital-clock
+                var clock = document.querySelector('span#current_duration');
+
+                // But there is a little problem
+                // we need to pad 0-9 with an extra
+                // 0 on the left for hours, seconds, minutes
+
+                var pad = function (x) {
+                    return x < 10 ? '0' + x : x;
+                };
+
+                var d = new Date(0, 0, 0, {{ current_duration|format_hh }}, {{ current_duration|format_mm }}, {{ current_duration|format_sec }});
+
+                var ticktock = function () {
+                    d.setSeconds(d.getSeconds() + 1);
+
+                    var h = pad(d.getHours());
+                    var m = pad(d.getMinutes());
+                    var s = pad(d.getSeconds());
+
+                    var current_time = [h, m, s].join(':');
+
+                    clock.innerHTML = current_time;
+
+                };
+
+                ticktock();
+
+                // Calling ticktock() every 1 second
+                setInterval(ticktock, 1000);
+            }());
+        </script>
+    {% endif %}
+{% endblock extra_js %}
