@@ -86,6 +86,7 @@
             <th>{% trans 'Shift duration' %}</th>
         </tr>
         </thead>
+        {% if object_list|length > 5 %}
         <tfoot>
         <tr>
             {% if object_list %}
@@ -100,6 +101,7 @@
             <th>{% trans 'Shift duration' %}</th>
         </tr>
         </tfoot>
+        {% endif %}
         <tbody>
         {% for shift in object_list %}
             <tr id="{{ shift.pk }}">

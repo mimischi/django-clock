@@ -15,7 +15,8 @@
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
                             {% if not request.user.is_authenticated %}
-                                <li class="{% active 'about' %}"><a href="{% url 'about' %}">About</a></li>
+                                <li class="{% active 'about' %}"><a href="{% url 'about' %}">{% trans 'About' %}</a>
+                                </li>
                                 <li class="{% active 'account_login' %}"><a href="{% url 'account_login' %}">{% trans 'Login' %}</a>
                                 </li>
                                 <li class="{% active 'account_signup' %}"><a
@@ -34,7 +35,7 @@
                                             <li class="divider"></li>
                                         {% endif %}
                                         <li class="dropdown-header">{% trans 'Account' %}</li>
-                                        <li><a href="{% url 'profiles:account_view' %}">{% trans 'Profile' %}</a></li>
+                                        {#                                        <li><a href="{% url 'profiles:account_view' %}">{% trans 'Profile' %}</a></li>#}
                                         <li><a href="{% url 'profiles:account_view' %}">{% trans 'Settings' %}</a></li>
                                         <li class="divider"></li>
                                         <li class="dropdown-header">{% trans 'Current session' %}</li>

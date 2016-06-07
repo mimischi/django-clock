@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-07 09:49+0000\n"
-"PO-Revision-Date: 2016-06-07 10:16+0000\n"
+"POT-Creation-Date: 2016-06-07 10:34+0000\n"
+"PO-Revision-Date: 2016-06-07 10:35+0000\n"
 "Last-Translator: Michael Gecht <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -49,12 +49,12 @@ msgstr "Neuen Vertrag erstellen"
 msgid "Update contract"
 msgstr "Vertrag aktualisieren"
 
-#: clock/contracts/forms.py:44 clock/profiles/forms.py:25
-#: clock/shifts/forms.py:103
+#: clock/contracts/forms.py:44 clock/profiles/forms.py:24
+#: clock/shifts/forms.py:104
 msgid "Delete"
 msgstr "Löschen"
 
-#: clock/contracts/forms.py:47 clock/shifts/forms.py:139
+#: clock/contracts/forms.py:47 clock/shifts/forms.py:140
 #: clock/templates/contract/delete.html:21
 #: clock/templates/shift/delete.html:20
 msgid "Cancel"
@@ -80,11 +80,15 @@ msgstr "Vertrag"
 msgid "We can't export more than 80 hours per month!"
 msgstr "Ein Monat darf nicht mehr als 80 gearbeitete Stunden beinhalten! "
 
-#: clock/pages/templatetags/base_extras.py:25 clock/shifts/forms.py:23
+#: clock/pages/templatetags/base_extras.py:25 clock/shifts/forms.py:24
 msgid "None defined"
 msgstr "Ohne Vertrag"
 
-#: clock/profiles/forms.py:29
+#: clock/profiles/forms.py:11
+msgid "Username"
+msgstr "Benutzername"
+
+#: clock/profiles/forms.py:28
 msgid "The input does not match your username!"
 msgstr "Die Eingabe stimmt nicht mit dem Benutzernamen überein!"
 
@@ -97,15 +101,15 @@ msgstr ""
 "<p>Falls du dein Profil wirklich löschen willst, dann tippe deinen "
 "Benutzernamen <strong>%s</strong> ein um dies zu bestätigen.</p>"
 
-#: clock/shifts/forms.py:96
+#: clock/shifts/forms.py:97
 msgid "Create new shift"
 msgstr "Neue Schicht erstellen"
 
-#: clock/shifts/forms.py:98
+#: clock/shifts/forms.py:99
 msgid "Update"
 msgstr "Schicht aktualisieren"
 
-#: clock/shifts/forms.py:173
+#: clock/shifts/forms.py:174
 msgid ""
 "Your selected starting/finishing time overlaps with at least one"
 "                     finished shift of yours. Please adjust the times."
@@ -113,7 +117,7 @@ msgstr ""
 "Deine Start-/Endzeit überlappt mit einer bereits beendeten Schicht. Bitte "
 "passe die Zeiten an."
 
-#: clock/shifts/forms.py:177
+#: clock/shifts/forms.py:178
 msgid "A pause may not be longer than your actual shift."
 msgstr "Eine Pause kann nicht länger als eine Schicht sein."
 
@@ -187,31 +191,28 @@ msgstr "fortgesetzt"
 msgid "Account"
 msgstr "Konto"
 
-#: clock/templates/account/base.html:19 clock/templates/nav.html.py:37
+#: clock/templates/account/base.html:20 clock/templates/nav.html.py:37
 #: clock/templates/profiles/profile.html:4
 #: clock/templates/profiles/profile.html:14
 msgid "Profile"
 msgstr "Mein Profil"
 
-#: clock/templates/account/base.html:20
+#: clock/templates/account/base.html:21
 #: clock/templates/account/password_change.html:4
 msgid "Change password"
 msgstr "Kennwort ändern"
 
-#: clock/templates/account/base.html:21 clock/templates/account/email.html:4
+#: clock/templates/account/base.html:22 clock/templates/account/email.html:4
 #: clock/templates/account/email.html:11
 msgid "E-mail settings"
 msgstr "E-Mail Einstellungen"
 
-#: clock/templates/account/base.html:22 clock/templates/profiles/delete.html:4
+#: clock/templates/account/base.html:24 clock/templates/profiles/delete.html:4
 #: clock/templates/profiles/delete.html:11
-#| msgid "Delete shift"
 msgid "Delete profile"
 msgstr "Konto löschen"
 
 #: clock/templates/account/email.html:14
-#| msgid ""
-#| "The following e-mail addresses are associated with your account:"
 msgid "The following e-mail addresses are associated with your account:"
 msgstr "Die folgenden E-Mail-Adressen sind mit deinem Konto verbunden:"
 
@@ -384,7 +385,6 @@ msgid "Set Password"
 msgstr "Passwort setzen"
 
 #: clock/templates/account/signup.html:12
-#| msgid "Already have an account?"
 msgid "Already have an account?"
 msgstr "Schon registriert?"
 
@@ -483,6 +483,10 @@ msgstr "Vertrag #"
 msgid "Hours"
 msgstr "Stundenzahl"
 
+#: clock/templates/nav.html:18 clock/templates/pages/about.html.py:4
+msgid "About"
+msgstr "Über"
+
 #: clock/templates/nav.html:22
 msgid "Try it now!"
 msgstr "Jetzt ausprobieren!"
@@ -507,10 +511,6 @@ msgstr "Einstellungen"
 msgid "Current session"
 msgstr "Aktuelle Sitzung"
 
-#: clock/templates/pages/about.html:4
-msgid "About"
-msgstr "Über"
-
 #: clock/templates/pages/backend/quick_action.html:7
 msgid "Resume"
 msgstr "Fortsetzen"
@@ -528,8 +528,6 @@ msgid "Stop"
 msgstr "Stop"
 
 #: clock/templates/profiles/profile.html:15
-#| msgid ""
-#| "At some point you will see some information regarding your profile here."
 msgid ""
 "At some point you will see some information regarding your account here."
 msgstr ""
@@ -596,11 +594,11 @@ msgstr "Schicht Nr."
 msgid "Name of User"
 msgstr "Name des Nutzers"
 
-#: config/settings/common.py:130
+#: config/settings/common.py:129
 msgid "German"
 msgstr "Deutsch"
 
-#: config/settings/common.py:131
+#: config/settings/common.py:130
 msgid "English"
 msgstr "Englisch"
 
