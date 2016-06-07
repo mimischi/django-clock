@@ -69,7 +69,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
+    # We're overriding the normal LocaleMiddleware with a small extension for our needs!
+    # 'django.middleware.locale.LocaleMiddleware',
+    'clock.profiles.middleware.LocaleMiddlewareExtended',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'clock.pages.middleware.LastVisitedMiddleware',
 )

@@ -14,7 +14,7 @@
     <h2>{% trans 'Profile' %}</h2>
     <p>{% trans 'At some point you will see some information regarding your account here.' %}</p>
     <h2>{% trans 'Set site language' %}</h2>
-    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+    <form action="{% url 'update_language' %}" method="post">{% csrf_token %}
         <input name="next" type="hidden" value="{{ redirect_to }}"/>
         <select name="language" class="selectpicker">
             {% get_current_language as LANGUAGE_CODE %}

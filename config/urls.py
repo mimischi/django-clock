@@ -11,6 +11,8 @@ from django.http import HttpResponse
 from django.views import defaults as default_views
 from django.views.generic import RedirectView
 
+import clock.profiles.views
+
 urlpatterns = [
                   url(r'^', include("clock.pages.urls"), name='pages'),
                   url(r'^about/$', views.flatpage, {'url': '/about/'}, name='about'),
@@ -32,6 +34,7 @@ urlpatterns = [
 
                   # Your stuff: custom urls includes go here
                   # Include urls fot the work module
+                  url(r'^i18n/updatelanguage', clock.profiles.views.update_language, name='update_language'),
                   url(r'^i18n/', include('django.conf.urls.i18n')),
                   url(r'^shift/', include("clock.shifts.urls", namespace="shift")),
                   url(r'^contract/', include("clock.contracts.urls", namespace="contract")),
