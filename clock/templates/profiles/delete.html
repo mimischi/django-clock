@@ -1,0 +1,16 @@
+{% extends 'account/base.html' %}
+{% load django_bootstrap_breadcrumbs crispy_forms_tags i18n %}
+
+{% block extra_title %}{% trans 'Delete profile' %}{% endblock extra_title %}
+
+{% block breadcrumbs %}{{ block.super }}
+    {% breadcrumb 'Delete profile' 'deleteme' %}
+{% endblock breadcrumbs %}
+
+{% block content_account %}
+    <h3>{% trans 'Delete profile' %}</h3>
+    {% autoescape off %}
+        {{ text }}
+    {% endautoescape %}
+    {% crispy form %}
+{% endblock content_account %}

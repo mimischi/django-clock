@@ -7,8 +7,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.http import HttpResponse
-from django.views.generic import RedirectView
 from django.views import defaults as default_views
+from django.views.generic import RedirectView
 
 urlpatterns = [
                   url(r'^', include("clock.pages.urls"), name='pages'),
@@ -25,7 +25,7 @@ urlpatterns = [
                   url(r'^admin/', include(admin.site.urls)),
 
                   # User management
-                  url(r'^accounts/', include("clock.account.urls", namespace="account")),
+                  url(r'^accounts/', include("clock.profiles.urls", namespace="profiles")),
                   url(r'^accounts/', include('allauth.urls')),
 
                   # Your stuff: custom urls includes go here

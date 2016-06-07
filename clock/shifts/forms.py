@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
+from bootstrap3_datetime.widgets import DateTimePicker
+from crispy_forms.bootstrap import FormActions
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, HTML
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from bootstrap3_datetime.widgets import DateTimePicker
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, HTML
-from crispy_forms.bootstrap import FormActions
 
 from clock.contracts.models import Contract
 from clock.shifts.models import Shift
@@ -96,7 +97,7 @@ class ShiftForm(forms.ModelForm):
             add_input_text = _('Create new shift')
         elif self.initial['view'] == 'shift_update':
             add_input_text = _('Update')
-            delete_html_inject = '<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
+            delete_html_inject = u'<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
                                 %(delete_translation)s</a>' % {'delete_url': reverse_lazy('shift:delete',
                                                                                           kwargs={
                                                                                               'pk': self.instance.pk}),

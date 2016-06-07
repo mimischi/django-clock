@@ -4,7 +4,7 @@
 {% block extra_title %}{% trans 'Account' %}{% endblock extra_title %}
 
 {% block breadcrumbs %}{{ block.super }}
-    {% breadcrumb "Account" "account:account_view" %}
+    {% breadcrumb "Account" "profiles:account_view" %}
 {% endblock breadcrumbs %}
 
 {% block container %}
@@ -16,9 +16,12 @@
             </div>
             <div class="panel-body">
                 <ul class="nav nav-pills nav-stacked">
-                    <li class="{% active 'account:account_view' %}"><a href="{% url 'account:account_view' %}">{% trans 'Profile' %}</a></li>
+                    <li class="{% active 'profiles:account_view' %}"><a
+                            href="{% url 'profiles:account_view' %}">{% trans 'Profile' %}</a></li>
                     <li class="{% active 'account_change_password' %}"><a href="{% url 'account_change_password' %}">{% trans 'Change password' %}</a></li>
                     <li class="{% active 'account_email' %}"><a href="{% url 'account_email' %}">{% trans 'E-mail settings' %}</a></li>
+                    <li class="{% active 'profiles:delete' %}"><a
+                            href="{% url 'profiles:delete' %}">{% trans 'Delete profile' %}</a></li>
                 </ul>
             </div>
         </div>
