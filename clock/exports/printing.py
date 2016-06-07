@@ -1,21 +1,26 @@
 # coding=utf-8
+import os
 from datetime import timedelta
 
-from reportlab.lib.pagesizes import letter, A4
-from reportlab.platypus import SimpleDocTemplate, Flowable, Paragraph, Table, TableStyle, Spacer, Frame, KeepInFrame
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER
-from reportlab.lib.units import inch, mm
+from django.conf import settings
 from reportlab.lib import colors
+from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.pagesizes import letter, A4
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch, mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.platypus import SimpleDocTemplate, Flowable, Paragraph, Table, TableStyle, Spacer, Frame, KeepInFrame
 
 from clock.pages.templatetags.format_duration import format_hhmm
 
 # Register custom fonts. Path is hardcoded so we're using the internal fonts from /static/
-pdfmetrics.registerFont(TTFont('OpenSans-Regular', '/app/clock/static/common/fonts/opensans/OpenSans-Regular.ttf'))
-pdfmetrics.registerFont(TTFont('OpenSans-Bold', '/app/clock/static/common/fonts/opensans/OpenSans-Bold.ttf'))
-pdfmetrics.registerFont(TTFont('OpenSans-Italic', '/app/clock/static/common/fonts/opensans/OpenSans-Italic.ttf'))
+pdfmetrics.registerFont(TTFont('OpenSans-Regular', os.path.join(str(settings.APPS_DIR),
+                                                                'static/common/fonts/opensans/OpenSans-Regular.ttf')))
+pdfmetrics.registerFont(TTFont('OpenSans-Bold', os.path.join(str(settings.APPS_DIR),
+                                                             'static/common/fonts/opensans/OpenSans-Bold.ttf')))
+pdfmetrics.registerFont(TTFont('OpenSans-Italic', os.path.join(str(settings.APPS_DIR),
+                                                               'static/common/fonts/opensans/OpenSans-Italic.ttf')))
 
 
 class BoxyLine(Flowable):

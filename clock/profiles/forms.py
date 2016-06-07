@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class DeleteUserForm(forms.Form):
     username = forms.CharField(
-        label="Username",
+        label=_("Username"),
         max_length=80,
         required=True,
     )

@@ -34,8 +34,8 @@
                                             <li class="divider"></li>
                                         {% endif %}
                                         <li class="dropdown-header">{% trans 'Account' %}</li>
-                                        <li><a href="{% url 'account:account_view' %}">{% trans 'Profile' %}</a></li>
-                                        <li><a href="{% url 'account:account_view' %}">{% trans 'Settings' %}</a></li>
+                                        <li><a href="{% url 'profiles:account_view' %}">{% trans 'Profile' %}</a></li>
+                                        <li><a href="{% url 'profiles:account_view' %}">{% trans 'Settings' %}</a></li>
                                         <li class="divider"></li>
                                         <li class="dropdown-header">{% trans 'Current session' %}</li>
                                         <li><a id="account_logout" href="{% url 'account_logout' %}">{% trans 'Logout' %}</a></li>
