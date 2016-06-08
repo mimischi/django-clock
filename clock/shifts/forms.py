@@ -35,7 +35,7 @@ class QuickActionForm(forms.Form):
 class ShiftForm(forms.ModelForm):
     class Meta:
         model = Shift
-        fields = ('shift_started', 'shift_finished', 'pause_duration', 'contract', 'note',)
+        fields = ('shift_started', 'shift_finished', 'pause_duration', 'contract', 'key', 'note',)
         widgets = {
             'shift_started': DateTimePicker(
                 options={
@@ -62,6 +62,11 @@ class ShiftForm(forms.ModelForm):
                 }
             ),
             'contract': forms.Select(
+                attrs={
+                    'class': 'selectpicker'
+                }
+            ),
+            'key': forms.Select(
                 attrs={
                     'class': 'selectpicker'
                 }

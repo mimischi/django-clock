@@ -16,6 +16,12 @@ class Shift(models.Model):
     Employees start/pause/stop shifts to track their worktime.
     May be assigned to a contract.
     """
+
+    KEY_CHOICES = (
+        (_('S'), _('Sick')),
+        (_('V'), _('Vacation'))
+    )
+
     employee = models.ForeignKey(settings.AUTH_USER_MODEL)
     contract = models.ForeignKey(
         Contract,
@@ -40,6 +46,7 @@ class Shift(models.Model):
         default=timedelta(seconds=0),
         verbose_name=_('Pause duration')
     )
+    key = models.CharField(_('Key'), max_length=2, choices=KEY_CHOICES, blank=True)
     note = models.TextField(_('Note'), blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

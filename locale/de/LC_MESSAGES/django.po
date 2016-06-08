@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-07 12:45+0000\n"
-"PO-Revision-Date: 2016-06-07 15:56+0000\n"
+"POT-Creation-Date: 2016-06-08 12:39+0000\n"
+"PO-Revision-Date: 2016-06-08 12:40+0000\n"
 "Last-Translator: Michael Gecht <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -50,11 +50,11 @@ msgid "Update contract"
 msgstr "Vertrag aktualisieren"
 
 #: clock/contracts/forms.py:45 clock/profiles/forms.py:24
-#: clock/shifts/forms.py:97
+#: clock/shifts/forms.py:102
 msgid "Delete"
 msgstr "Löschen"
 
-#: clock/contracts/forms.py:48 clock/shifts/forms.py:133
+#: clock/contracts/forms.py:48 clock/shifts/forms.py:138
 #: clock/templates/contract/delete.html:21
 #: clock/templates/shift/delete.html:20
 msgid "Cancel"
@@ -68,10 +68,10 @@ msgstr "Abteilung"
 msgid "Abbreviation"
 msgstr "Kürzel"
 
-#: clock/contracts/models.py:19 clock/shifts/models.py:25
+#: clock/contracts/models.py:19 clock/shifts/models.py:31
 #: clock/templates/contract/list.html:24 clock/templates/nav.html.py:27
 #: clock/templates/shift/month_archive_view.html:82
-#: clock/templates/shift/month_archive_view.html:97
+#: clock/templates/shift/month_archive_view.html:98
 msgid "Contract"
 msgstr "Vertrag"
 
@@ -96,10 +96,9 @@ msgid "Full name"
 msgstr "Vor- und Nachname"
 
 #: clock/profiles/models.py:9
-#, fuzzy
 #| msgid "Set site language"
 msgid "Site language"
-msgstr "Sprache ändern"
+msgstr "Sprache"
 
 #: clock/profiles/views.py:65
 #, python-format
@@ -110,15 +109,15 @@ msgstr ""
 "<p>Falls du dein Profil wirklich löschen willst, dann tippe deinen "
 "Benutzernamen <strong>%s</strong> ein um dies zu bestätigen.</p>"
 
-#: clock/shifts/forms.py:90
+#: clock/shifts/forms.py:95
 msgid "Create new shift"
 msgstr "Neue Schicht erstellen"
 
-#: clock/shifts/forms.py:92
+#: clock/shifts/forms.py:97
 msgid "Update"
 msgstr "Schicht aktualisieren"
 
-#: clock/shifts/forms.py:167
+#: clock/shifts/forms.py:172
 msgid ""
 "Your selected starting/finishing time overlaps with at least one"
 "                     finished shift of yours. Please adjust the times."
@@ -126,48 +125,69 @@ msgstr ""
 "Deine Start-/Endzeit überlappt mit einer bereits beendeten Schicht. Bitte "
 "passe die Zeiten an."
 
-#: clock/shifts/forms.py:171
+#: clock/shifts/forms.py:176
 msgid "A pause may not be longer than your actual shift."
 msgstr "Eine Pause kann nicht länger als eine Schicht sein."
 
-#: clock/shifts/models.py:27 clock/templates/shift/month_archive_view.html:83
-#: clock/templates/shift/month_archive_view.html:98
+#: clock/shifts/models.py:21
+msgid "S"
+msgstr "K"
+
+#: clock/shifts/models.py:21
+msgid "Sick"
+msgstr "Krank"
+
+#: clock/shifts/models.py:22
+msgid "V"
+msgstr "U"
+
+#: clock/shifts/models.py:22
+msgid "Vacation"
+msgstr "Urlaub"
+
+#: clock/shifts/models.py:33 clock/templates/shift/month_archive_view.html:83
+#: clock/templates/shift/month_archive_view.html:99
 msgid "Shift started"
 msgstr "Start der Schicht"
 
-#: clock/shifts/models.py:30 clock/templates/shift/month_archive_view.html:84
-#: clock/templates/shift/month_archive_view.html:99
+#: clock/shifts/models.py:36 clock/templates/shift/month_archive_view.html:84
+#: clock/templates/shift/month_archive_view.html:100
 msgid "Shift finished"
 msgstr "Ende der Schicht"
 
-#: clock/shifts/models.py:35 clock/templates/shift/month_archive_view.html:86
-#: clock/templates/shift/month_archive_view.html:101
+#: clock/shifts/models.py:42 clock/templates/shift/month_archive_view.html:86
+#: clock/templates/shift/month_archive_view.html:102
 msgid "Shift duration"
 msgstr "Schichtdauer"
 
-#: clock/shifts/models.py:40 clock/templates/shift/month_archive_view.html:85
-#: clock/templates/shift/month_archive_view.html:100
+#: clock/shifts/models.py:47 clock/templates/shift/month_archive_view.html:85
+#: clock/templates/shift/month_archive_view.html:101
 msgid "Pause duration"
 msgstr "Pausendauer"
 
-#: clock/shifts/models.py:42
+#: clock/shifts/models.py:49 clock/templates/shift/month_archive_view.html:87
+#: clock/templates/shift/month_archive_view.html:103
+msgid "Key"
+msgstr "Schlüssel"
+
+#: clock/shifts/models.py:50
 msgid "Note"
 msgstr "Notiz"
 
-#: clock/shifts/models.py:125
+#: clock/shifts/models.py:134
 msgid "Your shift must not start in the                     future!"
 msgstr "Ihre Schicht darf nicht in der Zukunft beginnen!"
 
-#: clock/shifts/models.py:128
+#: clock/shifts/models.py:137
 msgid "Your shift must not finish in                     the future!"
 msgstr "Ihre Schicht darf nicht in der Zukunft enden!"
 
-#: clock/shifts/models.py:131
+#: clock/shifts/models.py:140
 msgid ""
 "A shift must not finish, before                     it has even started!"
 msgstr "Eine Schicht darf nicht enden, bevor sie überhaupt begonnen hat!"
 
-#: clock/shifts/models.py:157
+#: clock/shifts/models.py:166
 msgid "Shift currently paused?"
 msgstr "Schicht derzeit pausiert?"
 
@@ -183,15 +203,15 @@ msgstr "Du hast schon eine aktive Schicht!"
 msgid "Your shift has started!"
 msgstr "Deine Schicht hat begonnen!"
 
-#: clock/shifts/views.py:83
+#: clock/shifts/views.py:84
 msgid "Your shift has finished!"
 msgstr "Deine Schicht wurde beendet!"
 
-#: clock/shifts/views.py:93
+#: clock/shifts/views.py:94
 msgid "paused"
 msgstr "pausiert"
 
-#: clock/shifts/views.py:93
+#: clock/shifts/views.py:94
 msgid "continued"
 msgstr "fortgesetzt"
 
@@ -520,6 +540,20 @@ msgstr "Einstellungen"
 msgid "Current session"
 msgstr "Aktuelle Sitzung"
 
+#: clock/templates/pages/backend/index.html:13
+msgid "No active shift running!"
+msgstr "Aktuell ist gibt es keine aktive Schicht!"
+
+#: clock/templates/pages/backend/index.html:15
+#| msgid "Pause duration"
+msgid "Current duration:"
+msgstr "Aktuelle Pausendauer"
+
+#: clock/templates/pages/backend/index.html:21
+#| msgid "Your shift has started!"
+msgid "Your current shift started at"
+msgstr "Deine aktuelle Schicht an am"
+
 #: clock/templates/pages/backend/quick_action.html:7
 msgid "Resume"
 msgstr "Fortsetzen"
@@ -595,7 +629,7 @@ msgid "All contracts"
 msgstr "Alle Verträge"
 
 #: clock/templates/shift/month_archive_view.html:81
-#: clock/templates/shift/month_archive_view.html:96
+#: clock/templates/shift/month_archive_view.html:97
 msgid "Shift No."
 msgstr "Schicht Nr."
 

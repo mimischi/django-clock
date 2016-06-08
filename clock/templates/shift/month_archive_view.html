@@ -84,6 +84,7 @@
             <th>{% trans 'Shift finished' %}</th>
             <th>{% trans 'Pause duration' %}</th>
             <th>{% trans 'Shift duration' %}</th>
+            <th>{% trans 'Key' %}</th>
         </tr>
         </thead>
         {% if object_list|length > 5 %}
@@ -99,6 +100,7 @@
             <th>{% trans 'Shift finished' %}</th>
             <th>{% trans 'Pause duration' %}</th>
             <th>{% trans 'Shift duration' %}</th>
+            <th>{% trans 'Key' %}</th>
         </tr>
         </tfoot>
         {% endif %}
@@ -113,6 +115,7 @@
                 <td class="text-right">{{ shift.shift_finished }}</td>
                 <td class="text-right">{{ shift.pause_duration|format_dttd:"%H:%M" }}</td>
                 <td class="text-right">{{ shift.shift_duration|format_dttd:"%H:%M" }}</td>
+                <td class="text-right">{{ shift.get_key_display }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -198,6 +201,8 @@
                         data: "pause_duration"
                     }, {
                         data: "shift_duration"
+                    }, {
+                        data: "key"
                     }],
                 {% if object_list %}
                     columnDefs: [{
@@ -205,7 +210,7 @@
                         targets: 4
                     }, {
                         responsivePriority: 2,
-                        targets: -1
+                        targets: -2
                     }],
                 {% else %}
                     columnDefs: [{
@@ -213,7 +218,7 @@
                         targets: 2
                     }, {
                         responsivePriority: 2,
-                        targets: -1
+                        targets: -2
                     }],
                 {% endif %}
                 order: [2, 'desc'],

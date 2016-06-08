@@ -194,7 +194,7 @@ class ShiftExport:
             b3_pause = shift.pause_start_end                        # e.g. 08:15 - 15:55
             b4_end = shift.shift_finished.strftime("%H:%M")         # e.g. 15:55
             b5_total = format_dttd(shift.shift_duration, "%H:%M")  # e.g. 07:40
-            b6_cmnt = ""                                            # e.g. "K" or "U"
+            b6_cmnt = shift.key  # e.g. "K" or "U"
 
             # We want every cell content to be an own paragraph, so we can give it a certain style.
             # As always theres probably some other smart solution, but this works.
