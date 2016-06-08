@@ -12,8 +12,12 @@
         {% if not shift_closed %}
             <h3>{% trans 'No active shift running!' %}</h3>
         {% else %}
-            <h4>{% trans 'Current duration:' %} <span id="current_duration">{{ current_duration|format_hhmm2 }}</span>
+            <h4>{% trans 'Current duration:' %} <span id="current_duration">{{ current_duration|format_dttd }}</span>
             </h4>
+            {% if current_shift.is_paused %}
+                <h5>(Currently paused for: <span
+                        id="current_pause_duration">{{ current_shift.total_pause_time|format_dttd }}</span>)</h5>
+            {% endif %}
             <p>{% trans 'Your current shift started at' %}<br/>
                 {{ current_shift.shift_started }}</p>
         {% endif %}
@@ -27,7 +31,9 @@
             (function () {
                 // JS from here: http://cssdeck.com/labs/minimal-css3-digital-clock
                 var clock = document.querySelector('span#current_duration');
-
+                {% if current_shift.is_paused %}
+                    var clock = document.querySelector('span#current_pause_duration');
+                {% endif %}
                 // But there is a little problem
                 // we need to pad 0-9 with an extra
                 // 0 on the left for hours, seconds, minutes
@@ -36,7 +42,10 @@
                     return x < 10 ? '0' + x : x;
                 };
 
-                var d = new Date(0, 0, 0, {{ current_duration|format_hh }}, {{ current_duration|format_mm }}, {{ current_duration|format_sec }});
+                var d = new Date(0, 0, 0, {{ current_duration|format_dttd:"%H" }}, {{ current_duration|format_dttd:"%M" }}, {{ current_duration|format_dttd:"%S" }});
+                {% if current_shift.is_paused %}
+                    var d = new Date(0, 0, 0, {{ current_shift.total_pause_time|format_dttd:"%H" }}, {{ current_shift.total_pause_time|format_dttd:"%M" }}, {{ current_shift.total_pause_time|format_dttd:"%M" }});
+                {% endif %}
 
                 var ticktock = function () {
                     d.setSeconds(d.getSeconds() + 1);
@@ -50,7 +59,6 @@
                     clock.innerHTML = current_time;
 
                 };
-
                 ticktock();
 
                 // Calling ticktock() every 1 second

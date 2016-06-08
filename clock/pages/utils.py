@@ -1,4 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
+
+from django.utils import timezone
 
 
 def round_time(dt=None, date_delta=timedelta(minutes=5), to='average'):
@@ -11,7 +13,7 @@ def round_time(dt=None, date_delta=timedelta(minutes=5), to='average'):
     round_to = date_delta.total_seconds()
 
     if dt is None:
-        dt = datetime.now()
+        dt = timezone.now()
 
     tzmin = dt.min.replace(tzinfo=dt.tzinfo)
     seconds = (dt - tzmin).seconds

@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 
 from django.core.serializers.json import DjangoJSONEncoder
-from clock.pages.templatetags.format_duration import format_hhmm
+
+from clock.pages.templatetags.format_duration import format_dttd
 
 
 class ShiftJSONEncoder(DjangoJSONEncoder):
@@ -18,7 +19,7 @@ class ShiftJSONEncoder(DjangoJSONEncoder):
                 r = r[:-6] + 'Z'
             return r
         elif isinstance(obj, timedelta):
-            return format_hhmm(obj)
+            return format_dttd(obj, "%H:%M")
         elif obj is None:
             return "None"
         else:

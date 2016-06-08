@@ -12,7 +12,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import SimpleDocTemplate, Flowable, Paragraph, Table, TableStyle, Spacer, Frame, KeepInFrame
 
-from clock.pages.templatetags.format_duration import format_hhmm
+from clock.pages.templatetags.format_duration import format_dttd
 
 # Register custom fonts. Path is hardcoded so we're using the internal fonts from /static/
 pdfmetrics.registerFont(TTFont('OpenSans-Regular', os.path.join(str(settings.APPS_DIR),
@@ -193,7 +193,7 @@ class ShiftExport:
             b2_start = shift.shift_started.strftime("%H:%M")        # e.g. 08:15
             b3_pause = shift.pause_start_end                        # e.g. 08:15 - 15:55
             b4_end = shift.shift_finished.strftime("%H:%M")         # e.g. 15:55
-            b5_total = format_hhmm(shift.shift_duration)            # e.g. 07:40
+            b5_total = format_dttd(shift.shift_duration, "%H:%M")  # e.g. 07:40
             b6_cmnt = ""                                            # e.g. "K" or "U"
 
             # We want every cell content to be an own paragraph, so we can give it a certain style.
@@ -213,7 +213,7 @@ class ShiftExport:
 
         total_shift_duration = ''
         if self.context['total_shift_duration'] > timedelta(seconds=0):
-            total_shift_duration = format_hhmm(self.context['total_shift_duration'])
+            total_shift_duration = format_dttd(self.context['total_shift_duration'], "%H:%M")
         table_data.append(['', '', '', 'Summe:', total_shift_duration, ''])
 
         # Create the table. Column width are set to fit the current data correctly.

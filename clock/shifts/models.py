@@ -1,5 +1,5 @@
-from datetime import timedelta
 import time
+from datetime import timedelta
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -29,6 +29,7 @@ class Shift(models.Model):
         null=True,
         verbose_name=_('Shift finished')
     )
+    bool_finished = models.BooleanField(default=False)
     shift_duration = models.DurationField(
         blank=True,
         null=True,
@@ -88,7 +89,8 @@ class Shift(models.Model):
             minutes to the shift_finished value.
             3) If shift_started is somehow bigger than shift_finished, set shift_finished to be 5 minutes bigger.
         """
-        if self.pk is not None:
+        # TODO: round the pause_duration
+        if self.bool_finished is True:
             # if round_time(self.shift_started) != self.__old_shift_started:
                 # prev_shifts = Shift.objects.filter(employee=self.employee, shift_finished__isnull=False)
                 # for shift in prev_shifts:
@@ -105,9 +107,9 @@ class Shift(models.Model):
                 self.shift_finished = self.shift_started + timedelta(minutes=5)
 
         # Lets check if this shift is just being updated
-        if self.pk is not None and (self.shift_finished != self.__old_shift_finished
-                                    or self.shift_started != self.__old_shift_started
-                                    or self.pause_duration != self.__old_pause_duration):
+        if self.pk is not None and self.bool_finished and (self.shift_finished != self.__old_shift_finished or
+                                                                   self.shift_started != self.__old_shift_started or
+                                                                   self.pause_duration != self.__old_pause_duration):
             self.shift_duration = (self.shift_finished - self.shift_started) - self.pause_duration
         # Lets check if this shift did not exists before and was just added from the shell!
         elif self.pk is None and self.shift_finished is not None:
@@ -157,6 +159,10 @@ class Shift(models.Model):
     is_shift_currently_paused.short_description = _("Shift currently paused?")
 
     @property
+    def current_duration(self):
+        return timezone.now() - self.shift_started - self.total_pause_time()
+
+    @property
     def pause_start_end(self):
         if self.pause_duration.total_seconds() > 0:
             pause_begin = self.shift_finished - self.pause_duration
@@ -179,7 +185,7 @@ class Shift(models.Model):
         """
         Determine if there is an active shift.
         """
-        return bool(self.shift_finished)
+        return self.bool_finished
 
     @property
     def is_paused(self):

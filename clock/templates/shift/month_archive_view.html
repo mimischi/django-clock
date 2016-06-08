@@ -111,8 +111,8 @@
                 <td class="text-right">{{ shift.contract|format_contract }}</td>
                 <td class="text-right">{{ shift.shift_started }}</td>
                 <td class="text-right">{{ shift.shift_finished }}</td>
-                <td class="text-right">{{ shift.pause_duration|format_hhmm }}</td>
-                <td class="text-right">{{ shift.shift_duration|format_hhmm }}</td>
+                <td class="text-right">{{ shift.pause_duration|format_dttd:"%H:%M" }}</td>
+                <td class="text-right">{{ shift.shift_duration|format_dttd:"%H:%M" }}</td>
             </tr>
         {% endfor %}
         </tbody>

@@ -74,6 +74,7 @@ def shift_action(request):
         # to timezone.now() and save the updated shift
         shift.unpause()
         shift.shift_finished = timezone.now()
+        shift.bool_finished = True
         shift.save()
 
         # Add a success message
