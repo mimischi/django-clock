@@ -55,11 +55,8 @@
                     class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
         </div>
         <div class="col-sm-4 pull-right">
-            {% if view.kwargs.contract %}
-            <a href="{% url 'export:contract' year=view.kwargs.year month=view.kwargs.month pk=view.kwargs.contract %}" class="btn btn-default pull-right"><span
-                    class="fa fa-archive"></span> {% trans 'Export month' %}</a>
-            {% endif %}
-        </div>
+            <a href="{% if not view.kwargs.contract or view.kwargs.contract|add:0 < 1 %}#{% else %}{% url 'export:contract' year=view.kwargs.year month=view.kwargs.month pk=view.kwargs.contract %}{% endif %}" class="btn btn-default pull-right{% if not view.kwargs.contract or view.kwargs.contract|add:0 < 1 %} disabled{% endif %}"><span
+                class="fa fa-archive"></span> {% trans 'Export month' %}</a></div>
         <div class="col-sm-12">
             <select id="contractSelect" class="block form-control work-select selectpicker" name="contractSelect"
                     {% if not view.get_all_contracts %}disabled{% endif %}>
@@ -67,7 +64,7 @@
                     <option value="0"{% if view.contract == '0' %}selected="selected"{% endif %}>{% trans 'Shifts without contracts' %}</option>
                     <option value="00"{% if view.contract == '00' %}selected="selected"{% endif %}>{% trans 'All contracts' %}</option>
                     {% for contract in view.get_all_contracts %}
-                    <option value="{{ contract.pk }}"{% if contract.pk == view.contract|add:0 %}selected="selected"{% endif %}{% if not view.kwargs.contract and contract.department == view.get_default_contract %}selected="selected"{% endif %}>{{ contract }}</option>
+                    <option value="{{ contract.pk }}"{% if contract.pk == view.contract|add:0 %}selected="selected"{% endif %}{% if not view.kwargs.contract and not view.contract == '00' and contract.department == view.get_default_contract %}selected="selected"{% endif %}>{{ contract }}</option>
                     {% endfor %}
                 </optgroup>
             </select>
@@ -87,8 +84,10 @@
             <th>{% trans 'Shift finished' %}</th>
             <th>{% trans 'Pause duration' %}</th>
             <th>{% trans 'Shift duration' %}</th>
+            <th>{% trans 'Key' %}</th>
         </tr>
         </thead>
+        {% if object_list|length > 5 %}
         <tfoot>
         <tr>
             {% if object_list %}
@@ -101,8 +100,10 @@
             <th>{% trans 'Shift finished' %}</th>
             <th>{% trans 'Pause duration' %}</th>
             <th>{% trans 'Shift duration' %}</th>
+            <th>{% trans 'Key' %}</th>
         </tr>
         </tfoot>
+        {% endif %}
         <tbody>
         {% for shift in object_list %}
             <tr id="{{ shift.pk }}">
@@ -112,8 +113,9 @@
                 <td class="text-right">{{ shift.contract|format_contract }}</td>
                 <td class="text-right">{{ shift.shift_started }}</td>
                 <td class="text-right">{{ shift.shift_finished }}</td>
-                <td class="text-right">{{ shift.pause_duration|format_hhmm }}</td>
-                <td class="text-right">{{ shift.shift_duration|format_hhmm }}</td>
+                <td class="text-right">{{ shift.pause_duration|format_dttd:"%H:%M" }}</td>
+                <td class="text-right">{{ shift.shift_duration|format_dttd:"%H:%M" }}</td>
+                <td class="text-right">{{ shift.get_key_display }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -124,6 +126,9 @@
     <script type="text/javascript" src="{% static 'libraries/datatables/js/datatables.min.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+
+
             $('#contractSelect').change(function() {
                 var year = moment().format("YYYY");
                 var month = moment().format("MM");
@@ -196,6 +201,8 @@
                         data: "pause_duration"
                     }, {
                         data: "shift_duration"
+                    }, {
+                        data: "key"
                     }],
                 {% if object_list %}
                     columnDefs: [{
@@ -203,7 +210,7 @@
                         targets: 4
                     }, {
                         responsivePriority: 2,
-                        targets: -1
+                        targets: -2
                     }],
                 {% else %}
                     columnDefs: [{
@@ -211,7 +218,7 @@
                         targets: 2
                     }, {
                         responsivePriority: 2,
-                        targets: -1
+                        targets: -2
                     }],
                 {% endif %}
                 order: [2, 'desc'],

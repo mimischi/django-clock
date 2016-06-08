@@ -25,17 +25,6 @@
             <th class="text-right">{% trans 'Hours' %}</th>
         </tr>
         </thead>
-        <tfoot>
-        <tr>
-            {% if object_list %}
-                <th></th>
-                <th></th>
-            {% endif %}
-            <th class="text-right">{% trans 'Contract No.' %}</th>
-            <th class="text-right">{% trans 'Contract' %}</th>
-            <th class="text-right">{% trans 'Hours' %}</th>
-        </tr>
-        </tfoot>
         <tbody>
         {% for contract in object_list %}
             <tr id="{{ contract.pk }}">

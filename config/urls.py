@@ -7,12 +7,16 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.flatpages import views
 from django.contrib.staticfiles.storage import staticfiles_storage
-from django.views.generic import RedirectView
+from django.http import HttpResponse
 from django.views import defaults as default_views
+from django.views.generic import RedirectView
+
+import clock.profiles.views
 
 urlpatterns = [
                   url(r'^', include("clock.pages.urls"), name='pages'),
                   url(r'^about/$', views.flatpage, {'url': '/about/'}, name='about'),
+                  url(r'^robots.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", content_type="text/plain")),
                   url(
                       r'^favicon.ico$',
                       RedirectView.as_view(
@@ -25,17 +29,17 @@ urlpatterns = [
                   url(r'^admin/', include(admin.site.urls)),
 
                   # User management
-                  url(r'^accounts/', include("clock.account.urls", namespace="account")),
+                  url(r'^accounts/', include("clock.profiles.urls", namespace="profiles")),
                   url(r'^accounts/', include('allauth.urls')),
 
                   # Your stuff: custom urls includes go here
                   # Include urls fot the work module
+                  url(r'^i18n/updatelanguage', clock.profiles.views.update_language, name='update_language'),
                   url(r'^i18n/', include('django.conf.urls.i18n')),
                   url(r'^shift/', include("clock.shifts.urls", namespace="shift")),
                   url(r'^contract/', include("clock.contracts.urls", namespace="contract")),
                   url(r'^export/', include("clock.exports.urls", namespace="export")),
                   # url(r'^', include("clock.work.urls", namespace="work")),
-
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

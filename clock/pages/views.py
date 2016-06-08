@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render
 
 from clock.shifts.forms import QuickActionForm
@@ -33,6 +35,12 @@ def home(request):
         if shift:
             context['shift_closed'] = bool(shift)
             context['shift_paused'] = shift.is_paused
+            context['current_shift'] = shift
+            d = datetime.now()
+            s = shift.shift_started
+            context['current_duration'] = shift.current_duration
+            context['current_duration_wp'] = (d.replace(tzinfo=None) - s.replace(tzinfo=None))
+            context['current_duration_wp_ms'] = context['current_duration_wp'].microseconds
 
             # Delete the 'all_contracts' key from the context dict,
             # so we can hide the <select>-element in the template.

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
@@ -10,11 +12,12 @@ from django.views.generic.dates import DayArchiveView, MonthArchiveView, WeekArc
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-
 from clock.pages.mixins import UserObjectOwnerMixin
 from clock.shifts.forms import ShiftForm, QuickActionForm
 from clock.shifts.models import Shift
-from clock.shifts.utils import get_all_contracts, get_current_shift, get_default_contract, get_return_url
+from clock.shifts.utils import get_all_contracts, get_current_shift, get_default_contract, get_return_url, \
+    set_correct_session
+
 
 @require_POST
 @login_required
@@ -74,6 +77,7 @@ def shift_action(request):
         # to timezone.now() and save the updated shift
         shift.unpause()
         shift.shift_finished = timezone.now()
+        shift.bool_finished = True
         shift.save()
 
         # Add a success message
@@ -127,7 +131,16 @@ class ShiftManualCreate(CreateView):
             'user': self.request.user,
             'request': self.request,
             'view': 'shift_create',
+            'contract': set_correct_session(self.request, 'contract'),
         }
+
+    @property
+    def base_date(self):
+        try:
+            return datetime(int(self.request.session['last_kwargs']['year']),
+                            int(self.request.session['last_kwargs']['month']), 1, hour=8).strftime("%Y-%m-%d %H:%M")
+        except KeyError:
+            return datetime.now().strftime("%Y-%m-%d")
 
     def form_valid(self, form):
         shift = form.save(commit=False)
@@ -195,6 +208,14 @@ class ShiftMonthView(MonthArchiveView):
     class Meta:
         ordering = ["-shift_started"]
 
+    def get_context_data(self, **kwargs):
+        context = super(ShiftMonthView, self).get_context_data()
+
+        if 'year' not in self.kwargs and 'month' not in self.kwargs:
+            self.kwargs['year'] = self.year
+            self.kwargs['month'] = self.month
+        return context
+
     def get_queryset(self):
         return Shift.objects.filter(employee=self.request.user, shift_finished__isnull=False)
 
@@ -217,6 +238,13 @@ class ShiftMonthContractView(ShiftMonthView):
         '<contract>': Show shifts assigned to contract with the id <contract>
     """
     contract = '00'
+
+    def get_context_data(self, **kwargs):
+        context = super(ShiftMonthContractView, self).get_context_data()
+
+        if 'contract' not in self.kwargs:
+            self.kwargs['contract'] = self.contract
+        return context
 
     def get_queryset(self):
         try:

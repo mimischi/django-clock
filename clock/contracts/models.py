@@ -20,4 +20,4 @@ class Contract(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.department
+        return unicode(self.department)
