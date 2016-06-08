@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 from django.core.urlresolvers import reverse_lazy
 
 from clock.shifts.models import Shift
@@ -22,16 +24,18 @@ def get_return_url(request, default_success):
 
             last_view = "shift:archive_month_contract_numeric"
 
-            return_kwargs = {
-                'year': request.session['last_kwargs']['year'],
-                'month': request.session['last_kwargs']['month'],
-                'contract': '00',
-            }
+            try:
+                return_kwargs = {
+                    'year': request.session['last_kwargs']['year'],
+                    'month': request.session['last_kwargs']['month'],
+                }
+            except KeyError:
+                return_kwargs = {'year': datetime.now().strftime("%Y"), 'month': datetime.now().strftime("%")}
 
             try:
                 return_kwargs['contract'] = request.session['last_kwargs']['contract']
             except KeyError:
-                pass
+                return_kwargs['contract'] = '00'
 
             return reverse_lazy(last_view, kwargs=return_kwargs)
     return reverse_lazy(default_success)
