@@ -30,7 +30,7 @@ def get_return_url(request, default_success):
                     'month': request.session['last_kwargs']['month'],
                 }
             except KeyError:
-                return_kwargs = {'year': datetime.now().strftime("%Y"), 'month': datetime.now().strftime("%")}
+                return_kwargs = {'year': datetime.now().strftime("%Y"), 'month': datetime.now().strftime("%m")}
 
             try:
                 return_kwargs['contract'] = request.session['last_kwargs']['contract']
