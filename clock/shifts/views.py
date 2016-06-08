@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
@@ -13,7 +15,8 @@ from django.views.generic.list import ListView
 from clock.pages.mixins import UserObjectOwnerMixin
 from clock.shifts.forms import ShiftForm, QuickActionForm
 from clock.shifts.models import Shift
-from clock.shifts.utils import get_all_contracts, get_current_shift, get_default_contract, get_return_url
+from clock.shifts.utils import get_all_contracts, get_current_shift, get_default_contract, get_return_url, \
+    set_correct_session
 
 
 @require_POST
@@ -128,7 +131,16 @@ class ShiftManualCreate(CreateView):
             'user': self.request.user,
             'request': self.request,
             'view': 'shift_create',
+            'contract': set_correct_session(self.request, 'contract'),
         }
+
+    @property
+    def base_date(self):
+        try:
+            return datetime(int(self.request.session['last_kwargs']['year']),
+                            int(self.request.session['last_kwargs']['month']), 1, hour=8).strftime("%Y-%m-%d %H:%M")
+        except KeyError:
+            return datetime.now().strftime("%Y-%m-%d")
 
     def form_valid(self, form):
         shift = form.save(commit=False)

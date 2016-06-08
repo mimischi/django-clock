@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-08 12:39+0000\n"
-"PO-Revision-Date: 2016-06-08 12:40+0000\n"
+"PO-Revision-Date: 2016-06-08 19:38+0000\n"
 "Last-Translator: Michael Gecht <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -542,7 +542,7 @@ msgstr "Aktuelle Sitzung"
 
 #: clock/templates/pages/backend/index.html:13
 msgid "No active shift running!"
-msgstr "Aktuell ist gibt es keine aktive Schicht!"
+msgstr "Aktuell gibt es keine aktive Schicht!"
 
 #: clock/templates/pages/backend/index.html:15
 #| msgid "Pause duration"
@@ -552,7 +552,7 @@ msgstr "Aktuelle Pausendauer"
 #: clock/templates/pages/backend/index.html:21
 #| msgid "Your shift has started!"
 msgid "Your current shift started at"
-msgstr "Deine aktuelle Schicht an am"
+msgstr "Deine aktuelle Schicht begann am"
 
 #: clock/templates/pages/backend/quick_action.html:7
 msgid "Resume"

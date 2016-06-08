@@ -41,6 +41,20 @@ def get_return_url(request, default_success):
     return reverse_lazy(default_success)
 
 
+def set_correct_session(request, k):
+    try:
+        return request.session['last_kwargs'][k]
+    except KeyError:
+        value = None
+        if k == 'contract':
+            value = '00'
+        elif k == 'year':
+            value = datetime.now().strftime("%Y")
+        elif k == 'month':
+            value = datetime.now().strftime("%m")
+        return value
+
+
 def get_current_shift(user):
     entries = Shift.objects.filter(employee=user, shift_finished__isnull=True)
 
