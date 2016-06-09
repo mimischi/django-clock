@@ -95,7 +95,7 @@ def shift_action(request):
 
         # Show a success message - either the pause was started or finished
         action = _('paused') if shift.is_paused else _('continued')
-        message = 'Your shift was %s.' % action
+        message = _('Your shift was %s.') % action
         messages.add_message(request, messages.SUCCESS, message)
 
     return redirect('home')

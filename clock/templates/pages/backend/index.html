@@ -15,7 +15,7 @@
             <h4>{% trans 'Current duration:' %} <span id="current_duration">{{ current_duration|format_dttd }}</span>
             </h4>
             {% if current_shift.is_paused %}
-                <h5>(Currently paused for: <span
+                <h5>({% trans 'Currently paused for:' %} <span
                         id="current_pause_duration">{{ current_shift.total_pause_time|format_dttd }}</span>)</h5>
             {% endif %}
             <p>{% trans 'Your current shift started at' %}<br/>

@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-08 12:39+0000\n"
-"PO-Revision-Date: 2016-06-08 19:38+0000\n"
+"POT-Creation-Date: 2016-06-09 07:28+0000\n"
+"PO-Revision-Date: 2016-06-09 07:27+0000\n"
 "Last-Translator: Michael Gecht <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.11\n"
 
@@ -34,8 +34,8 @@ msgstr "Verträge können nicht mehr als 80 Stunden im Monat umfassen!"
 
 #: clock/contracts/fields.py:102
 msgid ""
-"Please specify your working hours in the format HH.MM"
-"                                 (eg. 12.15 - meaning 12 hours and 15 "
+"Please specify your working hours in the format HH."
+"MM                                 (eg. 12.15 - meaning 12 hours and 15 "
 "minutes)"
 msgstr ""
 "Bitte gib deine Arbeitszeit im Format HH.MM an (z.B. 12.15, also 12 Stunden "
@@ -69,7 +69,7 @@ msgid "Abbreviation"
 msgstr "Kürzel"
 
 #: clock/contracts/models.py:19 clock/shifts/models.py:31
-#: clock/templates/contract/list.html:24 clock/templates/nav.html.py:27
+#: clock/templates/contract/list.html:24
 #: clock/templates/shift/month_archive_view.html:82
 #: clock/templates/shift/month_archive_view.html:98
 msgid "Contract"
@@ -96,7 +96,6 @@ msgid "Full name"
 msgstr "Vor- und Nachname"
 
 #: clock/profiles/models.py:9
-#| msgid "Set site language"
 msgid "Site language"
 msgstr "Sprache"
 
@@ -119,8 +118,8 @@ msgstr "Schicht aktualisieren"
 
 #: clock/shifts/forms.py:172
 msgid ""
-"Your selected starting/finishing time overlaps with at least one"
-"                     finished shift of yours. Please adjust the times."
+"Your selected starting/finishing time overlaps with at least "
+"one                     finished shift of yours. Please adjust the times."
 msgstr ""
 "Deine Start-/Endzeit überlappt mit einer bereits beendeten Schicht. Bitte "
 "passe die Zeiten an."
@@ -191,29 +190,34 @@ msgstr "Eine Schicht darf nicht enden, bevor sie überhaupt begonnen hat!"
 msgid "Shift currently paused?"
 msgstr "Schicht derzeit pausiert?"
 
-#: clock/shifts/views.py:29
+#: clock/shifts/views.py:32
 msgid "You need an active shift to perform this action!"
 msgstr "Du brauchst eine aktive Schicht um diese Aktion auszuführen!"
 
-#: clock/shifts/views.py:37
+#: clock/shifts/views.py:40
 msgid "You already have an active shift!"
 msgstr "Du hast schon eine aktive Schicht!"
 
-#: clock/shifts/views.py:68
+#: clock/shifts/views.py:71
 msgid "Your shift has started!"
 msgstr "Deine Schicht hat begonnen!"
 
-#: clock/shifts/views.py:84
+#: clock/shifts/views.py:87
 msgid "Your shift has finished!"
 msgstr "Deine Schicht wurde beendet!"
 
-#: clock/shifts/views.py:94
+#: clock/shifts/views.py:97
 msgid "paused"
 msgstr "pausiert"
 
-#: clock/shifts/views.py:94
+#: clock/shifts/views.py:97
 msgid "continued"
 msgstr "fortgesetzt"
+
+#: clock/shifts/views.py:98
+#, python-format
+msgid "Your shift was %s."
+msgstr "Deine Schicht wurde %s."
 
 #: clock/templates/account/base.html:4 clock/templates/account/base.html:15
 #: clock/templates/nav.html.py:37
@@ -276,8 +280,7 @@ msgstr "Warnung:"
 #: clock/templates/account/email.html:62
 msgid ""
 "You currently do not have any e-mail address set up. You should really add "
-"an e-mail address so you can receive notifications, reset your password, "
-"etc."
+"an e-mail address so you can receive notifications, reset your password, etc."
 msgstr ""
 "Du hast aktuell keine E-Mail Adresse eingerichtet. Du solltest unbedingt "
 "eine eintragen damit du Benachrichtigungen erhältst und dein Passwort "
@@ -309,10 +312,11 @@ msgstr "Bestätige deine E-Mail Adresse"
 #, python-format
 msgid ""
 "Please confirm that\n"
-"            <a href=\"mailto:%(email)s\">%(email)s</a> is your e-mail address."
+"            <a href=\"mailto:%(email)s\">%(email)s</a> is your e-mail "
+"address."
 msgstr ""
-"Bitte bestätige, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine "
-"E-Mail ist."
+"Bitte bestätige, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine E-"
+"Mail ist."
 
 #: clock/templates/account/email_confirm.html:21
 #: clock/templates/account/email_confirmed.html:20
@@ -325,7 +329,8 @@ msgstr "Bestätigen"
 #, python-format
 msgid ""
 "This e-mail confirmation link expired or is invalid. Please\n"
-"            <a href=\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+"            <a href=\"%(email_url)s\">issue a new e-mail confirmation "
+"request</a>."
 msgstr ""
 "Der Bestätigungslink ist abgelaufen oder ist ungültig. Bitte beantrage <a "
 "href=\"%(email_url)s\">einen neuen Bestätigungslink per E-Mail</a>."
@@ -334,10 +339,11 @@ msgstr ""
 #, python-format
 msgid ""
 "You have confirmed that\n"
-"            <a href=\"mailto:%(email)s\">%(email)s</a> is your e-mail address."
+"            <a href=\"mailto:%(email)s\">%(email)s</a> is your e-mail "
+"address."
 msgstr ""
-"Du hast bestätigt, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine "
-"E-Mail ist."
+"Du hast bestätigt, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine E-"
+"Mail ist."
 
 #: clock/templates/account/login.html:4 clock/templates/nav.html.py:20
 msgid "Login"
@@ -366,11 +372,11 @@ msgstr "Kennwort ändern"
 
 #: clock/templates/account/password_reset.html:9
 msgid ""
-"Forgotten your password? Enter your e-mail address below, and we'll send you"
-" an e-mail allowing you to reset it."
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
 msgstr ""
-"Passwort vergessen? Gib  einfach Deine E-Mail-Adresse ein und wir senden Dir"
-" eine E-Mail zu, mit der Du das Passwort zurückzusetzen kannst."
+"Passwort vergessen? Gib  einfach Deine E-Mail-Adresse ein und wir senden Dir "
+"eine E-Mail zu, mit der Du das Passwort zurückzusetzen kannst."
 
 #: clock/templates/account/password_reset.html:14
 msgid "Reset My Password"
@@ -394,11 +400,11 @@ msgstr ""
 #, python-format
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
-"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password "
-"reset</a>."
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
 msgstr ""
-"Der Link zum Zurücksetzen des Passworts war ungültig. <a "
-"href=\"%(passwd_reset_url)s\">Neues Passwort beantragen</a>."
+"Der Link zum Zurücksetzen des Passworts war ungültig. <a href="
+"\"%(passwd_reset_url)s\">Neues Passwort beantragen</a>."
 
 #: clock/templates/account/password_reset_from_key.html:14
 msgid "change password"
@@ -440,19 +446,22 @@ msgstr "E-Mail-Adresse bestätigen"
 #: clock/templates/account/verification_sent.html:12
 #, python-format
 msgid ""
-"We have sent an e-mail to <a href=\"mailto:%(email)s\">%(email)s</a> for verification.\n"
-"                Follow the link provided to finalize the signup process. Please contact us if you do not receive it\n"
+"We have sent an e-mail to <a href=\"mailto:%(email)s\">%(email)s</a> for "
+"verification.\n"
+"                Follow the link provided to finalize the signup process. "
+"Please contact us if you do not receive it\n"
 "                within a few minutes."
 msgstr ""
-"Wir haben eine E-Mail zur überprüfung an <a "
-"href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folge dem Link, um den "
-"Vorgang abzuschließen. Bitte kontaktiere uns, wenn Du innerhalb der nächsten"
-" Minuten keine E-Mail erhalten hast."
+"Wir haben eine E-Mail zur überprüfung an <a href=\"mailto:%(email)s\">"
+"%(email)s </a> geschickt. Folge dem Link, um den Vorgang abzuschließen. "
+"Bitte kontaktiere uns, wenn Du innerhalb der nächsten Minuten keine E-Mail "
+"erhalten hast."
 
 #: clock/templates/account/verified_email_required.html:14
 msgid ""
 "This part of the site requires us to verify that\n"
-"            you are who you claim to be. For this purpose, we require that you\n"
+"            you are who you claim to be. For this purpose, we require that "
+"you\n"
 "            verify ownership of your e-mail address. "
 msgstr ""
 "Diesen Bereich kannst du nur betreten, wenn du eine E-Mail bestätigt hast."
@@ -460,22 +469,24 @@ msgstr ""
 #: clock/templates/account/verified_email_required.html:18
 msgid ""
 "We have sent an e-mail to you for\n"
-"            verification. Please click on the link inside this e-mail. Please\n"
+"            verification. Please click on the link inside this e-mail. "
+"Please\n"
 "            contact us if you do not receive it within a few minutes."
 msgstr ""
-"Wir haben eine E-Mail zur Überprüfung geschickt. Bitte kontaktiere uns, wenn"
-" Du innerhalb der nächsten Minuten keine E-Mail erhalten hast."
+"Wir haben eine E-Mail zur Überprüfung geschickt. Bitte kontaktiere uns, wenn "
+"Du innerhalb der nächsten Minuten keine E-Mail erhalten hast."
 
 #: clock/templates/account/verified_email_required.html:22
 #, python-format
 msgid ""
-"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your "
-"e-mail address</a>."
+"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
+"mail address</a>."
 msgstr ""
 "<strong>Hinweis:</strong> Du kannst deine <a href=\"%(email_url)s\">E-Mail "
 "Adressen immer noch ändern</a>!"
 
 #: clock/templates/contract/base.html:4 clock/templates/contract/list.html:9
+#: clock/templates/nav.html.py:27
 msgid "Contracts"
 msgstr "Verträge"
 
@@ -520,9 +531,9 @@ msgstr "Über"
 msgid "Try it now!"
 msgstr "Jetzt ausprobieren!"
 
-#: clock/templates/nav.html:25
-msgid "Shift"
-msgstr "Schicht"
+#: clock/templates/nav.html:25 clock/templates/shift/base.html.py:4
+msgid "Shifts"
+msgstr "Schichten"
 
 #: clock/templates/nav.html:33
 msgid "Superuser"
@@ -545,12 +556,14 @@ msgid "No active shift running!"
 msgstr "Aktuell gibt es keine aktive Schicht!"
 
 #: clock/templates/pages/backend/index.html:15
-#| msgid "Pause duration"
 msgid "Current duration:"
-msgstr "Aktuelle Pausendauer"
+msgstr "Aktuelle Schichtdauer"
+
+#: clock/templates/pages/backend/index.html:18
+msgid "Currently paused for:"
+msgstr "Aktuell pausiert seit:"
 
 #: clock/templates/pages/backend/index.html:21
-#| msgid "Your shift has started!"
 msgid "Your current shift started at"
 msgstr "Deine aktuelle Schicht begann am"
 
@@ -583,10 +596,6 @@ msgstr "Sprache ändern"
 #: clock/templates/profiles/profile.html:30
 msgid "Submit"
 msgstr "Absenden"
-
-#: clock/templates/shift/base.html:4
-msgid "Shifts"
-msgstr "Schichten"
 
 #: clock/templates/shift/delete.html:10
 msgid "Delete shift"
@@ -644,6 +653,3 @@ msgstr "Deutsch"
 #: config/settings/common.py:132
 msgid "English"
 msgstr "Englisch"
-
-#~ msgid "Shift list"
-#~ msgstr "Schichten"
