@@ -89,25 +89,24 @@ class Shift(models.Model):
         """
         The following code block does some rounding to the start and end times of the shifts.
         It does it as following and only if the shift is newly added:
-            #1) Check shift_started against all other shifts of this employee. If there is one with a shift_finished
-            #after the current start time, then round the whole thing up. Otherwise do an avarage (down/up) rounding.
-            2) The shift_finished is set to the most logic (up/down) value. Now check if it is the same as the
+            1) Round shift_started, shift_finished and pause_duration by 5 or 1 minute(s), respectively.
+            2) Make sure that the total_pause_time is always smaller than the difference of shift_finished and
+            shift_started.
+            3) The shift_finished is set to the most logic (up/down) value. Now check if it is the same as the
             shift_started value (if shift_started and shift_finished were set to the same value). In this case, add 5
             minutes to the shift_finished value.
-            3) If shift_started is somehow bigger than shift_finished, set shift_finished to be 5 minutes bigger.
+            4) If shift_started is somehow bigger than shift_finished, set shift_finished to be 5 minutes bigger.
         """
-        # TODO: round the pause_duration
         if self.bool_finished is True:
-            # if round_time(self.shift_started) != self.__old_shift_started:
-                # prev_shifts = Shift.objects.filter(employee=self.employee, shift_finished__isnull=False)
-                # for shift in prev_shifts:
-                #     if shift.shift_finished > round_time(self.shift_started, to='down'):
-                #         self.shift_started = round_time(self.shift_started, to='up')
-                #     else:
-                #         self.shift_started = round_time(self.shift_started)
             self.shift_started = round_time(self.shift_started)
-
             self.shift_finished = round_time(self.shift_finished)
+            self.pause_duration = round_time(self.pause_duration, timedelta(minutes=1))
+
+            # Account for the case that a user pauses his shift longer than he actually worked. This will make sure
+            # the shift duration is always longer than the pause duration by 5 minutes.
+            if self.total_pause_time() == (self.shift_finished - self.shift_started):
+                self.shift_finished += self.total_pause_time() + timedelta(minutes=5)
+
             if self.shift_started == self.shift_finished:
                 self.shift_finished += timedelta(minutes=5)
             elif self.shift_started > self.shift_finished:

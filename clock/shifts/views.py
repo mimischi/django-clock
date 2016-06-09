@@ -137,10 +137,13 @@ class ShiftManualCreate(CreateView):
     @property
     def base_date(self):
         try:
-            return datetime(int(self.request.session['last_kwargs']['year']),
-                            int(self.request.session['last_kwargs']['month']), 1, hour=8).strftime("%Y-%m-%d %H:%M")
+            d = datetime(int(self.request.session['last_kwargs']['year']),
+                         int(self.request.session['last_kwargs']['month']), 1, hour=8).strftime("%Y-%m-%d %H:%M")
+            if self.request.session['last_kwargs']['month'] == datetime.now().strftime("%m"):
+                d = datetime.now().strftime("%Y-%m-%d")
         except KeyError:
-            return datetime.now().strftime("%Y-%m-%d")
+            d = datetime.now().strftime("%Y-%m-%d")
+        return d
 
     def form_valid(self, form):
         shift = form.save(commit=False)
