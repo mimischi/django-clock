@@ -36,7 +36,7 @@ django-bootstrap-breadcrumbs==0.7.3
 django-bootstrap3==7.0.1
 django-bootstrap3-datetimepicker-2==2.4.2
 reportlab==3.2.0
-lxml==3.5.0
+lxml==3.6.0
 
 # Collaboratory translations
 django-rosetta==0.7.11
