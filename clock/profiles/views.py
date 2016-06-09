@@ -63,7 +63,7 @@ def update_language(request):
 def delete_user(request):
     template_name = 'profiles/delete.html'
     context = {'text': _('<p>Are you sure you want to delete this profile? Please type in your username '
-                         '<strong>%s</strong> to confirm.</p>' % request.user)}
+                         '<strong>%s</strong> to confirm.</p>') % request.user}
 
     if request.method == 'POST':
         form = DeleteUserForm(request.POST, user=request.user)
