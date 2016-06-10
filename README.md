@@ -1,7 +1,7 @@
 |  | Develop  | Master |
 | ------------- | ------------- | ------------- |
 | Travis CI  | [![Build Status](https://travis-ci.org/mimischi/django-clock.svg?branch=develop)](https://travis-ci.org/mimischi/django-clock)  | [![Build Status](https://travis-ci.org/mimischi/django-clock.svg?branch=master)](https://travis-ci.org/mimischi/django-clock)  |
-| Require.io  | [![Requirements Status](https://requires.io/github/mimischi/django-clock/requirements.svg?branch=develop)](https://requires.io/github/mimischi/django-clock/requirements/?branch=develop)  | [![Requirements Status](https://requires.io/github/mimischi/django-clock/requirements.svg?branch=master)](https://requires.io/github/mimischi/django-clock/requirements/?branch=master)  |
+| Pyup.io  | [![Updates](https://pyup.io/repos/github/mimischi/django-clock/shield.svg)](https://pyup.io/repos/github/mimischi/django-clock/) | [![Updates](https://pyup.io/repos/github/mimischi/django-clock/shield.svg)](https://pyup.io/repos/github/mimischi/django-clock/) |
 
 # Clock
 
