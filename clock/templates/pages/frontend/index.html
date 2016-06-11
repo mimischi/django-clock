@@ -3,58 +3,66 @@
 
 {% block header %}
     <div class="eyecatcher">
-      <header>
+        <header>
+            <div class="container">
+                {% include 'nav.html' %}
+            </div> <!-- /container -->
+        </header>
         <div class="container">
-          {% include 'nav.html' %}
+            <h1>Zettel verbrauchen Papier.</h1>
+            <p>Mit Clock kannst du deinen Stundenzettel ganz bequem unterwegs oder am Computer bearbeiten.</p>
+            <p><a id="login-signup-landingpage" class="btn btn-lg btn-primary" href="{% url 'account_signup' %}"
+                  role="button">Jetzt ausprobieren!</a></p>
+            <div class="screen"></div>
         </div> <!-- /container -->
-      </header>
-      <div class="container">
-        <h1>Zettel verbrauchen Papier.</h1>
-        <p>Mit Clock kannst du deinen Stundenzettel ganz bequem unterwegs oder am Computer bearbeiten.</p>
-        <p><a id="login-signup-landingpage" class="btn btn-lg btn-primary" href="{% url 'account_signup' %}" role="button">Jetzt ausprobieren!</a></p>
-        <div class="screen"></div>
-      </div> <!-- /container -->
     </div> <!-- /.eyecatcher -->
 {% endblock header %}
 
 {% block container %}
     <!-- START THE FEATURETTES -->
 
-      <hr class="featurette-divider">
+    <hr class="featurette-divider">
 
-      <div class="row featurette">
+    <div class="row featurette">
         <div class="col-md-7">
-          <h2 class="featurette-heading">Start-and-Go! <span class="text-muted">Einfach arbeiten.</span></h2>
-          <p class="lead">Mit den bequemen Start-and-Go! Buttons kannst du deine aktuelle Schicht einfach starten und den Browser schließen. Sobald deine Schicht zu Ende ist kannst du auf dem Gerät deiner Wahl wiederkehren und diese beenden.</p>
+            <h2 class="featurette-heading">Start-and-Go! <span class="text-muted">Einfach arbeiten.</span></h2>
+            <p class="lead">Mit den bequemen Start-and-Go! Buttons kannst du deine aktuelle Schicht einfach starten und
+                den Browser schließen. Sobald deine Schicht zu Ende ist kannst du auf dem Gerät deiner Wahl wiederkehren
+                und diese beenden.</p>
         </div>
         <div class="col-md-5">
-          <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+            <img class="featurette-image img-responsive center-block"
+                 src="{% static 'common/images/featurette1.png' %}">
         </div>
-      </div>
+    </div>
 
-      <hr class="featurette-divider">
+    <hr class="featurette-divider">
 
-      <div class="row featurette">
+    <div class="row featurette">
         <div class="col-md-7 col-md-push-5">
-          <h2 class="featurette-heading">Vergessen zu stechen? <span class="text-muted">Kein Problem!</span></h2>
-          <p class="lead">Vergangene Schichten lassen sich ohne Probleme nachtragen. Ebenso kannst du schon eingetragene Schichten ändern oder ganz löschen. Du bestimmst welche Zeiten eingetragen sind und welche nicht!</p>
+            <h2 class="featurette-heading">Vergessen zu stechen? <span class="text-muted">Kein Problem!</span></h2>
+            <p class="lead">Vergangene Schichten lassen sich ohne Probleme nachtragen. Ebenso kannst du schon
+                eingetragene Schichten ändern oder ganz löschen. Du bestimmst welche Zeiten eingetragen sind und welche
+                nicht!</p>
         </div>
         <div class="col-md-5 col-md-pull-7">
-          <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+            <img class="featurette-image img-responsive center-block"
+                 src="{% static 'common/images/featurette2.png' %}">
         </div>
-      </div>
+    </div>
 
-      <hr class="featurette-divider">
+    <hr class="featurette-divider">
 
-      <div class="row featurette">
+    <div class="row featurette">
         <div class="col-md-7">
-          <h2 class="featurette-heading">Tag der letzten..<span class="text-muted">..Abrechnung.</span></h2>
-          <p class="lead">Wenn es soweit ist und du deinen Stundenzettel vorzeigen musst, dann hast du mit Clock kein Problem. Deine gespeicherten Zeiten lassen sich nach belieben in verschiedene Formate exportieren!</p>
+            <h2 class="featurette-heading">Tag der letzten..<span class="text-muted">..Abrechnung.</span></h2>
+            <p class="lead">Wenn es soweit ist und du deinen Stundenzettel vorzeigen musst, dann hast du mit Clock kein
+                Problem. Deine gespeicherten Zeiten lassen sich nach belieben als PDF exportieren!</p>
         </div>
         <div class="col-md-5">
-          <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+            <img class="featurette-image img-responsive center-block"
+                 src="{% static 'common/images/featurette3.png' %}">
         </div>
-      </div>
-      <!-- /END THE FEATURETTES -->
-
+    </div>
+    <!-- /END THE FEATURETTES -->
 {% endblock container %}

@@ -52,9 +52,9 @@
 
 <div id="footer">
     <div class="container">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2016 Clock &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a> &middot; <a
-                href="#">Status</a></p>
+        <p class="pull-right"><a href="#">{% trans 'Back to top' %}</a></p>
+        <p>&copy; 2016 Clock &middot; <a href="{% url 'imprint' %}">{% trans 'Imprint' %}</a> &middot; <a
+                href="{% url 'privacy' %}">{% trans 'Privacy' %}</a>{# &middot; <a href="#">Status</a>#}</p>
     </div> <!-- /.container -->
 </div> <!-- /#footer -->
 

@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:59+0200\n"
-"PO-Revision-Date: 2016-06-09 16:00+0053\n"
-"Last-Translator: Michael Gecht <mgecht@stud.uni-frankfurt.de>\n"
+"POT-Creation-Date: 2016-06-11 13:57+0200\n"
+"PO-Revision-Date: 2016-06-11 14:03+0053\n"
+"Last-Translator:   <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +25,6 @@ msgstr "Stundenzahl"
 
 #: clock/contracts/fields.py:32 clock/contracts/fields.py:44
 #: clock/contracts/fields.py:52 clock/contracts/fields.py:86
-#| msgid "Working hours entered must be in format HH.MM"
 msgid "Working hours entered must be in format HH:MM"
 msgstr "Die Stundenzahl muss im Format HH:MM (z.B. 23:15) eingegeben werden."
 
@@ -34,10 +33,6 @@ msgid "Contracts may not be longer than 80 hours!"
 msgstr "Verträge können nicht mehr als 80 Stunden im Monat umfassen!"
 
 #: clock/contracts/fields.py:103
-#| msgid ""
-#| "Please specify your working hours in the format HH.MM"
-#| "                                 (eg. 12.15 - meaning 12 hours and 15 "
-#| "minutes)"
 msgid ""
 "Please specify your working hours in the format HH:MM"
 "                                 (eg. 12:15 - meaning 12 hours and 15 "
@@ -50,7 +45,7 @@ msgstr ""
 msgid "Create new contract"
 msgstr "Neuen Vertrag erstellen"
 
-#: clock/contracts/forms.py:40 clock/templates/contract/edit.html.py:27
+#: clock/contracts/forms.py:40 clock/templates/contract/edit.html:27
 msgid "Update contract"
 msgstr "Vertrag aktualisieren"
 
@@ -73,7 +68,7 @@ msgstr "Abteilung"
 msgid "Abbreviation"
 msgstr "Kürzel"
 
-#: clock/contracts/models.py:19 clock/shifts/models.py:31
+#: clock/contracts/models.py:19 clock/shifts/models.py:33
 #: clock/templates/contract/list.html:24
 #: clock/templates/shift/month_archive_view.html:82
 #: clock/templates/shift/month_archive_view.html:98
@@ -121,7 +116,7 @@ msgstr "Neue Schicht erstellen"
 msgid "Update"
 msgstr "Schicht aktualisieren"
 
-#: clock/shifts/forms.py:172
+#: clock/shifts/forms.py:173
 msgid ""
 "Your selected starting/finishing time overlaps with at least one"
 "                     finished shift of yours. Please adjust the times."
@@ -129,69 +124,69 @@ msgstr ""
 "Deine Start-/Endzeit überlappt mit einer bereits beendeten Schicht. Bitte "
 "passe die Zeiten an."
 
-#: clock/shifts/forms.py:176
+#: clock/shifts/forms.py:177
 msgid "A pause may not be longer than your actual shift."
 msgstr "Eine Pause kann nicht länger als eine Schicht sein."
 
-#: clock/shifts/models.py:21
+#: clock/shifts/models.py:23
 msgid "S"
 msgstr "K"
 
-#: clock/shifts/models.py:21
+#: clock/shifts/models.py:23
 msgid "Sick"
 msgstr "Krank"
 
-#: clock/shifts/models.py:22
+#: clock/shifts/models.py:24
 msgid "V"
 msgstr "U"
 
-#: clock/shifts/models.py:22
+#: clock/shifts/models.py:24
 msgid "Vacation"
 msgstr "Urlaub"
 
-#: clock/shifts/models.py:33 clock/templates/shift/month_archive_view.html:83
+#: clock/shifts/models.py:35 clock/templates/shift/month_archive_view.html:83
 #: clock/templates/shift/month_archive_view.html:99
 msgid "Shift started"
 msgstr "Start der Schicht"
 
-#: clock/shifts/models.py:36 clock/templates/shift/month_archive_view.html:84
+#: clock/shifts/models.py:38 clock/templates/shift/month_archive_view.html:84
 #: clock/templates/shift/month_archive_view.html:100
 msgid "Shift finished"
 msgstr "Ende der Schicht"
 
-#: clock/shifts/models.py:42 clock/templates/shift/month_archive_view.html:86
+#: clock/shifts/models.py:44 clock/templates/shift/month_archive_view.html:86
 #: clock/templates/shift/month_archive_view.html:102
 msgid "Shift duration"
 msgstr "Schichtdauer"
 
-#: clock/shifts/models.py:47 clock/templates/shift/month_archive_view.html:85
+#: clock/shifts/models.py:49 clock/templates/shift/month_archive_view.html:85
 #: clock/templates/shift/month_archive_view.html:101
 msgid "Pause duration"
 msgstr "Pausendauer"
 
-#: clock/shifts/models.py:49 clock/templates/shift/month_archive_view.html:87
+#: clock/shifts/models.py:51 clock/templates/shift/month_archive_view.html:87
 #: clock/templates/shift/month_archive_view.html:103
 msgid "Key"
 msgstr "Schlüssel"
 
-#: clock/shifts/models.py:50
+#: clock/shifts/models.py:52
 msgid "Note"
 msgstr "Notiz"
 
-#: clock/shifts/models.py:133
+#: clock/shifts/models.py:135
 msgid "Your shift must not start in the                     future!"
 msgstr "Ihre Schicht darf nicht in der Zukunft beginnen!"
 
-#: clock/shifts/models.py:136
+#: clock/shifts/models.py:138
 msgid "Your shift must not finish in                     the future!"
 msgstr "Ihre Schicht darf nicht in der Zukunft enden!"
 
-#: clock/shifts/models.py:139
+#: clock/shifts/models.py:141
 msgid ""
 "A shift must not finish, before                     it has even started!"
 msgstr "Eine Schicht darf nicht enden, bevor sie überhaupt begonnen hat!"
 
-#: clock/shifts/models.py:165
+#: clock/shifts/models.py:167
 msgid "Shift currently paused?"
 msgstr "Schicht derzeit pausiert?"
 
@@ -225,7 +220,7 @@ msgid "Your shift was %s."
 msgstr "Deine Schicht wurde %s."
 
 #: clock/templates/account/base.html:4 clock/templates/account/base.html:15
-#: clock/templates/nav.html.py:38
+#: clock/templates/nav.html:39
 msgid "Account"
 msgstr "Konto"
 
@@ -348,7 +343,7 @@ msgstr ""
 "Du hast bestätigt, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine "
 "E-Mail ist."
 
-#: clock/templates/account/login.html:4 clock/templates/nav.html.py:20
+#: clock/templates/account/login.html:4 clock/templates/nav.html:21
 msgid "Login"
 msgstr "Login"
 
@@ -357,7 +352,7 @@ msgid "Not signed up yet?"
 msgstr "Noch nicht registriert?"
 
 #: clock/templates/account/logout.html:4
-#: clock/templates/account/logout.html:13 clock/templates/nav.html.py:43
+#: clock/templates/account/logout.html:13 clock/templates/nav.html:44
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -484,8 +479,20 @@ msgstr ""
 "<strong>Hinweis:</strong> Du kannst deine <a href=\"%(email_url)s\">E-Mail "
 "Adressen immer noch ändern</a>!"
 
+#: clock/templates/base.html:55
+msgid "Back to top"
+msgstr "Nach oben"
+
+#: clock/templates/base.html:56
+msgid "Imprint"
+msgstr "Impressum"
+
+#: clock/templates/base.html:57
+msgid "Privacy"
+msgstr "Datenschutz"
+
 #: clock/templates/contract/base.html:4 clock/templates/contract/list.html:9
-#: clock/templates/nav.html.py:28
+#: clock/templates/nav.html:29
 msgid "Contracts"
 msgstr "Verträge"
 
@@ -522,31 +529,31 @@ msgstr "Vertrag #"
 msgid "Hours"
 msgstr "Stundenzahl"
 
-#: clock/templates/nav.html:18 clock/templates/pages/about.html.py:4
+#: clock/templates/nav.html:19 clock/templates/pages/about.html:4
 msgid "About"
 msgstr "Über"
 
-#: clock/templates/nav.html:23
+#: clock/templates/nav.html:24
 msgid "Try it now!"
 msgstr "Jetzt ausprobieren!"
 
-#: clock/templates/nav.html:26 clock/templates/shift/base.html.py:4
+#: clock/templates/nav.html:27 clock/templates/shift/base.html:4
 msgid "Shifts"
 msgstr "Schichten"
 
-#: clock/templates/nav.html:34
+#: clock/templates/nav.html:35
 msgid "Superuser"
 msgstr "Superuser"
 
-#: clock/templates/nav.html:35
+#: clock/templates/nav.html:36
 msgid "Admin"
 msgstr "Admin"
 
-#: clock/templates/nav.html:40
+#: clock/templates/nav.html:41
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: clock/templates/nav.html:42
+#: clock/templates/nav.html:43
 msgid "Current session"
 msgstr "Aktuelle Sitzung"
 

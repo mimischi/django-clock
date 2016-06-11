@@ -11,6 +11,7 @@
                         </button>
                         <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'common/images/logo.svg' %}"
                                                                              alt="Clock Logo"/></a>
+                        <h4 class="verticaltext">BETA</h4>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
@@ -43,7 +44,7 @@
                                         <li><a id="account_logout" href="{% url 'account_logout' %}">{% trans 'Logout' %}</a></li>
                                         <form id="accountLogOutForm" style="display: none;" action="{% url 'account_logout' %}"
                                               method="POST">
-                                        {% csrf_token %}
+                                            {% csrf_token %}
                                         </form>
                                     </ul>
                                 </li>

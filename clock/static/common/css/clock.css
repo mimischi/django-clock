@@ -72,6 +72,17 @@ header {
     display: block;
 }
 
+.verticaltext {
+    transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+
+    bottom: 15%;
+    left: 100px;
+    position: absolute;
+    color: #ed217c;
+}
+
 /* Navbar
 ------------------------- */
 
@@ -175,10 +186,10 @@ body > header > .navbar {
 
 .eyecatcher .screen {
     height: 100px;
-    background: url(../images/screen.png) no-repeat;
-    background-size: 100% auto;
+    background: url(../images/clock.svg) no-repeat;
+    background-size: 100% 85%;
     position: relative;
-    margin-top: 50px;
+    /*margin-top: 50px;*/
 }
 
 /* Featurettes
@@ -217,6 +228,13 @@ div.container > div.row.featurette:not(:first-of-type) > div.col-md-7 > h2.featu
 
 div.row.featurette p.lead {
     font-size: 18px;
+}
+
+div.row.featurette img {
+    border: 1px solid lightgrey;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    border-radius: 1em;
 }
 
 /* Login & Signup page
@@ -394,6 +412,7 @@ tr.child > td.child > ul > li {
 
     .eyecatcher .screen {
         height: 300px;
+        margin-top: 30px;
     }
 
     .eyecatcher .btn {
