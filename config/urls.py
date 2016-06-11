@@ -41,7 +41,7 @@ urlpatterns = [
                   url(r'^shift/', include("clock.shifts.urls", namespace="shift")),
                   url(r'^contract/', include("clock.contracts.urls", namespace="contract")),
                   url(r'^export/', include("clock.exports.urls", namespace="export")),
-                  # url(r'^', include("clock.work.urls", namespace="work")),
+                  url(r'^contact/', include("clock.contact.urls", namespace="contact")),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

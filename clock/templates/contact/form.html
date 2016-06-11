@@ -1,0 +1,8 @@
+{% extends 'contact/base.html' %}
+
+{% load crispy_forms_tags i18n django_bootstrap_breadcrumbs %}
+
+{% block container %}
+    <h2>{% trans 'Contact' %}</h2>
+    {% crispy form %}
+{% endblock container %}

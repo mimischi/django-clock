@@ -54,6 +54,7 @@ LOCAL_APPS = (
     'clock.shifts',
     'clock.contracts',
     'clock.profiles',
+    'clock.contact',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -302,3 +303,5 @@ LOCALE_PATHS = (
 ACCOUNT_FORMS = {
     'login': 'clock.pages.forms.ClockLoginForm'
 }
+CONTACT_FORM_SUBJECT = _('A new message has arrived!')
+CONTACT_FORM_RECIPIENT = ['clock-kontakt@dlist.server.uni-frankfurt.de']

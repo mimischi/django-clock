@@ -1,15 +1,15 @@
-# CLOCK German Language Messages
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Clock German Language Messages
+# Copyright (C) 2015-2016 Michael Gecht
+# This file is distributed under the same license as the django-clock package.
+# Michael Gecht mgecht@stud.uni-frankfurt.de, 2016.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-11 13:57+0200\n"
-"PO-Revision-Date: 2016-06-11 14:03+0053\n"
+"POT-Creation-Date: 2016-06-11 15:39+0200\n"
+"PO-Revision-Date: 2016-06-11 15:40+0053\n"
 "Last-Translator:   <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,26 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.11\n"
+
+#: clock/contact/forms.py:13
+msgid "Name"
+msgstr "Name"
+
+#: clock/contact/forms.py:14
+msgid "E-Mail"
+msgstr "E-Mail"
+
+#: clock/contact/forms.py:15
+msgid "Message"
+msgstr "Nachricht"
+
+#: clock/contact/forms.py:16
+msgid "Send a copy of the mail to myself"
+msgstr "Eine Kopie der Nachricht an mich senden"
+
+#: clock/contact/forms.py:26 clock/templates/profiles/profile.html:30
+msgid "Submit"
+msgstr "Absenden"
 
 #: clock/contracts/fields.py:20 clock/contracts/models.py:18
 msgid "Work hours"
@@ -491,6 +511,22 @@ msgstr "Impressum"
 msgid "Privacy"
 msgstr "Datenschutz"
 
+#: clock/templates/contact/base.html:4 clock/templates/contact/form.html:6
+msgid "Contact"
+msgstr "Kontakt"
+
+#: clock/templates/contact/success.html:9
+msgid "Thanks for your message!"
+msgstr "Danke für die Nachricht!"
+
+#: clock/templates/contact/success.html:10
+msgid ""
+"Your message was sent successfully. We will get back to you as soon as "
+"possible!"
+msgstr ""
+"Deine Nachricht wurde erfolgreich gesendet. Wir werden uns so schnell wie "
+"möglich melden!"
+
 #: clock/templates/contract/base.html:4 clock/templates/contract/list.html:9
 #: clock/templates/nav.html:29
 msgid "Contracts"
@@ -599,10 +635,6 @@ msgstr ""
 msgid "Set site language"
 msgstr "Sprache ändern"
 
-#: clock/templates/profiles/profile.html:30
-msgid "Submit"
-msgstr "Absenden"
-
 #: clock/templates/shift/delete.html:10
 msgid "Delete shift"
 msgstr "Schicht löschen?"
@@ -652,10 +684,14 @@ msgstr "Schicht Nr."
 msgid "Name of User"
 msgstr "Name des Nutzers"
 
-#: config/settings/common.py:131
+#: config/settings/common.py:132
 msgid "German"
 msgstr "Deutsch"
 
-#: config/settings/common.py:132
+#: config/settings/common.py:133
 msgid "English"
 msgstr "Englisch"
+
+#: config/settings/common.py:306
+msgid "A new message has arrived!"
+msgstr "Neue Nachricht erhalten!"
