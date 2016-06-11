@@ -175,6 +175,8 @@ class ShiftForm(forms.ModelForm):
             if (shift_finished - shift_started) < pause_duration:
                 raise ValidationError(_('A pause may not be longer than your actual shift.'))
 
+        cleaned_data['bool_finished'] = True
+
         return cleaned_data
 
     # This could go into models.. at some point? When we create a shift through

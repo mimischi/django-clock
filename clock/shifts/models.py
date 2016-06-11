@@ -35,7 +35,7 @@ class Shift(models.Model):
         null=True,
         verbose_name=_('Shift finished')
     )
-    bool_finished = models.BooleanField(default=False)
+    bool_finished = models.BooleanField(default=False, verbose_name=_('Shift completed?'))
     shift_duration = models.DurationField(
         blank=True,
         null=True,
@@ -90,12 +90,10 @@ class Shift(models.Model):
         The following code block does some rounding to the start and end times of the shifts.
         It does it as following and only if the shift is newly added:
             1) Round shift_started, shift_finished and pause_duration by 5 or 1 minute(s), respectively.
-            2) Make sure that the total_pause_time is always smaller than the difference of shift_finished and
-            shift_started.
-            3) The shift_finished is set to the most logic (up/down) value. Now check if it is the same as the
+            2) The shift_finished is set to the most logic (up/down) value. Now check if it is the same as the
             shift_started value (if shift_started and shift_finished were set to the same value). In this case, add 5
             minutes to the shift_finished value.
-            4) If shift_started is somehow bigger than shift_finished, set shift_finished to be 5 minutes bigger.
+            3) If shift_started is somehow bigger than shift_finished, set shift_finished to be 5 minutes bigger.
         """
         if self.bool_finished is True:
             self.shift_started = round_time(self.shift_started)
@@ -105,7 +103,7 @@ class Shift(models.Model):
             # Account for the case that a user pauses his shift longer than he actually worked. This will make sure
             # the shift duration is always longer than the pause duration by 5 minutes.
             if self.total_pause_time() == (self.shift_finished - self.shift_started):
-                self.shift_finished += self.total_pause_time() + timedelta(minutes=5)
+                self.shift_finished += timedelta(minutes=5)
 
             if self.shift_started == self.shift_finished:
                 self.shift_finished += timedelta(minutes=5)
