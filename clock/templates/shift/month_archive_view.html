@@ -136,7 +136,7 @@
                 year = {{ view.kwargs.year }};
                 month = {{ view.kwargs.month }};
                 {% endif %}
-                window.location.href = "/shift/archive/" + year + "/" + month + "/contract/" + $(this).find("option:selected").val();
+                window.location.href = "/shift/" + year + "/" + month + "/contract/" + $(this).find("option:selected").val();
             });
 
             var displayedMonth = false;
@@ -160,7 +160,7 @@
                 var currentDate = moment();
                 // If the displayed date is set, then we are not on the current date. Redirecting is OK!
                 if (displayedMonth) {
-                    window.location.href = "/shift/archive/" + e.date.format("YYYY") + "/" + e.date.format("MM");
+                    window.location.href = "/shift/" + e.date.format("YYYY") + "/" + e.date.format("MM");
                 }
                 // Otherwise the date is today. Check if the clicked date is the same as today. If not, redirect!
                 if (e.date.format("YYYY-MM") != currentDate.format("YYYY-MM")) {

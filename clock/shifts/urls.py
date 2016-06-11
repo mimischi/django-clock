@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from datetime import datetime
 
 from django.conf.urls import url
@@ -40,19 +41,19 @@ urlpatterns = [
         ),
 
     # Shift Archive URLs
-    url(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
+    url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         ShiftDayView.as_view(),
         name="archive_day"),
-    url(r'^archive/(?P<year>[0-9]{4})/week/(?P<week>[0-9]+)/$',
+    url(r'^(?P<year>[0-9]{4})/week/(?P<week>[0-9]+)/$',
         ShiftWeekView.as_view(),
         name="archive_week"),
-    url(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
+    url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
         ShiftMonthContractView.as_view(month_format='%m'),
         name="archive_month_numeric"),
-    url(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<contract>\d+)/$',
+    url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<contract>\d+)/$',
         ShiftMonthContractView.as_view(month_format='%m'),
         name="archive_month_contract_numeric"),
-    url(r'^archive/(?P<year>[0-9]{4})/$',
+    url(r'^(?P<year>[0-9]{4})/$',
         ShiftYearView.as_view(),
         name="article_year_archive"),
     ]
