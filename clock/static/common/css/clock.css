@@ -72,6 +72,17 @@ header {
     display: block;
 }
 
+.verticaltext {
+    transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+
+    bottom: 15%;
+    left: 100px;
+    position: absolute;
+    color: #ed217c;
+}
+
 /* Navbar
 ------------------------- */
 
