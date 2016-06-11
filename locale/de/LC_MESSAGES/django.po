@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-08 12:39+0000\n"
-"PO-Revision-Date: 2016-06-08 19:38+0000\n"
+"POT-Creation-Date: 2016-06-09 15:59+0200\n"
+"PO-Revision-Date: 2016-06-09 16:00+0053\n"
 "Last-Translator: Michael Gecht <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,26 +19,31 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.11\n"
 
-#: clock/contracts/fields.py:21 clock/contracts/models.py:18
+#: clock/contracts/fields.py:20 clock/contracts/models.py:18
 msgid "Work hours"
 msgstr "Stundenzahl"
 
-#: clock/contracts/fields.py:32 clock/contracts/fields.py:43
-#: clock/contracts/fields.py:51 clock/contracts/fields.py:85
-msgid "Working hours entered must be in format HH.MM"
-msgstr "Die Stundenzahl muss im Format HH.MM (z.B. 23.15) eingegeben werden."
+#: clock/contracts/fields.py:32 clock/contracts/fields.py:44
+#: clock/contracts/fields.py:52 clock/contracts/fields.py:86
+#| msgid "Working hours entered must be in format HH.MM"
+msgid "Working hours entered must be in format HH:MM"
+msgstr "Die Stundenzahl muss im Format HH:MM (z.B. 23:15) eingegeben werden."
 
-#: clock/contracts/fields.py:55
+#: clock/contracts/fields.py:56
 msgid "Contracts may not be longer than 80 hours!"
 msgstr "Verträge können nicht mehr als 80 Stunden im Monat umfassen!"
 
-#: clock/contracts/fields.py:102
+#: clock/contracts/fields.py:103
+#| msgid ""
+#| "Please specify your working hours in the format HH.MM"
+#| "                                 (eg. 12.15 - meaning 12 hours and 15 "
+#| "minutes)"
 msgid ""
-"Please specify your working hours in the format HH.MM"
-"                                 (eg. 12.15 - meaning 12 hours and 15 "
+"Please specify your working hours in the format HH:MM"
+"                                 (eg. 12:15 - meaning 12 hours and 15 "
 "minutes)"
 msgstr ""
-"Bitte gib deine Arbeitszeit im Format HH.MM an (z.B. 12.15, also 12 Stunden "
+"Bitte gib deine Arbeitszeit im Format HH:MM an (z.B. 12:15, also 12 Stunden "
 "und 15 Minuten)."
 
 #: clock/contracts/forms.py:38
@@ -69,7 +74,7 @@ msgid "Abbreviation"
 msgstr "Kürzel"
 
 #: clock/contracts/models.py:19 clock/shifts/models.py:31
-#: clock/templates/contract/list.html:24 clock/templates/nav.html.py:27
+#: clock/templates/contract/list.html:24
 #: clock/templates/shift/month_archive_view.html:82
 #: clock/templates/shift/month_archive_view.html:98
 msgid "Contract"
@@ -96,7 +101,6 @@ msgid "Full name"
 msgstr "Vor- und Nachname"
 
 #: clock/profiles/models.py:9
-#| msgid "Set site language"
 msgid "Site language"
 msgstr "Sprache"
 
@@ -174,49 +178,54 @@ msgstr "Schlüssel"
 msgid "Note"
 msgstr "Notiz"
 
-#: clock/shifts/models.py:134
+#: clock/shifts/models.py:133
 msgid "Your shift must not start in the                     future!"
 msgstr "Ihre Schicht darf nicht in der Zukunft beginnen!"
 
-#: clock/shifts/models.py:137
+#: clock/shifts/models.py:136
 msgid "Your shift must not finish in                     the future!"
 msgstr "Ihre Schicht darf nicht in der Zukunft enden!"
 
-#: clock/shifts/models.py:140
+#: clock/shifts/models.py:139
 msgid ""
 "A shift must not finish, before                     it has even started!"
 msgstr "Eine Schicht darf nicht enden, bevor sie überhaupt begonnen hat!"
 
-#: clock/shifts/models.py:166
+#: clock/shifts/models.py:165
 msgid "Shift currently paused?"
 msgstr "Schicht derzeit pausiert?"
 
-#: clock/shifts/views.py:29
+#: clock/shifts/views.py:32
 msgid "You need an active shift to perform this action!"
 msgstr "Du brauchst eine aktive Schicht um diese Aktion auszuführen!"
 
-#: clock/shifts/views.py:37
+#: clock/shifts/views.py:40
 msgid "You already have an active shift!"
 msgstr "Du hast schon eine aktive Schicht!"
 
-#: clock/shifts/views.py:68
+#: clock/shifts/views.py:71
 msgid "Your shift has started!"
 msgstr "Deine Schicht hat begonnen!"
 
-#: clock/shifts/views.py:84
+#: clock/shifts/views.py:87
 msgid "Your shift has finished!"
 msgstr "Deine Schicht wurde beendet!"
 
-#: clock/shifts/views.py:94
+#: clock/shifts/views.py:97
 msgid "paused"
 msgstr "pausiert"
 
-#: clock/shifts/views.py:94
+#: clock/shifts/views.py:97
 msgid "continued"
 msgstr "fortgesetzt"
 
+#: clock/shifts/views.py:98
+#, python-format
+msgid "Your shift was %s."
+msgstr "Deine Schicht wurde %s."
+
 #: clock/templates/account/base.html:4 clock/templates/account/base.html:15
-#: clock/templates/nav.html.py:37
+#: clock/templates/nav.html.py:38
 msgid "Account"
 msgstr "Konto"
 
@@ -348,7 +357,7 @@ msgid "Not signed up yet?"
 msgstr "Noch nicht registriert?"
 
 #: clock/templates/account/logout.html:4
-#: clock/templates/account/logout.html:13 clock/templates/nav.html.py:42
+#: clock/templates/account/logout.html:13 clock/templates/nav.html.py:43
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -476,6 +485,7 @@ msgstr ""
 "Adressen immer noch ändern</a>!"
 
 #: clock/templates/contract/base.html:4 clock/templates/contract/list.html:9
+#: clock/templates/nav.html.py:28
 msgid "Contracts"
 msgstr "Verträge"
 
@@ -520,23 +530,23 @@ msgstr "Über"
 msgid "Try it now!"
 msgstr "Jetzt ausprobieren!"
 
-#: clock/templates/nav.html:25
-msgid "Shift"
-msgstr "Schicht"
+#: clock/templates/nav.html:26 clock/templates/shift/base.html.py:4
+msgid "Shifts"
+msgstr "Schichten"
 
-#: clock/templates/nav.html:33
+#: clock/templates/nav.html:34
 msgid "Superuser"
 msgstr "Superuser"
 
-#: clock/templates/nav.html:34
+#: clock/templates/nav.html:35
 msgid "Admin"
 msgstr "Admin"
 
-#: clock/templates/nav.html:39
+#: clock/templates/nav.html:40
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: clock/templates/nav.html:41
+#: clock/templates/nav.html:42
 msgid "Current session"
 msgstr "Aktuelle Sitzung"
 
@@ -545,12 +555,14 @@ msgid "No active shift running!"
 msgstr "Aktuell gibt es keine aktive Schicht!"
 
 #: clock/templates/pages/backend/index.html:15
-#| msgid "Pause duration"
 msgid "Current duration:"
-msgstr "Aktuelle Pausendauer"
+msgstr "Aktuelle Schichtdauer"
+
+#: clock/templates/pages/backend/index.html:18
+msgid "Currently paused for:"
+msgstr "Aktuell pausiert seit:"
 
 #: clock/templates/pages/backend/index.html:21
-#| msgid "Your shift has started!"
 msgid "Your current shift started at"
 msgstr "Deine aktuelle Schicht begann am"
 
@@ -583,10 +595,6 @@ msgstr "Sprache ändern"
 #: clock/templates/profiles/profile.html:30
 msgid "Submit"
 msgstr "Absenden"
-
-#: clock/templates/shift/base.html:4
-msgid "Shifts"
-msgstr "Schichten"
 
 #: clock/templates/shift/delete.html:10
 msgid "Delete shift"
@@ -644,6 +652,3 @@ msgstr "Deutsch"
 #: config/settings/common.py:132
 msgid "English"
 msgstr "Englisch"
-
-#~ msgid "Shift list"
-#~ msgstr "Schichten"
