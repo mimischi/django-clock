@@ -1,6 +1,9 @@
 {% extends 'shift/base.html' %}
 {% load staticfiles i18n django_bootstrap_breadcrumbs crispy_forms_tags %}
 
+{% block extra_title %}{% if shift %}{% trans 'Update shift' %}{% else %}{% trans 'New shift' %}
+{% endif %}{% endblock extra_title %}
+
 {% block extra_head %}{{ block.super }}
     <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
     <script type="text/javascript"

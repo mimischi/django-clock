@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-11 15:39+0200\n"
-"PO-Revision-Date: 2016-06-11 15:40+0053\n"
+"POT-Creation-Date: 2016-06-12 18:40+0200\n"
+"PO-Revision-Date: 2016-06-12 18:40+0053\n"
 "Last-Translator:   <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -65,7 +65,8 @@ msgstr ""
 msgid "Create new contract"
 msgstr "Neuen Vertrag erstellen"
 
-#: clock/contracts/forms.py:40 clock/templates/contract/edit.html:27
+#: clock/contracts/forms.py:40 clock/templates/contract/edit.html:4
+#: clock/templates/contract/edit.html:18
 msgid "Update contract"
 msgstr "Vertrag aktualisieren"
 
@@ -88,7 +89,7 @@ msgstr "Abteilung"
 msgid "Abbreviation"
 msgstr "Kürzel"
 
-#: clock/contracts/models.py:19 clock/shifts/models.py:33
+#: clock/contracts/models.py:19 clock/shifts/models.py:31
 #: clock/templates/contract/list.html:24
 #: clock/templates/shift/month_archive_view.html:82
 #: clock/templates/shift/month_archive_view.html:98
@@ -136,7 +137,7 @@ msgstr "Neue Schicht erstellen"
 msgid "Update"
 msgstr "Schicht aktualisieren"
 
-#: clock/shifts/forms.py:173
+#: clock/shifts/forms.py:172
 msgid ""
 "Your selected starting/finishing time overlaps with at least one"
 "                     finished shift of yours. Please adjust the times."
@@ -144,69 +145,74 @@ msgstr ""
 "Deine Start-/Endzeit überlappt mit einer bereits beendeten Schicht. Bitte "
 "passe die Zeiten an."
 
-#: clock/shifts/forms.py:177
+#: clock/shifts/forms.py:176
 msgid "A pause may not be longer than your actual shift."
 msgstr "Eine Pause kann nicht länger als eine Schicht sein."
 
-#: clock/shifts/models.py:23
+#: clock/shifts/models.py:21
 msgid "S"
 msgstr "K"
 
-#: clock/shifts/models.py:23
+#: clock/shifts/models.py:21
 msgid "Sick"
 msgstr "Krank"
 
-#: clock/shifts/models.py:24
+#: clock/shifts/models.py:22
 msgid "V"
 msgstr "U"
 
-#: clock/shifts/models.py:24
+#: clock/shifts/models.py:22
 msgid "Vacation"
 msgstr "Urlaub"
 
-#: clock/shifts/models.py:35 clock/templates/shift/month_archive_view.html:83
+#: clock/shifts/models.py:33 clock/templates/shift/month_archive_view.html:83
 #: clock/templates/shift/month_archive_view.html:99
 msgid "Shift started"
 msgstr "Start der Schicht"
 
-#: clock/shifts/models.py:38 clock/templates/shift/month_archive_view.html:84
+#: clock/shifts/models.py:36 clock/templates/shift/month_archive_view.html:84
 #: clock/templates/shift/month_archive_view.html:100
 msgid "Shift finished"
 msgstr "Ende der Schicht"
 
-#: clock/shifts/models.py:44 clock/templates/shift/month_archive_view.html:86
+#: clock/shifts/models.py:38
+#| msgid "Shift started"
+msgid "Shift completed?"
+msgstr "Schicht beendet?"
+
+#: clock/shifts/models.py:42 clock/templates/shift/month_archive_view.html:86
 #: clock/templates/shift/month_archive_view.html:102
 msgid "Shift duration"
 msgstr "Schichtdauer"
 
-#: clock/shifts/models.py:49 clock/templates/shift/month_archive_view.html:85
+#: clock/shifts/models.py:47 clock/templates/shift/month_archive_view.html:85
 #: clock/templates/shift/month_archive_view.html:101
 msgid "Pause duration"
 msgstr "Pausendauer"
 
-#: clock/shifts/models.py:51 clock/templates/shift/month_archive_view.html:87
+#: clock/shifts/models.py:49 clock/templates/shift/month_archive_view.html:87
 #: clock/templates/shift/month_archive_view.html:103
 msgid "Key"
 msgstr "Schlüssel"
 
-#: clock/shifts/models.py:52
+#: clock/shifts/models.py:50
 msgid "Note"
 msgstr "Notiz"
 
-#: clock/shifts/models.py:135
+#: clock/shifts/models.py:131
 msgid "Your shift must not start in the                     future!"
 msgstr "Ihre Schicht darf nicht in der Zukunft beginnen!"
 
-#: clock/shifts/models.py:138
+#: clock/shifts/models.py:134
 msgid "Your shift must not finish in                     the future!"
 msgstr "Ihre Schicht darf nicht in der Zukunft enden!"
 
-#: clock/shifts/models.py:141
+#: clock/shifts/models.py:137
 msgid ""
 "A shift must not finish, before                     it has even started!"
 msgstr "Eine Schicht darf nicht enden, bevor sie überhaupt begonnen hat!"
 
-#: clock/shifts/models.py:167
+#: clock/shifts/models.py:163
 msgid "Shift currently paused?"
 msgstr "Schicht derzeit pausiert?"
 
@@ -240,7 +246,7 @@ msgid "Your shift was %s."
 msgstr "Deine Schicht wurde %s."
 
 #: clock/templates/account/base.html:4 clock/templates/account/base.html:15
-#: clock/templates/nav.html:39
+#: clock/templates/nav.html:43
 msgid "Account"
 msgstr "Konto"
 
@@ -363,7 +369,7 @@ msgstr ""
 "Du hast bestätigt, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine "
 "E-Mail ist."
 
-#: clock/templates/account/login.html:4 clock/templates/nav.html:21
+#: clock/templates/account/login.html:4 clock/templates/nav.html:22
 msgid "Login"
 msgstr "Login"
 
@@ -372,7 +378,7 @@ msgid "Not signed up yet?"
 msgstr "Noch nicht registriert?"
 
 #: clock/templates/account/logout.html:4
-#: clock/templates/account/logout.html:13 clock/templates/nav.html:44
+#: clock/templates/account/logout.html:13 clock/templates/nav.html:49
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -499,19 +505,20 @@ msgstr ""
 "<strong>Hinweis:</strong> Du kannst deine <a href=\"%(email_url)s\">E-Mail "
 "Adressen immer noch ändern</a>!"
 
-#: clock/templates/base.html:55
+#: clock/templates/base.html:72
 msgid "Back to top"
 msgstr "Nach oben"
 
-#: clock/templates/base.html:56
+#: clock/templates/base.html:73
 msgid "Imprint"
 msgstr "Impressum"
 
-#: clock/templates/base.html:57
+#: clock/templates/base.html:74
 msgid "Privacy"
 msgstr "Datenschutz"
 
-#: clock/templates/contact/base.html:4 clock/templates/contact/form.html:6
+#: clock/templates/base.html:75 clock/templates/contact/base.html:4
+#: clock/templates/contact/form.html:6 clock/templates/nav.html:27
 msgid "Contact"
 msgstr "Kontakt"
 
@@ -528,7 +535,7 @@ msgstr ""
 "möglich melden!"
 
 #: clock/templates/contract/base.html:4 clock/templates/contract/list.html:9
-#: clock/templates/nav.html:29
+#: clock/templates/nav.html:32
 msgid "Contracts"
 msgstr "Verträge"
 
@@ -545,11 +552,7 @@ msgid "All shifts associated with this contract will also be deleted!"
 msgstr ""
 "Es werden alle Schichten gelöscht, die mit diesem Vertrag assoziiert sind!"
 
-#: clock/templates/contract/edit.html:4
-msgid "Edit contract"
-msgstr "Vertrag aktualisieren"
-
-#: clock/templates/contract/edit.html:29
+#: clock/templates/contract/edit.html:4 clock/templates/contract/edit.html:20
 msgid "New contract"
 msgstr "Neuen Vertrag hinzufügen"
 
@@ -569,27 +572,27 @@ msgstr "Stundenzahl"
 msgid "About"
 msgstr "Über"
 
-#: clock/templates/nav.html:24
+#: clock/templates/nav.html:25
 msgid "Try it now!"
 msgstr "Jetzt ausprobieren!"
 
-#: clock/templates/nav.html:27 clock/templates/shift/base.html:4
+#: clock/templates/nav.html:30 clock/templates/shift/base.html:4
 msgid "Shifts"
 msgstr "Schichten"
 
-#: clock/templates/nav.html:35
+#: clock/templates/nav.html:39
 msgid "Superuser"
 msgstr "Superuser"
 
-#: clock/templates/nav.html:36
+#: clock/templates/nav.html:40
 msgid "Admin"
 msgstr "Admin"
 
-#: clock/templates/nav.html:41
+#: clock/templates/nav.html:45
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: clock/templates/nav.html:43
+#: clock/templates/nav.html:47
 msgid "Current session"
 msgstr "Aktuelle Sitzung"
 
@@ -643,11 +646,11 @@ msgstr "Schicht löschen?"
 msgid "Are you sure you want to delete the following shift?"
 msgstr "Bist du dir sicher, dass du die Schicht löschen möchtest?"
 
-#: clock/templates/shift/edit.html:26
+#: clock/templates/shift/edit.html:4 clock/templates/shift/edit.html:28
 msgid "Update shift"
 msgstr "Schicht aktualisieren"
 
-#: clock/templates/shift/edit.html:28
+#: clock/templates/shift/edit.html:4 clock/templates/shift/edit.html:30
 msgid "New shift"
 msgstr "Neue Schicht hinzufügen"
 
@@ -666,6 +669,11 @@ msgstr "Neue Schicht erstellen"
 #: clock/templates/shift/month_archive_view.html:59
 msgid "Export month"
 msgstr "Exportieren"
+
+#: clock/templates/shift/month_archive_view.html:63
+#| msgid "Delete contract"
+msgid "Select contract"
+msgstr "Vertrag auswählen"
 
 #: clock/templates/shift/month_archive_view.html:64
 msgid "Shifts without contracts"

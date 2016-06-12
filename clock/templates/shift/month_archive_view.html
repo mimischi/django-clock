@@ -60,7 +60,7 @@
         <div class="col-sm-12">
             <select id="contractSelect" class="block form-control work-select selectpicker" name="contractSelect"
                     {% if not view.get_all_contracts %}disabled{% endif %}>
-                <optgroup label="Select contract">
+                <optgroup label="{% trans 'Select contract' %}">
                     <option value="0"{% if view.contract == '0' %}selected="selected"{% endif %}>{% trans 'Shifts without contracts' %}</option>
                     <option value="00"{% if view.contract == '00' %}selected="selected"{% endif %}>{% trans 'All contracts' %}</option>
                     {% for contract in view.get_all_contracts %}
