@@ -164,7 +164,7 @@
                 }
                 // Otherwise the date is today. Check if the clicked date is the same as today. If not, redirect!
                 if (e.date.format("YYYY-MM") != currentDate.format("YYYY-MM")) {
-                    window.location.href = "/shift/archive/" + e.date.format("YYYY") + "/" + e.date.format("MM");
+                    window.location.href = "/shift/" + e.date.format("YYYY") + "/" + e.date.format("MM");
                 }
             });
             // Hide the current value, so the placeholder is always shown!
