@@ -77,7 +77,7 @@ header {
     -ms-transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 
-    bottom: 15%;
+    top: 5px;
     left: 100px;
     position: absolute;
     color: #ed217c;
