@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.shortcuts import render
 
@@ -7,6 +7,8 @@ from clock.shifts.utils import get_all_contracts, get_current_shift, \
     get_default_contract
 
 # from config.settings.common import GIT_STATUS, GIT_REVISION_HASH, GIT_COMMIT_TIMESTAMP
+from clock.shifts.models import Shift
+from django.utils import timezone
 
 
 def home(request):
@@ -14,6 +16,12 @@ def home(request):
     Just render the home screen.
     """
     context = {}
+
+    if not get_current_shift(request.user):
+        Shift.objects.create(
+            employee=request.user,
+            shift_started=timezone.now() - timedelta(days=1, hours=5)
+        )
 
     template_to_render = 'pages/frontend/index.html'
 
