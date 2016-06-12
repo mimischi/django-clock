@@ -22,7 +22,7 @@ urlpatterns = [
                   url(
                       r'^favicon.ico$',
                       RedirectView.as_view(
-                          url=staticfiles_storage.url('common/images/favicon.ico'),
+                          url=staticfiles_storage.url('common/favicons/favicon.ico'),
                           permanent=False),
                       name="favicon"
                   ),
