@@ -6,6 +6,7 @@ from crispy_forms.layout import Submit, HTML
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse_lazy
+from django.utils.translation import get_language
 from django.utils.translation import ugettext_lazy as _
 
 from clock.contracts.models import Contract
@@ -43,7 +44,9 @@ class ShiftForm(forms.ModelForm):
                     "stepping": 5,
                     "toolbarPlacement": "top",
                     "keepInvalid": True,
-                    "calendarWeeks": True
+                    "showTodayButton": True,
+                    "calendarWeeks": True,
+                    "locale": get_language()
                 }
             ),
             'shift_finished': DateTimePicker(
@@ -52,13 +55,16 @@ class ShiftForm(forms.ModelForm):
                     "stepping": 5,
                     "toolbarPlacement": "top",
                     "keepInvalid": True,
-                    "calendarWeeks": True
+                    "showTodayButton": True,
+                    "calendarWeeks": True,
+                    "locale": get_language()
                 }
             ),
             'pause_duration': DateTimePicker(
                 options={
                     "format": "HH:mm",
-                    "stepping": 5
+                    "stepping": 5,
+                    "locale": get_language()
                 }
             ),
             'contract': forms.Select(
@@ -111,10 +117,13 @@ class ShiftForm(forms.ModelForm):
                             "format": "YYYY-MM-DD HH:mm",
                             "stepping": 5,
                             "toolbarPlacement": "top",
-                            "calendarWeeks": False,
+                            "showTodayButton": True,
+                            "calendarWeeks": True,
+                            "locale": get_language(),
                             # "minDate": unicode(self.initial['shift_started'].strftime("%Y-%m-%d %H:%M"))
-                        }
+                        },
                     ),
+                    label=_('Shift finished'),
                 ),
                 # This one does not seem to work, so we disable it.
                 # Enabling it will set the shift_started field to the same value as the shift_finished..
@@ -126,10 +135,13 @@ class ShiftForm(forms.ModelForm):
                             "format": "YYYY-MM-DD HH:mm",
                             "stepping": 5,
                             "toolbarPlacement": "top",
-                            "calendarWeeks": False,
+                            "showTodayButton": True,
+                            "calendarWeeks": True,
+                            "locale": get_language(),
                             # "maxDate": unicode(self.initial['shift_finished'].strftime("%Y-%m-%d %H:%M"))
                         }
                     ),
+                    label=_('Shift started'),
                 ),
             })
 

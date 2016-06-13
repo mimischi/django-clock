@@ -1,6 +1,6 @@
 {% extends 'shift/base.html' %}
 {% load staticfiles i18n django_bootstrap_breadcrumbs format_duration base_extras %}
-
+{% get_current_language as LANGUAGE_CODE %}
 {% block extra_head %}{{ block.super }}
     <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
     <script type="text/javascript"
@@ -151,7 +151,8 @@
                 'format': 'MMMM YYYY',
                 'focusOnShow': false,
                 'viewMode': 'months',
-                'enabledDates': [moment().format("YYYY-MM")]
+                'enabledDates': [moment().format("YYYY-MM")],
+                'locale': '{{ LANGUAGE_CODE }}',
             });
 
             // We want to change the page, when the date inside the picker was changed!
