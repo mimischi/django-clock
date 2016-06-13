@@ -41,10 +41,13 @@
                 var pad = function (x) {
                     return x < 10 ? '0' + x : x;
                 };
+                var d_day = Math.floor({{ current_duration|format_dttd:"%H" }} / 24
+                )
+                ;
 
-                var d = new Date(0, 0, 0, {{ current_duration|format_dttd:"%H" }}, {{ current_duration|format_dttd:"%M" }}, {{ current_duration|format_dttd:"%S" }});
+                var d = new Date(0, 0, d_day, {{ current_duration|format_dttd:"%H" }}, {{ current_duration|format_dttd:"%M" }}, {{ current_duration|format_dttd:"%S" }});
                 {% if current_shift.is_paused %}
-                    var d = new Date(0, 0, 0, {{ current_shift.total_pause_time|format_dttd:"%H" }}, {{ current_shift.total_pause_time|format_dttd:"%M" }}, {{ current_shift.total_pause_time|format_dttd:"%M" }});
+                    var d = new Date(0, 0, d_day, {{ current_shift.total_pause_time|format_dttd:"%H" }}, {{ current_shift.total_pause_time|format_dttd:"%M" }}, {{ current_shift.total_pause_time|format_dttd:"%M" }});
                 {% endif %}
 
                 var ticktock = function () {
@@ -55,9 +58,10 @@
                     var s = pad(d.getSeconds());
 
                     var current_time = [h, m, s].join(':');
+                    var day_string = (d_day == 1) ? d_day + " {% trans 'day' %}, " : d_day + " {% trans 'days' %}, ";
+                    var my_string = (d_day > 0) ? day_string + current_time : current_time;
 
-                    clock.innerHTML = current_time;
-
+                    clock.innerHTML = my_string;
                 };
                 ticktock();
 

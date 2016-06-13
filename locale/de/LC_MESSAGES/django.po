@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-12 18:40+0200\n"
-"PO-Revision-Date: 2016-06-12 18:40+0053\n"
+"POT-Creation-Date: 2016-06-12 20:45+0200\n"
+"PO-Revision-Date: 2016-06-13 09:46+0053\n"
 "Last-Translator:   <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -66,7 +66,7 @@ msgid "Create new contract"
 msgstr "Neuen Vertrag erstellen"
 
 #: clock/contracts/forms.py:40 clock/templates/contract/edit.html:4
-#: clock/templates/contract/edit.html:18
+#: clock/templates/contract/edit.html:19
 msgid "Update contract"
 msgstr "Vertrag aktualisieren"
 
@@ -176,7 +176,6 @@ msgid "Shift finished"
 msgstr "Ende der Schicht"
 
 #: clock/shifts/models.py:38
-#| msgid "Shift started"
 msgid "Shift completed?"
 msgstr "Schicht beendet?"
 
@@ -552,7 +551,7 @@ msgid "All shifts associated with this contract will also be deleted!"
 msgstr ""
 "Es werden alle Schichten gelöscht, die mit diesem Vertrag assoziiert sind!"
 
-#: clock/templates/contract/edit.html:4 clock/templates/contract/edit.html:20
+#: clock/templates/contract/edit.html:4 clock/templates/contract/edit.html:21
 msgid "New contract"
 msgstr "Neuen Vertrag hinzufügen"
 
@@ -612,6 +611,14 @@ msgstr "Aktuell pausiert seit:"
 msgid "Your current shift started at"
 msgstr "Deine aktuelle Schicht begann am"
 
+#: clock/templates/pages/backend/index.html:64
+msgid "day"
+msgstr "Tag"
+
+#: clock/templates/pages/backend/index.html:66
+msgid "days"
+msgstr "Tage"
+
 #: clock/templates/pages/backend/quick_action.html:7
 msgid "Resume"
 msgstr "Fortsetzen"
@@ -646,11 +653,11 @@ msgstr "Schicht löschen?"
 msgid "Are you sure you want to delete the following shift?"
 msgstr "Bist du dir sicher, dass du die Schicht löschen möchtest?"
 
-#: clock/templates/shift/edit.html:4 clock/templates/shift/edit.html:28
+#: clock/templates/shift/edit.html:4 clock/templates/shift/edit.html:29
 msgid "Update shift"
 msgstr "Schicht aktualisieren"
 
-#: clock/templates/shift/edit.html:4 clock/templates/shift/edit.html:30
+#: clock/templates/shift/edit.html:4 clock/templates/shift/edit.html:31
 msgid "New shift"
 msgstr "Neue Schicht hinzufügen"
 
@@ -671,7 +678,6 @@ msgid "Export month"
 msgstr "Exportieren"
 
 #: clock/templates/shift/month_archive_view.html:63
-#| msgid "Delete contract"
 msgid "Select contract"
 msgstr "Vertrag auswählen"
 
