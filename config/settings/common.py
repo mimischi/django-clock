@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = (
     'django_bootstrap_breadcrumbs',
     'bootstrap3',
     'bootstrap3_datetime',
+    'taggit',
 )
 
 # Apps specific for this project go here.
