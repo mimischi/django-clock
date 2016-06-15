@@ -1,9 +1,11 @@
 # Changelog
 
-## 0.8.1
+## 0.9
 
 * Added ability to add tags to shifts
     * It's not yet possible to do any filtering by tags
+* Added reCAPTCHA
+* Reformatted accounts-templates and its translations
 
 ## 0.8.0 (2016-06-13)
 
