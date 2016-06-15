@@ -493,7 +493,7 @@ msgid ""
 "Just look at it as a gift. Or maybe Michael is stinking-rich and does not "
 "know how to make a profit out of this page."
 msgstr ""
-"ieh es als eine Art Dankeschön von uns an. Oder Michael ist einfach "
+"Sieh es als eine Art Dankeschön von uns an. Oder Michael ist einfach "
 "stinkendreich und weiß nicht wie er so ein Produkt monetarisieren soll."
 
 #: clock/templates/account/signup.html:25
