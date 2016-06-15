@@ -45,6 +45,7 @@ THIRD_PARTY_APPS = (
     'bootstrap3',
     'bootstrap3_datetime',
     'captcha',
+    'taggit',
 )
 
 # Apps specific for this project go here.

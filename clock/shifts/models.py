@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from taggit.managers import TaggableManager
 
 from clock.contracts.models import Contract
 from clock.pages.utils import round_time
@@ -48,6 +49,7 @@ class Shift(models.Model):
     )
     key = models.CharField(_('Key'), max_length=2, choices=KEY_CHOICES, blank=True)
     note = models.TextField(_('Note'), blank=True)
+    tags = TaggableManager(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
