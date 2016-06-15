@@ -298,12 +298,8 @@ LOCALE_PATHS = (
     str(ROOT_DIR('locale')),
 )
 
-# GIT_STATUS = subprocess.check_output(['git', 'status'])
-# GIT_REVISION_HASH = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
-# GIT_COMMIT_TIMESTAMP = subprocess.check_output(['git', 'show', '-s', '--format=%ci'])
-
 ACCOUNT_FORMS = {
-    'login': 'clock.pages.forms.ClockLoginForm'
+    'signup': 'clock.accounts.forms.ClockSignUpForm',
 }
 # Contact form settings
 CONTACT_FORM_SUBJECT = _('A new message has arrived!')
