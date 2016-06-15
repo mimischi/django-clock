@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.1
+
+* Added ability to add tags to shifts
+    * It's not yet possible to do any filtering by tags
+
 ## 0.8.0 (2016-06-13)
 
 * First release, there was no CHANGELOG before that

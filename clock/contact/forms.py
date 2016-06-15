@@ -21,7 +21,7 @@ class ContactForm(forms.Form):
         self.helper = FormHelper(self)
         self.helper.form_action = '.'
         self.helper.form_method = 'post'
-        self.helper.form_class = 'form-signin'
+        self.helper.form_class = 'form-halfpage'
         self.helper.layout.append(FormActions(
             Submit('submit', _('Submit'), css_class='btn btn-primary pull-right'),
         ))
