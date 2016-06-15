@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = (
     'django_bootstrap_breadcrumbs',
     'bootstrap3',
     'bootstrap3_datetime',
+    'captcha',
     'taggit',
 )
 
@@ -297,12 +298,15 @@ LOCALE_PATHS = (
     str(ROOT_DIR('locale')),
 )
 
-# GIT_STATUS = subprocess.check_output(['git', 'status'])
-# GIT_REVISION_HASH = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
-# GIT_COMMIT_TIMESTAMP = subprocess.check_output(['git', 'show', '-s', '--format=%ci'])
-
 ACCOUNT_FORMS = {
-    'login': 'clock.pages.forms.ClockLoginForm'
+    'signup': 'clock.accounts.forms.ClockSignUpForm',
 }
+# Contact form settings
 CONTACT_FORM_SUBJECT = _('A new message has arrived!')
 CONTACT_FORM_RECIPIENT = ['clock-kontakt@dlist.server.uni-frankfurt.de']
+
+# reCAPTCHA settings
+RECAPTCHA_PUBLIC_KEY = '6LdceCITAAAAALjjBfVAxF4gCw-11zB3cclDfAsf'
+RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE_KEY", default=None)
+NOCAPTCHA = True
+RECAPTCHA_USE_SSL = True
