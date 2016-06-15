@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = (
     'django_bootstrap_breadcrumbs',
     'bootstrap3',
     'bootstrap3_datetime',
+    'captcha',
 )
 
 # Apps specific for this project go here.
@@ -303,5 +304,12 @@ LOCALE_PATHS = (
 ACCOUNT_FORMS = {
     'login': 'clock.pages.forms.ClockLoginForm'
 }
+# Contact form settings
 CONTACT_FORM_SUBJECT = _('A new message has arrived!')
 CONTACT_FORM_RECIPIENT = ['clock-kontakt@dlist.server.uni-frankfurt.de']
+
+# reCAPTCHA settings
+RECAPTCHA_PUBLIC_KEY = '6LdceCITAAAAALjjBfVAxF4gCw-11zB3cclDfAsf'
+RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE_KEY", default=None)
+NOCAPTCHA = True
+RECAPTCHA_USE_SSL = True

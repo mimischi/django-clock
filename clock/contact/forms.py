@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from captcha.fields import ReCaptchaField
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -6,6 +7,7 @@ from django import forms
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
+from django.utils.translation import get_language
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -14,6 +16,7 @@ class ContactForm(forms.Form):
     sender = forms.EmailField(label=_('E-Mail'))
     message = forms.CharField(widget=forms.Textarea, label=_('Message'))
     cc_myself = forms.BooleanField(label=_('Send a copy of the mail to myself'), required=False)
+    captcha = ReCaptchaField(attrs={'lang': get_language()})
 
     def __init__(self, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
