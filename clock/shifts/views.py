@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -12,11 +12,12 @@ from django.views.generic.dates import DayArchiveView, MonthArchiveView, WeekArc
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-
 from clock.pages.mixins import UserObjectOwnerMixin
 from clock.shifts.forms import ShiftForm, QuickActionForm
 from clock.shifts.models import Shift
 from clock.shifts.utils import get_current_shift, shifts_in_month, get_all_shifts, month_with_shift
+from clock.shifts.utils import get_all_contracts, get_current_shift, get_default_contract, get_return_url, \
+    set_correct_session
 
 
 @require_POST
@@ -77,6 +78,7 @@ def shift_action(request):
         # to timezone.now() and save the updated shift
         shift.unpause()
         shift.shift_finished = timezone.now()
+        shift.bool_finished = True
         shift.save()
 
         # Add a success message
@@ -94,7 +96,7 @@ def shift_action(request):
 
         # Show a success message - either the pause was started or finished
         action = _('paused') if shift.is_paused else _('continued')
-        message = 'Your shift was %s.' % action
+        message = _('Your shift was %s.') % action
         messages.add_message(request, messages.SUCCESS, message)
 
     return redirect('home')
@@ -113,8 +115,12 @@ class ShiftListView(ListView):
 class ShiftManualCreate(CreateView):
     model = Shift
     form_class = ShiftForm
-    success_url = reverse_lazy('shift:list')
+    # success_url = reverse_lazy('shift:list')
+    #success_url = get_return_url(self.get_request, 'shift:list')
     template_name = 'shift/edit.html'
+
+    def get_success_url(self):
+        return get_return_url(self.request, 'shift:list')
 
     def get_initial(self):
         """
@@ -124,8 +130,21 @@ class ShiftManualCreate(CreateView):
         """
         return {
             'user': self.request.user,
+            'request': self.request,
             'view': 'shift_create',
+            'contract': set_correct_session(self.request, 'contract'),
         }
+
+    @property
+    def base_date(self):
+        try:
+            d = datetime(int(self.request.session['last_kwargs']['year']),
+                         int(self.request.session['last_kwargs']['month']), 1, hour=8).strftime("%Y-%m-%d %H:%M")
+            if self.request.session['last_kwargs']['month'] == datetime.now().strftime("%m"):
+                d = datetime.now().strftime("%Y-%m-%d")
+        except KeyError:
+            d = datetime.now().strftime("%Y-%m-%d")
+        return d
 
     def form_valid(self, form):
         shift = form.save(commit=False)
@@ -150,6 +169,7 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
         """
         return {
             'user': self.request.user,
+            'request': self.request,
             'view': 'shift_update',
         }
 
@@ -190,7 +210,15 @@ class ShiftMonthView(MonthArchiveView):
     template_name = 'shift/month_archive_view.html'
 
     class Meta:
-        ordering = ["shift_started"]
+        ordering = ["-shift_started"]
+
+    def get_context_data(self, **kwargs):
+        context = super(ShiftMonthView, self).get_context_data()
+
+        if 'year' not in self.kwargs and 'month' not in self.kwargs:
+            self.kwargs['year'] = self.year
+            self.kwargs['month'] = self.month
+        return context
 
     @property
     def prev_next_shift(self):
@@ -209,7 +237,49 @@ class ShiftMonthView(MonthArchiveView):
         return context
 
     def get_queryset(self):
-        return Shift.objects.filter(employee=self.request.user, shift_finished__isnull=False).order_by('shift_started')
+        return Shift.objects.filter(employee=self.request.user, shift_finished__isnull=False)
+
+    @property
+    def get_all_contracts(self):
+        return get_all_contracts(self.request.user)
+
+    @property
+    def get_default_contract(self):
+        return get_default_contract(self.request.user)
+
+
+@method_decorator(login_required, name="dispatch")
+class ShiftMonthContractView(ShiftMonthView):
+    """
+    Show all shifts assigned to a contract of a specific date.
+    The contract pk may be either:
+        '0': Show shifts not assigned to any contract
+        '00': Show all shifts without any contract filtering (default)
+        '<contract>': Show shifts assigned to contract with the id <contract>
+    """
+    contract = '00'
+
+    def get_context_data(self, **kwargs):
+        context = super(ShiftMonthContractView, self).get_context_data()
+
+        if 'contract' not in self.kwargs:
+            self.kwargs['contract'] = self.contract
+        return context
+
+    def get_queryset(self):
+        try:
+            self.contract = str(self.kwargs['contract'])
+        except KeyError:
+            pass
+
+        queryset = Shift.objects.filter(employee=self.request.user.pk, shift_finished__isnull=False)
+        if self.contract == "0":
+            queryset = queryset.filter(contract__isnull=True)
+        elif self.contract == "00":
+            pass
+        else:
+            queryset = queryset.filter(contract=self.contract)
+        return queryset
 
 
 @method_decorator(login_required, name="dispatch")

@@ -1,13 +1,14 @@
 {% extends 'shift/base.html' %}
 {% load staticfiles i18n django_bootstrap_breadcrumbs format_duration base_extras %}
-
+{% get_current_language as LANGUAGE_CODE %}
 {% block extra_head %}{{ block.super }}
     <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
     <script type="text/javascript"
             src="{% static 'libraries/eonasdan-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libraries/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
     <link rel="stylesheet"
           href="{% static 'libraries/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}"/>
-<link rel="stylesheet" type="text/css" href="{% static 'libraries/datatables/css/datatables.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'libraries/datatables/css/datatables.min.css' %}"/>
 
     <link rel="stylesheet" href="{% static 'libraries/bootstrap-select/css/bootstrap-select.min.css' %}" media="screen"
           title="no title" charset="utf-8">
@@ -32,26 +33,41 @@
             </div>
         </div>
         <div class="col-sm-4">
-                        {% if not view.prev_next_shift.shifts_prev_month %}
-                            <a class="btn btn-default disabled"><span
-                                    class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}
-                            </a>
-                        {% else %}
-            <a href="{% url 'shift:archive_month_numeric' year=view.prev_next_shift.shifts_prev_month|date:"Y" month=view.prev_next_shift.shifts_prev_month|date:"m" %}"
-               class="btn btn-default"><span class="fa fa-chevron-left"></span> {{ view.prev_next_shift.shifts_prev_month|date:"F Y" }}
+            {#            {% if not previous_month or not shift %}#}
+            {#                <a class="btn btn-default disabled"><span#}
+            {#                        class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}#}
+            {#                </a>#}
+            {#            {% else %}#}
+            <a href="{% url 'shift:archive_month_contract_numeric' year=previous_month|date:"Y" month=previous_month|date:"m" contract=view.contract %}"
+               class="btn btn-default"><span class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}
             </a>
-                        {% endif %}
-                        {% if not view.prev_next_shift.shifts_next_month %}
-                            <a class="btn btn-default disabled">{{ next_month|date:"F Y" }} <span
-                                    class="fa fa-chevron-right"></span></a>
-                        {% else %}
-            <a href="{% url 'shift:archive_month_numeric' year=next_month|date:"Y" month=next_month|date:"m" %}"
+            {#            {% endif %}#}
+            {#            {% if not next_month or not shift %}#}
+            {#                <a class="btn btn-default disabled">{{ next_month|date:"F Y" }} <span#}
+            {#                        class="fa fa-chevron-right"></span></a>#}
+            {#            {% else %}#}
+            <a href="{% url 'shift:archive_month_contract_numeric' year=next_month|date:"Y" month=next_month|date:"m" contract=view.contract %}"
                class="btn btn-default">{{ next_month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
-                        {% endif %}
+            {#            {% endif %}#}
         </div>
         <div class="col-sm-4">
             <a href="{% url 'shift:new' %}" class="btn btn-primary pull-right"><span
                     class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
+        </div>
+        <div class="col-sm-4 pull-right">
+            <a href="{% if not view.kwargs.contract or view.kwargs.contract|add:0 < 1 %}#{% else %}{% url 'export:contract' year=view.kwargs.year month=view.kwargs.month pk=view.kwargs.contract %}{% endif %}" class="btn btn-default pull-right{% if not view.kwargs.contract or view.kwargs.contract|add:0 < 1 %} disabled{% endif %}"><span
+                class="fa fa-archive"></span> {% trans 'Export month' %}</a></div>
+        <div class="col-sm-12">
+            <select id="contractSelect" class="block form-control work-select selectpicker" name="contractSelect"
+                    {% if not view.get_all_contracts %}disabled{% endif %}>
+                <optgroup label="{% trans 'Select contract' %}">
+                    <option value="0"{% if view.contract == '0' %}selected="selected"{% endif %}>{% trans 'Shifts without contracts' %}</option>
+                    <option value="00"{% if view.contract == '00' %}selected="selected"{% endif %}>{% trans 'All contracts' %}</option>
+                    {% for contract in view.get_all_contracts %}
+                    <option value="{{ contract.pk }}"{% if contract.pk == view.contract|add:0 %}selected="selected"{% endif %}{% if not view.kwargs.contract and not view.contract == '00' and contract.department == view.get_default_contract %}selected="selected"{% endif %}>{{ contract }}</option>
+                    {% endfor %}
+                </optgroup>
+            </select>
         </div>
     </div>
     <table id="clockTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0"
@@ -68,8 +84,10 @@
             <th>{% trans 'Shift finished' %}</th>
             <th>{% trans 'Pause duration' %}</th>
             <th>{% trans 'Shift duration' %}</th>
+            <th>{% trans 'Key' %}</th>
         </tr>
         </thead>
+        {% if object_list|length > 5 %}
         <tfoot>
         <tr>
             {% if object_list %}
@@ -82,8 +100,10 @@
             <th>{% trans 'Shift finished' %}</th>
             <th>{% trans 'Pause duration' %}</th>
             <th>{% trans 'Shift duration' %}</th>
+            <th>{% trans 'Key' %}</th>
         </tr>
         </tfoot>
+        {% endif %}
         <tbody>
         {% for shift in object_list %}
             <tr id="{{ shift.pk }}">
@@ -93,8 +113,9 @@
                 <td class="text-right">{{ shift.contract|format_contract }}</td>
                 <td class="text-right">{{ shift.shift_started }}</td>
                 <td class="text-right">{{ shift.shift_finished }}</td>
-                <td class="text-right">{{ shift.pause_duration|format_hhmm }}</td>
-                <td class="text-right">{{ shift.shift_duration|format_hhmm }}</td>
+                <td class="text-right">{{ shift.pause_duration|format_dttd:"%H:%M" }}</td>
+                <td class="text-right">{{ shift.shift_duration|format_dttd:"%H:%M" }}</td>
+                <td class="text-right">{{ shift.get_key_display }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -105,6 +126,19 @@
     <script type="text/javascript" src="{% static 'libraries/datatables/js/datatables.min.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+
+
+            $('#contractSelect').change(function() {
+                var year = moment().format("YYYY");
+                var month = moment().format("MM");
+                {% if view.kwargs %}
+                year = {{ view.kwargs.year }};
+                month = {{ view.kwargs.month }};
+                {% endif %}
+                window.location.href = "/shift/" + year + "/" + month + "/contract/" + $(this).find("option:selected").val();
+            });
+
             var displayedMonth = false;
             var monthPicker = $('#monthpicker');
             // Check if the displayed month is equal to the current month. If not, set the default month to the displayed one.
@@ -117,7 +151,8 @@
                 'format': 'MMMM YYYY',
                 'focusOnShow': false,
                 'viewMode': 'months',
-                'enabledDates': [moment().format("YYYY-MM")]
+                'enabledDates': [moment().format("YYYY-MM")],
+                'locale': '{{ LANGUAGE_CODE }}',
             });
 
             // We want to change the page, when the date inside the picker was changed!
@@ -126,11 +161,11 @@
                 var currentDate = moment();
                 // If the displayed date is set, then we are not on the current date. Redirecting is OK!
                 if (displayedMonth) {
-                    window.location.href = "/shift/archive/" + e.date.format("YYYY") + "/" + e.date.format("MM");
+                    window.location.href = "/shift/" + e.date.format("YYYY") + "/" + e.date.format("MM");
                 }
                 // Otherwise the date is today. Check if the clicked date is the same as today. If not, redirect!
                 if (e.date.format("YYYY-MM") != currentDate.format("YYYY-MM")) {
-                    window.location.href = "/shift/archive/" + e.date.format("YYYY") + "/" + e.date.format("MM");
+                    window.location.href = "/shift/" + e.date.format("YYYY") + "/" + e.date.format("MM");
                 }
             });
             // Hide the current value, so the placeholder is always shown!
@@ -167,6 +202,8 @@
                         data: "pause_duration"
                     }, {
                         data: "shift_duration"
+                    }, {
+                        data: "key"
                     }],
                 {% if object_list %}
                     columnDefs: [{
@@ -174,7 +211,7 @@
                         targets: 4
                     }, {
                         responsivePriority: 2,
-                        targets: -1
+                        targets: -2
                     }],
                 {% else %}
                     columnDefs: [{
@@ -182,7 +219,7 @@
                         targets: 2
                     }, {
                         responsivePriority: 2,
-                        targets: -1
+                        targets: -2
                     }],
                 {% endif %}
                 order: [2, 'desc'],

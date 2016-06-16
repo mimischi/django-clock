@@ -1,0 +1,32 @@
+{% extends 'account/base.html' %}
+{% load account i18n crispy_forms_tags django_bootstrap_breadcrumbs staticfiles %}
+
+{% block extra_title %}{% trans 'Profile' %}{% endblock extra_title %}
+
+{% block extra_head %}{{ block.super }}
+    <script type="text/javascript" src="{% static 'libraries/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'libraries/bootstrap-select/css/bootstrap-select.min.css' %}">
+{% endblock extra_head %}
+
+{% block breadcrumbs %}{{ block.super }}{% endblock breadcrumbs %}
+
+{% block content_account %}
+    <h2>{% trans 'Profile' %}</h2>
+    <p>{% trans 'At some point you will see some information regarding your account here.' %}</p>
+    <h2>{% trans 'Set site language' %}</h2>
+    <form action="{% url 'update_language' %}" method="post">{% csrf_token %}
+        <input name="next" type="hidden" value="{{ redirect_to }}"/>
+        <select name="language" class="selectpicker">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            {% for language in languages %}
+                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
+                        selected="selected"{% endif %}>
+                    {{ language.name_local }} ({{ language.code }})
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">{% trans 'Submit' %}</button>
+    </form>
+{% endblock content_account %}

@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from datetime import datetime
 
 from django.conf.urls import url
 
-from clock.shifts.views import ShiftListView, ShiftManualCreate, \
-    ShiftManualEdit, ShiftManualDelete, ShiftYearView
-from clock.shifts.views import ShiftMonthView, ShiftWeekView, ShiftYearView, ShiftDayView, shift_action
+from clock.shifts.views import ShiftManualCreate, \
+    ShiftManualEdit, ShiftManualDelete
+from clock.shifts.views import ShiftMonthContractView, ShiftWeekView, ShiftYearView, ShiftDayView, \
+    shift_action
 
 # Data to display the current year-month inside the shift_list
 currentDate = datetime.now()
@@ -15,13 +17,8 @@ currentMonth = currentDate.strftime("%m")
 
 urlpatterns = [
     # Shift URLs
-    # ListView for all finished shifts of one employee
-    # url(r'^shift/$', ShiftListView.as_view(),
-    #     name="shift_list"
-    #     ),
-
     # Display the ShiftMonthView as default with the current year-month
-    url(r'^$', ShiftMonthView.as_view(month_format='%m', year=currentYear, month=currentMonth),
+    url(r'^$', ShiftMonthContractView.as_view(month_format='%m', year=currentYear, month=currentMonth),
         name="list"
         ),
     # View to handle all the quick-actions from the dashboard
@@ -44,16 +41,19 @@ urlpatterns = [
         ),
 
     # Shift Archive URLs
-    url(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
+    url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         ShiftDayView.as_view(),
         name="archive_day"),
-    url(r'^archive/(?P<year>[0-9]{4})/week/(?P<week>[0-9]+)/$',
+    url(r'^(?P<year>[0-9]{4})/week/(?P<week>[0-9]+)/$',
         ShiftWeekView.as_view(),
         name="archive_week"),
-    url(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
-        ShiftMonthView.as_view(month_format='%m'),
+    url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
+        ShiftMonthContractView.as_view(month_format='%m'),
         name="archive_month_numeric"),
-    url(r'^archive/(?P<year>[0-9]{4})/$',
+    url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<contract>\d+)/$',
+        ShiftMonthContractView.as_view(month_format='%m'),
+        name="archive_month_contract_numeric"),
+    url(r'^(?P<year>[0-9]{4})/$',
         ShiftYearView.as_view(),
         name="article_year_archive"),
     ]

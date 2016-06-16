@@ -1,6 +1,8 @@
 {% extends "account/signup.html" %}
 {% load i18n account django_bootstrap_breadcrumbs %}
 
+{% block extra_title %}{% trans 'Confirmation sent' %}{% endblock extra_title %}
+
 {% block breadcrumbs %}{{ block.super }}
     {% breadcrumb "Confirmation sent" "account_email_verification_sent" %}
 {% endblock breadcrumbs %}

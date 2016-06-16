@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags i18n django_bootstrap_breadcrumbs %}
+
+{% block extra_title %}{% trans 'Contact' %}{% endblock extra_title %}
+
+{% block breadcrumbs %}{{ block.super }}
+    {% breadcrumb "Contact" "contact:form" %}
+{% endblock breadcrumbs %}

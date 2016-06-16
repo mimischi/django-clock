@@ -72,6 +72,17 @@ header {
     display: block;
 }
 
+.verticaltext {
+    transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+
+    top: 5px;
+    left: 100px;
+    position: absolute;
+    color: #ed217c;
+}
+
 /* Navbar
 ------------------------- */
 
@@ -175,10 +186,10 @@ body > header > .navbar {
 
 .eyecatcher .screen {
     height: 100px;
-    background: url(../images/screen.png) no-repeat;
-    background-size: 100% auto;
+    background: url(../images/clock.svg) no-repeat;
+    background-size: 100% 85%;
     position: relative;
-    margin-top: 50px;
+    /*margin-top: 50px;*/
 }
 
 /* Featurettes
@@ -219,22 +230,29 @@ div.row.featurette p.lead {
     font-size: 18px;
 }
 
+div.row.featurette img {
+    border: 1px solid lightgrey;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    border-radius: 1em;
+}
+
 /* Login & Signup page
 -------------------------------------------------- */
 
-.form-signin {
+.form-halfpage {
     max-width: 400px;
 }
 
-.form-signin .form-signin-heading, .form-signin .checkbox {
+.form-halfpage .form-halfpage-heading, .form-halfpage .checkbox {
     margin-bottom: 30px;
 }
 
-.form-signin .checkbox {
+.form-halfpage .checkbox {
     font-weight: normal;
 }
 
-.form-signin .form-control {
+.form-halfpage .form-control {
     position: relative;
     height: auto;
     -webkit-box-sizing: border-box;
@@ -244,25 +262,17 @@ div.row.featurette p.lead {
     font-size: 16px;
 }
 
-.form-signin .form-control:focus {
+.form-halfpage .form-control:focus {
     z-index: 2;
 }
 
-.form-signin input[type="text"] {
+.form-halfpage input[type="text"] {
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
 
-.form-signin input[type="email"] {
-    margin-bottom: -1px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.form-signin input[type="password"] {
+.form-halfpage input[type="email"] {
     margin-bottom: -1px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -270,7 +280,15 @@ div.row.featurette p.lead {
     border-bottom-left-radius: 0;
 }
 
-.form-signin input[type="password"]:last-of-type {
+.form-halfpage input[type="password"] {
+    margin-bottom: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-halfpage input[type="password"]:last-of-type {
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -278,7 +296,7 @@ div.row.featurette p.lead {
     border-top-right-radius: 0;
 }
 
-.form-signin > p.pull-right {
+.form-halfpage > p.pull-right {
     margin-top: 5px;
 }
 
@@ -288,6 +306,10 @@ div.row.featurette p.lead {
 
 .registrationInfo h4 {
     font-weight: 600;
+}
+
+.below-form {
+    padding-top: 20px;
 }
 
 /* Account settings
@@ -361,10 +383,6 @@ tr.child > td.child > ul > li {
 /* Shift Datepicker
 -------------------------------------------------- */
 
-.objectList-topbar {
-    margin-bottom: 10px;
-}
-
 .objectList-topbar .form-group {
     margin-bottom: 0;
 }
@@ -398,6 +416,7 @@ tr.child > td.child > ul > li {
 
     .eyecatcher .screen {
         height: 300px;
+        margin-top: 30px;
     }
 
     .eyecatcher .btn {

@@ -10,12 +10,14 @@
 {% block container %}
     <div class="row">
         <div class="col-md-12">
-          <form class="form-signin" action="" method="post">
+            <form class="form-halfpage" action="" method="post">
                 <p class="pull-right"><a href="{% url 'account_signup' %}">{% trans 'Not signed up yet?' %}</a></p>
-                <h2 class="form-signin-heading">Login</h2>
+                <h2 class="form-halfpage-heading">Login</h2>
                 {% csrf_token %}
                 {{ form|crispy }}
                 <button id="sign-in-button" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <p class="below-form pull-right"><a
+                        href="{% url 'account_reset_password' %}">{% trans 'Forgot password?' %}</a></p>
           </form>
         </div>
       </div>

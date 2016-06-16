@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 from __future__ import absolute_import, unicode_literals
 
 import environ
-
 from django.utils.translation import ugettext_lazy as _
 
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
@@ -45,6 +44,8 @@ THIRD_PARTY_APPS = (
     'django_bootstrap_breadcrumbs',
     'bootstrap3',
     'bootstrap3_datetime',
+    'captcha',
+    'taggit',
 )
 
 # Apps specific for this project go here.
@@ -54,6 +55,8 @@ LOCAL_APPS = (
     'clock.pages',
     'clock.shifts',
     'clock.contracts',
+    'clock.profiles',
+    'clock.contact',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -69,8 +72,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
+    # We're overriding the normal LocaleMiddleware with a small extension for our needs!
+    # 'django.middleware.locale.LocaleMiddleware',
+    'clock.profiles.middleware.LocaleMiddlewareExtended',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'clock.pages.middleware.LastVisitedMiddleware',
 )
 
 # MIGRATIONS CONFIGURATION
@@ -121,7 +127,7 @@ DATABASES['default']['ATOMIC_REQUESTS'] = True
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Berlin'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGES = [
@@ -292,10 +298,15 @@ LOCALE_PATHS = (
     str(ROOT_DIR('locale')),
 )
 
-# GIT_STATUS = subprocess.check_output(['git', 'status'])
-# GIT_REVISION_HASH = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
-# GIT_COMMIT_TIMESTAMP = subprocess.check_output(['git', 'show', '-s', '--format=%ci'])
-
 ACCOUNT_FORMS = {
-    'login': 'clock.pages.forms.ClockLoginForm'
+    'signup': 'clock.accounts.forms.ClockSignUpForm',
 }
+# Contact form settings
+CONTACT_FORM_SUBJECT = _('A new message has arrived!')
+CONTACT_FORM_RECIPIENT = ['clock-kontakt@dlist.server.uni-frankfurt.de']
+
+# reCAPTCHA settings
+RECAPTCHA_PUBLIC_KEY = '6LdceCITAAAAALjjBfVAxF4gCw-11zB3cclDfAsf'
+RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE_KEY", default=None)
+NOCAPTCHA = True
+RECAPTCHA_USE_SSL = True

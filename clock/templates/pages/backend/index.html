@@ -1,20 +1,27 @@
 {% extends 'base.html' %}
-{% load i18n staticfiles %}
+{% load i18n staticfiles format_duration %}
 
 {% block extra_head %}{{ block.super }}
+    <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'libraries/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'libraries/bootstrap-select/css/bootstrap-select.min.css' %}">
 {% endblock extra_head %}
 
 {% block container %}
-    {% if active_shift %}
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3 text-center">
-            <h4>{% trans 'You currently have an active shift.' %}</h4>
-            <h4>Started: {{ active_shift.shift_started }}, Contract: {{ active_shift.contract }}</h4>
-        </div>
+    <div class="text-center">
+        {% if not shift_closed %}
+            <h3>{% trans 'No active shift running!' %}</h3>
+        {% else %}
+            <h4>{% trans 'Current duration:' %} <span id="current_duration">{{ current_duration|format_dttd }}</span>
+            </h4>
+            {% if current_shift.is_paused %}
+                <h5>({% trans 'Currently paused for:' %} <span
+                        id="current_pause_duration">{{ current_shift.total_pause_time|format_dttd }}</span>)</h5>
+            {% endif %}
+            <p>{% trans 'Your current shift started at' %}<br/>
+                {{ current_shift.shift_started }}</p>
+        {% endif %}
     </div>
-    {% endif %}
     {% include 'pages/backend/quick_action.html' %}
     {% if last_shifts %}
     <h4>Last five finished shifts</h4>
@@ -49,3 +56,50 @@
     </table>
     {% endif %}
 {% endblock container %}
+
+{% block extra_js %}
+    {% if shift_closed %}
+        <script type="application/javascript">
+            (function () {
+                // JS from here: http://cssdeck.com/labs/minimal-css3-digital-clock
+                var clock = document.querySelector('span#current_duration');
+                {% if current_shift.is_paused %}
+                    var clock = document.querySelector('span#current_pause_duration');
+                {% endif %}
+                // But there is a little problem
+                // we need to pad 0-9 with an extra
+                // 0 on the left for hours, seconds, minutes
+
+                var pad = function (x) {
+                    return x < 10 ? '0' + x : x;
+                };
+                var d_day = Math.floor({{ current_duration|format_dttd:"%H" }} / 24
+                )
+                ;
+
+                var d = new Date(0, 0, d_day, {{ current_duration|format_dttd:"%H" }}, {{ current_duration|format_dttd:"%M" }}, {{ current_duration|format_dttd:"%S" }});
+                {% if current_shift.is_paused %}
+                    var d = new Date(0, 0, d_day, {{ current_shift.total_pause_time|format_dttd:"%H" }}, {{ current_shift.total_pause_time|format_dttd:"%M" }}, {{ current_shift.total_pause_time|format_dttd:"%M" }});
+                {% endif %}
+
+                var ticktock = function () {
+                    d.setSeconds(d.getSeconds() + 1);
+
+                    var h = pad(d.getHours());
+                    var m = pad(d.getMinutes());
+                    var s = pad(d.getSeconds());
+
+                    var current_time = [h, m, s].join(':');
+                    var day_string = (d_day == 1) ? d_day + " {% trans 'day' %}, " : d_day + " {% trans 'days' %}, ";
+                    var my_string = (d_day > 0) ? day_string + current_time : current_time;
+
+                    clock.innerHTML = my_string;
+                };
+                ticktock();
+
+                // Calling ticktock() every 1 second
+                setInterval(ticktock, 1000);
+            }());
+        </script>
+    {% endif %}
+{% endblock extra_js %}

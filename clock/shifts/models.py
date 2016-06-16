@@ -1,3 +1,4 @@
+import time
 from datetime import timedelta
 
 from django.conf import settings
@@ -5,6 +6,10 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from taggit.managers import TaggableManager
+
+from clock.contracts.models import Contract
+from clock.pages.utils import round_time
 
 
 class Shift(models.Model):
@@ -12,6 +17,12 @@ class Shift(models.Model):
     Employees start/pause/stop shifts to track their worktime.
     May be assigned to a contract.
     """
+
+    KEY_CHOICES = (
+        (_('S'), _('Sick')),
+        (_('V'), _('Vacation'))
+    )
+
     employee = models.ForeignKey(settings.AUTH_USER_MODEL)
     contract = models.ForeignKey(
         'contracts.Contract',
@@ -25,6 +36,7 @@ class Shift(models.Model):
         null=True,
         verbose_name=_('Shift finished')
     )
+    bool_finished = models.BooleanField(default=False, verbose_name=_('Shift completed?'))
     shift_duration = models.DurationField(
         blank=True,
         null=True,
@@ -35,7 +47,9 @@ class Shift(models.Model):
         default=timedelta(seconds=0),
         verbose_name=_('Pause duration')
     )
+    key = models.CharField(_('Key'), max_length=2, choices=KEY_CHOICES, blank=True)
     note = models.TextField(_('Note'), blank=True)
+    tags = TaggableManager(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -73,16 +87,39 @@ class Shift(models.Model):
         quick-action buttons and manual edits in the admin-backend
         or dashboard-frontend.
         """
+
+        """
+        The following code block does some rounding to the start and end times of the shifts.
+        It does it as following and only if the shift is newly added:
+            1) Round shift_started, shift_finished and pause_duration by 5 or 1 minute(s), respectively.
+            2) The shift_finished is set to the most logic (up/down) value. Now check if it is the same as the
+            shift_started value (if shift_started and shift_finished were set to the same value). In this case, add 5
+            minutes to the shift_finished value.
+            3) If shift_started is somehow bigger than shift_finished, set shift_finished to be 5 minutes bigger.
+        """
+        if self.bool_finished is True:
+            self.shift_started = round_time(self.shift_started)
+            self.shift_finished = round_time(self.shift_finished)
+            self.pause_duration = round_time(self.pause_duration, timedelta(minutes=1))
+
+            # Account for the case that a user pauses his shift longer than he actually worked. This will make sure
+            # the shift duration is always longer than the pause duration by 5 minutes.
+            if self.total_pause_time() == (self.shift_finished - self.shift_started):
+                self.shift_finished += timedelta(minutes=5)
+
+            if self.shift_started == self.shift_finished:
+                self.shift_finished += timedelta(minutes=5)
+            elif self.shift_started > self.shift_finished:
+                self.shift_finished = self.shift_started + timedelta(minutes=5)
+
         # Lets check if this shift is just being updated
-        if self.pk is not None and (self.shift_finished != self.__old_shift_finished \
-           or self.shift_started != self.__old_shift_started \
-           or self.pause_duration != self.__old_pause_duration):
-               self.shift_duration = (self.shift_finished -
-               self.shift_started) - self.pause_duration
+        if self.pk is not None and self.bool_finished and (self.shift_finished != self.__old_shift_finished or
+                                                                   self.shift_started != self.__old_shift_started or
+                                                                   self.pause_duration != self.__old_pause_duration):
+            self.shift_duration = (self.shift_finished - self.shift_started) - self.pause_duration
         # Lets check if this shift did not exists before and was just added from the shell!
         elif self.pk is None and self.shift_finished is not None:
-            self.shift_duration = (self.shift_finished -
-            self.shift_started) - self.pause_duration
+            self.shift_duration = (self.shift_finished - self.shift_started) - self.pause_duration
         return super(Shift, self).save(*args, **kwargs)
 
     def shift_time_validation(self):
@@ -123,15 +160,38 @@ class Shift(models.Model):
         Returns a bool value whether the current shift is paused.
         """
         return bool(self.pause_started)
+
     is_shift_currently_paused.boolean = True
     is_shift_currently_paused.short_description = _("Shift currently paused?")
+
+    @property
+    def current_duration(self):
+        return timezone.now() - self.shift_started - self.total_pause_time()
+
+    @property
+    def pause_start_end(self):
+        if self.pause_duration.total_seconds() > 0:
+            pause_begin = self.shift_finished - self.pause_duration
+            return time.strftime("%H:%M", pause_begin.utctimetuple()) + " - " + \
+                time.strftime("%H:%M", self.shift_finished.utctimetuple())
+        return "-"
+
+    @property
+    def contract_or_none(self):
+        """
+        Returns the name of the contract connected to the shift or a string containing "None".
+        :return: Contract name or "None"-string
+        """
+        if self.contract is None:
+            return "None"
+        return self.contract.department
 
     @property
     def is_finished(self):
         """
         Determine if there is an active shift.
         """
-        return bool(self.shift_finished)
+        return self.bool_finished
 
     @property
     def is_paused(self):

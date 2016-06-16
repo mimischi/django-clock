@@ -1,16 +1,8 @@
 {% extends 'contract/base.html' %}
 {% load staticfiles i18n django_bootstrap_breadcrumbs crispy_forms_tags %}
 
-{% block extra_title %}{% trans 'Edit contract' %}{% endblock extra_title %}
-
-{# May be used if we figure out how to use the datetimepicker widget with more than 24 hour intervals! #}
-{#{% block extra_head %}{{ block.super }}#}
-{#    <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>#}
-{#    <script type="text/javascript"#}
-{#            src="{% static 'libraries/eonasdan-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>#}
-{#    <link rel="stylesheet"#}
-{#          href="{% static 'libraries/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}"/>#}
-{#{% endblock extra_head %}#}
+{% block extra_title %}{% if contract %}{% trans 'Update contract' %}{% else %}{% trans 'New contract' %}
+{% endif %}{% endblock extra_title %}
 
 {% block breadcrumbs %}{{ block.super }}
     {% if contract %}
@@ -32,3 +24,38 @@
         </div>
     </div>
 {% endblock container %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        /**
+         * Checks whether the supplied data is in the HH:MM format and will try to force it that way.
+         * Accepts everything between 00:00 to 80:00 (80 hours and 00 minutes).
+         */
+        function check_contract_hours(thisObj) {
+            var re = /^(([0-9]|0[0-9]|[1-7][0-9]):[0-5][0-9])|(80):00$/;
+
+            if (thisObj.val()) {
+                if (!re.test(thisObj.val())) {
+                    var s = thisObj.val().substring(0, 2);
+                    if (Math.floor(s) == s && $.isNumeric(s)) {
+                        var o = s + ":00";
+                        thisObj.val(o);
+                        thisObj.data('val', o);
+                    }
+                    if (thisObj.data('val') === undefined) {
+                        thisObj.val('40:00');
+                    } else {
+                        thisObj.val(thisObj.data('val'));
+                    }
+                }
+            }
+        }
+        $('#id_hours').on('focusin', function () {
+            $(this).data('val', $(this).val());
+        });
+
+        $('#id_hours').focusout(function () {
+            check_contract_hours($(this));
+        });
+    </script>
+{% endblock extra_js %}

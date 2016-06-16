@@ -24,7 +24,7 @@ class Contract(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.department
+        return unicode(self.department)
 
     def total_hours_per_contract(self):
         shifts = Shift.objects.filter(contract=self.pk)
