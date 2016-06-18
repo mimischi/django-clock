@@ -50,11 +50,11 @@
                 }
             }
         }
-        $('#id_hours3').on('focusin', function () {
+        $('#id_hours').on('focusin', function () {
             $(this).data('val', $(this).val());
         });
 
-        $('#id_hours3').focusout(function () {
+        $('#id_hours').focusout(function () {
             check_contract_hours($(this));
         });
     </script>
