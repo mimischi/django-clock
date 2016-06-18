@@ -3,11 +3,6 @@ from datetime import datetime
 
 from django.core.urlresolvers import reverse_lazy
 
-from datetime import date
-
-from django.core.exceptions import ValidationError
-
-from clock.contracts.models import Contract
 from clock.shifts.models import Shift
 
 
@@ -61,13 +56,10 @@ def set_correct_session(request, k):
 
 
 def get_current_shift(user):
-    entries = Shift.objects.filter(employee=user, shift_finished__isnull=True)
-
-    if not entries.exists():
+    try:
+        return Shift.objects.get(employee=user, shift_finished__isnull=True)
+    except Shift.DoesNotExist:
         return None
-    # if entries.count() > 1:
-    #     raise ActiveEntryError('Only one active entry is allowed.')
-    return entries[0]
 
 
 def get_all_contracts(user):
@@ -128,76 +120,3 @@ def get_all_shifts(user):
             months_with_shifts.append(shift_dict)
 
     return months_with_shifts
-
-
-def month_with_shift(user, month, year, mode):
-    all_shifts = get_all_shifts(user)
-
-    curr_month = month
-    curr_year = year
-
-    if mode == "prev":
-        if 0 < month < 2:
-            month = 12
-            year -= 1
-        else:
-            month -= 1
-    elif mode == "next":
-        if month == 12:
-            month = 1
-            year += 1
-        else:
-            month += 1
-    f = -1
-    lookup_month = ''
-    while f < 0:
-        for index, shift_month in enumerate(all_shifts):
-            if shift_month.get('month') == month and shift_month.get('year') == year:
-                f = index
-                lookup_month = date(year, month, 1)
-                break
-
-        for index, shift_month in enumerate(all_shifts):
-            searchDate = date(shift_month.get('year'), shift_month.get('month'), 1)
-            if mode == "prev":
-                if searchDate < date(curr_year, curr_month, 1):
-                    lookup_month = searchDate
-                    f = index
-                    break
-            elif mode == "next":
-                if searchDate > date(curr_year, curr_month, 1):
-                    lookup_month = searchDate
-                    f = index
-                    break
-        if f < 0:
-            return None
-        else:
-            break
-    return lookup_month
-
-
-def shifts_in_month(user, month, year, mode):
-    if mode == "prev":
-        if 0 < month < 2:
-            month = 12
-            year -= 1
-        else:
-            month -= 1
-    elif mode == "next":
-        if month == 12:
-            month = 01
-            year += 1
-        else:
-            month += 1
-    else:
-        raise ValidationError('You\'re not using this method correctly!')
-
-    shifts = Shift.objects.filter(employee=user,
-                                  shift_started__year=year,
-                                  shift_started__month=month,
-                                  shift_finished__isnull=False).exists()
-
-    if shifts:
-        return True
-
-    return False

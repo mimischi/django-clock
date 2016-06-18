@@ -5,8 +5,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from clock.contracts.fields import WorkingHoursField
-from clock.shifts.models import Shift
 from clock.contracts.utils import convert_work_hours
+from clock.shifts.models import Shift
 
 
 class Contract(models.Model):
@@ -45,7 +45,7 @@ class Contract(models.Model):
             monthly_work_hours += shift.shift_duration
 
         hours, minutes = divmod(monthly_work_hours.total_seconds()/60, 60)
-        return "%02d.%02d" % (hours, minutes)
+        return "%02d:%02d" % (hours, minutes)
 
     def completed_work_hours_percentage(self, date=datetime.today()):
         contract_hours = float(convert_work_hours(self.hours))
@@ -54,4 +54,3 @@ class Contract(models.Model):
         if completed_hours == 0:
             return 0
         return int(completed_hours / contract_hours * 100)
-        # return '{:.1f}'.format(completed_hours / contract_hours * 100)

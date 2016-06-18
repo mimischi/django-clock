@@ -15,7 +15,6 @@ from django.views.generic.list import ListView
 from clock.pages.mixins import UserObjectOwnerMixin
 from clock.shifts.forms import ShiftForm, QuickActionForm
 from clock.shifts.models import Shift
-from clock.shifts.utils import get_current_shift, shifts_in_month, get_all_shifts, month_with_shift
 from clock.shifts.utils import get_all_contracts, get_current_shift, get_default_contract, get_return_url, \
     set_correct_session
 
@@ -230,9 +229,6 @@ class ShiftMonthView(MonthArchiveView):
             d = date.today()
             month = d.month
             year = d.year
-
-        context['shifts_prev_month'] = month_with_shift(self.request.user, month, year, "prev")
-        context['shifts_next_month'] = month_with_shift(self.request.user, month, year, "next")
 
         return context
 

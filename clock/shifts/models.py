@@ -8,7 +8,6 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from taggit.managers import TaggableManager
 
-from clock.contracts.models import Contract
 from clock.pages.utils import round_time
 
 
