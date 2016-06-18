@@ -54,6 +54,8 @@ class WorkingHoursFieldForm(CharField):
         total_seconds = hours * 3600 + minutes * 60
         if total_seconds > 80 * 3600:
             raise ValidationError(_('Contracts may not be longer than 80 hours!'))
+        elif total_seconds < 1:
+            raise ValidationError(_('Your total work time must be bigger than zero!'))
 
         return value
 
