@@ -8,54 +8,57 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-15 21:01+0200\n"
-"PO-Revision-Date: 2016-06-15 21:01+0053\n"
+"POT-Creation-Date: 2016-06-18 18:15+0200\n"
+"PO-Revision-Date: 2016-06-18 18:14+0053\n"
 "Last-Translator:   <mgecht@stud.uni-frankfurt.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.11\n"
 
-#: clock/contact/forms.py:13
+#: clock/contact/forms.py:15
 msgid "Name"
 msgstr "Name"
 
-#: clock/contact/forms.py:14
+#: clock/contact/forms.py:16
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: clock/contact/forms.py:15
+#: clock/contact/forms.py:17
 msgid "Message"
 msgstr "Nachricht"
 
-#: clock/contact/forms.py:16
+#: clock/contact/forms.py:18
 msgid "Send a copy of the mail to myself"
 msgstr "Eine Kopie der Nachricht an mich senden"
 
-#: clock/contact/forms.py:26 clock/templates/profiles/profile.html:30
+#: clock/contact/forms.py:29 clock/templates/profiles/profile.html:30
 msgid "Submit"
 msgstr "Absenden"
 
-#: clock/contracts/fields.py:20 clock/contracts/models.py:18
+#: clock/contracts/fields.py:20 clock/contracts/models.py:22
 msgid "Work hours"
 msgstr "Stundenzahl"
 
-#: clock/contracts/fields.py:32 clock/contracts/fields.py:44
-#: clock/contracts/fields.py:52 clock/contracts/fields.py:86
+#: clock/contracts/fields.py:42 clock/contracts/fields.py:80
 msgid "Working hours entered must be in format HH:MM"
 msgstr "Die Stundenzahl muss im Format HH:MM (z.B. 23:15) eingegeben werden."
 
-#: clock/contracts/fields.py:56
+#: clock/contracts/fields.py:48
 msgid "Contracts may not be longer than 80 hours!"
 msgstr "Verträge können nicht mehr als 80 Stunden im Monat umfassen!"
 
-#: clock/contracts/fields.py:103
+#: clock/contracts/fields.py:50
+msgid "Your total work time must be bigger than zero!"
+msgstr "Deine monatliche Arbeitszeit sollte zumindest eine Minute betragen!"
+
+#: clock/contracts/fields.py:97
 msgid ""
-"Please specify your working hours in the format HH:MM"
-"                                 (eg. 12:15 - meaning 12 hours and 15 "
+"Please specify your working hours in the format HH:"
+"MM                                 (eg. 12:15 - meaning 12 hours and 15 "
 "minutes)"
 msgstr ""
 "Bitte gib deine Arbeitszeit im Format HH:MM an (z.B. 12:15, also 12 Stunden "
@@ -81,15 +84,15 @@ msgstr "Löschen"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: clock/contracts/models.py:16
+#: clock/contracts/models.py:20
 msgid "Department"
 msgstr "Abteilung"
 
-#: clock/contracts/models.py:17
+#: clock/contracts/models.py:21
 msgid "Abbreviation"
 msgstr "Kürzel"
 
-#: clock/contracts/models.py:19 clock/shifts/models.py:32
+#: clock/contracts/models.py:23 clock/shifts/models.py:31
 #: clock/templates/contract/list.html:24
 #: clock/templates/shift/month_archive_view.html:82
 #: clock/templates/shift/month_archive_view.html:98
@@ -137,13 +140,13 @@ msgstr "Neue Schicht erstellen"
 msgid "Update"
 msgstr "Schicht aktualisieren"
 
-#: clock/shifts/forms.py:126 clock/shifts/models.py:37
+#: clock/shifts/forms.py:126 clock/shifts/models.py:36
 #: clock/templates/shift/month_archive_view.html:84
 #: clock/templates/shift/month_archive_view.html:100
 msgid "Shift finished"
 msgstr "Ende der Schicht"
 
-#: clock/shifts/forms.py:144 clock/shifts/models.py:34
+#: clock/shifts/forms.py:144 clock/shifts/models.py:33
 #: clock/templates/shift/month_archive_view.html:83
 #: clock/templates/shift/month_archive_view.html:99
 msgid "Shift started"
@@ -151,8 +154,8 @@ msgstr "Start der Schicht"
 
 #: clock/shifts/forms.py:184
 msgid ""
-"Your selected starting/finishing time overlaps with at least one"
-"                     finished shift of yours. Please adjust the times."
+"Your selected starting/finishing time overlaps with at least "
+"one                     finished shift of yours. Please adjust the times."
 msgstr ""
 "Deine Start-/Endzeit überlappt mit einer bereits beendeten Schicht. Bitte "
 "passe die Zeiten an."
@@ -161,59 +164,59 @@ msgstr ""
 msgid "A pause may not be longer than your actual shift."
 msgstr "Eine Pause kann nicht länger als eine Schicht sein."
 
-#: clock/shifts/models.py:22
+#: clock/shifts/models.py:21
 msgid "S"
 msgstr "K"
 
-#: clock/shifts/models.py:22
+#: clock/shifts/models.py:21
 msgid "Sick"
 msgstr "Krank"
 
-#: clock/shifts/models.py:23
+#: clock/shifts/models.py:22
 msgid "V"
 msgstr "U"
 
-#: clock/shifts/models.py:23
+#: clock/shifts/models.py:22
 msgid "Vacation"
 msgstr "Urlaub"
 
-#: clock/shifts/models.py:39
+#: clock/shifts/models.py:38
 msgid "Shift completed?"
 msgstr "Schicht beendet?"
 
-#: clock/shifts/models.py:43 clock/templates/shift/month_archive_view.html:86
+#: clock/shifts/models.py:42 clock/templates/shift/month_archive_view.html:86
 #: clock/templates/shift/month_archive_view.html:102
 msgid "Shift duration"
 msgstr "Schichtdauer"
 
-#: clock/shifts/models.py:48 clock/templates/shift/month_archive_view.html:85
+#: clock/shifts/models.py:47 clock/templates/shift/month_archive_view.html:85
 #: clock/templates/shift/month_archive_view.html:101
 msgid "Pause duration"
 msgstr "Pausendauer"
 
-#: clock/shifts/models.py:50 clock/templates/shift/month_archive_view.html:87
+#: clock/shifts/models.py:49 clock/templates/shift/month_archive_view.html:87
 #: clock/templates/shift/month_archive_view.html:103
 msgid "Key"
 msgstr "Schlüssel"
 
-#: clock/shifts/models.py:51
+#: clock/shifts/models.py:50
 msgid "Note"
 msgstr "Notiz"
 
-#: clock/shifts/models.py:133
+#: clock/shifts/models.py:132
 msgid "Your shift must not start in the                     future!"
 msgstr "Ihre Schicht darf nicht in der Zukunft beginnen!"
 
-#: clock/shifts/models.py:136
+#: clock/shifts/models.py:135
 msgid "Your shift must not finish in                     the future!"
 msgstr "Ihre Schicht darf nicht in der Zukunft enden!"
 
-#: clock/shifts/models.py:139
+#: clock/shifts/models.py:138
 msgid ""
 "A shift must not finish, before                     it has even started!"
 msgstr "Eine Schicht darf nicht enden, bevor sie überhaupt begonnen hat!"
 
-#: clock/shifts/models.py:165
+#: clock/shifts/models.py:164
 msgid "Shift currently paused?"
 msgstr "Schicht derzeit pausiert?"
 
@@ -260,7 +263,7 @@ msgstr "Mein Profil"
 #: clock/templates/account/base.html:21
 #: clock/templates/account/password_change.html:4
 #: clock/templates/account/password_change.html:16
-#: clock/templates/account/password_reset_from_key.html:23
+#: clock/templates/account/password_reset_from_key.html:24
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -309,8 +312,7 @@ msgstr "Warnung:"
 #: clock/templates/account/email.html:62
 msgid ""
 "You currently do not have any e-mail address set up. You should really add "
-"an e-mail address so you can receive notifications, reset your password, "
-"etc."
+"an e-mail address so you can receive notifications, reset your password, etc."
 msgstr ""
 "Du hast aktuell keine E-Mail Adresse eingerichtet. Du solltest unbedingt "
 "eine eintragen damit du Benachrichtigungen erhältst und dein Passwort "
@@ -342,10 +344,11 @@ msgstr "Bestätige deine E-Mail Adresse"
 #, python-format
 msgid ""
 "Please confirm that\n"
-"            <a href=\"mailto:%(email)s\">%(email)s</a> is your e-mail address."
+"            <a href=\"mailto:%(email)s\">%(email)s</a> is your e-mail "
+"address."
 msgstr ""
-"Bitte bestätige, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine "
-"E-Mail ist."
+"Bitte bestätige, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine E-"
+"Mail ist."
 
 #: clock/templates/account/email_confirm.html:21
 #: clock/templates/account/email_confirmed.html:19
@@ -358,7 +361,8 @@ msgstr "Bestätigen"
 #, python-format
 msgid ""
 "This e-mail confirmation link expired or is invalid. Please\n"
-"            <a href=\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+"            <a href=\"%(email_url)s\">issue a new e-mail confirmation "
+"request</a>."
 msgstr ""
 "Der Bestätigungslink ist abgelaufen oder ist ungültig. Bitte beantrage <a "
 "href=\"%(email_url)s\">einen neuen Bestätigungslink per E-Mail</a>."
@@ -367,10 +371,11 @@ msgstr ""
 #, python-format
 msgid ""
 "You have confirmed that\n"
-"            <a href=\"mailto:%(email)s\">%(email)s</a> is your e-mail address."
+"            <a href=\"mailto:%(email)s\">%(email)s</a> is your e-mail "
+"address."
 msgstr ""
-"Du hast bestätigt, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine "
-"E-Mail ist."
+"Du hast bestätigt, dass <a href=\"mailto:%(email)s\">%(email)s</a> deine E-"
+"Mail ist."
 
 #: clock/templates/account/login.html:4 clock/templates/nav.html:22
 msgid "Login"
@@ -380,7 +385,7 @@ msgstr "Login"
 msgid "Not signed up yet?"
 msgstr "Noch nicht registriert?"
 
-#: clock/templates/account/login.html:19
+#: clock/templates/account/login.html:20
 msgid "Forgot password?"
 msgstr "Passwort vergessen?"
 
@@ -403,11 +408,11 @@ msgstr "Passwort zurücksetzen"
 
 #: clock/templates/account/password_reset.html:20
 msgid ""
-"Forgotten your password? Enter your e-mail address below, and we'll send you"
-" an e-mail allowing you to reset it."
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
 msgstr ""
-"Passwort vergessen? Gib  einfach Deine E-Mail-Adresse ein und wir senden Dir"
-" eine E-Mail zu, mit der Du das Passwort zurücksetzen kannst."
+"Passwort vergessen? Gib  einfach Deine E-Mail-Adresse ein und wir senden Dir "
+"eine E-Mail zu, mit der Du das Passwort zurücksetzen kannst."
 
 #: clock/templates/account/password_reset.html:23
 msgid "Reset My Password"
@@ -416,11 +421,11 @@ msgstr "Setze mein Passwort zurück"
 #: clock/templates/account/password_reset.html:24
 #, python-format
 msgid ""
-"Please <a href=\"%(contact_url)s\">contact us</a> if you have any trouble "
-"resetting your password."
+"Please <a href=\"%(contact_url)s\">contact us</a> if you have any\n"
+"                    trouble resetting your password."
 msgstr ""
-"Bitte <a href=\"%(contact_url)s\">kontaktiere uns</a>, falls du irgendwelche"
-" Probleme beim Zurücksetzen deines Passworts hast."
+"Bitte <a href=\"%(contact_url)s\">kontaktiere uns</a>, falls du irgendwelche "
+"Probleme beim Zurücksetzen deines Passworts hast."
 
 #: clock/templates/account/password_reset_done.html:13
 msgid "Password reset link sent"
@@ -429,12 +434,13 @@ msgstr "Passwort Link verschickt"
 #: clock/templates/account/password_reset_done.html:18
 #, python-format
 msgid ""
-"We have sent you an e-mail. Please <a href=\"%(contact_url)s\">contact "
-"us</a> if you do not receive it within a few minutes."
+"We have sent you an e-mail. Please <a href=\"%(contact_url)s\">contact us</"
+"a> if you do not\n"
+"        receive it within a few minutes."
 msgstr ""
-"Wir haben dir eine E-Mail geschickt. Bitte <a "
-"href=\"%(contact_url)s\">kontaktiere uns</a>, falls du sie nicht innerhalb "
-"der nächsten Minuten erhälst."
+"Wir haben dir eine E-Mail geschickt. Bitte <a href=\"%(contact_url)s"
+"\">kontaktiere uns</a>, falls du sie nicht innerhalb der nächsten Minuten "
+"erhälst."
 
 #: clock/templates/account/password_reset_from_key.html:12
 msgid "Wrong token"
@@ -444,17 +450,17 @@ msgstr "Falscher Verifikationscode"
 #, python-format
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
-"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password "
-"reset</a>."
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
 msgstr ""
-"Der Link zum Zurücksetzen des Passworts war ungültig. <a "
-"href=\"%(passwd_reset_url)s\">Neues Passwort beantragen</a>."
+"Der Link zum Zurücksetzen des Passworts war ungültig. <a href="
+"\"%(passwd_reset_url)s\">Neues Passwort beantragen</a>."
 
 #: clock/templates/account/password_reset_from_key.html:20
 msgid "Password reset"
 msgstr "Passwort zurücksetzen"
 
-#: clock/templates/account/password_reset_from_key.html:28
+#: clock/templates/account/password_reset_from_key.html:29
 #: clock/templates/account/password_reset_from_key_done.html:12
 msgid "Your password is now changed."
 msgstr "Ihr Passwort wurde soeben geändert."
@@ -503,8 +509,8 @@ msgstr "Keine Verpflichtungen."
 #: clock/templates/account/signup.html:26
 msgid "Do not want to track your work time? Fine. We do not force you to."
 msgstr ""
-"Keine Lust deine Arbeitszeiten zu pflegen? Kein Problem, wir zwingen dich zu"
-" nichts."
+"Keine Lust deine Arbeitszeiten zu pflegen? Kein Problem, wir zwingen dich zu "
+"nichts."
 
 #: clock/templates/account/signup.html:27
 msgid "Do you want more?"
@@ -512,17 +518,16 @@ msgstr "Fehlt dir etwas?"
 
 #: clock/templates/account/signup.html:28
 msgid ""
-"The whole code is available under the <a "
-"href=\"https://en.wikipedia.org/wiki/MIT_License\" title=\"Article on "
-"Wikipedia\">MIT-License</a> and can be found on <a "
-"href=\"https://github.com/mimischi/django-clock/\" title=\"Link to project "
-"on GitHub\">GitHub</a>. You can join the development!"
+"The whole code is available under the <a href=\"https://en.wikipedia.org/"
+"wiki/MIT_License\" title=\"Article on Wikipedia\">MIT-License</a> and can be "
+"found on <a href=\"https://github.com/mimischi/django-clock/\" title=\"Link "
+"to project on GitHub\">GitHub</a>. You can join the development!"
 msgstr ""
-"Der gesamte Code der Plattform ist innerhalb der <a "
-"href=\"https://de.wikipedia.org/wiki/MIT-Lizenz\" title=\"Aritkel auf "
-"Wikipedia\">MIT Lizenz</a> auf <a href=\"https://github.com/mimischi/django-"
-"clock/\" title=\"Link zum Projekt auf GitHub\">GitHub</a> veröffentlicht. Du"
-" kannst gerne mitmachen und das Projekt erweitern!"
+"Der gesamte Code der Plattform ist innerhalb der <a href=\"https://de."
+"wikipedia.org/wiki/MIT-Lizenz\" title=\"Aritkel auf Wikipedia\">MIT Lizenz</"
+"a> auf <a href=\"https://github.com/mimischi/django-clock/\" title=\"Link "
+"zum Projekt auf GitHub\">GitHub</a> veröffentlicht. Du kannst gerne "
+"mitmachen und das Projekt erweitern!"
 
 #: clock/templates/account/signup_closed.html:4
 #: clock/templates/account/signup_closed.html:13
@@ -544,14 +549,16 @@ msgstr "E-Mail-Adresse bestätigen"
 #: clock/templates/account/verification_sent.html:14
 #, python-format
 msgid ""
-"We have sent an e-mail to <a href=\"mailto:%(email)s\">%(email)s</a> for verification.\n"
-"                Follow the link provided to finalize the signup process. Please contact us if you do not receive it\n"
+"We have sent an e-mail to <a href=\"mailto:%(email)s\">%(email)s</a> for "
+"verification.\n"
+"                Follow the link provided to finalize the signup process. "
+"Please contact us if you do not receive it\n"
 "                within a few minutes."
 msgstr ""
-"Wir haben eine E-Mail zur überprüfung an <a "
-"href=\"mailto:%(email)s\">%(email)s </a> geschickt. Folge dem Link, um den "
-"Vorgang abzuschließen. Bitte kontaktiere uns, wenn Du innerhalb der nächsten"
-" Minuten keine E-Mail erhalten hast."
+"Wir haben eine E-Mail zur überprüfung an <a href=\"mailto:%(email)s\">"
+"%(email)s </a> geschickt. Folge dem Link, um den Vorgang abzuschließen. "
+"Bitte kontaktiere uns, wenn Du innerhalb der nächsten Minuten keine E-Mail "
+"erhalten hast."
 
 #: clock/templates/account/verified_email_required.html:4
 #: clock/templates/account/verified_email_required.html:13
@@ -561,7 +568,8 @@ msgstr "Eingeschränkter Zugang"
 #: clock/templates/account/verified_email_required.html:16
 msgid ""
 "This part of the site requires us to verify that\n"
-"            you are who you claim to be. For this purpose, we require that you\n"
+"            you are who you claim to be. For this purpose, we require that "
+"you\n"
 "            verify ownership of your e-mail address. "
 msgstr ""
 "Diesen Bereich kannst du nur betreten, wenn du eine E-Mail bestätigt hast."
@@ -570,18 +578,21 @@ msgstr ""
 #, python-format
 msgid ""
 "We have sent an e-mail to you for\n"
-"            verification. Please click on the link inside this e-mail. Please\n"
-"            <a href=\"%(contact_url)s\">contact us</a> if you do not receive it within a few minutes."
+"            verification. Please click on the link inside this e-mail. "
+"Please\n"
+"                <a href=\"%(contact_url)s\">contact us</a> if you do not "
+"receive it within a few\n"
+"                minutes."
 msgstr ""
-"Wir haben eine E-Mail zur Überprüfung geschickt. Bitte <a "
-"href=\"%(contact_url)s\">kontaktiere uns</a>, wenn Du innerhalb der nächsten"
-" Minuten keine E-Mail erhalten hast."
+"Wir haben eine E-Mail zur Überprüfung geschickt. Bitte <a href="
+"\"%(contact_url)s\">kontaktiere uns</a>, wenn Du innerhalb der nächsten "
+"Minuten keine E-Mail erhalten hast."
 
-#: clock/templates/account/verified_email_required.html:24
+#: clock/templates/account/verified_email_required.html:25
 #, python-format
 msgid ""
-"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your "
-"e-mail address</a>."
+"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
+"mail address</a>."
 msgstr ""
 "<strong>Hinweis:</strong> Du kannst deine <a href=\"%(email_url)s\">E-Mail "
 "Adressen immer noch ändern</a>!"
@@ -693,11 +704,11 @@ msgstr "Aktuell pausiert seit:"
 msgid "Your current shift started at"
 msgstr "Deine aktuelle Schicht begann am"
 
-#: clock/templates/pages/backend/index.html:61
+#: clock/templates/pages/backend/index.html:93
 msgid "day"
 msgstr "Tag"
 
-#: clock/templates/pages/backend/index.html:61
+#: clock/templates/pages/backend/index.html:93
 msgid "days"
 msgstr "Tage"
 
@@ -780,14 +791,14 @@ msgstr "Schicht Nr."
 msgid "Name of User"
 msgstr "Name des Nutzers"
 
-#: config/settings/common.py:133
+#: config/settings/common.py:134
 msgid "German"
 msgstr "Deutsch"
 
-#: config/settings/common.py:134
+#: config/settings/common.py:135
 msgid "English"
 msgstr "Englisch"
 
-#: config/settings/common.py:307
+#: config/settings/common.py:305
 msgid "A new message has arrived!"
 msgstr "Neue Nachricht erhalten!"
