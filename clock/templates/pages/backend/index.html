@@ -138,6 +138,9 @@
             $(document).ready(function () {
                 // Now the magic with the datatables comes into play.
                 $('#clockTable').DataTable({
+                    "info": false,
+                    "paging": false,
+                    "searching": false,
                     dom: 'Bfrtip',
                     responsive: true,
                     columns: [
