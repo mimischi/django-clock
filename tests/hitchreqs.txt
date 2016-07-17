@@ -7,7 +7,7 @@ faketime==0.9.6.3
 hitchcron==0.2
 hitchpostgres==0.7.0
 hitchpython==0.5.3
-hitchselenium==0.5.2
+hitchselenium==0.5.5
 hitchserve==0.5.0
 hitchsmtp==0.2.1
 hitchsystem==0.1.5
