@@ -10,8 +10,10 @@ language: python
 python:
   - "3.5"
 install:
-  - "pip install hitch"
+  - "pip install hitch codecov"
   - "cd tests"
   - "hitch init"
 script:
   - "hitch test . --extra '{\"xvfb\":true, \"pause_on_failure\":false}'"
+after_success:
+  - "codecov"
