@@ -21,7 +21,7 @@ jupyter-core==4.1.0
 MarkupSafe==0.23
 path.py==8.2.1
 patool==1.12
-pexpect==4.1.0
+pexpect==4.2.0
 pickleshare==0.7.2
 psutil==4.3.0
 ptyprocess==0.5.1
