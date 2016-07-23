@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load staticfiles django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}{{ block.super }}
+    {% breadcrumb "404 - Requested file was not found" "home" %}
+{% endblock breadcrumbs %}
 
 {% block container %}
     <div class="row">
