@@ -9,15 +9,12 @@ from clock.shifts.views import ShiftManualCreate, \
 from clock.shifts.views import ShiftMonthContractView, ShiftWeekView, ShiftYearView, ShiftDayView, \
     shift_action
 
-# Data to display the current year-month inside the shift_list
-currentDate = timezone.now()
-currentYear = currentDate.strftime("%Y")
-currentMonth = currentDate.strftime("%m")
-
 urlpatterns = [
     # Shift URLs
     # Display the ShiftMonthView as default with the current year-month
-    url(r'^$', ShiftMonthContractView.as_view(month_format='%m', year=currentYear, month=currentMonth),
+    url(r'^$', ShiftMonthContractView.as_view(month_format='%m',
+                                              year=timezone.now().strftime("%Y"),
+                                              month=timezone.now().strftime("%m")),
         name="list"
         ),
     # View to handle all the quick-actions from the dashboard
