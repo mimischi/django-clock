@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from datetime import datetime
-
 from django.conf.urls import url
+from django.utils import timezone
 
 from clock.shifts.views import ShiftManualCreate, \
     ShiftManualEdit, ShiftManualDelete
@@ -11,7 +10,7 @@ from clock.shifts.views import ShiftMonthContractView, ShiftWeekView, ShiftYearV
     shift_action
 
 # Data to display the current year-month inside the shift_list
-currentDate = datetime.now()
+currentDate = timezone.now()
 currentYear = currentDate.strftime("%Y")
 currentMonth = currentDate.strftime("%m")
 
