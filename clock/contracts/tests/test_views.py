@@ -15,7 +15,7 @@ class ContractViewTest(TestCase):
 
     def test_logged_in_contract_views(self):
         """
-        Test whether a logged inuser can access all pages of a contract app.
+        Test whether a logged in user can access all pages of contracts app.
         Edit/delete pages should NOT work if the object is not found!
         """
         user1 = self.make_user('user1')

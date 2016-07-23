@@ -42,6 +42,12 @@ def get_return_url(request, default_success):
 
 
 def set_correct_session(request, k):
+    """
+    Method to correctly set the 'last_kwargs' session key, so we can use MonthView filtering.
+    :param request: request object
+    :param k: Key for session
+    :return: int 00, datetime or None
+    """
     try:
         return request.session['last_kwargs'][k]
     except KeyError:
@@ -56,6 +62,11 @@ def set_correct_session(request, k):
 
 
 def get_current_shift(user):
+    """
+    Returns the current running shift for user if it exists
+    :param user: User object
+    :return: Shift object or None
+    """
     try:
         return Shift.objects.get(employee=user, shift_finished__isnull=True)
     except Shift.DoesNotExist:
@@ -64,9 +75,12 @@ def get_current_shift(user):
 
 def get_all_contracts(user):
     """
-    Returns all contracts an user has signed.
+    Returns all contracts a user has signed.
     """
-    return user.contract_set.all().order_by('id')
+    q = user.contract_set.all().order_by('id')
+    if len(q) < 1:
+        return None
+    return q
 
 
 def get_default_contract(user):
@@ -98,6 +112,12 @@ def get_default_contract(user):
 
 
 def get_last_shifts(user, count=5):
+    """
+    Returns the last number of shifts of user
+    :param user: User object
+    :param count: Number of shifts to return. Default is 5
+    :return: Shift objects or None
+    """
     finished_shifts = Shift.objects.filter(employee=user, shift_finished__isnull=False)[:count]
 
     if not finished_shifts:
@@ -107,6 +127,11 @@ def get_last_shifts(user, count=5):
 
 
 def get_all_shifts(user):
+    """
+    Returns all the months that a user has finished shifts in
+    :param user: User object
+    :return: List of dicts with 'year' and 'month' keys or None
+    """
     shifts = Shift.objects.filter(employee=user, shift_finished__isnull=False)
 
     months_with_shifts = []
@@ -118,5 +143,8 @@ def get_all_shifts(user):
 
         if shift_dict not in months_with_shifts:
             months_with_shifts.append(shift_dict)
+
+    if len(months_with_shifts) < 1:
+        return None
 
     return months_with_shifts
