@@ -3,6 +3,7 @@ import os
 from datetime import timedelta
 
 from django.conf import settings
+from django.utils import timezone
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import letter, A4
@@ -186,18 +187,17 @@ class ShiftExport:
         # Go through all shifts and format them accordingly
         i = 0
         for i, shift in enumerate(shifts):
-            #         a = i
-            #         if a > 18:
-            #             break
-            b1_date = shift.shift_started.strftime('%d.%m.%Y')      # e.g. 24.12.2016
-            b2_start = shift.shift_started.strftime("%H:%M")        # e.g. 08:15
-            b3_pause = shift.pause_start_end                        # e.g. 08:15 - 15:55
-            b4_end = shift.shift_finished.strftime("%H:%M")         # e.g. 15:55
+            # Not sure why, but timezone.localtime() is not working here.
+            # Instead timezone.template_localtime() is, so we're using it.. dum-dee-doo..
+            b1_date = timezone.template_localtime(shift.shift_started).strftime('%d.%m.%Y')  # e.g. 24.12.2016
+            b2_start = timezone.template_localtime(shift.shift_started).strftime("%H:%M")  # e.g. 08:15
+            b3_pause = shift.pause_start_end  # e.g. 08:15 - 15:55
+            b4_end = timezone.template_localtime(shift.shift_finished).strftime("%H:%M")  # e.g. 15:55
             b5_total = format_dttd(shift.shift_duration, "%H:%M")  # e.g. 07:40
             b6_cmnt = shift.key  # e.g. "K" or "U"
 
             # We want every cell content to be an own paragraph, so we can give it a certain style.
-            # As always theres probably some other smart solution, but this works.
+            # As always there is probably some other smart solution, but this works.
             body_row = []
             body_cells = [b1_date, b2_start, b3_pause, b4_end, b5_total, b6_cmnt]
             for cell in body_cells:
