@@ -2,7 +2,6 @@ from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -114,8 +113,6 @@ class ShiftListView(ListView):
 class ShiftManualCreate(CreateView):
     model = Shift
     form_class = ShiftForm
-    # success_url = reverse_lazy('shift:list')
-    #success_url = get_return_url(self.get_request, 'shift:list')
     template_name = 'shift/edit.html'
 
     def get_success_url(self):
@@ -157,8 +154,10 @@ class ShiftManualCreate(CreateView):
 class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
     model = Shift
     form_class = ShiftForm
-    success_url = reverse_lazy('shift:list')
     template_name = 'shift/edit.html'
+
+    def get_success_url(self):
+        return get_return_url(self.request, 'shift:list')
 
     def get_initial(self):
         """
@@ -176,8 +175,10 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
 @method_decorator(login_required, name="dispatch")
 class ShiftManualDelete(DeleteView, UserObjectOwnerMixin):
     model = Shift
-    success_url = reverse_lazy('shift:list')
     template_name = 'shift/delete.html'
+
+    def get_success_url(self):
+        return get_return_url(self.request, 'shift:list')
 
 
 @method_decorator(login_required, name="dispatch")
