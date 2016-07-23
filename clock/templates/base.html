@@ -63,6 +63,13 @@
         {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
         {% bootstrap_messages %}
         {% endif %}
+        {% if debug %}
+            <!-- Some useful debug informations below.. -->
+            <h3>Current kwargs: {{ request.session.current_kwargs }}</h3>
+            <h3>Current visited: {{ request.session.currently_visiting }}</h3>
+            <h3>Last kwargs: {{ request.session.last_kwargs }}</h3>
+            <h3>Last visited: {{ request.session.last_visited }}</h3>
+        {% endif %}
         {% block container %}There is no content in this container!{% endblock container %}
     </div> <!-- /.container -->
 </div> <!-- /#wrap -->
