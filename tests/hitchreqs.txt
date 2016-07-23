@@ -13,7 +13,7 @@ hitchsmtp==0.2.1
 hitchsystem==0.1.5
 hitchtest==0.9.10
 humanize==0.5.1
-ipython==4.2.0
+ipython==5.0.0
 ipython-genutils==0.1.0
 Jinja2==2.8
 jupyter-client==4.3.0
