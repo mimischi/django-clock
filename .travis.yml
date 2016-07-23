@@ -10,10 +10,13 @@ language: python
 python:
   - "3.5"
 install:
-  - "pip install hitch codecov"
+  - "pip install hitch pytest pytest-sugar pytest-cov codecov"
+  - "pip install -r requirements/local.txt"
   - "cd tests"
   - "hitch init"
 script:
   - "hitch test . --extra '{\"xvfb\":true, \"pause_on_failure\":false}'"
+  - "cd .."
+  - "py.test --cov=./"
 after_success:
   - "codecov"
