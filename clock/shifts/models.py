@@ -8,7 +8,6 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from taggit.managers import TaggableManager
 
-from clock.contracts.models import Contract
 from clock.pages.utils import round_time
 
 
@@ -25,7 +24,7 @@ class Shift(models.Model):
 
     employee = models.ForeignKey(settings.AUTH_USER_MODEL)
     contract = models.ForeignKey(
-        Contract,
+        'contracts.Contract',
         null=True,
         blank=True,
         on_delete=models.CASCADE,
@@ -53,7 +52,7 @@ class Shift(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['shift_finished']
+        ordering = ['-shift_finished']
 
     def __unicode__(self):
         """
@@ -224,3 +223,11 @@ class Shift(models.Model):
             self.unpause()
         else:
             self.pause()
+
+
+class ShiftManager(models.Manager):
+    def employee(self, employee):
+        return self.objects.filter(employee=employee)
+
+    def contract(self, contract):
+        return self.objects.filter(contract=contract)

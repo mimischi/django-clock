@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -218,6 +218,19 @@ class ShiftMonthView(MonthArchiveView):
         if 'year' not in self.kwargs and 'month' not in self.kwargs:
             self.kwargs['year'] = self.year
             self.kwargs['month'] = self.month
+        return context
+
+    @property
+    def prev_next_shift(self):
+        context = {}
+        try:
+            month = int(self.kwargs['month'])
+            year = int(self.kwargs['year'])
+        except KeyError:
+            d = date.today()
+            month = d.month
+            year = d.year
+
         return context
 
     def get_queryset(self):

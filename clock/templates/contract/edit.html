@@ -36,16 +36,39 @@
 
             if (thisObj.val()) {
                 if (!re.test(thisObj.val())) {
-                    var s = thisObj.val().substring(0, 2);
-                    if (Math.floor(s) == s && $.isNumeric(s)) {
-                        var o = s + ":00";
+                    // If the test fails, we'll try to play around with the first two characters
+                    var h = thisObj.val().substring(0, 2);
+                    if (Math.floor(h) == h && $.isNumeric(h)) {
+                        // Are they a number?
+                        if (h > 0 && h < 10 && h.length == 1) {
+                            // Fires if h is between 1 and 9 and does not have a leading zero
+                            h = '0' + h;
+                        } else if (h < 1) {
+                            // Only fires if h is '0'
+                            h = '40';
+                        } else if (h > 80) {
+                            h = '80';
+                        }
+                        var o = h + ':00';
                         thisObj.val(o);
                         thisObj.data('val', o);
                     }
                     if (thisObj.data('val') === undefined) {
+                        // Should never trigger I think..?
                         thisObj.val('40:00');
                     } else {
+                        // Set the value from data!
                         thisObj.val(thisObj.data('val'));
+                    }
+                } else {
+                    var s = thisObj.val().split(':');
+                    var h = s[0];
+                    var m = s[1];
+                    if (h.length == 1 && h < 10) {
+                        h = '0' + h;
+                        o = h + ':' + m;
+                        thisObj.val(o);
+                        thisObj.data('val', o);
                     }
                 }
             }

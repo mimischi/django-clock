@@ -22,38 +22,33 @@ class WorkingHoursFieldForm(CharField):
         super(WorkingHoursFieldForm, self).__init__(label=label, *args, **kwargs)
 
     def clean(self, value):
+        """
+        Checks the supplied data from the users. Accepts work hours in the format of "HH:MM" (e.g. 14:35)
+        Needs to check two cases:
+            a) Did the user supply the correct format (HH:MM)?
+            b) If this fails, then we'll try to assume the user only entered the hours (HH) and we'll add
+            the minutes by ourselves. This will also check if the entered value is actually an int!
+        Furthermore check if the total work time is bigger than zero and smaller than 80 hours (288.000 seconds)
+        """
         value = super(CharField, self).clean(value)
 
-        # Split submitted duration into list
-        # hour_value = self.check_correct_format(value)
         try:
-            hour_value = value.split(':')
+            hours, minutes = map(int, value.split(':'))
         except ValueError:
-            raise ValidationError(_('Working hours entered must be in format HH:MM'))
-
-        # If list does not have two values, let us do some more validation
-        if len(hour_value) < 2:
-            # In this case the user did not supply the form with the correct format.
-            # Therefore we are going to assume that he does not care about
-            # the minutes and we will just append those for him!
             try:
-                value = hour_value[0] + ":00"
-                hours = int(hour_value[0])
+                hours = int(value)
+                value = value + ":00"
                 minutes = 0
             except ValueError:
                 raise ValidationError(_('Working hours entered must be in format HH:MM'))
 
         # If the value is in the correct format, check if the total working hours
         # exceed 80 hours per month (this equals 288.000 seconds)
-        if len(hour_value) == 2:
-            try:
-                hours, minutes = map(int, value.split(':'))
-            except ValueError:
-                raise ValidationError(_('Working hours entered must be in format HH:MM'))
-
         total_seconds = hours * 3600 + minutes * 60
         if total_seconds > 80 * 3600:
             raise ValidationError(_('Contracts may not be longer than 80 hours!'))
+        elif total_seconds < 1:
+            raise ValidationError(_('Your total work time must be bigger than zero!'))
 
         return value
 
@@ -87,7 +82,7 @@ class WorkingHoursField(IntegerField):
 
             # If the user entered a value like '30.3' we will convert it into '30.30'.
             # Otherwise it would be interpreted as '30.03'.
-            if minutes < 10:
+            if len(value.split(':')[1]) == 1 and minutes < 10:
                 minutes *= 10
             return (hours * 60) + minutes
         # I do not know if this is really relevant here?

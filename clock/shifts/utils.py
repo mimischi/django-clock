@@ -56,13 +56,10 @@ def set_correct_session(request, k):
 
 
 def get_current_shift(user):
-    entries = Shift.objects.filter(employee=user, shift_finished__isnull=True)
-
-    if not entries.exists():
+    try:
+        return Shift.objects.get(employee=user, shift_finished__isnull=True)
+    except Shift.DoesNotExist:
         return None
-    # if entries.count() > 1:
-    #     raise ActiveEntryError('Only one active entry is allowed.')
-    return entries[0]
 
 
 def get_all_contracts(user):
@@ -98,3 +95,28 @@ def get_default_contract(user):
 
     # Return NoneObject for the default None-contract
     return None
+
+
+def get_last_shifts(user, count=5):
+    finished_shifts = Shift.objects.filter(employee=user, shift_finished__isnull=False)[:count]
+
+    if not finished_shifts:
+        return None
+
+    return finished_shifts
+
+
+def get_all_shifts(user):
+    shifts = Shift.objects.filter(employee=user, shift_finished__isnull=False)
+
+    months_with_shifts = []
+
+    for shift in shifts:
+        year = shift.shift_started.year
+        month = shift.shift_started.month
+        shift_dict = {'year': year, 'month': month}
+
+        if shift_dict not in months_with_shifts:
+            months_with_shifts.append(shift_dict)
+
+    return months_with_shifts

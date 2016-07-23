@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
-{% load i18n staticfiles format_duration %}
+{% load i18n staticfiles format_duration base_extras %}
 
 {% block extra_head %}{{ block.super }}
     <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'libraries/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'libraries/datatables/css/datatables.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'libraries/bootstrap-select/css/bootstrap-select.min.css' %}">
 {% endblock extra_head %}
 
@@ -23,6 +24,67 @@
         {% endif %}
     </div>
     {% include 'pages/backend/quick_action.html' %}
+    {% if contracts %}
+        <h4>{% trans 'This months contract completion' %}</h4>
+        <table width="100%">
+            <thead>
+            <th>Department</th>
+            <th>Progress (current month)</th>
+            </thead>
+            {% for contract in contracts %}
+                <tbody>
+                <tr>
+                    <td>{{ contract.department }}</td>
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar"
+                                 aria-valuenow="{{ contract.completed_work_hours_percentage }}" aria-valuemin="0"
+                                 aria-valuemax="100"
+                                 style="min-width: 2em; width: {% if contract.completed_work_hours_percentage > 100 %}100{% elif contract.completed_work_hours_percentage < 25 %}25{% else %}{{ contract.completed_work_hours_percentage }}{% endif %}%;">
+                                {{ contract.completed_hours_per_month }} / {{ contract.hours }}
+                                ({{ contract.completed_work_hours_percentage }}%)
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <h4>{% trans 'Last five finished shifts' %}</h4>
+    {% if not last_shifts %}
+        {% trans 'You do not have any finished shifts!' %}
+    {% else %}
+        <table id="clockTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0"
+               width="100%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>{% trans 'Shift No.' %}</th>
+                <th>{% trans 'Contract' %}</th>
+                <th>{% trans 'Shift started' %}</th>
+                <th>{% trans 'Shift finished' %}</th>
+                <th>{% trans 'Pause duration' %}</th>
+                <th>{% trans 'Shift duration' %}</th>
+                <th>{% trans 'Key' %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for shift in last_shifts %}
+                <tr id="{{ shift.pk }}">
+                    <td></td>
+                    <td class="text-right">{{ forloop.counter }}</td>
+                    <td class="text-right">{{ shift.contract|format_contract }}</td>
+                    <td class="text-right">{{ shift.shift_started }}</td>
+                    <td class="text-right">{{ shift.shift_finished }}</td>
+                    <td class="text-right">{{ shift.pause_duration|format_dttd:"%H:%M" }}</td>
+                    <td class="text-right">{{ shift.shift_duration|format_dttd:"%H:%M" }}</td>
+                    <td class="text-right">{{ shift.get_key_display }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock container %}
 
 {% block extra_js %}
@@ -68,6 +130,99 @@
                 // Calling ticktock() every 1 second
                 setInterval(ticktock, 1000);
             }());
+        </script>
+    {% endif %}
+    <script type="text/javascript" src="{% static 'libraries/datatables/js/datatables.min.js' %}"></script>
+    {% if last_shifts %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                // Now the magic with the datatables comes into play.
+                $('#clockTable').DataTable({
+                    "info": false,
+                    "paging": false,
+                    "searching": false,
+                    dom: 'Bfrtip',
+                    responsive: true,
+                    columns: [
+                        { // Responsive control column
+                            data: null,
+                            defaultContent: '',
+                            className: 'control',
+                            orderable: false
+                        },
+                        {
+                            data: "forloop.counter"
+                        }, {
+                            data: "contract"
+                        }, {
+                            data: "shift_started"
+                        }, {
+                            data: "shift_finished"
+                        }, {
+                            data: "pause_duration"
+                        }, {
+                            data: "shift_duration"
+                        }, {
+                            data: "key"
+                        }],
+                    columnDefs: [{
+                        responsivePriority: 1,
+                        targets: 3
+                    }, {
+                        responsivePriority: 2,
+                        targets: -1
+                    }],
+                    buttons: [],
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% if LANGUAGE_CODE == 'de' %}
+                        language: {
+                            url: "{% static 'libraries/datatables/locale/de.json' %}"
+                        }
+                    {% endif %}
+                });
+            });
+
+            $('#clockTable').on('click', 'tbody tr', function (evt) {
+
+                // Handles the functionality around redirecting users to the clicked shift
+
+                // Save element the click is performed on
+                var target = $(evt.target);
+                {#            console.log($(evt.target));#}
+                {#            console.log(target.closest('td').index());#}
+
+                var newPage;
+
+                // Extremely quick-and-dirty method to get the whole click-thing running. There should be a better way!
+                // This basically checks which element was clicked and then redirects to the edit page
+                // The edit page should be /shift/<pk>/edit/
+                // Every element is nested differently, but the <pk> is inside the original table <tr> ID-attribute
+                // The first two cells (the expendable on mobile devices and the checkbox cell) are ignored.
+
+                // If the row has a cell with a class .control and is visible
+                if ($(this).find('td.control:visible').length) {
+                    // If clicked cell was not the control cell
+                    if (target.closest('td').index() > 1) {
+                        newPage = target.parent().attr('id');
+                        window.location.href = "/shift/" + newPage + "/edit/"
+                    }
+                    // Another check if we are clicking on the extra info shown on mobile devices!
+                } else if (target.is('td.child')) {
+                    newPage = target.parent().prev().attr('id');
+                    window.location.href = "/shift/" + newPage + "/edit/"
+                } else if (target.is("li")) {
+                    newPage = target.parent().parent().parent().prev().attr('id');
+                    window.location.href = "/shift/" + newPage + "/edit/"
+                } else if (target.is('span.dtr-data') || target.is('span.dtr-title')) {
+                    newPage = target.parent().parent().parent().parent().prev().attr('id');
+                    window.location.href = "/shift/" + newPage + "/edit/"
+                    // If .control class is not visible, we're obviously on a bigger screen.
+                    // Check if we are clicking on the .select-checkbox td or any other!
+                } else if (target.closest('td').index() > 1) {
+                    newPage = target.parent().attr('id');
+                    window.location.href = "/shift/" + newPage + "/edit/"
+                }
+            });
         </script>
     {% endif %}
 {% endblock extra_js %}
