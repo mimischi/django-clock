@@ -30,7 +30,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
 WHITENOISE_MIDDLEWARE = ('whitenoise.middleware.WhiteNoiseMiddleware', )
 MIDDLEWARE = WHITENOISE_MIDDLEWARE + MIDDLEWARE
-RAVEN_MIDDLEWARE = ('raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',)
+RAVEN_MIDDLEWARE = ('raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
+        'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',)
 MIDDLEWARE = RAVEN_MIDDLEWARE + MIDDLEWARE
 
 # SECURITY CONFIGURATION
