@@ -21,8 +21,6 @@ services:
       - postgres
     command: /gunicorn.sh
     env_file: .env
-    depends_on:
-      - postgres
 
   nginx:
     build: ./compose/nginx
