@@ -17,7 +17,7 @@ ROOT_DIR = environ.Path(__file__) - 3  # (/settings/config/common.py - 3 = /)
 APPS_DIR = ROOT_DIR.path('clock')
 
 env = environ.Env()
-env.read_env()
+#env.read_env()
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
