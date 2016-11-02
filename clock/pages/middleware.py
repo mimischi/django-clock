@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 
+try:
+	from django.utils.deprecation import MiddlewareMixin
+except ImportError:  # Django < 1.10
+    # Works perfectly for everyone using MIDDLEWARE_CLASSES
+    MiddlewareMixin = object
 
 # Adapted from https://djangosnippets.org/snippets/248/
-class LastVisitedMiddleware(object):
+class LastVisitedMiddleware(MiddlewareMixin):
     """This middleware sets the last visited url as session field"""
 
     def process_view(self, request, view_func, view_args, view_kwargs):
@@ -31,3 +36,5 @@ class LastVisitedMiddleware(object):
         request.session['currently_visiting'] = request_path
         request.session['current_kwargs'] = request_kwargs
         request.session['current_view_name'] = request_view_name
+
+        return None
