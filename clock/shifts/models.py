@@ -1,6 +1,5 @@
 import time
 from datetime import timedelta
-
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -112,9 +111,9 @@ class Shift(models.Model):
                 self.shift_finished = self.shift_started + timedelta(minutes=5)
 
         # Lets check if this shift is just being updated
-        if self.pk is not None and self.bool_finished and (self.shift_finished != self.__old_shift_finished or
-                                                                   self.shift_started != self.__old_shift_started or
-                                                                   self.pause_duration != self.__old_pause_duration):
+        if self.pk is not None and (self.shift_finished != self.__old_shift_finished or
+                                            self.shift_started != self.__old_shift_started or
+                                            self.pause_duration != self.__old_pause_duration):
             self.shift_duration = (self.shift_finished - self.shift_started) - self.pause_duration
         # Lets check if this shift did not exists before and was just added from the shell!
         elif self.pk is None and self.shift_finished is not None:
@@ -172,7 +171,7 @@ class Shift(models.Model):
         if self.pause_duration.total_seconds() > 0:
             pause_begin = self.shift_finished - self.pause_duration
             return time.strftime("%H:%M", pause_begin.utctimetuple()) + " - " + \
-                time.strftime("%H:%M", self.shift_finished.utctimetuple())
+                   time.strftime("%H:%M", self.shift_finished.utctimetuple())
         return "-"
 
     @property
