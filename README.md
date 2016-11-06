@@ -2,6 +2,7 @@
 | ------------- | ------------- | ------------- |
 | Travis CI  | [![Build Status](https://travis-ci.org/mimischi/django-clock.svg?branch=develop)](https://travis-ci.org/mimischi/django-clock)  | [![Build Status](https://travis-ci.org/mimischi/django-clock.svg?branch=master)](https://travis-ci.org/mimischi/django-clock)  |
 | Pyup.io  | [![Updates](https://pyup.io/repos/github/mimischi/django-clock/shield.svg)](https://pyup.io/repos/github/mimischi/django-clock/) | [![Updates](https://pyup.io/repos/github/mimischi/django-clock/shield.svg)](https://pyup.io/repos/github/mimischi/django-clock/) |
+| Coverage  | [![codecov](https://codecov.io/gh/mimischi/django-clock/branch/develop/graph/badge.svg)](https://codecov.io/gh/mimischi/django-clock/branch/develop) | [![codecov](https://codecov.io/gh/mimischi/django-clock/branch/master/graph/badge.svg)](https://codecov.io/gh/mimischi/django-clock) |
 
 # Clock
 
