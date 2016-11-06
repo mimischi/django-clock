@@ -1,6 +1,5 @@
 import time
 from datetime import timedelta
-
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -99,7 +98,13 @@ class Shift(models.Model):
         if self.bool_finished is True:
             self.shift_started = round_time(self.shift_started)
             self.shift_finished = round_time(self.shift_finished)
-            self.pause_duration = round_time(self.pause_duration, timedelta(minutes=1))
+
+            # If the pause duration is larger than the actual shift duration,
+            # we will reset the former
+            if self.current_duration > (timezone.now() - self.shift_started):
+                self.pause_duration = round_time(self.pause_duration, timedelta(minutes=1))
+            else:
+                self.pause_duration = timedelta(minutes=0)
 
             # Account for the case that a user pauses his shift longer than he actually worked. This will make sure
             # the shift duration is always longer than the pause duration by 5 minutes.
@@ -112,13 +117,14 @@ class Shift(models.Model):
                 self.shift_finished = self.shift_started + timedelta(minutes=5)
 
         # Lets check if this shift is just being updated
-        if self.pk is not None and self.bool_finished and (self.shift_finished != self.__old_shift_finished or
-                                                                   self.shift_started != self.__old_shift_started or
-                                                                   self.pause_duration != self.__old_pause_duration):
+        if self.pk is not None and self.shift_finished is not None and (self.shift_finished != self.__old_shift_finished or
+                                            self.shift_started != self.__old_shift_started or
+                                            self.pause_duration != self.__old_pause_duration):
             self.shift_duration = (self.shift_finished - self.shift_started) - self.pause_duration
         # Lets check if this shift did not exists before and was just added from the shell!
         elif self.pk is None and self.shift_finished is not None:
             self.shift_duration = (self.shift_finished - self.shift_started) - self.pause_duration
+
         return super(Shift, self).save(*args, **kwargs)
 
     def shift_time_validation(self):
@@ -172,7 +178,7 @@ class Shift(models.Model):
         if self.pause_duration.total_seconds() > 0:
             pause_begin = self.shift_finished - self.pause_duration
             return time.strftime("%H:%M", pause_begin.utctimetuple()) + " - " + \
-                time.strftime("%H:%M", self.shift_finished.utctimetuple())
+                   time.strftime("%H:%M", self.shift_finished.utctimetuple())
         return "-"
 
     @property
