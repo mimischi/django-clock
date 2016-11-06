@@ -21,7 +21,8 @@ pytest-sugar==0.7.1
 gevent==1.1.2
 
 # Enables better email testing
-maildump==0.5.3
+maildump==0.5.4
 
-pytest-cov
-codecov
+# Own stuff
+pytest-cov=2.4.0
+codecov=2.0.5
