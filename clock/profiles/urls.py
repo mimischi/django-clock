@@ -9,8 +9,8 @@ from . import views
 
 urlpatterns = [
     url(
-        regex=r'^profiles/$',
-        view=views.AccountView.as_view(),
+        r'^profiles/$',
+        view=views.AccountUpdateView.as_view(),
         name='account_view'
     ),
     url(r'^delete/', delete_user, name="delete"),

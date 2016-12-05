@@ -27,6 +27,9 @@ class ExportMonth(PdfResponseMixin, MonthArchiveView):
     def get_context_data(self, **kwargs):
         context = super(ExportMonth, self).get_context_data(**kwargs)
 
+        # TODO: Can result in text overflowing the drawn box!
+        context['fullname'] = '{} {}'.format(self.request.user.first_name, self.request.user.last_name)
+
         if not context['shift_list']:
             context['department'] = Contract.objects.get(pk=int(self.kwargs['pk'])).department
             context['total_shift_duration'] = timedelta(seconds=0)

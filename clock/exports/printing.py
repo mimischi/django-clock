@@ -163,7 +163,7 @@ class ShiftExport:
         boxes = [BoxyLine(width=doc.width, height=20, text_label="FB / Institut / Abteilung",
                           text_box=self.context['department']), Spacer(1, 4),
                  BoxyLine(width=doc.width, height=20, text_label="Name des Mitarbeiters",
-                          text_box=""), Spacer(1, 4),
+                          text_box=self.context['fullname']), Spacer(1, 4),
                  BoxyLine(width=100 + 155, height=20, text_label="Pers. Nr. (falls vorhanden)",
                           text_box=""),
                  BoxyLine(x=196, y=+5, width=100 + 155, height=20, text_label="Monat / Jahr",

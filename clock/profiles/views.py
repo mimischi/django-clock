@@ -3,14 +3,16 @@ from django import http
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import translate_url
+from django.core.urlresolvers import translate_url, reverse_lazy
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 from django.utils.translation import LANGUAGE_SESSION_KEY, check_for_language
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
+from django.views.generic.edit import UpdateView
 
-from clock.profiles.forms import DeleteUserForm
+from clock.users.models import User
+from clock.profiles.forms import UpdateUserForm, DeleteUserForm
 from clock.profiles.models import UserProfile
 
 LANGUAGE_QUERY_PARAMETER = 'language'
@@ -18,6 +20,17 @@ LANGUAGE_QUERY_PARAMETER = 'language'
 
 class AccountView(LoginRequiredMixin, TemplateView):
     template_name = 'profiles/profile.html'
+
+
+class AccountUpdateView(LoginRequiredMixin, UpdateView):
+    """View to update some profile information."""
+    model = User
+    form_class = UpdateUserForm
+    template_name = 'profiles/profile.html'
+    success_url = reverse_lazy('profiles:account_view')
+
+    def get_object(self):
+        return User.objects.get(pk=self.request.user.pk)
 
 
 @login_required()
