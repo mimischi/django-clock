@@ -388,7 +388,7 @@ tr.child > td.child > ul > li {
 }
 
 /* Add margin to the bottom of the top menu, except for the last item! */
-.objectList-topbar .col-sm-4:not(:last-of-type) {
+.objectList-topbar .col-sm-12:not(:last-of-type) {
     margin-bottom: 10px;
 }
 

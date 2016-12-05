@@ -21,7 +21,7 @@
 {% block container %}
     <h2>{% trans 'Shifts in' %} {{ month|date:"F Y" }}</h2>
     <div class="objectList-topbar row">
-        <div class='col-sm-4'>
+        <div class='col-sm-12 col-md-3'>
             <div class="form-group">
                 <div class='input-group date' id='monthpicker'>
                     <input type='text' class="form-control"
@@ -32,14 +32,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-12 col-md-4">
             {#            {% if not previous_month or not shift %}#}
             {#                <a class="btn btn-default disabled"><span#}
             {#                        class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}#}
             {#                </a>#}
             {#            {% else %}#}
             <a href="{% url 'shift:archive_month_contract_numeric' year=previous_month|date:"Y" month=previous_month|date:"m" contract=view.contract %}"
-               class="btn btn-default"><span class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}
+               class="btn btn-default pull-left" style="width:50%"><span class="fa fa-chevron-left"></span> {{ previous_month|date:"F Y" }}
             </a>
             {#            {% endif %}#}
             {#            {% if not next_month or not shift %}#}
@@ -47,15 +47,15 @@
             {#                        class="fa fa-chevron-right"></span></a>#}
             {#            {% else %}#}
             <a href="{% url 'shift:archive_month_contract_numeric' year=next_month|date:"Y" month=next_month|date:"m" contract=view.contract %}"
-               class="btn btn-default">{{ next_month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
+               class="btn btn-default" style="width:50%">{{ next_month|date:"F Y" }} <span class="fa fa-chevron-right"></span></a>
             {#            {% endif %}#}
         </div>
-        <div class="col-sm-4">
-            <a href="{% url 'shift:new' %}" class="btn btn-primary pull-right"><span
+        <div class="col-sm-12 col-md-3">
+            <a href="{% url 'shift:new' %}" class="btn btn-primary" style="width:100%"><span
                     class="fa fa-plus"></span> {% trans 'Add new shift' %}</a>
         </div>
-        <div class="col-sm-4 pull-right">
-            <a href="{% if not view.kwargs.contract or view.kwargs.contract|add:0 < 1 %}#{% else %}{% url 'export:contract' year=view.kwargs.year month=view.kwargs.month pk=view.kwargs.contract %}{% endif %}" class="btn btn-default pull-right{% if not view.kwargs.contract or view.kwargs.contract|add:0 < 1 %} disabled{% endif %}"><span
+        <div class="col-sm-12 col-md-2">
+            <a href="{% if not view.kwargs.contract or view.kwargs.contract|add:0 < 1 %}#{% else %}{% url 'export:contract' year=view.kwargs.year month=view.kwargs.month pk=view.kwargs.contract %}{% endif %}" class="btn btn-default{% if not view.kwargs.contract or view.kwargs.contract|add:0 < 1 %} disabled{% endif %}" style="width:100%"><span
                 class="fa fa-archive"></span> {% trans 'Export month' %}</a></div>
         <div class="col-sm-12">
             <select id="contractSelect" class="block form-control work-select selectpicker" name="contractSelect"
