@@ -34,10 +34,10 @@ class Contract(models.Model):
             total_work_hours += shift.shift_duration
         return total_work_hours
 
-    def completed_hours_per_month(self, date=datetime.today()):
+    def completed_hours_per_month(self, date=datetime.now):
         shifts = Shift.objects.filter(contract=self.pk,
-                                      shift_started__year=date.year,
-                                      shift_started__month=date.month,
+                                      shift_started__year=datetime.now().year,
+                                      shift_started__month=datetime.now().month,
                                       shift_finished__isnull=False)
 
         monthly_work_hours = timedelta(seconds=0)
@@ -47,7 +47,7 @@ class Contract(models.Model):
         hours, minutes = divmod(monthly_work_hours.total_seconds()/60, 60)
         return "%02d:%02d" % (hours, minutes)
 
-    def completed_work_hours_percentage(self, date=datetime.today()):
+    def completed_work_hours_percentage(self, date=datetime.today):
         contract_hours = float(convert_work_hours(self.hours))
         completed_hours = float(convert_work_hours(self.completed_hours_per_month(date)))
 
