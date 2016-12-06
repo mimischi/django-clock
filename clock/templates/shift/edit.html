@@ -50,7 +50,8 @@
             var shiftFinishedPicker = $("#id_shift_finished_pickers");
             shiftStartedPicker.data("DateTimePicker").defaultDate('{{ view.base_date }}');
             shiftFinishedPicker.data("DateTimePicker").defaultDate('{{ view.base_date }}');
-{#            shiftStartedPicker.datetimepicker();#}
+            shiftStartedPicker.data("DateTimePicker").keyBinds({'delete': false});
+            {# shiftStartedPicker.datetimepicker({}); #}
 {#            shiftFinishedPicker.datetimepicker({#}
 {#                useCurrent: false //Important! See issue #1075#}
 {#            });#}
