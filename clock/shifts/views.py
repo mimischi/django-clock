@@ -24,7 +24,7 @@ def shift_action(request):
     # Get the current shift (s) and the corresponding pauses (shift_pauses)
     shift = get_current_shift(request.user)
 
-    if not shift and not '_start' in request.POST:
+    if not shift and '_start' not in request.POST:
         messages.add_message(
             request,
             messages.ERROR,
@@ -214,13 +214,21 @@ class ShiftMonthView(MonthArchiveView):
     class Meta:
         ordering = ["-shift_started"]
 
-    def get_context_data(self, **kwargs):
-        context = super(ShiftMonthView, self).get_context_data()
+    def get_year(self):
+        """Returns the current year if none was specified inside the kwargs."""
+        if 'year' not in self.kwargs:
+            year = timezone.now().strftime("%Y")
+        else:
+            year = super(ShiftMonthView, self).get_year()
+        return year
 
-        if 'year' not in self.kwargs and 'month' not in self.kwargs:
-            self.kwargs['year'] = self.year
-            self.kwargs['month'] = self.month
-        return context
+    def get_month(self):
+        """Returns the current month if none was specified inside the kwargs."""
+        if 'month' not in self.kwargs:
+            month = timezone.now().strftime("%m")
+        else:
+            month = super(ShiftMonthView, self).get_month()
+        return month
 
     @property
     def prev_next_shift(self):

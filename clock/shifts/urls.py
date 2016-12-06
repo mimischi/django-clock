@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.conf.urls import url
-from django.utils import timezone
 
 from clock.shifts.views import ShiftManualCreate, \
     ShiftManualEdit, ShiftManualDelete
@@ -12,11 +11,7 @@ from clock.shifts.views import ShiftMonthContractView, ShiftWeekView, ShiftYearV
 urlpatterns = [
     # Shift URLs
     # Display the ShiftMonthView as default with the current year-month
-    url(r'^$', ShiftMonthContractView.as_view(month_format='%m',
-                                              year=timezone.now().strftime("%Y"),
-                                              month=timezone.now().strftime("%m")),
-        name="list"
-        ),
+    url(r'^$', ShiftMonthContractView.as_view(month_format='%m',), name="list"),
     # View to handle all the quick-actions from the dashboard
     url(r'^quick_action/$', shift_action,
         name='quick_action'),
