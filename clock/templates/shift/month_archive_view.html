@@ -132,7 +132,7 @@
             $('#contractSelect').change(function() {
                 var year = moment().format("YYYY");
                 var month = moment().format("MM");
-                {% if view.kwargs %}
+                {% if view.kwargs.year and view.kwargs.month %}
                 year = {{ view.kwargs.year }};
                 month = {{ view.kwargs.month }};
                 {% endif %}
