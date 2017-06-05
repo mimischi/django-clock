@@ -18,7 +18,7 @@ ipdb==0.10.1
 pytest-django==3.0.0
 pytest-sugar==0.7.1
 
-gevent==1.1.2
+gevent==1.2.2
 
 # Enables better email testing
 maildump==0.5.4
