@@ -32,7 +32,7 @@ pytz==2016.7
 django-bootstrap-breadcrumbs==0.8.2
 django-bootstrap3==7.1.0
 django-bootstrap3-datetimepicker-2==2.4.2
-reportlab==3.3.0
+reportlab==3.4.0
 lxml==3.6.4
 django-recaptcha==1.1.0
 django-taggit==0.21.3
