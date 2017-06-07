@@ -7,18 +7,21 @@ from clock.exports.views import ExportMonth, ExportMonthAPI, ExportContractMonth
 
 urlpatterns = [
     # Export URLs
-    url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<pk>\d+)/$', ExportMonth.as_view(month_format='%m'),
-        name="contract"
-        ),
-    url(r'^api/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$', ExportMonthAPI.as_view(month_format='%m'),
-        name="api_all"
-        ),
+    url(
+        r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<pk>\d+)/$',
+        ExportMonth.as_view(month_format='%m'),
+        name="contract"),
+    url(
+        r'^api/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
+        ExportMonthAPI.as_view(month_format='%m'),
+        name="api_all"),
     # ListView for all shifts of a contract in a month
-    url(r'^api/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<pk>\d+)/$',
+    url(
+        r'^api/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<pk>\d+)/$',
         ExportContractMonthAPI.as_view(month_format='%m'),
         name='api_contract'),
-    url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<pk>\d+)/hours/(?P<hours>\d+)/nuke/$',
+    url(
+        r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<pk>\d+)/hours/(?P<hours>\d+)/nuke/$',
         ExportNuke.as_view(month_format='%m'),
-        name="contract_nuke"
-        ),
-    ]
+        name="contract_nuke"),
+]

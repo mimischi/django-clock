@@ -3,7 +3,10 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 
 
-def round_time(dt=None, obj=None, date_delta=timedelta(minutes=5), to='average'):
+def round_time(dt=None,
+               obj=None,
+               date_delta=timedelta(minutes=5),
+               to='average'):
     """
     Round a datetime object to a multiple of a timedelta
     dt : datetime.datetime object, default now.
@@ -33,4 +36,5 @@ def round_time(dt=None, obj=None, date_delta=timedelta(minutes=5), to='average')
     if obj == 'dt':
         return dt + timedelta(0, rounding - seconds, -dt.microsecond)
     elif obj == 'td':
-        return dt + timedelta(0, rounding - seconds) - timedelta(microseconds=dt.microseconds)
+        return dt + timedelta(0, rounding - seconds) - timedelta(
+            microseconds=dt.microseconds)

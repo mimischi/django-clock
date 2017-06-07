@@ -39,8 +39,10 @@ def home(request):
             d = datetime.now()
             s = shift.shift_started
             context['current_duration'] = shift.current_duration
-            context['current_duration_wp'] = (d.replace(tzinfo=None) - s.replace(tzinfo=None))
-            context['current_duration_wp_ms'] = context['current_duration_wp'].microseconds
+            context['current_duration_wp'] = (
+                d.replace(tzinfo=None) - s.replace(tzinfo=None))
+            context['current_duration_wp_ms'] = context[
+                'current_duration_wp'].microseconds
 
             # Delete the 'all_contracts' key from the context dict,
             # so we can hide the <select>-element in the template.

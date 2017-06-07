@@ -11,8 +11,10 @@ urlpatterns = [
     url(
         r'^profiles/$',
         view=views.AccountUpdateView.as_view(),
-        name='account_view'
-    ),
+        name='account_view'),
     url(r'^delete/', delete_user, name="delete"),
-    url(r'^goodbye/', TemplateView.as_view(template_name='profiles/goodbye.html'), name="goodbye"),
+    url(
+        r'^goodbye/',
+        TemplateView.as_view(template_name='profiles/goodbye.html'),
+        name="goodbye"),
 ]

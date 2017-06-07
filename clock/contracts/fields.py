@@ -4,7 +4,6 @@ from django.core.exceptions import ValidationError
 from django.db.models.fields import IntegerField
 from django.forms.fields import CharField
 from django.utils.translation import ugettext_lazy as _
-
 """
 All credit for WorkingHoursFieldForm and WorkingHoursField go to
 http://charlesleifer.com/blog/writing-custom-field-django/
@@ -17,9 +16,11 @@ class WorkingHoursFieldForm(CharField):
     """
     Implementation of a CharField to handle validation of data from WorkingHoursField.
     """
+
     def __init__(self, label=_('Work hours'), *args, **kwargs):
         kwargs['max_length'] = 5
-        super(WorkingHoursFieldForm, self).__init__(label=label, *args, **kwargs)
+        super(WorkingHoursFieldForm, self).__init__(
+            label=label, *args, **kwargs)
 
     def clean(self, value):
         """
@@ -40,15 +41,18 @@ class WorkingHoursFieldForm(CharField):
                 value = value + ":00"
                 minutes = 0
             except ValueError:
-                raise ValidationError(_('Working hours entered must be in format HH:MM'))
+                raise ValidationError(
+                    _('Working hours entered must be in format HH:MM'))
 
         # If the value is in the correct format, check if the total working hours
         # exceed 80 hours per month (this equals 288.000 seconds)
         total_seconds = hours * 3600 + minutes * 60
         if total_seconds > 80 * 3600:
-            raise ValidationError(_('Contracts may not be longer than 80 hours!'))
+            raise ValidationError(
+                _('Contracts may not be longer than 80 hours!'))
         elif total_seconds < 1:
-            raise ValidationError(_('Your total work time must be bigger than zero!'))
+            raise ValidationError(
+                _('Your total work time must be bigger than zero!'))
 
         return value
 
@@ -78,7 +82,8 @@ class WorkingHoursField(IntegerField):
             try:
                 hours, minutes = map(int, value.split(':'))
             except ValueError:
-                raise ValidationError(_('Working hours entered must be in format HH:MM'))
+                raise ValidationError(
+                    _('Working hours entered must be in format HH:MM'))
 
             # If the user entered a value like '30.3' we will convert it into '30.30'.
             # Otherwise it would be interpreted as '30.03'.
@@ -95,7 +100,10 @@ class WorkingHoursField(IntegerField):
 
     # This is somehow needed, as otherwise the form will not work correctly!
     def formfield(self, form_class=WorkingHoursFieldForm, **kwargs):
-        defaults = {'help_text': _('Please specify your working hours in the format HH:MM \
-                                (eg. 12:15 - meaning 12 hours and 15 minutes)')}
+        defaults = {
+            'help_text':
+            _('Please specify your working hours in the format HH:MM \
+                                (eg. 12:15 - meaning 12 hours and 15 minutes)')
+        }
         defaults.update(kwargs)
         return form_class(**defaults)
