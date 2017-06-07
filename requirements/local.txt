@@ -9,7 +9,7 @@ django-test-plus==1.0.17
 factory-boy==2.8.1
 
 # django-debug-toolbar that works with Django 1.5+
-django-debug-toolbar==1.6
+django-debug-toolbar==1.8
 
 # improved REPL
 ipython==5.3.0 # pyup: >=5.3.0,<6.0.0
