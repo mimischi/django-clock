@@ -49,9 +49,7 @@ htmlcov
 !.idea/vcs.xml
 !.idea/webResources.xml
 
-
 # Vim
-
 *~
 *.swp
 *.swo
@@ -73,6 +71,9 @@ tests/.hitch
 
 # MailHog binary
 mailhog
+
+# Cache folder
+.cache/
 
 # Initial data
 initial_*.json
