@@ -1,10 +1,12 @@
-from django.utils import timezone
-"""Test shift app views."""
 from django.contrib.messages import get_messages
+from django.utils import timezone
 from test_plus.test import TestCase
 
 from clock.contracts.models import Contract
 from clock.shifts.models import Shift
+
+"""Test shift app views."""
+
 
 
 class ManualShiftViewTest(TestCase):
@@ -189,7 +191,6 @@ class ManualShiftViewTest(TestCase):
 
         shift = Shift.objects.all()
         self.assertEqual(len(shift), 0)
->>>>>>> Add tests to quick action view
 
 
 class ShiftsViewTest(TestCase):

@@ -28,6 +28,7 @@ maildump==0.5.4
 # Own stuff
 pytest-cov==2.5.1
 codecov==2.0.9
+factory_boy==2.9.2
 
 # Collaboratory translations
 django-rosetta==0.7.13
