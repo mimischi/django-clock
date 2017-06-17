@@ -122,6 +122,45 @@ class ManualShiftViewTest(TestCase):
             self.assertEqual(len(messages), 1)
             self.assertEqual(messages[0].__str__(), 'Your shift has finished!')
 
+    def test_start_pause_stop_shift(self):
+        """
+        Assert that we can start, pause and stop a shift.
+        """
+        with self.login(username=self.user.username, password='password'):
+            response1 = self.post(
+                'shift:quick_action', data={
+                    '_start': True,
+                }, follow=True)
+            response2 = self.post(
+                'shift:quick_action', data={
+                    '_pause': True,
+                }, follow=True)
+
+            messages = [msg for msg in get_messages(response2.wsgi_request)]
+
+            shift = Shift.objects.all()[0]
+            self.assertFalse(shift.bool_finished)
+            self.assertIsNone(shift.shift_finished)
+            self.assertTrue(shift.is_paused)
+
+            self.assertEqual(len(messages), 1)
+            self.assertEqual(messages[0].__str__(), 'Your shift was paused.')
+
+            response3 = self.post(
+                'shift:quick_action', data={
+                    '_stop': True,
+                }, follow=True)
+
+            messages = [msg for msg in get_messages(response3.wsgi_request)]
+
+            shift = Shift.objects.all()[0]
+            self.assertTrue(shift.bool_finished)
+            self.assertIsNotNone(shift.shift_finished)
+            self.assertFalse(shift.is_paused)
+
+            self.assertEqual(len(messages), 1)
+            self.assertEqual(messages[0].__str__(), 'Your shift has finished!')
+
     def test_cannot_stop_pause_non_existent_shift(self):
         """
         Assert that we cannot stop or pause a non-existent shift.
