@@ -1,8 +1,156 @@
 from django.utils import timezone
+"""Test shift app views."""
+from django.contrib.messages import get_messages
 from test_plus.test import TestCase
 
 from clock.contracts.models import Contract
 from clock.shifts.models import Shift
+
+
+class ManualShiftViewTest(TestCase):
+    """
+    Test that the manual buttons for the shift views are working as intended.
+    """
+
+    def setUp(self):
+        self.user = self.make_user()
+        self.contract1 = Contract.objects.create(
+            employee=self.user, department='Test department', hours='50')
+
+    def test_manual_shift_start(self):
+        """
+        Assert that we can start a shift when logged in and without having a current shift.
+        """
+        with self.login(username=self.user.username, password='password'):
+            response = self.post(
+                'shift:quick_action', data={
+                    '_start': True,
+                }, follow=True)
+
+        messages = [msg for msg in get_messages(response.wsgi_request)]
+
+        shift = Shift.objects.all()[0]
+        self.assertFalse(shift.bool_finished)
+        self.assertIsNone(shift.shift_finished)
+
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].__str__(), 'Your shift has started!')
+
+    def test_cannot_start_another_shift(self):
+        """Assert that we cannot have two shifts running at the same time."""
+        with self.login(username=self.user.username, password='password'):
+            response1 = self.post(
+                'shift:quick_action', data={
+                    '_start': True,
+                }, follow=True)
+            response2 = self.post(
+                'shift:quick_action', data={
+                    '_start': True,
+                }, follow=True)
+
+        messages = [msg for msg in get_messages(response2.wsgi_request)]
+
+        shift = Shift.objects.all()[0]
+        self.assertFalse(shift.bool_finished)
+        self.assertIsNone(shift.shift_finished)
+
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].__str__(),
+                         'You already have an active shift!')
+
+    def test_start_pause_resume_shift(self):
+        """
+        Assert that we can start, pause and unpause a shift.
+        """
+        with self.login(username=self.user.username, password='password'):
+            response1 = self.post(
+                'shift:quick_action', data={
+                    '_start': True,
+                }, follow=True)
+            response2 = self.post(
+                'shift:quick_action', data={
+                    '_pause': True,
+                }, follow=True)
+
+            messages = [msg for msg in get_messages(response2.wsgi_request)]
+
+            shift = Shift.objects.all()[0]
+            self.assertFalse(shift.bool_finished)
+            self.assertIsNone(shift.shift_finished)
+            self.assertTrue(shift.is_paused)
+
+            self.assertEqual(len(messages), 1)
+            self.assertEqual(messages[0].__str__(), 'Your shift was paused.')
+
+            response3 = self.post(
+                'shift:quick_action', data={
+                    '_pause': True,
+                }, follow=True)
+
+            messages = [msg for msg in get_messages(response3.wsgi_request)]
+
+            shift = Shift.objects.all()[0]
+            self.assertFalse(shift.bool_finished)
+            self.assertIsNone(shift.shift_finished)
+            self.assertFalse(shift.is_paused)
+
+            self.assertEqual(len(messages), 1)
+            self.assertEqual(messages[0].__str__(),
+                             'Your shift was continued.')
+
+    def test_start_stop_shift(self):
+        """
+        Assert that we can start and stop a shift.
+        """
+        with self.login(username=self.user.username, password='password'):
+            response1 = self.post(
+                'shift:quick_action', data={
+                    '_start': True,
+                }, follow=True)
+            response2 = self.post(
+                'shift:quick_action', data={
+                    '_stop': True,
+                }, follow=True)
+
+            messages = [msg for msg in get_messages(response2.wsgi_request)]
+
+            shift = Shift.objects.all()[0]
+            self.assertTrue(shift.bool_finished)
+            self.assertIsNotNone(shift.shift_finished)
+            self.assertFalse(shift.is_paused)
+
+            self.assertEqual(len(messages), 1)
+            self.assertEqual(messages[0].__str__(), 'Your shift has finished!')
+
+    def test_cannot_stop_pause_non_existent_shift(self):
+        """
+        Assert that we cannot stop or pause a non-existent shift.
+        """
+        with self.login(username=self.user.username, password='password'):
+            response1 = self.post(
+                'shift:quick_action', data={
+                    '_stop': True,
+                }, follow=True)
+
+            messages1 = [msg for msg in get_messages(response1.wsgi_request)]
+            self.assertEqual(len(messages1), 1)
+            self.assertEqual(
+                messages1[0].__str__(),
+                'You need an active shift to perform this action!')
+
+            response2 = self.post(
+                'shift:quick_action', data={
+                    '_pause': True,
+                }, follow=True)
+            messages2 = [msg for msg in get_messages(response2.wsgi_request)]
+            self.assertEqual(len(messages2), 1)
+            self.assertEqual(
+                messages2[0].__str__(),
+                'You need an active shift to perform this action!')
+
+        shift = Shift.objects.all()
+        self.assertEqual(len(shift), 0)
+>>>>>>> Add tests to quick action view
 
 
 class ShiftsViewTest(TestCase):
