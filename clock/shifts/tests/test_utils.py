@@ -1,13 +1,19 @@
 """Tests for the shift utilities."""
 from test_plus import TestCase
 
-from clock.shifts.factories import UserFactory, ShiftFactory
+from clock.shifts.factories import ShiftFactory, UserFactory
 from clock.shifts.models import Shift
-from clock.shifts.utils import get_last_shifts
+from clock.shifts.utils import get_current_shift, get_last_shifts
+from clock.contracts.models import Contract
 
 
 class TestUtils(TestCase):
     """Test the functionality of the shift utilities."""
+
+    def setUp(self):
+        self.user = self.make_user()
+        self.contract1 = Contract.objects.create(
+            employee=self.user, department='Test department', hours='50')
 
     def test_get_last_shifts(self):
         employee = UserFactory()
@@ -43,3 +49,19 @@ class TestUtils(TestCase):
         # Make sure we only retrieve finished shifts
         for shift in eleven_shifts:
             self.assertIsNotNone(shift.shift_finished)
+
+    def test_retrieve_current_running_shift(self):
+        """Test that we can retrieve the currently running shift."""
+
+        no_shift = get_current_shift(self.user)
+        self.assertIsNone(no_shift)
+
+        with self.login(username=self.user.username, password='password'):
+            response = self.post(
+                'shift:quick_action', data={
+                    '_start': True,
+                }, follow=True)
+
+            last_shift = get_current_shift(self.user)
+            self.assertIsNotNone(last_shift)
+            self.assertIsNone(last_shift.shift_finished, '')
