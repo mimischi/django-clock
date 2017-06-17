@@ -21,9 +21,7 @@ class QuickActionForm(forms.Form):
     """
 
     contract = forms.ModelChoiceField(
-        queryset=Contract.objects.none(),
-        empty_label=_('None defined')
-    )
+        queryset=Contract.objects.none(), empty_label=_('None defined'))
 
     def __init__(self, *args, **kwargs):
         # Retrieve the logged in user, that we provide inside the view
@@ -36,47 +34,39 @@ class QuickActionForm(forms.Form):
 class ShiftForm(forms.ModelForm):
     class Meta:
         model = Shift
-        fields = ('shift_started', 'shift_finished', 'pause_duration', 'contract', 'key', 'tags', 'note',)
+        fields = ('shift_started', 'shift_finished', 'pause_duration',
+                  'contract', 'key', 'tags', 'note', )
         widgets = {
-            'shift_started': DateTimePicker(
-                options={
-                    "format": "YYYY-MM-DD HH:mm",
-                    "stepping": 5,
-                    "toolbarPlacement": "top",
-                    "keepInvalid": True,
-                    "showTodayButton": True,
-                    "calendarWeeks": True,
-                    "locale": get_language()
-                }
-            ),
-            'shift_finished': DateTimePicker(
-                options={
-                    "format": "YYYY-MM-DD HH:mm",
-                    "stepping": 5,
-                    "toolbarPlacement": "top",
-                    "keepInvalid": True,
-                    "showTodayButton": True,
-                    "calendarWeeks": True,
-                    "locale": get_language()
-                }
-            ),
-            'pause_duration': DateTimePicker(
-                options={
-                    "format": "HH:mm",
-                    "stepping": 5,
-                    "locale": get_language()
-                }
-            ),
-            'contract': forms.Select(
-                attrs={
-                    'class': 'selectpicker'
-                }
-            ),
-            'key': forms.Select(
-                attrs={
-                    'class': 'selectpicker'
-                }
-            ),
+            'shift_started':
+            DateTimePicker(options={
+                "format": "YYYY-MM-DD HH:mm",
+                "stepping": 5,
+                "toolbarPlacement": "top",
+                "keepInvalid": True,
+                "showTodayButton": True,
+                "calendarWeeks": True,
+                "locale": get_language()
+            }),
+            'shift_finished':
+            DateTimePicker(options={
+                "format": "YYYY-MM-DD HH:mm",
+                "stepping": 5,
+                "toolbarPlacement": "top",
+                "keepInvalid": True,
+                "showTodayButton": True,
+                "calendarWeeks": True,
+                "locale": get_language()
+            }),
+            'pause_duration':
+            DateTimePicker(options={
+                "format": "HH:mm",
+                "stepping": 5,
+                "locale": get_language()
+            }),
+            'contract':
+            forms.Select(attrs={'class': 'selectpicker'}),
+            'key':
+            forms.Select(attrs={'class': 'selectpicker'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -87,8 +77,7 @@ class ShiftForm(forms.ModelForm):
 
         # Retrieve all contracts that belong to the user
         self.fields['contract'].queryset = Contract.objects.filter(
-            employee=self.requested_user
-        )
+            employee=self.requested_user)
 
         if not self.fields['contract'].queryset:
             self.fields['contract'].widget.attrs['disabled'] = True
@@ -102,16 +91,19 @@ class ShiftForm(forms.ModelForm):
         elif self.initial['view'] == 'shift_update':
             add_input_text = _('Update')
             delete_html_inject = u'<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
-                                %(delete_translation)s</a>' % {'delete_url': reverse_lazy('shift:delete',
-                                                                                          kwargs={
-                                                                                              'pk': self.instance.pk}),
-                                                               'delete_translation': _('Delete')}
+                                %(delete_translation)s</a>' % {
+                'delete_url':
+                reverse_lazy('shift:delete', kwargs={'pk': self.instance.pk}),
+                'delete_translation':
+                _('Delete')
+            }
 
             # So if we are updating an already existing entry, we may also set some restrictions on the DateTimePicker
             # The shift_finished picker can't be set BEFORE the shift_started datetime. Updating either of both
             # will update the restriction dynamically via JavaScript.
             self.fields.update({
-                'shift_finished': forms.DateTimeField(
+                'shift_finished':
+                forms.DateTimeField(
                     widget=DateTimePicker(
                         options={
                             "format": "YYYY-MM-DD HH:mm",
@@ -121,28 +113,23 @@ class ShiftForm(forms.ModelForm):
                             "calendarWeeks": True,
                             "locale": get_language(),
                             # "minDate": unicode(self.initial['shift_started'].strftime("%Y-%m-%d %H:%M"))
-                        },
-                    ),
-                    label=_('Shift finished'),
-                ),
+                        }, ),
+                    label=_('Shift finished'), ),
                 # This one does not seem to work, so we disable it.
                 # Enabling it will set the shift_started field to the same value as the shift_finished..
                 # This seems to be caused by the embedded JavaScript, as the replacement happens after a full page load.
-
-                'shift_started': forms.DateTimeField(
-                    widget=DateTimePicker(
-                        options={
-                            "format": "YYYY-MM-DD HH:mm",
-                            "stepping": 5,
-                            "toolbarPlacement": "top",
-                            "showTodayButton": True,
-                            "calendarWeeks": True,
-                            "locale": get_language(),
-                            # "maxDate": unicode(self.initial['shift_finished'].strftime("%Y-%m-%d %H:%M"))
-                        }
-                    ),
-                    label=_('Shift started'),
-                ),
+                'shift_started':
+                forms.DateTimeField(
+                    widget=DateTimePicker(options={
+                        "format": "YYYY-MM-DD HH:mm",
+                        "stepping": 5,
+                        "toolbarPlacement": "top",
+                        "showTodayButton": True,
+                        "calendarWeeks": True,
+                        "locale": get_language(),
+                        # "maxDate": unicode(self.initial['shift_finished'].strftime("%Y-%m-%d %H:%M"))
+                    }),
+                    label=_('Shift started'), ),
             })
 
         cancel_html_inject = '<a href="%(cancel_url)s" class="btn btn-default">%(cancel_translation)s</a>' % \
@@ -152,11 +139,14 @@ class ShiftForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_action = '.'
         self.helper.form_method = 'post'
-        self.helper.layout.append(FormActions(
-            HTML(cancel_html_inject),
-            Submit('submit', add_input_text, css_class='btn btn-primary pull-right'),
-            HTML(delete_html_inject),
-        ))
+        self.helper.layout.append(
+            FormActions(
+                HTML(cancel_html_inject),
+                Submit(
+                    'submit',
+                    add_input_text,
+                    css_class='btn btn-primary pull-right'),
+                HTML(delete_html_inject), ))
 
     def clean_pause_duration(self):
         pause_duration = self.cleaned_data.get('pause_duration')
@@ -175,17 +165,15 @@ class ShiftForm(forms.ModelForm):
         # check if they overlap with any other shifts
         if shift_finished and shift_started:
             check_for_overlaps = self.check_for_overlaps(
-                employee,
-                shift_started,
-                shift_finished
-            )
+                employee, shift_started, shift_finished)
             if check_for_overlaps:
                 raise ValidationError(
                     _('Your selected starting/finishing time overlaps with at least one\
                      finished shift of yours. Please adjust the times.'))
 
             if (shift_finished - shift_started) < pause_duration:
-                raise ValidationError(_('A pause may not be longer than your actual shift.'))
+                raise ValidationError(
+                    _('A pause may not be longer than your actual shift.'))
 
         cleaned_data['bool_finished'] = True
 
@@ -203,8 +191,7 @@ class ShiftForm(forms.ModelForm):
         shifts = Shift.objects.filter(
             employee=employee,
             shift_started__lte=shift_finished,
-            shift_finished__gte=shift_started
-        )
+            shift_finished__gte=shift_started)
 
         # Check if the retrieved shifts contain the shift we're trying to update. If yes: pass.
         for shift in shifts:

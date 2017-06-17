@@ -6,5 +6,5 @@ from django.conf.urls import include, url
 from clock.pages import views
 
 urlpatterns = [
-                  url(r'^$', views.home, name='home'),
-              ]
+    url(r'^$', views.home, name='home'),
+]

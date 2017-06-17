@@ -58,25 +58,29 @@ def update_language(request):
             if hasattr(request, 'session'):
                 obj, created = UserProfile.objects.get_or_create(
                     user=request.user,
-                    defaults={'language': lang_code},
-                )
+                    defaults={'language': lang_code}, )
                 if not created:
                     obj.language = lang_code
                     obj.save()
                 request.session[LANGUAGE_SESSION_KEY] = lang_code
             else:
-                response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang_code,
-                                    max_age=settings.LANGUAGE_COOKIE_AGE,
-                                    path=settings.LANGUAGE_COOKIE_PATH,
-                                    domain=settings.LANGUAGE_COOKIE_DOMAIN)
+                response.set_cookie(
+                    settings.LANGUAGE_COOKIE_NAME,
+                    lang_code,
+                    max_age=settings.LANGUAGE_COOKIE_AGE,
+                    path=settings.LANGUAGE_COOKIE_PATH,
+                    domain=settings.LANGUAGE_COOKIE_DOMAIN)
     return response
 
 
 @login_required()
 def delete_user(request):
     template_name = 'profiles/delete.html'
-    context = {'text': _('<p>Are you sure you want to delete this profile? Please type in your username '
-                         '<strong>%s</strong> to confirm.</p>') % request.user}
+    context = {
+        'text':
+        _('<p>Are you sure you want to delete this profile? Please type in your username '
+          '<strong>%s</strong> to confirm.</p>') % request.user
+    }
 
     if request.method == 'POST':
         form = DeleteUserForm(request.POST, user=request.user)

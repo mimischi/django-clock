@@ -15,7 +15,8 @@ def format_dttd(t, t_format="%H:%M:%S"):
     :return: Returns string of the formatted dt/td object
     """
     if isinstance(t, timedelta):
-        value = time.strftime(t_format, time.gmtime(t.seconds + t.days * 86400))
+        value = time.strftime(t_format,
+                              time.gmtime(t.seconds + t.days * 86400))
         if t.days > 0:
             hours = t.days * 24
             s = value.split(':')
@@ -24,12 +25,14 @@ def format_dttd(t, t_format="%H:%M:%S"):
             elif len(s) == 1:
                 value = int(s[0]) + hours
             else:
-                raise ValueError('We\'re having a problem handling this input of ' + str(t) + ' in the format ' +
-                                 t_format)
+                raise ValueError(
+                    'We\'re having a problem handling this input of ' + str(t)
+                    + ' in the format ' + t_format)
         return value
     if isinstance(t, datetime):
         return t.strftime(t_format)
-    raise ValueError('The provided object %s does not match any accepted classes.' % t)
+    raise ValueError(
+        'The provided object %s does not match any accepted classes.' % t)
 
 
 @register.filter

@@ -35,8 +35,7 @@ DJANGO_APPS = (
     # 'django.contrib.humanize',
 
     # Admin
-    'django.contrib.admin',
-)
+    'django.contrib.admin', )
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
     'allauth',  # registration
@@ -46,8 +45,7 @@ THIRD_PARTY_APPS = (
     'bootstrap3',
     'bootstrap3_datetime',
     'captcha',
-    'taggit',
-)
+    'taggit', )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
@@ -57,8 +55,7 @@ LOCAL_APPS = (
     'clock.shifts',
     'clock.contracts',
     'clock.profiles',
-    'clock.contact',
-)
+    'clock.contact', )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -78,14 +75,11 @@ MIDDLEWARE = (
     # 'django.middleware.locale.LocaleMiddleware',
     'clock.profiles.middleware.LocaleMiddlewareExtended',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'clock.pages.middleware.LastVisitedMiddleware',
-)
+    'clock.pages.middleware.LastVisitedMiddleware', )
 
 # MIGRATIONS CONFIGURATION
 # ------------------------------------------------------------------------------
-MIGRATION_MODULES = {
-    'sites': 'clock.contrib.sites.migrations'
-}
+MIGRATION_MODULES = {'sites': 'clock.contrib.sites.migrations'}
 
 # DEBUG
 # ------------------------------------------------------------------------------
@@ -95,20 +89,18 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # FIXTURE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
-FIXTURE_DIRS = (
-    str(APPS_DIR.path('fixtures')),
-)
+FIXTURE_DIRS = (str(APPS_DIR.path('fixtures')), )
 
 # EMAIL CONFIGURATION
 # ------------------------------------------------------------------------------
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_BACKEND = env(
+    'DJANGO_EMAIL_BACKEND',
+    default='django.core.mail.backends.smtp.EmailBackend')
 
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = (
-    ("""Michael Gecht""", 'mgecht@stud.uni-frankfurt.de'),
-)
+ADMINS = (("""Michael Gecht""", 'mgecht@stud.uni-frankfurt.de'), )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
@@ -134,8 +126,8 @@ TIME_ZONE = 'Europe/Berlin'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGES = [
-  ('de', _('German')),
-  ('en', _('English')),
+    ('de', _('German')),
+    ('en', _('English')),
 ]
 
 LANGUAGE_CODE = 'de'
@@ -165,7 +157,8 @@ TEMPLATES = [
         ],
         'OPTIONS': {
             # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
-            'debug': DEBUG,
+            'debug':
+            DEBUG,
             # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
             # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
             'loaders': [
@@ -201,15 +194,12 @@ STATIC_ROOT = str(ROOT_DIR('staticfiles'))
 STATIC_URL = '/static/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = (
-    str(APPS_DIR.path('static')),
-)
+STATICFILES_DIRS = (str(APPS_DIR.path('static')), )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder', )
 
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -232,16 +222,20 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
@@ -249,15 +243,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
+    'allauth.account.auth_backends.AuthenticationBackend', )
 
 # Some really nice defaults
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
-ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
+ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION',
+                                      True)
 
 # Custom user app defaults
 # Select the correct user model
@@ -269,9 +263,7 @@ LOGIN_URL = 'account_login'
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
 # Your common stuff: Below this line define 3rd party library settings
-LOCALE_PATHS = (
-    str(ROOT_DIR('locale')),
-)
+LOCALE_PATHS = (str(ROOT_DIR('locale')), )
 
 ACCOUNT_FORMS = {
     'signup': 'clock.accounts.forms.ClockSignUpForm',

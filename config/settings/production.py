@@ -30,8 +30,10 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
 WHITENOISE_MIDDLEWARE = ('whitenoise.middleware.WhiteNoiseMiddleware', )
 MIDDLEWARE = WHITENOISE_MIDDLEWARE + MIDDLEWARE
-RAVEN_MIDDLEWARE = ('raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
-        'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',)
+RAVEN_MIDDLEWARE = (
+    'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
+    'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
+)
 MIDDLEWARE = RAVEN_MIDDLEWARE + MIDDLEWARE
 
 # SECURITY CONFIGURATION
@@ -59,7 +61,8 @@ X_FRAME_OPTIONS = 'DENY'
 # ------------------------------------------------------------------------------
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['clock.uni-frankfurt.de'])
+ALLOWED_HOSTS = env.list(
+    'DJANGO_ALLOWED_HOSTS', default=['clock.uni-frankfurt.de'])
 # END SITE CONFIGURATION
 
 INSTALLED_APPS += ("gunicorn", )
@@ -68,11 +71,11 @@ INSTALLED_APPS += ("gunicorn", )
 # ------------------------
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
 # EMAIL
 # ------------------------------------------------------------------------------
-DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL',
-                         default='Clock Team <noreply@clock.uni-frankfurt.de>')
+DEFAULT_FROM_EMAIL = env(
+    'DJANGO_DEFAULT_FROM_EMAIL',
+    default='Clock Team <noreply@clock.uni-frankfurt.de>')
 EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[Clock] ')
 SERVER_EMAIL = env('DJANGO_SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
 
@@ -90,7 +93,9 @@ EMAIL_BACKEND = "anymail.backends.mailgun.MailgunBackend"
 # https://docs.djangoproject.com/en/dev/ref/templates/api/#django.template.loaders.cached.Loader
 TEMPLATES[0]['OPTIONS']['loaders'] = [
     ('django.template.loaders.cached.Loader', [
-        'django.template.loaders.filesystem.Loader', 'django.template.loaders.app_directories.Loader', ]),
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    ]),
 ]
 
 # DATABASE CONFIGURATION
@@ -101,7 +106,9 @@ DATABASES['default'] = env.db("DATABASE_URL")
 
 # Sentry Configuration
 SENTRY_DSN = env('DJANGO_SENTRY_DSN')
-SENTRY_CLIENT = env('DJANGO_SENTRY_CLIENT', default='raven.contrib.django.raven_compat.DjangoClient')
+SENTRY_CLIENT = env(
+    'DJANGO_SENTRY_CLIENT',
+    default='raven.contrib.django.raven_compat.DjangoClient')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -111,14 +118,16 @@ LOGGING = {
     },
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s '
-                      '%(process)d %(thread)d %(message)s'
+            'format':
+            '%(levelname)s %(asctime)s %(module)s '
+            '%(process)d %(thread)d %(message)s'
         },
     },
     'handlers': {
         'sentry': {
             'level': 'ERROR',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'class':
+            'raven.contrib.django.raven_compat.handlers.SentryHandler',
         },
         'console': {
             'level': 'DEBUG',

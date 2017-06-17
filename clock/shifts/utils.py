@@ -16,28 +16,32 @@ def get_return_url(request, default_success):
         3) A filtered view which corresponds to the date/contract of the updated/added shift
     """
     if "shift" in request.session['last_visited'] and request.session['last_kwargs']:
-            last_view = request.session['current_view_name']
-            try:
-                last_view = request.session['last_view_name']
-            except KeyError:
-                pass
+        last_view = request.session['current_view_name']
+        try:
+            last_view = request.session['last_view_name']
+        except KeyError:
+            pass
 
-            last_view = "shift:archive_month_contract_numeric"
+        last_view = "shift:archive_month_contract_numeric"
 
-            try:
-                return_kwargs = {
-                    'year': request.session['last_kwargs']['year'],
-                    'month': request.session['last_kwargs']['month'],
-                }
-            except KeyError:
-                return_kwargs = {'year': datetime.now().strftime("%Y"), 'month': datetime.now().strftime("%m")}
+        try:
+            return_kwargs = {
+                'year': request.session['last_kwargs']['year'],
+                'month': request.session['last_kwargs']['month'],
+            }
+        except KeyError:
+            return_kwargs = {
+                'year': datetime.now().strftime("%Y"),
+                'month': datetime.now().strftime("%m")
+            }
 
-            try:
-                return_kwargs['contract'] = request.session['last_kwargs']['contract']
-            except KeyError:
-                return_kwargs['contract'] = '00'
+        try:
+            return_kwargs['contract'] = request.session['last_kwargs'][
+                'contract']
+        except KeyError:
+            return_kwargs['contract'] = '00'
 
-            return reverse_lazy(last_view, kwargs=return_kwargs)
+        return reverse_lazy(last_view, kwargs=return_kwargs)
     return reverse_lazy(default_success)
 
 
@@ -94,7 +98,8 @@ def get_default_contract(user):
     """
     # Filter all shifts (finished or not) from the current user
     try:
-        finished_shifts = Shift.objects.filter(employee=user).latest('shift_started')
+        finished_shifts = Shift.objects.filter(
+            employee=user).latest('shift_started')
     except Shift.DoesNotExist:
         # If the user just registered and does not have any shifts!
         return None
@@ -118,7 +123,8 @@ def get_last_shifts(user, count=5):
     :param count: Number of shifts to return. Default is 5
     :return: Shift objects or None
     """
-    finished_shifts = Shift.objects.filter(employee=user, shift_finished__isnull=False)[:count]
+    finished_shifts = Shift.objects.filter(
+        employee=user, shift_finished__isnull=False)[:count]
 
     if not finished_shifts:
         return None

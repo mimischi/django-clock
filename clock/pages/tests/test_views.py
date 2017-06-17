@@ -28,7 +28,8 @@ class PagesViewTests(TestCase):
             self.get_check_200('home')
 
             self.assertInContext('template_to_render')
-            self.assertContext('template_to_render', 'pages/backend/index.html')
+            self.assertContext('template_to_render',
+                               'pages/backend/index.html')
 
             self.assertInContext('form')
 
