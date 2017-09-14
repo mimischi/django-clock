@@ -16,10 +16,7 @@ class Shift(models.Model):
     May be assigned to a contract.
     """
 
-    KEY_CHOICES = (
-        (_('S'), _('Sick')),
-        (_('V'), _('Vacation'))
-    )
+    KEY_CHOICES = ((_('S'), _('Sick')), (_('V'), _('Vacation')))
 
     employee = models.ForeignKey(settings.AUTH_USER_MODEL)
     contract = models.ForeignKey(
@@ -27,25 +24,19 @@ class Shift(models.Model):
         null=True,
         blank=True,
         on_delete=models.CASCADE,
-        verbose_name=_('Contract')
-    )
+        verbose_name=_('Contract'))
     shift_started = models.DateTimeField(verbose_name=_('Shift started'))
     shift_finished = models.DateTimeField(
-        null=True,
-        verbose_name=_('Shift finished')
-    )
-    bool_finished = models.BooleanField(default=False, verbose_name=_('Shift completed?'))
+        null=True, verbose_name=_('Shift finished'))
+    bool_finished = models.BooleanField(
+        default=False, verbose_name=_('Shift completed?'))
     shift_duration = models.DurationField(
-        blank=True,
-        null=True,
-        verbose_name=_('Shift duration')
-    )
+        blank=True, null=True, verbose_name=_('Shift duration'))
     pause_started = models.DateTimeField(blank=True, null=True)
     pause_duration = models.DurationField(
-        default=timedelta(seconds=0),
-        verbose_name=_('Pause duration')
-    )
-    key = models.CharField(_('Key'), max_length=2, choices=KEY_CHOICES, blank=True)
+        default=timedelta(seconds=0), verbose_name=_('Pause duration'))
+    key = models.CharField(
+        _('Key'), max_length=2, choices=KEY_CHOICES, blank=True)
     note = models.TextField(_('Note'), blank=True)
     tags = TaggableManager(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -85,7 +76,6 @@ class Shift(models.Model):
         quick-action buttons and manual edits in the admin-backend
         or dashboard-frontend.
         """
-
         """
         The following code block does some rounding to the start and end times of the shifts.
         It does it as following and only if the shift is newly added:
@@ -102,13 +92,15 @@ class Shift(models.Model):
             # If the pause duration is larger than the actual shift duration,
             # we will reset the former
             if self.current_duration > (timezone.now() - self.shift_started):
-                self.pause_duration = round_time(self.pause_duration, timedelta(minutes=1))
+                self.pause_duration = round_time(
+                    self.pause_duration, timedelta(minutes=1))
             else:
                 self.pause_duration = timedelta(minutes=0)
 
             # Account for the case that a user pauses his shift longer than he actually worked. This will make sure
             # the shift duration is always longer than the pause duration by 5 minutes.
-            if self.total_pause_time() == (self.shift_finished - self.shift_started):
+            if self.total_pause_time() == (
+                    self.shift_finished - self.shift_started):
                 self.shift_finished += timedelta(minutes=5)
 
             if self.shift_started == self.shift_finished:
@@ -117,13 +109,16 @@ class Shift(models.Model):
                 self.shift_finished = self.shift_started + timedelta(minutes=5)
 
         # Lets check if this shift is just being updated
-        if self.pk is not None and self.shift_finished is not None and (self.shift_finished != self.__old_shift_finished or
-                                            self.shift_started != self.__old_shift_started or
-                                            self.pause_duration != self.__old_pause_duration):
-            self.shift_duration = (self.shift_finished - self.shift_started) - self.pause_duration
+        if self.pk is not None and self.shift_finished is not None and (
+                self.shift_finished != self.__old_shift_finished or
+                self.shift_started != self.__old_shift_started or
+                self.pause_duration != self.__old_pause_duration):
+            self.shift_duration = (
+                self.shift_finished - self.shift_started) - self.pause_duration
         # Lets check if this shift did not exists before and was just added from the shell!
         elif self.pk is None and self.shift_finished is not None:
-            self.shift_duration = (self.shift_finished - self.shift_started) - self.pause_duration
+            self.shift_duration = (
+                self.shift_finished - self.shift_started) - self.pause_duration
 
         return super(Shift, self).save(*args, **kwargs)
 

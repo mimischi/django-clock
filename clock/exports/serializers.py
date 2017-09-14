@@ -10,6 +10,7 @@ class ShiftJSONEncoder(DjangoJSONEncoder):
     A custom JSONEncoder extending `DjangoJSONEncoder` to handle serialization
     of Shift data.
     """
+
     def default(self, obj):
         if isinstance(obj, datetime):
             r = obj.isoformat(' ')

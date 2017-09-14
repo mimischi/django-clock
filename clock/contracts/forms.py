@@ -12,7 +12,7 @@ from clock.contracts.models import Contract
 class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
-        fields = ('department', 'department_short', 'hours',)
+        fields = ('department', 'department_short', 'hours', )
         # This could be used to select working hours with a widget. Right now it does not support values above 24 hours
         # widgets = {
         #     'hours': DateTimePicker(
@@ -39,10 +39,13 @@ class ContractForm(forms.ModelForm):
         elif self.initial['view'] == 'contract_update':
             add_input_text = _('Update contract')
             delete_html_inject = u'<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
-            %(delete_translation)s</a>' % {'delete_url': reverse_lazy('contract:delete',
-                                                                      kwargs={
-                                                                          'pk': self.instance.pk}),
-                                           'delete_translation': _('Delete')}
+            %(delete_translation)s</a>' % {
+                'delete_url':
+                reverse_lazy(
+                    'contract:delete', kwargs={'pk': self.instance.pk}),
+                'delete_translation':
+                _('Delete')
+            }
 
         cancel_html_inject = '<a href="%(cancel_url)s" class="btn btn-default">%(cancel_translation)s</a>' % \
                              {'cancel_url': reverse_lazy('contract:list'), 'cancel_translation': _('Cancel')}
@@ -50,8 +53,11 @@ class ContractForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_action = '.'
         self.helper.form_method = 'post'
-        self.helper.layout.append(FormActions(
-            HTML(cancel_html_inject),
-            Submit('submit', add_input_text, css_class='btn btn-primary pull-right'),
-            HTML(delete_html_inject),
-        ))
+        self.helper.layout.append(
+            FormActions(
+                HTML(cancel_html_inject),
+                Submit(
+                    'submit',
+                    add_input_text,
+                    css_class='btn btn-primary pull-right'),
+                HTML(delete_html_inject), ))

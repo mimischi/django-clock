@@ -26,19 +26,12 @@ def shift_action(request):
 
     if not shift and '_start' not in request.POST:
         messages.add_message(
-            request,
-            messages.ERROR,
-            _('You need an active shift to perform this action!'),
-            'danger'
-        )
+            request, messages.ERROR,
+            _('You need an active shift to perform this action!'), 'danger')
         return redirect('home')
     elif shift and '_start' in request.POST:
-        messages.add_message(
-            request,
-            messages.ERROR,
-            _('You already have an active shift!'),
-            'danger'
-        )
+        messages.add_message(request, messages.ERROR,
+                             _('You already have an active shift!'), 'danger')
         return redirect('home')
 
     # Start a new shift
@@ -55,20 +48,14 @@ def shift_action(request):
             Shift.objects.create(
                 employee=request.user,
                 contract=form.cleaned_data['contract'],
-                shift_started=timezone.now()
-            )
+                shift_started=timezone.now())
         else:
             Shift.objects.create(
-                employee=request.user,
-                shift_started=timezone.now()
-            )
+                employee=request.user, shift_started=timezone.now())
 
         # Show a success message
-        messages.add_message(
-            request,
-            messages.SUCCESS,
-            _('Your shift has started!')
-        )
+        messages.add_message(request, messages.SUCCESS,
+                             _('Your shift has started!'))
 
     # Stop current shift
     elif '_stop' in request.POST:
@@ -80,11 +67,8 @@ def shift_action(request):
         shift.save()
 
         # Add a success message
-        messages.add_message(
-            request,
-            messages.SUCCESS,
-            _('Your shift has finished!')
-        )
+        messages.add_message(request, messages.SUCCESS,
+                             _('Your shift has finished!'))
 
     # Toggle pause on current shift
     elif '_pause' in request.POST:
@@ -106,7 +90,8 @@ class ShiftListView(ListView):
     template_name = 'shift/list.html'
 
     def get_queryset(self):
-        return Shift.objects.filter(employee=self.request.user.id, shift_finished__isnull=False)
+        return Shift.objects.filter(
+            employee=self.request.user.id, shift_finished__isnull=False)
 
 
 @method_decorator(login_required, name="dispatch")
@@ -134,9 +119,13 @@ class ShiftManualCreate(CreateView):
     @property
     def base_date(self):
         try:
-            d = datetime(int(self.request.session['last_kwargs']['year']),
-                         int(self.request.session['last_kwargs']['month']), 1, hour=8).strftime("%Y-%m-%d %H:%M")
-            if self.request.session['last_kwargs']['month'] == datetime.now().strftime("%m"):
+            d = datetime(
+                int(self.request.session['last_kwargs']['year']),
+                int(self.request.session['last_kwargs']['month']),
+                1,
+                hour=8).strftime("%Y-%m-%d %H:%M")
+            if self.request.session['last_kwargs'][
+                    'month'] == datetime.now().strftime("%m"):
                 d = datetime.now().strftime("%Y-%m-%d")
         except KeyError:
             d = datetime.now().strftime("%Y-%m-%d")
@@ -189,7 +178,8 @@ class ShiftDayView(DayArchiveView):
     template_name = 'shift/day_archive_view.html'
 
     def get_queryset(self):
-        return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
+        return Shift.objects.filter(
+            employee=self.request.user).order_by('shift_started')
 
 
 @method_decorator(login_required, name="dispatch")
@@ -201,7 +191,8 @@ class ShiftWeekView(WeekArchiveView):
     template_name = 'shift/week_archive_view.html'
 
     def get_queryset(self):
-        return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
+        return Shift.objects.filter(
+            employee=self.request.user).order_by('shift_started')
 
 
 @method_decorator(login_required, name="dispatch")
@@ -244,7 +235,8 @@ class ShiftMonthView(MonthArchiveView):
         return context
 
     def get_queryset(self):
-        return Shift.objects.filter(employee=self.request.user, shift_finished__isnull=False)
+        return Shift.objects.filter(
+            employee=self.request.user, shift_finished__isnull=False)
 
     @property
     def get_all_contracts(self):
@@ -279,7 +271,8 @@ class ShiftMonthContractView(ShiftMonthView):
         except KeyError:
             pass
 
-        queryset = Shift.objects.filter(employee=self.request.user.pk, shift_finished__isnull=False)
+        queryset = Shift.objects.filter(
+            employee=self.request.user.pk, shift_finished__isnull=False)
         if self.contract == "0":
             queryset = queryset.filter(contract__isnull=True)
         elif self.contract == "00":
@@ -297,4 +290,5 @@ class ShiftYearView(YearArchiveView):
     template_name = 'shift/year_archive_view.html'
 
     def get_queryset(self):
-        return Shift.objects.filter(employee=self.request.user).order_by('shift_started')
+        return Shift.objects.filter(
+            employee=self.request.user).order_by('shift_started')

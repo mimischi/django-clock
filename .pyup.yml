@@ -1,0 +1,8 @@
+update: all
+branch: develop
+
+label_prs: requirements
+
+assignees: mimischi
+
+branch_prefix: pyup/

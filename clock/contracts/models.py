@@ -14,11 +14,10 @@ class Contract(models.Model):
     Employees may define a contract, which is assigned to a finished shift.
     """
     employee = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     department = models.CharField(max_length=200, verbose_name=_('Department'))
-    department_short = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Abbreviation'))
+    department_short = models.CharField(
+        max_length=100, blank=True, null=True, verbose_name=_('Abbreviation'))
     hours = WorkingHoursField(verbose_name=_('Work hours'))
     contact = models.EmailField(blank=True, verbose_name=_('Contract'))
     created_at = models.DateTimeField(auto_now_add=True)
@@ -35,21 +34,23 @@ class Contract(models.Model):
         return total_work_hours
 
     def completed_hours_per_month(self, date=datetime.now):
-        shifts = Shift.objects.filter(contract=self.pk,
-                                      shift_started__year=datetime.now().year,
-                                      shift_started__month=datetime.now().month,
-                                      shift_finished__isnull=False)
+        shifts = Shift.objects.filter(
+            contract=self.pk,
+            shift_started__year=datetime.now().year,
+            shift_started__month=datetime.now().month,
+            shift_finished__isnull=False)
 
         monthly_work_hours = timedelta(seconds=0)
         for shift in shifts:
             monthly_work_hours += shift.shift_duration
 
-        hours, minutes = divmod(monthly_work_hours.total_seconds()/60, 60)
+        hours, minutes = divmod(monthly_work_hours.total_seconds() / 60, 60)
         return "%02d:%02d" % (hours, minutes)
 
     def completed_work_hours_percentage(self, date=datetime.today):
         contract_hours = float(convert_work_hours(self.hours))
-        completed_hours = float(convert_work_hours(self.completed_hours_per_month(date)))
+        completed_hours = float(
+            convert_work_hours(self.completed_hours_per_month(date)))
 
         if completed_hours == 0:
             return 0
