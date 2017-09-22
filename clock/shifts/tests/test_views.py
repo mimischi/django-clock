@@ -1,6 +1,8 @@
+from django.utils import timezone
 from test_plus.test import TestCase
 
 from clock.contracts.models import Contract
+from clock.shifts.models import Shift
 
 
 class ShiftsViewTest(TestCase):
@@ -70,3 +72,69 @@ class ShiftsViewTest(TestCase):
                 month=5,
                 contract=0)
             self.get_check_200('shift:article_year_archive', year=2016)
+
+    def test_surf_shift_list_wo_date(self):
+        """Assert that we can surf through the shift list without specifying the
+           current month.
+        """
+        user1 = self.make_user('user1')
+
+        now = timezone.now()
+        shift = Shift.objects.create(
+            employee=user1,
+            shift_started=now,
+            shift_finished=now + timezone.timedelta(0, 3600))
+        shift.save()
+
+        with self.login(username=user1.username, password='password'):
+            # Go into the shift list, but do not define any month and let the
+            # backend figure it out by itself
+            self.get_check_200('shift:list')
+            # Edit the just created shift
+            self.get_check_200('shift:edit', pk=shift.pk)
+            # Try to delete it. This should work, but fails due to an error in
+            # our logic
+            self.get_check_200('shift:delete', pk=shift.pk)
+
+    def test_surf_shift_list_w_date(self):
+        """Assert that we can surf through the shift list while specifying the
+           current month.
+        """
+        user1 = self.make_user('user1')
+
+        now = timezone.now()
+        shift = Shift.objects.create(
+            employee=user1,
+            shift_started=now,
+            shift_finished=now + timezone.timedelta(0, 3600))
+        shift.save()
+
+        with self.login(username=user1.username, password='password'):
+            self.get_check_200(
+                'shift:archive_month_numeric', year=now.year, month=now.month)
+            self.get_check_200('shift:edit', pk=shift.pk)
+            self.get_check_200('shift:delete', pk=shift.pk)
+
+    def test_surf_shift_list_w_date_and_contract(self):
+        """Assert that we can surf through the shift list while specifying the
+           current month and a contract.
+        """
+        user1 = self.make_user('user1')
+        contract = self.contract1
+
+        now = timezone.now()
+        shift = Shift.objects.create(
+            employee=user1,
+            shift_started=now,
+            shift_finished=now + timezone.timedelta(0, 3600),
+            contract=self.contract1)
+        shift.save()
+
+        with self.login(username=user1.username, password='password'):
+            self.get_check_200(
+                'shift:archive_month_contract_numeric',
+                year=now.year,
+                month=now.month,
+                contract=contract.pk)
+            self.get_check_200('shift:edit', pk=shift.pk)
+            self.get_check_200('shift:delete', pk=shift.pk)
