@@ -92,8 +92,7 @@ class ShiftsViewTest(TestCase):
             self.get_check_200('shift:list')
             # Edit the just created shift
             self.get_check_200('shift:edit', pk=shift.pk)
-            # Try to delete it. This should work, but fails due to an error in
-            # our logic
+            # Try to delete it.
             self.get_check_200('shift:delete', pk=shift.pk)
 
     def test_surf_shift_list_w_date(self):

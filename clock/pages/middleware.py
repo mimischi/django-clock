@@ -15,10 +15,10 @@ class LastVisitedMiddleware(MiddlewareMixin):
         request_path = request.get_full_path()
         request_kwargs = view_kwargs
         request_view_name = request.resolver_match.view_name
-
         try:
-            # Added a check whether we're visiting a DeleteView right now. This will now redirect to the old ListView,
-            # as otherwise the kwargs would be overwritten and we'd be redirected to the default one.
+            # Added a check whether we're visiting a UpdateView right now. This
+            # will now redirect to the old ListView, as otherwise the kwargs
+            # would be overwritten and we'd be redirected to the default one.
             if request.session['currently_visiting'] != request_path and 'delete' not in request_view_name:
                 request.session['last_visited'] = request.session[
                     'currently_visiting']
