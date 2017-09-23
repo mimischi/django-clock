@@ -1,7 +1,7 @@
 import re
 
 from django import template
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.core.urlresolvers import NoReverseMatch, reverse
 from django.utils.translation import ugettext_lazy as _
 
 register = template.Library()
@@ -13,7 +13,14 @@ def active(context, pattern_or_urlname):
         pattern = '^' + reverse(pattern_or_urlname)
     except NoReverseMatch:
         pattern = pattern_or_urlname
-    path = context['request'].path
+
+    path = ''
+
+    try:
+        path = context['request'].path
+    except KeyError:
+        pass
+
     if re.search(pattern, path):
         return 'active'
     return ''

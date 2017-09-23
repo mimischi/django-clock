@@ -20,6 +20,14 @@
             {# This is some trickery! We want the "Cancel" button to redirect us to our last 'filtered view'. This nested if clauses takes care of that! #}
             <a class="btn btn-default pull-right second-button" href="
 
-                    {% if 'shift' in request.session.last_visited %}{% if request.session.last_kwargs.contract %}{% url 'shift:archive_month_contract_numeric' month=request.session.last_kwargs.month year=request.session.last_kwargs.year contract=request.session.last_kwargs.contract %}{% else %}{% url 'shift:archive_month_numeric' month=request.session.last_kwargs.month year=request.session.last_kwargs.year %}{% endif %}{% else %}{% url 'shift:list' %}{% endif %}">{% trans 'Cancel' %}</a>
+                    {% if 'shift' in request.session.last_visited and request.session.last_kwargs.year %}
+                        {% if request.session.last_kwargs.contract %}
+                            {% url 'shift:archive_month_contract_numeric' month=request.session.last_kwargs.month year=request.session.last_kwargs.year contract=request.session.last_kwargs.contract %}
+                        {% else %}
+                            {% url 'shift:archive_month_numeric' month=request.session.last_kwargs.month year=request.session.last_kwargs.year %}
+                        {% endif %}
+                    {% else %}
+                      {% url 'shift:list' %}
+                    {% endif %}">{% trans 'Cancel' %}</a>
         {% endbuttons %}
     </form>{% endblock %}
