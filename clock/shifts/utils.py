@@ -15,7 +15,12 @@ def get_return_url(request, default_success):
         2) The previous visited view (if he updated / created a shift in the same month / contract)
         3) A filtered view which corresponds to the date/contract of the updated/added shift
     """
-    if "shift" in request.session['last_visited'] and request.session['last_kwargs']:
+    try:
+        last_visited = "shift" in request.session['last_visited']
+    except KeyError:
+        last_visited = False
+
+    if last_visited and request.session['last_kwargs']:
         last_view = request.session['current_view_name']
         try:
             last_view = request.session['last_view_name']
