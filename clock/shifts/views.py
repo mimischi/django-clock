@@ -12,10 +12,15 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
 from clock.pages.mixins import UserObjectOwnerMixin
-from clock.shifts.forms import ShiftForm, QuickActionForm
+from clock.shifts.forms import QuickActionForm, ShiftForm
 from clock.shifts.models import Shift
-from clock.shifts.utils import get_all_contracts, get_current_shift, get_default_contract, get_return_url, \
+from clock.shifts.utils import (
+    get_all_contracts,
+    get_current_shift,
+    get_default_contract,
+    get_return_url,
     set_correct_session
+)
 
 
 @require_POST
@@ -103,18 +108,32 @@ class ShiftManualCreate(CreateView):
     def get_success_url(self):
         return get_return_url(self.request, 'shift:list')
 
-    def get_initial(self):
+    def get_form_kwargs(self):
         """
-        Sets initial data for the ModelForm, so we can use the user
-        object and know which view created this form (CreateView in
-        this case)
+        Add some specific kwargs that our Form needs to display everything
+        correctly.
         """
-        return {
-            'user': self.request.user,
+        kwargs = super(ShiftManualCreate, self).get_form_kwargs()
+        k = {
             'request': self.request,
             'view': 'shift_create',
-            'contract': set_correct_session(self.request, 'contract'),
+            'contract': set_correct_session(self.request, 'contract')
         }
+        kwargs.update(k)
+        return kwargs
+
+    # def get_initial(self):
+    #     """
+    #     Sets initial data for the ModelForm, so we can use the user
+    #     object and know which view created this form (CreateView in
+    #     this case)
+    #     """
+    #     return {
+    #         'user': self.request.user,
+    #         'request': self.request,
+    #         'view': 'shift_create',
+    #         'contract': set_correct_session(self.request, 'contract'),
+    #     }
 
     @property
     def base_date(self):
@@ -148,17 +167,31 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
     def get_success_url(self):
         return get_return_url(self.request, 'shift:list')
 
-    def get_initial(self):
+    def get_form_kwargs(self):
         """
-        Sets initial data for the ModelForm, so we can use the user
-        object and know which view created this form (UpdateView in
-        this case)
+        Add some specific kwargs that our Form needs to display everything
+        correctly.
         """
-        return {
-            'user': self.request.user,
+        kwargs = super(ShiftManualEdit, self).get_form_kwargs()
+        k = {
             'request': self.request,
             'view': 'shift_update',
+            'contract': set_correct_session(self.request, 'contract')
         }
+        kwargs.update(k)
+        return kwargs
+
+    # def get_initial(self):
+    #     """
+    #     Sets initial data for the ModelForm, so we can use the user
+    #     object and know which view created this form (UpdateView in
+    #     this case)
+    #     """
+    #     return {
+    #         'user': self.request.user,
+    #         'request': self.request,
+    #         'view': 'shift_update',
+    #     }
 
 
 @method_decorator(login_required, name="dispatch")
