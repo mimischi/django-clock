@@ -1,14 +1,18 @@
 """Test the Shift model"""
 import pytest
 from django.utils import timezone
+from freezegun import freeze_time
 from test_plus.test import TestCase
 
+from clock.contracts.models import Contract
 from clock.shifts.models import Shift
 
 
 class ShiftTest(TestCase):
     def setUp(self):
         self.user = self.make_user()
+        self.contract = Contract.objects.create(
+            department='Test', employee=self.user, hours=40)
 
     def test_shift_duration_one_hour(self):
         """Check that the shift length is 1 hour."""
@@ -122,3 +126,57 @@ class ShiftTest(TestCase):
 
         assert shift.pause_duration == new_pause
         assert shift.shift_duration == timezone.timedelta(0, 16500)
+
+    @freeze_time("2017-01-01 12:00:00")
+    def test_shift_methods(self):
+        start = timezone.now()
+        stop = start + timezone.timedelta(0, 18000)
+        pause = timezone.timedelta(0, 3000)
+
+        shift = Shift(
+            employee=self.user,
+            shift_started=start,
+            shift_finished=stop, )
+
+        # Check default values for freshly started shift
+        assert not shift.is_finished
+        assert not shift.is_paused
+        assert not shift.is_shift_currently_paused()
+        # TODO: This is aweful! We should return `None` instead of `str(None)`
+        assert shift.contract_or_none == 'None'
+
+        shift.contract = self.contract
+        assert shift.contract_or_none == self.contract.department
+
+        # TODO: Same thing.. return `None`!
+        assert shift.pause_start_end == '-'
+        shift.pause_duration = pause
+        assert shift.pause_start_end == '16:10 - 17:00'
+
+        # Pause shift
+        shift.pause()
+        assert isinstance(shift.pause_started, timezone.datetime)
+        assert shift.is_paused
+
+        assert isinstance(shift.total_pause_time, timezone.timedelta)
+        assert shift.total_pause_time == pause
+
+        # Unpause shift
+        shift.unpause()
+        assert isinstance(shift.pause_duration, timezone.timedelta)
+        assert not shift.pause_started
+        assert isinstance(shift.total_pause_time, timezone.timedelta)
+        assert shift.total_pause_time == pause
+
+        # Toggle pause / unpause
+        shift.toggle_pause()
+        assert shift.is_paused
+        shift.toggle_pause()
+        assert not shift.is_paused
+
+        assert isinstance(shift.current_duration, timezone.timedelta)
+        assert shift.current_duration == timezone.now() - start - pause
+
+        shift.shift_finished = stop
+        shift.bool_finished = True
+        assert shift.is_finished
