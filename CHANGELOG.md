@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0 (2017-10-22)
+
+* Final 1.0 release. Upcoming releases will introduce breaking changes.
+* Added unit tests for Shifts
+* Fixed several end-user bugs
+
 ## 0.9
 
 * Added ability to add tags to shifts
