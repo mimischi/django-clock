@@ -2,12 +2,12 @@
 from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, HTML
+from crispy_forms.layout import HTML, Submit
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse_lazy
-from django.utils.translation import get_language
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import get_language
 
 from clock.contracts.models import Contract
 from clock.shifts.models import Shift
@@ -34,8 +34,14 @@ class QuickActionForm(forms.Form):
 class ShiftForm(forms.ModelForm):
     class Meta:
         model = Shift
-        fields = ('shift_started', 'shift_finished', 'pause_duration',
-                  'contract', 'key', 'tags', 'note', )
+        fields = (
+            'shift_started',
+            'shift_finished',
+            'pause_duration',
+            'contract',
+            'key',
+            'tags',
+            'note', )
         widgets = {
             'shift_started':
             DateTimePicker(options={
@@ -61,6 +67,7 @@ class ShiftForm(forms.ModelForm):
             DateTimePicker(options={
                 "format": "HH:mm",
                 "stepping": 5,
+                "keepInvalid": True,
                 "locale": get_language()
             }),
             'contract':
@@ -70,14 +77,15 @@ class ShiftForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        value = super(ShiftForm, self).__init__(*args, **kwargs)
-
-        # Retrieve current user, supplied by the view
-        self.requested_user = self.initial['user']
+        self.request = kwargs.pop('request')
+        self.contract = kwargs.pop('contract')
+        self.view = kwargs.pop('view')
+        self.user = self.request.user
+        super(ShiftForm, self).__init__(*args, **kwargs)
 
         # Retrieve all contracts that belong to the user
         self.fields['contract'].queryset = Contract.objects.filter(
-            employee=self.requested_user)
+            employee=self.user)
 
         if not self.fields['contract'].queryset:
             self.fields['contract'].widget.attrs['disabled'] = True
@@ -86,9 +94,9 @@ class ShiftForm(forms.ModelForm):
         delete_html_inject = ""
 
         # Are we creating a new shift or updating an existing one?
-        if self.initial['view'] == 'shift_create':
+        if self.view == 'shift_create':
             add_input_text = _('Create new shift')
-        elif self.initial['view'] == 'shift_update':
+        elif self.view == 'shift_update':
             add_input_text = _('Update')
             delete_html_inject = u'<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
                                 %(delete_translation)s</a>' % {
@@ -133,7 +141,7 @@ class ShiftForm(forms.ModelForm):
             })
 
         cancel_html_inject = '<a href="%(cancel_url)s" class="btn btn-default">%(cancel_translation)s</a>' % \
-                             {'cancel_url': get_return_url(kwargs['initial']['request'], 'shift:list'),
+                             {'cancel_url': get_return_url(self.request, 'shift:list'),
                               'cancel_translation': _('Cancel')}
 
         self.helper = FormHelper(self)
@@ -151,12 +159,12 @@ class ShiftForm(forms.ModelForm):
     def clean_pause_duration(self):
         pause_duration = self.cleaned_data.get('pause_duration')
 
-        return pause_duration * 60
+        return pause_duration  # / 60
 
     def clean(self):
         cleaned_data = super(ShiftForm, self).clean()
 
-        employee = self.requested_user
+        employee = self.user
         shift_started = cleaned_data.get('shift_started')
         shift_finished = cleaned_data.get('shift_finished')
         pause_duration = cleaned_data.get('pause_duration')
