@@ -5,6 +5,9 @@ ENV PYTHONBUFFERED 1
 RUN addgroup -S app
 RUN adduser -G app -h /app -D app
 
+COPY docker/local/start.sh /start.sh
+RUN chmod +x /start.sh
+
 # Copy Pipfile and install system-wide
 # We're installing system-wide, because we currently have problems
 # correctly using the entrypoint.sh, while activating the virtual environment
@@ -24,7 +27,7 @@ RUN apk update \
        git \
     && apk add --no-cache postgresql postgresql-dev jpeg \
     && pip install pipenv \
-    && LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "pipenv install --dev --system --verbose" \
+    && LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "pipenv install --dev --system" \
     && apk del .build-deps
 
 # Change to user and copy code

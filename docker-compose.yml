@@ -13,7 +13,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/local/Dockerfile-dev
-    command: python3 manage.py runserver_plus 0.0.0.0:8000
+    command: /start.sh
     environment:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
