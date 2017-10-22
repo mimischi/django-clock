@@ -1,17 +1,9 @@
 # -*- coding: utf-8 -*-
-'''
-Production Configurations
-
-- Use djangosecure
-- Use mailgun to send emails
-
-- Use sentry for error logging
-
-'''
 from __future__ import absolute_import, unicode_literals
 
-from django.utils import six
 import logging
+
+from django.utils import six
 
 from .common import *  # noqa
 
@@ -86,6 +78,12 @@ ANYMAIL = {
     "MAILGUN_SENDER_DOMAIN": env('MAILGUN_SENDER_DOMAIN')
 }
 EMAIL_BACKEND = "anymail.backends.mailgun.MailgunBackend"
+
+# DATABASE CONFIGURATION
+# ------------------------------------------------------------------------------
+# Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
+DATABASES = {'default': env.db("DATABASE_URL")}
+DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 # TEMPLATE CONFIGURATION
 # ------------------------------------------------------------------------------

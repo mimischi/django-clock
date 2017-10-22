@@ -34,7 +34,7 @@ class LastVisitedMiddleware(MiddlewareMixin):
         # We're sometimes calling the view with init-kwargs, instead of passing them as GET parameters
         if not request_kwargs:
             try:
-                request_kwargs = view_func.func_dict['view_initkwargs']
+                request_kwargs = view_func.__dict__['view_initkwargs']
             except KeyError:
                 pass
 

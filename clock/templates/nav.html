@@ -1,4 +1,7 @@
-{% load staticfiles i18n account base_extras %}  <!-- Static navbar -->
+{% load staticfiles i18n account base_extras flatpages %}
+{% get_flatpages '/about/' as about_pages %}
+{% get_flatpages '/p/' as flatpages %}
+<!-- Static navbar -->
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -16,8 +19,14 @@
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
                             {% if not request.user.is_authenticated %}
-                                <li class="{% active 'about' %}"><a href="{% url 'about' %}">{% trans 'About' %}</a>
+                                {% for page in flatpages %}
+                                <li class="{% active page.url %}"><a href="{{ page.url }}">{% trans page.title %}</a>
                                 </li>
+                                {% endfor %}
+                                {% for page in about_pages %}
+                                <li class="{% active page.url %}"><a href="{{ page.url }}">{% trans page.title %}</a>
+                                </li>
+                                {% endfor %}
                                 <li class="{% active 'account_login' %}"><a
                                         href="{% url 'account_login' %}">{% trans 'Login' %}</a>
                                 </li>

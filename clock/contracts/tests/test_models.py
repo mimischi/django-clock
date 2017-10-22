@@ -13,5 +13,5 @@ class ContractTestCase(TestCase):
         self.contract1 = Contract.objects.create(
             employee=self.user1, department='Test contract', hours='40')
 
-    def test__unicode__(self):
-        self.assertEqual(self.contract1.__unicode__(), 'Test contract')
+    def test_str(self):
+        self.assertEqual(self.contract1.__str__(), 'Test contract')

@@ -1,30 +1,25 @@
-version: '2'
-
-volumes:
-  postgres_data: {}
-  postgres_backup: {}
+version: '3'
 
 services:
-  postgres:
-    build: ./compose/postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - postgres_backup:/backups
-    env_file: .env
+  db:
+    environment:
+      POSTGRES_DB: db_app
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: db_pass
+    restart: always
+    image: postgres:9.6-alpine
 
-  django:
+  web:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile
-    user: django
-    depends_on:
-      - postgres
-    command: /gunicorn.sh
-    env_file: .env
-
-  nginx:
-    build: ./compose/nginx
-    depends_on:
-      - django
+      dockerfile: ./docker/local/Dockerfile-dev
+    command: python3 manage.py runserver_plus 0.0.0.0:8000
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    volumes:
+      - .:/app
+    links:
+      - db
     ports:
-      - "0.0.0.0:80:80"
+      - "8000:8000"

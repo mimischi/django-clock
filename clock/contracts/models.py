@@ -22,8 +22,8 @@ class Contract(models.Model):
     contact = models.EmailField(blank=True, verbose_name=_('Contract'))
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __unicode__(self):
-        return unicode(self.department)
+    def __str__(self):
+        return str(self.department)
 
     def total_hours_per_contract(self):
         shifts = Shift.objects.filter(contract=self.pk)
