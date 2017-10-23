@@ -1,9 +1,10 @@
 FROM python:3.6.2-alpine3.6
 ENV PYTHONBUFFERED 1
+ARG VERBOSE
 
 # Add new user to run the whole thing as non-root
 RUN addgroup -S app
-RUN adduser -G app -h /app -D app
+RUN adduser -G app -u 2000 -h /app -D app
 
 COPY docker/local/start.sh /start.sh
 RUN chmod +x /start.sh
@@ -27,12 +28,12 @@ RUN apk update \
        git \
     && apk add --no-cache postgresql postgresql-dev jpeg \
     && pip install pipenv \
-    && LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "pipenv install --dev --system" \
+    && LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "pipenv install --dev --system $VERBOSE" \
     && apk del .build-deps
 
 # Change to user and copy code
-USER app
 COPY . /app
+USER app
 
 # Let Django collect all staticfiles
 RUN python /app/manage.py collectstatic --noinput

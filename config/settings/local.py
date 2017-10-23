@@ -30,9 +30,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'db_app',
-        'USER': 'db_user',
+        'USER': 'db_user' if not env('TRAVIS_CI', default=False) else 'postgres',
         'PASSWORD': 'db_pass',
-        'HOST': 'db',
+        'HOST': 'db' if env('PYTHONBUFFERED', default=False) else 'localhost',
         'PORT': 5432,
     }
 }
