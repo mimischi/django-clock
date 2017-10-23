@@ -18,9 +18,14 @@ RUN apk update \
     && apk add --no-cache --virtual .build-deps \
        gcc \
        musl-dev \
-    && apk add --no-cache postgresql postgresql-dev \
+       zlib-dev \
+       jpeg-dev \
+       libxslt-dev \
+       libxml2-dev \
+       git \
+    && apk add --no-cache postgresql postgresql-dev jpeg \
     && pip install pipenv \
-    && pipenv install --system --verbose \
+    && LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "pipenv install --dev --system" \
     && apk del .build-deps
 
 # Change to user and copy code
