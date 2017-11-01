@@ -1,21 +1,16 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 django = "*"
 django-environ = "*"
 whitenoise = "*"
 django-braces = "*"
 django-crispy-forms = "*"
-django-model-utils = "*"
 django-allauth = "*"
 "psycopg2" = "*"
-awesome-slugify = "*"
 pytz = "*"
 django-bootstrap-breadcrumbs = "*"
 "django-bootstrap3" = "*"
@@ -25,12 +20,9 @@ lxml = "*"
 django-recaptcha = "*"
 django-taggit = "*"
 
-
 [dev-packages]
-
 coverage = "*"
 django-coverage-plugin = "*"
-sphinx = "*"
 django-extensions = "*"
 werkzeug = "*"
 django-test-plus = "*"
@@ -40,7 +32,6 @@ ipython = "*"
 ipdb = "*"
 pytest-django = "*"
 pytest-sugar = "*"
-gevent = "*"
 maildump = "*"
 pytest-cov = "*"
 codecov = "*"
