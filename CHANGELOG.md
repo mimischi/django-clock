@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0 (2017-11-01)
+
+### Release 2.0
+
+This release is supposed to be a "small restart" of the project.
+
+* Update project structure.
+* Change local development environment to use `docker-compose` only.
+* Change Dokku deploy to `Dockerfile`.
+* Use `pipenv` and `Pipfile` instead of old `requirements.txt`.
+* Remove obsolete files
+
 ## 1.0 (2017-10-22)
 
 * Final 1.0 release. Upcoming releases will introduce breaking changes.

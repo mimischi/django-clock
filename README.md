@@ -6,29 +6,40 @@
 
 # Clock
 
-Genervt den Stundenzettel für deinen HiWi-Job dauernd per Hand ausfüllen zu müssen? Willst du eine komfortable, mobile und einfache Lösung? Dann ist das Projekt hier genau das richtige.
-Clock erlaubt dem Nutzer seine Arbeitszeit zu stechen, nachträglich hinzuzufügen oder zu editieren.
-
-## Mitarbeit
-
-Das Projekt ist öffentlich zugänglich und kann deswegen gerne geforked werden. Um es lokal zu nutzen sind allerdings einige Einstellungen zu erledigen.
-Das aktuelle Layout dieser Repository basiert auf [cookiecutter-django](https://github.com/pydanny/cookiecutter-django). Dementsprechend findet sich die generelle Nutzungsanleitung in [deren ReadTheDocs](http://cookiecutter-django.readthedocs.org/en/latest/developing-locally.html).
+Genervt den Stundenzettel für deinen HiWi-Job dauernd per Hand ausfüllen zu müssen? Willst du eine komfortable, mobile und einfache Lösung? Clock erlaubt dem Nutzer seine Arbeitszeit zu stechen, nachträglich hinzuzufügen oder zu editieren. Und am Ende gibt es einen schicken Export als PDF!
 
 ### Anleitung
 
 Zur Mitarbeit sind `docker` und `docker-compose` notwendig.
 
-#### 1. Develop branch klonen
+#### 1. Repository klonen
 
-    git clone https://github.com/mimischi/django-clock.git --branch develop
+```
+git clone https://github.com/mimischi/django-clock.git --branch develop
+```
 
-#### 2. Container bauen und starten
+#### 2. Container bauen
 
-    docker-compose -f dev.yml build
-    docker-compose -f dev.yml up -d
-   
+```
+docker-compose build
+```
+
+#### 3. Web & Datenbank Container starten
+
+```
+docker-compose up -d
+```
+
 #### 4. Datenbank migrieren
 
-    docker-compose -f dev.yml run django python manage.py migrate
+```
+docker-compose run --rm web python manage.py migrate
+```
 
-Dazu kann jetzt noch ein Superuser erstellt werden. Grundsätzlich läuft das System jetzt. Unter Linux ist die Seite nun unter localhost:8000 aufrufbar.
+#### 5. Superuser erstellen
+
+```
+docker-compose run --rm web python manage.py createsuperuser
+```
+
+Die Webseite ist jetzt unter `localhost:8000` erreichbar.
