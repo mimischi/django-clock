@@ -17,20 +17,20 @@ Pillow==4.3.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.33.0
+django-allauth==0.34.0
 
 # Python-PostgreSQL Database Adapter
-psycopg2==2.7.3.1
+psycopg2==2.7.3.2
 
 # Unicode slugification
 awesome-slugify==1.6.5
 
 # Time zones support
-pytz==2017.2
+pytz==2017.3
 
 # Your custom requirements go here
 django-bootstrap-breadcrumbs==0.8.2
-django-bootstrap3==9.0.0
+django-bootstrap3==9.1.0
 #django-bootstrap3-datetimepicker-2==2.4.2
 git+git://github.com/blag/django-bootstrap3-datetimepicker.git@f8a78b231b75c331c143d5461456f663827a8af6
 

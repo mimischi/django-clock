@@ -14,8 +14,8 @@ Collectfast==0.5.2
 
 # Mailgun Support
 # ---------------
-django-anymail==1.0
+django-anymail==1.1
 
 # Raven is the Sentry client
 # --------------------------
-raven==6.2.1
+raven==6.3.0
