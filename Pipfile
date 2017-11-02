@@ -1,9 +1,12 @@
 [[source]]
+
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
+
 [packages]
+
 django = "*"
 django-environ = "*"
 whitenoise = "*"
@@ -19,8 +22,14 @@ reportlab = "*"
 lxml = "*"
 django-recaptcha = "*"
 django-taggit = "*"
+raven = "*"
+gunicorn = "*"
+gevent = "*"
+django-anymail = "*"
+
 
 [dev-packages]
+
 coverage = "*"
 django-coverage-plugin = "*"
 django-extensions = "*"

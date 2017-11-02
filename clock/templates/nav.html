@@ -14,15 +14,15 @@
                         </button>
                         <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'common/images/logo.svg' %}"
                                                                              alt="Clock Logo"/></a>
-                        <h4 class="verticaltext">BETA</h4>
+                        <p class="navbar-text">prepare for v2.0!</p>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            {% if not request.user.is_authenticated %}
-                                {% for page in flatpages %}
-                                <li class="{% active page.url %}"><a href="{{ page.url }}">{% trans page.title %}</a>
+                            {% for page in flatpages %}
+                                <li class="{% active page.url %} bg-danger"><a href="{{ page.url }}">{% trans page.title %}</a>
                                 </li>
-                                {% endfor %}
+                            {% endfor %}
+                            {% if not request.user.is_authenticated %}
                                 {% for page in about_pages %}
                                 <li class="{% active page.url %}"><a href="{{ page.url }}">{% trans page.title %}</a>
                                 </li>
