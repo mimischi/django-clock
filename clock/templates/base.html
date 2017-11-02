@@ -1,4 +1,4 @@
-{% load staticfiles i18n bootstrap3 django_bootstrap_breadcrumbs base_extras %}<!DOCTYPE html>
+{% load render_bundle from webpack_loader %}{% load staticfiles i18n bootstrap3 django_bootstrap_breadcrumbs base_extras %}<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -26,26 +26,9 @@
     <meta name="msapplication-TileImage" content="{% static 'common/favicons/mstile-144x144.png' %}">
     <meta name="theme-color" content="#00aba9">
 
-    <title>{% block title %}Clock | {% endblock title %}{% block extra_title %}
-        Goethe-Universität{% endblock extra_title %}</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'libraries/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="{% static 'libraries/bootstrap/css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <script src="{% static 'libraries/jquery/js/jquery.min.js' %}"></script>
-    {% block extra_head %}
-        <link rel="stylesheet"
-              href="{% static 'libraries/fontawesome/css/font-awesome.min.css' %}">{% endblock extra_head %}
-
-    <link rel="stylesheet" href="{% static 'common/css/clock.css' %}" media="screen" charset="utf-8">
+    <title>{% block title %}Clock | {% endblock title %}{% block extra_title %}Goethe-Universität{% endblock extra_title %}</title>
+    {% render_bundle 'main' %}
+    {% block extra_head %}{% endblock extra_head %}
 </head>
 
 <body>
@@ -83,20 +66,6 @@
     </div> <!-- /.container -->
 </div> <!-- /#footer -->
 
-
-<!-- Bootstrap core JavaScript
-  ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script>
-    window.jQuery || document.write('<script src="{% static 'libraries/jquery/js/jquery.min.js' %}"><\/script>')
-</script>
-<script src="{% static 'libraries/bootstrap/js/bootstrap.min.js' %}"></script>
-<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-<script src="{% static 'libraries/holder.min.js' %}"></script>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="{% static 'libraries/bootstrap/js/ie10-viewport-bug-workaround.js' %}"></script>
-<!-- Clock JS -->
-<script src="{% static 'common/js/clock.js' %}"></script>
 {% block extra_js %}{% endblock extra_js %}
 </body>
 </html>

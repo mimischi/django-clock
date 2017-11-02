@@ -2,10 +2,12 @@
 {% load i18n staticfiles format_duration base_extras %}
 
 {% block extra_head %}{{ block.super }}
+{% comment %}
     <script type="text/javascript" src="{% static 'libraries/moment/js/moment-with-locales.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'libraries/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'libraries/datatables/css/datatables.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'libraries/bootstrap-select/css/bootstrap-select.min.css' %}">
+{% endcomment %}
 {% endblock extra_head %}
 
 {% block container %}
@@ -132,7 +134,7 @@
             }());
         </script>
     {% endif %}
-    <script type="text/javascript" src="{% static 'libraries/datatables/js/datatables.min.js' %}"></script>
+    {% comment %}<script type="text/javascript" src="{% static 'libraries/datatables/js/datatables.min.js' %}"></script>{% endcomment %}
     {% if last_shifts %}
         <script type="text/javascript">
             $(document).ready(function () {

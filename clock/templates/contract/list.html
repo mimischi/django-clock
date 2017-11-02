@@ -2,7 +2,9 @@
 {% load staticfiles i18n django_bootstrap_breadcrumbs crispy_forms_tags %}
 
 {% block extra_head %}{{ block.super }}
+{% comment %}
 <link rel="stylesheet" type="text/css" href="{% static 'libraries/datatables/css/datatables.min.css' %}"/>
+{% endcomment %}
 {% endblock extra_head %}
 
 {% block container %}
@@ -40,7 +42,9 @@
 {% endblock container %}
 
 {% block extra_js %}
+  {% comment %}
     <script type="text/javascript" src="{% static 'libraries/datatables/js/datatables.min.js' %}"></script>
+    {% endcomment %}
     <script type="text/javascript">
         $(document).ready(function () {
             // Now the magic with the datatables comes into play.

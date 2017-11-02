@@ -30,7 +30,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'db_app',
-        'USER': 'db_user' if not env('TRAVIS_CI', default=False) else 'postgres',
+        'USER': 'db_user'
+        if not env('TRAVIS_CI', default=False) else 'postgres',
         'PASSWORD': 'db_pass',
         'HOST': 'db' if env('PYTHONBUFFERED', default=False) else 'localhost',
         'PORT': 5432,
@@ -63,6 +64,7 @@ DEBUG_TOOLBAR_CONFIG = {
         'debug_toolbar.panels.redirects.RedirectsPanel',
     ],
     'SHOW_TEMPLATE_CONTEXT': True,
+    'JQUERY_URL': '',
 }
 
 # django-extensions

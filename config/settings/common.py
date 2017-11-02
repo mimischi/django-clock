@@ -13,11 +13,10 @@ from __future__ import absolute_import, unicode_literals
 import environ
 from django.utils.translation import ugettext_lazy as _
 
-ROOT_DIR = environ.Path(__file__) - 3  # (/settings/config/common.py - 3 = /)
+ROOT_DIR = environ.Path(__file__) - 3    # (/settings/config/common.py - 3 = /)
 APPS_DIR = ROOT_DIR.path('clock')
 
 env = environ.Env()
-#env.read_env()
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -37,10 +36,11 @@ DJANGO_APPS = (
     # Admin
     'django.contrib.admin', )
 THIRD_PARTY_APPS = (
-    'crispy_forms',  # Form layouts
-    'allauth',  # registration
-    'allauth.account',  # registration
-    'allauth.socialaccount',  # registration
+    'webpack_loader',
+    'crispy_forms',    # Form layouts
+    'allauth',    # registration
+    'allauth.account',    # registration
+    'allauth.socialaccount',    # registration
     'django_bootstrap_breadcrumbs',
     'bootstrap3',
     'bootstrap3_datetime',
@@ -49,7 +49,7 @@ THIRD_PARTY_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
-    'clock.users',  # custom users app
+    'clock.users',    # custom users app
     # Your stuff: custom apps go here
     'clock.pages',
     'clock.shifts',
@@ -138,23 +138,23 @@ USE_TZ = True
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#templates
 TEMPLATES = [
     {
-        # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
         'DIRS': [
             str(APPS_DIR.path('templates')),
         ],
         'OPTIONS': {
-            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
             'debug':
             DEBUG,
-            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
-            # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
+    # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',
             ],
-            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -164,7 +164,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                # Your stuff: custom template context processors go here
+    # Your stuff: custom template context processors go here
                 'django.template.context_processors.request',
             ],
         },
@@ -183,7 +183,9 @@ STATIC_ROOT = str(ROOT_DIR('staticfiles'))
 STATIC_URL = '/static/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = (str(APPS_DIR.path('static')), )
+STATICFILES_DIRS = (
+    str(APPS_DIR.path('static')),
+    str(ROOT_DIR.path('assets')), )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
@@ -266,3 +268,15 @@ RECAPTCHA_PUBLIC_KEY = '6LdceCITAAAAALjjBfVAxF4gCw-11zB3cclDfAsf'
 RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE_KEY", default=None)
 NOCAPTCHA = True
 RECAPTCHA_USE_SSL = True
+
+# Webpack
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'bundles/',    # must end with slash
+        'STATS_FILE': str(ROOT_DIR.path('webpack-stats.json')),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}
