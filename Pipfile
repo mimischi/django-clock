@@ -1,0 +1,48 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+django = "*"
+django-environ = "*"
+whitenoise = "*"
+django-braces = "*"
+django-crispy-forms = "*"
+django-allauth = "*"
+"psycopg2" = "*"
+pytz = "*"
+django-bootstrap-breadcrumbs = "*"
+"django-bootstrap3" = "*"
+"django-bootstrap3-datetimepicker" = {git = "git://github.com/blag/django-bootstrap3-datetimepicker.git", ref = "f8a78b231b75c331c143d5461456f663827a8af6"}
+reportlab = "*"
+lxml = "*"
+django-recaptcha = "*"
+django-taggit = "*"
+raven = "*"
+gunicorn = "*"
+gevent = "*"
+django-anymail = "*"
+
+
+[dev-packages]
+
+coverage = "*"
+django-coverage-plugin = "*"
+django-extensions = "*"
+werkzeug = "*"
+django-test-plus = "*"
+factory-boy = "*"
+django-debug-toolbar = "*"
+ipython = "*"
+ipdb = "*"
+pytest-django = "*"
+pytest-sugar = "*"
+maildump = "*"
+pytest-cov = "*"
+codecov = "*"
+django-rosetta = "*"
+freezegun = "*"

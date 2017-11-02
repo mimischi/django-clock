@@ -45,7 +45,7 @@ class Shift(models.Model):
     class Meta:
         ordering = ['-shift_finished']
 
-    def __unicode__(self):
+    def __str__(self):
         """
         Class returns the employees name as default.
         """

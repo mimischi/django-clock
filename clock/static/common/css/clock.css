@@ -167,9 +167,9 @@ body > header > .navbar {
 
 .eyecatcher {
     position: relative;
-    overflow: hidden;
-    background-image: -webkit-linear-gradient(left, rgb(228, 227, 221) 25%, rgb(0, 97, 143) 100%);
-    background-image: linear-gradient(to right, rgb(228, 227, 221) 25%, rgb(0, 97, 143) 100%);
+    overflow: auto;
+    /* background-image: -webkit-linear-gradient(left, rgb(228, 227, 221) 25%, rgb(0, 97, 143) 100%); */
+    /* background-image: linear-gradient(to right, rgb(228, 227, 221) 25%, rgb(0, 97, 143) 100%); */
     text-align: center;
 }
 

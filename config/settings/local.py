@@ -1,15 +1,7 @@
 # -*- coding: utf-8 -*-
-'''
-Local settings
-
-- Run in Debug mode
-- Use console backend for emails
-- Add Django Debug Toolbar
-- Add django-extensions as app
-'''
-
-import socket
 import os
+import socket
+
 from .common import *  # noqa
 
 # DEBUG
@@ -32,6 +24,18 @@ EMAIL_PORT = 1025
 EMAIL_BACKEND = env(
     'DJANGO_EMAIL_BACKEND',
     default='django.core.mail.backends.console.EmailBackend')
+
+# Database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'db_app',
+        'USER': 'db_user' if not env('TRAVIS_CI', default=False) else 'postgres',
+        'PASSWORD': 'db_pass',
+        'HOST': 'db' if env('PYTHONBUFFERED', default=False) else 'localhost',
+        'PORT': 5432,
+    }
+}
 
 # CACHING
 # ------------------------------------------------------------------------------
