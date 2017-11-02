@@ -1,0 +1,17 @@
+{
+  "name": "django-clock",
+  "version": "2.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:mimischi/django-clock",
+  "author": "Michael Gecht <gecht.m@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootstrap-select": "^1.12.4",
+    "datatables": "^1.10.13",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
+    "moment": "^2.19.1"
+  }
+}
