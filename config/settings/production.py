@@ -2,6 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import logging
+import os
 
 from django.utils import six
 
@@ -165,4 +166,11 @@ RAVEN_CONFIG = {
 # Custom Admin URL, use {% url 'admin:index' %}
 ADMIN_URL = env('DJANGO_ADMIN_URL')
 
-# Your production stuff: Below this line define 3rd party library settings
+WEBPACK_LOADER['DEFAULT'].update({
+    'BUNDLE_DIR_NAME':
+    'dist/',
+    'STATS_FILE':
+    str(ROOT_DIR.path('webpack-stats-prod.json')),
+    'CACHE':
+    True
+})

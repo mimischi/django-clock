@@ -7,7 +7,12 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
-from django.views.generic.dates import DayArchiveView, MonthArchiveView, WeekArchiveView, YearArchiveView
+from django.views.generic.dates import (
+    DayArchiveView,
+    MonthArchiveView,
+    WeekArchiveView,
+    YearArchiveView,
+)
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
@@ -19,7 +24,7 @@ from clock.shifts.utils import (
     get_current_shift,
     get_default_contract,
     get_return_url,
-    set_correct_session
+    set_correct_session,
 )
 
 
@@ -122,19 +127,6 @@ class ShiftManualCreate(CreateView):
         kwargs.update(k)
         return kwargs
 
-    # def get_initial(self):
-    #     """
-    #     Sets initial data for the ModelForm, so we can use the user
-    #     object and know which view created this form (CreateView in
-    #     this case)
-    #     """
-    #     return {
-    #         'user': self.request.user,
-    #         'request': self.request,
-    #         'view': 'shift_create',
-    #         'contract': set_correct_session(self.request, 'contract'),
-    #     }
-
     @property
     def base_date(self):
         try:
@@ -148,6 +140,7 @@ class ShiftManualCreate(CreateView):
                 d = datetime.now().strftime("%Y-%m-%d")
         except KeyError:
             d = datetime.now().strftime("%Y-%m-%d")
+
         return d
 
     def form_valid(self, form):
@@ -180,18 +173,6 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
         }
         kwargs.update(k)
         return kwargs
-
-    # def get_initial(self):
-    #     """
-    #     Sets initial data for the ModelForm, so we can use the user
-    #     object and know which view created this form (UpdateView in
-    #     this case)
-    #     """
-    #     return {
-    #         'user': self.request.user,
-    #         'request': self.request,
-    #         'view': 'shift_update',
-    #     }
 
 
 @method_decorator(login_required, name="dispatch")

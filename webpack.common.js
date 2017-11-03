@@ -1,15 +1,11 @@
 var path = require('path');
 var webpack = require('webpack');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-var BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
   context: __dirname,
   entry: './assets/js/index.js',
-  plugins: [
-    new BundleTracker({filename: './webpack-stats.json'}),
-    new CleanWebpackPlugin(['./assets/bundles/']),
-  ],
   output: {
     path: path.resolve('./assets/bundles/'),
     filename: "[name]-[hash].js",
@@ -50,6 +46,14 @@ module.exports = {
       }]
     }]
   },
+  plugins: [
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|en/),
+  //   // new BundleAnalyzerPlugin({
+  //   //   analyzerMode: "server",
+  //   //   analyzerHost: "127.0.0.1",
+  //   //   analyzerPort: "8888"
+  //   // })
+  ],
   resolve: {
     alias: {
       // Force all modules to use the same jquery version.

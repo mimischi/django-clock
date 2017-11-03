@@ -10,7 +10,7 @@ import "eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css
 import "datatables.net";
 import dt from "datatables.net-bs";
 import 'datatables.net-bs/css/dataTables.bootstrap.css';
-import "holderjs";
+// import "holderjs";
 import "./tageditor/js/jquery.tag-editor.min.js";
 import "./tageditor/css/jquery.tag-editor.css";
 

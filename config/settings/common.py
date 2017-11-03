@@ -43,7 +43,7 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount',    # registration
     'django_bootstrap_breadcrumbs',
     'bootstrap3',
-    'bootstrap3_datetime',
+    # 'bootstrap3_datetime',
     'captcha',
     'taggit', )
 
@@ -263,6 +263,27 @@ ACCOUNT_FORMS = {
 CONTACT_FORM_SUBJECT = _('A new message has arrived!')
 CONTACT_FORM_RECIPIENT = ['clock-kontakt@dlist.server.uni-frankfurt.de']
 
+DATETIME_INPUT_FORMATS = [
+    '%Y-%m-%d %H:%M:%S',
+    '%Y-%m-%d %H:%M:%S.%f',
+    '%Y-%m-%d %H:%M',
+    '%Y-%m-%d',
+    '%m/%d/%Y %H:%M:%S',
+    '%m/%d/%Y %H:%M:%S.%f',
+    '%m/%d/%Y %H:%M',
+    '%m/%d/%Y',
+    '%m/%d/%y %H:%M:%S',
+    '%m/%d/%y %H:%M:%S.%f',
+    '%m/%d/%y %H:%M',
+    '%m/%d/%y',
+    '%m/%d/%Y %H:%M %p',
+    '%m/%d/%y %H:%M %p',
+    '%d.%m.%Y %H:%M',
+    '%d.%m.%Y %H:%M:%s',
+    '%d.%m.%y %H:%M',
+    '%d.%m.%y %H:%M:%s',
+]
+
 # reCAPTCHA settings
 RECAPTCHA_PUBLIC_KEY = '6LdceCITAAAAALjjBfVAxF4gCw-11zB3cclDfAsf'
 RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE_KEY", default=None)
@@ -272,8 +293,8 @@ RECAPTCHA_USE_SSL = True
 # Webpack
 WEBPACK_LOADER = {
     'DEFAULT': {
-        'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': 'bundles/',    # must end with slash
+        'CACHE': False,
+        'BUNDLE_DIR_NAME': 'bundles/',
         'STATS_FILE': str(ROOT_DIR.path('webpack-stats.json')),
         'POLL_INTERVAL': 0.1,
         'TIMEOUT': None,

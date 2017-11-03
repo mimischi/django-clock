@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Submit
 from django import forms
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse_lazy
+from django.forms import DateTimeField
 from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import get_language
 
 from clock.contracts.models import Contract
 from clock.shifts.models import Shift
@@ -32,6 +32,11 @@ class QuickActionForm(forms.Form):
 
 
 class ShiftForm(forms.ModelForm):
+    shift_started = DateTimeField(
+        input_formats=settings.DATETIME_INPUT_FORMATS)
+    shift_finished = DateTimeField(
+        input_formats=settings.DATETIME_INPUT_FORMATS)
+
     class Meta:
         model = Shift
         fields = (
@@ -43,37 +48,8 @@ class ShiftForm(forms.ModelForm):
             'tags',
             'note', )
         widgets = {
-            'shift_started':
-            DateTimePicker(options={
-                "format": "YYYY-MM-DD HH:mm",
-                "stepping": 5,
-                "toolbarPlacement": "top",
-                "keepInvalid": True,
-                "showTodayButton": True,
-                "calendarWeeks": True,
-                "locale": get_language()
-            }),
-            'shift_finished':
-            DateTimePicker(options={
-                "format": "YYYY-MM-DD HH:mm",
-                "stepping": 5,
-                "toolbarPlacement": "top",
-                "keepInvalid": True,
-                "showTodayButton": True,
-                "calendarWeeks": True,
-                "locale": get_language()
-            }),
-            'pause_duration':
-            DateTimePicker(options={
-                "format": "HH:mm",
-                "stepping": 5,
-                "keepInvalid": True,
-                "locale": get_language()
-            }),
-            'contract':
-            forms.Select(attrs={'class': 'selectpicker'}),
-            'key':
-            forms.Select(attrs={'class': 'selectpicker'}),
+            'contract': forms.Select(attrs={'class': 'selectpicker'}),
+            'key': forms.Select(attrs={'class': 'selectpicker'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -82,6 +58,7 @@ class ShiftForm(forms.ModelForm):
         self.view = kwargs.pop('view')
         self.user = self.request.user
         super(ShiftForm, self).__init__(*args, **kwargs)
+        # self.fields['shift_started'].widget = forms.HiddenInput()
 
         # Retrieve all contracts that belong to the user
         self.fields['contract'].queryset = Contract.objects.filter(
@@ -106,40 +83,6 @@ class ShiftForm(forms.ModelForm):
                 _('Delete')
             }
 
-            # So if we are updating an already existing entry, we may also set some restrictions on the DateTimePicker
-            # The shift_finished picker can't be set BEFORE the shift_started datetime. Updating either of both
-            # will update the restriction dynamically via JavaScript.
-            self.fields.update({
-                'shift_finished':
-                forms.DateTimeField(
-                    widget=DateTimePicker(
-                        options={
-                            "format": "YYYY-MM-DD HH:mm",
-                            "stepping": 5,
-                            "toolbarPlacement": "top",
-                            "showTodayButton": True,
-                            "calendarWeeks": True,
-                            "locale": get_language(),
-                            # "minDate": unicode(self.initial['shift_started'].strftime("%Y-%m-%d %H:%M"))
-                        }, ),
-                    label=_('Shift finished'), ),
-                # This one does not seem to work, so we disable it.
-                # Enabling it will set the shift_started field to the same value as the shift_finished..
-                # This seems to be caused by the embedded JavaScript, as the replacement happens after a full page load.
-                'shift_started':
-                forms.DateTimeField(
-                    widget=DateTimePicker(options={
-                        "format": "YYYY-MM-DD HH:mm",
-                        "stepping": 5,
-                        "toolbarPlacement": "top",
-                        "showTodayButton": True,
-                        "calendarWeeks": True,
-                        "locale": get_language(),
-                        # "maxDate": unicode(self.initial['shift_finished'].strftime("%Y-%m-%d %H:%M"))
-                    }),
-                    label=_('Shift started'), ),
-            })
-
         cancel_html_inject = '<a href="%(cancel_url)s" class="btn btn-default">%(cancel_translation)s</a>' % \
                              {'cancel_url': get_return_url(self.request, 'shift:list'),
                               'cancel_translation': _('Cancel')}
@@ -159,7 +102,7 @@ class ShiftForm(forms.ModelForm):
     def clean_pause_duration(self):
         pause_duration = self.cleaned_data.get('pause_duration')
 
-        return pause_duration  # / 60
+        return pause_duration    # / 60
 
     def clean(self):
         cleaned_data = super(ShiftForm, self).clean()
