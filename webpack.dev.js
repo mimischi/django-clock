@@ -9,7 +9,7 @@ module.exports = merge(common, {
     contentBase: './assets/bundles/'
   },
   plugins: [
-    new BundleTracker({filename: './webpack-stats.json'}),
+    new BundleTracker({filename: './webpack-stats-local.json'}),
     new CleanWebpackPlugin(['./assets/bundles/']),
   ]
 });

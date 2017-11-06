@@ -1,14 +1,12 @@
 FROM python:3.6.3-alpine3.6
 ENV PYTHONBUFFERED 1
-ARG VERBOSE
 
 # Add new user to run the whole thing as non-root
 RUN addgroup -S app \
     && adduser -G app -u 1000 -h /app -D app
 
 # Copy all files and change the working directory
-COPY --chown=app:app . /app
-WORKDIR /app
+COPY --chown=app:app Pipfile Pipfile.lock /app/
 
 # Install build dependencies for PostgreSQL. While we're at it, also install
 # pipenv and all python requirements. Then purge unneeded build dependencies.
@@ -19,17 +17,21 @@ RUN apk update \
        zlib-dev \
        jpeg-dev \
        libxslt-dev \
-       libxml2-dev \
-    && apk add --no-cache postgresql postgresql-dev jpeg gettext \
-    && pip install pipenv \
-    && LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "pipenv install --dev --system $VERBOSE" \
-    && apk del .build-deps
+       libxml2-dev
+RUN apk add --no-cache postgresql postgresql-dev jpeg gettext
+RUN pip install pipenv
+
+WORKDIR /app
+RUN LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "pipenv install --dev --system"
+RUN apk del .build-deps
 
 # Change to user
+COPY --chown=app:app . /app
 USER app
 
 # Let Django collect all staticfiles and compile localizations
 RUN python /app/manage.py collectstatic --noinput \
     && python /app/manage.py compilemessages
+
 
 ENTRYPOINT ["/app/docker/local/entrypoint.sh"]

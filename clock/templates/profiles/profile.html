@@ -3,11 +3,6 @@
 
 {% block extra_title %}{% trans 'Profile' %}{% endblock extra_title %}
 
-{% block extra_head %}{{ block.super }}
-    <script type="text/javascript" src="{% static 'libraries/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'libraries/bootstrap-select/css/bootstrap-select.min.css' %}">
-{% endblock extra_head %}
-
 {% block breadcrumbs %}{{ block.super }}{% endblock breadcrumbs %}
 
 {% block content_account %}

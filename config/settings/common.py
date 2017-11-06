@@ -295,7 +295,7 @@ WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': False,
         'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': str(ROOT_DIR.path('webpack-stats.json')),
+        'STATS_FILE': str(ROOT_DIR.path('webpack-stats-local.json')),
         'POLL_INTERVAL': 0.1,
         'TIMEOUT': None,
         'IGNORE': ['.+\.hot-update.js', '.+\.map']

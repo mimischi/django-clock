@@ -29,7 +29,8 @@ assets/dist/
 !.yarn_cache/.gitkeep
 
 # webpack
-webpack-stats.json
+webpack-stats-local.json
+webpack-stats-prod.json
 
 # virtual environments
 .env

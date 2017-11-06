@@ -8,7 +8,7 @@ const common = require('./webpack.common.js');
 module.exports = merge(common, {
   devtool: 'source-map',
   output: {
-    path: path.resolve('./assets/assets/'),
+    path: path.resolve('./assets/dist/'),
     filename: "[name]-[hash].js",
     publicPath: '/static/dist/'
   },

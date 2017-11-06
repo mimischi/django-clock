@@ -166,13 +166,7 @@
                         responsivePriority: 2,
                         targets: -1
                     }],
-                    buttons: [],
-                    {% get_current_language as LANGUAGE_CODE %}
-                    {% if LANGUAGE_CODE == 'de' %}
-                        language: {
-                            url: "{% static 'libraries/datatables/locale/de.json' %}"
-                        }
-                    {% endif %}
+                    buttons: []
                 });
             });
 

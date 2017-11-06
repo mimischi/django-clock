@@ -102,7 +102,7 @@ class ShiftForm(forms.ModelForm):
     def clean_pause_duration(self):
         pause_duration = self.cleaned_data.get('pause_duration')
 
-        return pause_duration    # / 60
+        return pause_duration * 60
 
     def clean(self):
         cleaned_data = super(ShiftForm, self).clean()

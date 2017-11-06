@@ -4,7 +4,7 @@
 !.pylintrc
 !.yarn_cache
 webpack-stats-prod.json
-webpack-stats.json
+webpack-stats-local.json
 node_modules
 assets/bundles
 assets/dist

@@ -35,33 +35,44 @@
     </script>
     <script type="text/javascript">
       $(function () {
-         var shiftStartedPicker = $("#div_id_shift_started");
-         var shiftFinishedPicker = $("#div_id_shift_finished");
-         shiftStartedPicker.datetimepicker({
-           inline: true,
-           sideBySide: true,
-           keepOpen: true,
-           keepInvalid: true,
-           locale: '{{ LANGUAGE_CODE }}',
-           collapse: false
-         });
-         shiftFinishedPicker.datetimepicker({
-           inline: true,
-           sideBySide: true,
-           locale: '{{ LANGUAGE_CODE }}',
-           collapse: false,
-           useCurrent: true
-         });
-        {% if not shift %}
-        // shiftStartedPicker.data("DateTimePicker").defaultDate('{{ view.base_date }}');
-        // shiftFinishedPicker.data("DateTimePicker").defaultDate('{{ view.base_date }}');
-          // shiftStartedPicker.data("DateTimePicker").keyBinds({'delete': false});
-        /* shiftStartedPicker.on("dp.change", function (e) {
-         *     shiftFinishedPicker.data("DateTimePicker").minDate(e.date);
-         * });
-         * shiftFinishedPicker.on("dp.change", function (e) {
-         *     shiftStartedPicker.data("DateTimePicker").maxDate(e.date);
-         * });*/
+        var shiftStartedPicker = $("#div_id_shift_started");
+        var shiftFinishedPicker = $("#div_id_shift_finished");
+        var pauseDurationPicker = $("#div_id_pause_duration");
+        shiftStartedPicker.datetimepicker({
+          inline: true,
+          sideBySide: true,
+          keepOpen: true,
+          keepInvalid: true,
+          showTodayButton: true,
+          locale: '{{ LANGUAGE_CODE }}',
+          stepping: 5
+        });
+        shiftFinishedPicker.datetimepicker({
+          inline: true,
+          sideBySide: true,
+          locale: '{{ LANGUAGE_CODE }}',
+          useCurrent: true,
+          stepping: 5
+        });
+        pauseDurationPicker.datetimepicker({
+          inline: true,
+          stepping: 5,
+          format: 'HH:mm',
+          locale: '{{ LANGUAGE_CORE }}'
+        });
+      $('#id_shift_started').hide();
+      $('#id_shift_finished').hide();
+      $('#id_pause_duration').hide();
+      {% if not shift %}
+      // shiftStartedPicker.data("DateTimePicker").defaultDate('{{ view.base_date }}');
+      // shiftFinishedPicker.data("DateTimePicker").defaultDate('{{ view.base_date }}');
+        // shiftStartedPicker.data("DateTimePicker").keyBinds({'delete': false});
+      shiftStartedPicker.on("dp.change", function (e) {
+        shiftFinishedPicker.data("DateTimePicker").minDate(e.date);
+      });
+      shiftFinishedPicker.on("dp.change", function (e) {
+        shiftStartedPicker.data("DateTimePicker").maxDate(e.date);
+        });
         {% endif %}
         });
     </script>
