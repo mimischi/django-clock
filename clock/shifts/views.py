@@ -1,10 +1,12 @@
 from datetime import date, datetime
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
+from django.utils.timezone import activate
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
 from django.views.generic.dates import (
@@ -15,6 +17,7 @@ from django.views.generic.dates import (
 )
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
+from pytz import timezone as p_timezone
 
 from clock.pages.mixins import UserObjectOwnerMixin
 from clock.shifts.forms import QuickActionForm, ShiftForm
@@ -128,18 +131,18 @@ class ShiftManualCreate(CreateView):
         return kwargs
 
     @property
-    def base_date(self):
+    def start_datetime(self):
         try:
             d = datetime(
                 int(self.request.session['last_kwargs']['year']),
                 int(self.request.session['last_kwargs']['month']),
                 1,
-                hour=8).strftime("%Y-%m-%d %H:%M")
+                hour=8).strftime("%Y-%m-%dT%H:%M")
             if self.request.session['last_kwargs'][
                     'month'] == datetime.now().strftime("%m"):
-                d = datetime.now().strftime("%Y-%m-%d")
+                d = datetime.now().strftime("%Y-%m-%dT%H:%M")
         except KeyError:
-            d = datetime.now().strftime("%Y-%m-%d")
+            d = datetime.now().strftime("%Y-%m-%dT%H:%M")
 
         return d
 
@@ -173,6 +176,22 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
         }
         kwargs.update(k)
         return kwargs
+
+    def get_shift(self):
+        # Use the current timezone when retrieving datetime objects
+        tz = p_timezone(settings.TIME_ZONE)
+
+        moment_format = "%Y-%m-%dT%H:%M"
+        obj = self.get_object()
+        dates = {
+            'started':
+            obj.shift_started.astimezone(tz).strftime(moment_format),
+            'finished':
+            obj.shift_finished.astimezone(tz).strftime(moment_format),
+            'paused': (datetime(1970, 1, 1) +
+                       obj.pause_duration).strftime(moment_format),
+        }
+        return dates
 
 
 @method_decorator(login_required, name="dispatch")

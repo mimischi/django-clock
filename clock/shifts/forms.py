@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Submit
+from crispy_forms.layout import HTML, Field, Fieldset, Layout, Submit
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -58,7 +58,11 @@ class ShiftForm(forms.ModelForm):
         self.view = kwargs.pop('view')
         self.user = self.request.user
         super(ShiftForm, self).__init__(*args, **kwargs)
-        # self.fields['shift_started'].widget = forms.HiddenInput()
+
+        # Hide the actual input fields
+        self.fields['shift_started'].widget = forms.HiddenInput()
+        self.fields['shift_finished'].widget = forms.HiddenInput()
+        self.fields['pause_duration'].widget = forms.HiddenInput()
 
         # Retrieve all contracts that belong to the user
         self.fields['contract'].queryset = Contract.objects.filter(
@@ -90,6 +94,17 @@ class ShiftForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_action = '.'
         self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Field(
+                'shift_started',
+                template='shift/fields/datetimepicker_field.html'),
+            Field(
+                'shift_finished',
+                template='shift/fields/datetimepicker_field.html'),
+            Field(
+                'pause_duration',
+                template='shift/fields/datetimepicker_field.html'),
+            Field('contract'), Field('key'), Field('tags'), Field('note'))
         self.helper.layout.append(
             FormActions(
                 HTML(cancel_html_inject),

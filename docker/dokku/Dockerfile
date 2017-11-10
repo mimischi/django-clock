@@ -26,7 +26,12 @@ RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/re
        postgresql-dev \
        jpeg \
        gettext \
-       yarn@edge
+       yarn@edge \
+       tzdata
+
+# Set the correct timezone
+RUN cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
+    && echo "Europe/Berlin" > /etc/timezone
 
 # Copy Pipfile and install python dependencies
 COPY --chown=app:app Pipfile Pipfile.lock /

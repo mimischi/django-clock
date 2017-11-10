@@ -31,9 +31,8 @@
 
 {% block extra_js %}
     <script type="text/javascript">
-        var tags = $('input[type="text"]#id_tags').tagEditor();
-    </script>
-    <script type="text/javascript">
+      var tags = $('input[type="text"]#id_tags').tagEditor();
+      var now = moment("2017-11-05T13:37");
       $(function () {
         var shiftStartedPicker = $("#div_id_shift_started");
         var shiftFinishedPicker = $("#div_id_shift_finished");
@@ -41,9 +40,6 @@
         shiftStartedPicker.datetimepicker({
           inline: true,
           sideBySide: true,
-          keepOpen: true,
-          keepInvalid: true,
-          showTodayButton: true,
           locale: '{{ LANGUAGE_CODE }}',
           stepping: 5
         });
@@ -51,29 +47,28 @@
           inline: true,
           sideBySide: true,
           locale: '{{ LANGUAGE_CODE }}',
-          useCurrent: true,
           stepping: 5
         });
         pauseDurationPicker.datetimepicker({
           inline: true,
           stepping: 5,
-          format: 'HH:mm',
-          locale: '{{ LANGUAGE_CORE }}'
+          format: 'HH:mm'
         });
-      $('#id_shift_started').hide();
-      $('#id_shift_finished').hide();
-      $('#id_pause_duration').hide();
       {% if not shift %}
-      // shiftStartedPicker.data("DateTimePicker").defaultDate('{{ view.base_date }}');
-      // shiftFinishedPicker.data("DateTimePicker").defaultDate('{{ view.base_date }}');
-        // shiftStartedPicker.data("DateTimePicker").keyBinds({'delete': false});
-      shiftStartedPicker.on("dp.change", function (e) {
-        shiftFinishedPicker.data("DateTimePicker").minDate(e.date);
+        shiftStartedPicker.data("DateTimePicker").defaultDate(moment("{{ view.start_datetime }}"));
+        shiftFinishedPicker.data("DateTimePicker").defaultDate(moment("{{ view.start_datetime }}"));
+        pauseDurationPicker.data("DateTimePicker").defaultDate(moment("1970-01-01T00:00"));
+        shiftStartedPicker.on("dp.change", function (e) {
+          shiftFinishedPicker.data("DateTimePicker").minDate(e.date);
+        });
+        shiftFinishedPicker.on("dp.change", function (e) {
+          shiftStartedPicker.data("DateTimePicker").maxDate(e.date);
+        });
+      {% else %}
+        shiftStartedPicker.data("DateTimePicker").defaultDate(moment("{{ view.get_shift.started }}"));
+        shiftFinishedPicker.data("DateTimePicker").defaultDate(moment("{{ view.get_shift.finished }}"));
+        pauseDurationPicker.data("DateTimePicker").defaultDate(moment("{{ view.get_shift.paused }}"));
+      {% endif %}
       });
-      shiftFinishedPicker.on("dp.change", function (e) {
-        shiftStartedPicker.data("DateTimePicker").maxDate(e.date);
-        });
-        {% endif %}
-        });
     </script>
 {% endblock extra_js %}

@@ -14,7 +14,12 @@ RUN apk update \
        postgresql \
        postgresql-dev \
        jpeg \
-       gettext
+       gettext \
+       tzdata
+
+# Set the correct timezone
+RUN cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
+    && echo "Europe/Berlin" > /etc/timezone
 
 # Copy Pipfile, install pipenv and then install all python dependencies
 COPY Pipfile Pipfile.lock /
