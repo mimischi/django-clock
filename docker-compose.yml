@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/local/Dockerfile.web
-    command: /app/docker/local/start.sh
+    command: /start.sh
     environment:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432

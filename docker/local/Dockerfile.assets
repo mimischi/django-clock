@@ -1,13 +1,6 @@
 FROM node:8.9-alpine
 
-RUN deluser --remove-home node \
-    && addgroup -S app \
-    && adduser -G app -u 1000 -h /app -D app
-
-USER app
-
-COPY --chown=app:app . ./app/
+COPY package.json yarn.lock /app/
 WORKDIR /app
 
-RUN yarn install --dev \
-    && yarn build
+RUN yarn install --dev

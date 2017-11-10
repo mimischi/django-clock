@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 while true; do
   echo "Re-starting Django runserver_plus!"
