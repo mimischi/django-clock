@@ -1,6 +1,11 @@
-#!/usr/bin/env python
 import os
 import sys
+import threading
+
+# This is a workaround for Alpine Linux (musl libc) quirk:
+# https://github.com/docker-library/python/issues/211
+# Thanks to https://github.com/fadawar for the snippet!
+threading.stack_size(2 * 1024 * 1024)
 
 if __name__ == '__main__':
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')
@@ -12,7 +17,7 @@ if __name__ == '__main__':
         # issue is really that Django is missing to avoid masking other
         # exceptions on Python 2.
         try:
-            import django  # noqa
+            import django    # noqa
         except ImportError:
             raise ImportError(
                 "Couldn't import Django. Are you sure it's installed and "
