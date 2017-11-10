@@ -48,11 +48,11 @@ module.exports = {
   },
   plugins: [
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|en/),
-  //   // new BundleAnalyzerPlugin({
-  //   //   analyzerMode: "server",
-  //   //   analyzerHost: "127.0.0.1",
-  //   //   analyzerPort: "8888"
-  //   // })
+    // new BundleAnalyzerPlugin({
+    //   analyzerMode: "server",
+    //   analyzerHost: "127.0.0.1",
+    //   analyzerPort: "8888"
+    // })
   ],
   resolve: {
     alias: {

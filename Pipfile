@@ -7,7 +7,7 @@ name = "pypi"
 
 [packages]
 
-django = "*"
+Django = "*"
 django-environ = "*"
 whitenoise = "*"
 django-braces = "*"
@@ -31,11 +31,11 @@ django-webpack-loader = "*"
 [dev-packages]
 
 coverage = "*"
-django-coverage-plugin = "*"
+django_coverage_plugin = "*"
 django-extensions = "*"
-werkzeug = "*"
+Werkzeug = "*"
 django-test-plus = "*"
-factory-boy = "*"
+factory_boy = "*"
 django-debug-toolbar = "*"
 ipython = "*"
 ipdb = "*"

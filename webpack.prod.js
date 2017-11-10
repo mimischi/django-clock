@@ -28,11 +28,14 @@ module.exports = merge(common, {
     // keeps hashes consistent between compilations
     new webpack.optimize.OccurrenceOrderPlugin(),
 
+    /* Currently disabled, because it somehow causes problems with momentjs locales in production.
+       Further the code seems to be minimized anyhow..
+    */
     // minifies your code
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    })
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compressor: {
+    //     warnings: false
+    //   }
+    // })
   ]
 });
