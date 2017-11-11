@@ -6,16 +6,26 @@ from django.conf import settings
 from django.utils import timezone
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
-from reportlab.lib.pagesizes import letter, A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.pagesizes import A4, letter
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch, mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import SimpleDocTemplate, Flowable, Paragraph, Table, TableStyle, Spacer, Frame, KeepInFrame
+from reportlab.platypus import (
+    Flowable,
+    Frame,
+    KeepInFrame,
+    Paragraph,
+    SimpleDocTemplate,
+    Spacer,
+    Table,
+    TableStyle,
+)
 
 from clock.pages.templatetags.format_duration import format_dttd
 
-# Register custom fonts. Path is hardcoded so we're using the internal fonts from /static/
+# Register custom fonts. Path is hardcoded so we're using the internal fonts
+# from /static/
 pdfmetrics.registerFont(
     TTFont('OpenSans-Regular',
            os.path.join(
@@ -144,8 +154,8 @@ class ShiftExport:
         key_text.drawOn(canvas, 200 + 125 + 5, doc.bottomMargin + 2.5)
 
         note_text = Paragraph(
-            "* Tragen Sie in diese Spalte eines der folgenden Kürzel ein, wenn es für diesen "
-            "Kalendertag zutrifft", styles['BottomText'])
+            '* Tragen Sie in diese Spalte eines der folgenden Kürzel ein, '
+            'wenn es für diesen Kalendertag zutrifft', styles['BottomText'])
         w, h = note_text.wrap(doc.width, doc.bottomMargin)
         note_text.drawOn(canvas, doc.leftMargin + 5, doc.bottomMargin + 45)
 
@@ -202,17 +212,18 @@ class ShiftExport:
         # Add text on top of the first page
         elements.append(
             Paragraph(
-                u'Vorlage zur Dokumentation der täglichen Arbeitszeit nach § 17 MiLoG<br /><br />'
-                u'Wichtig:', styles['TitleBoldCentered']))
+                'Vorlage zur Dokumentation der täglichen Arbeitszeit nach '
+                '§ 17 MiLoG<br /><br /> Wichtig:', styles[
+                    'TitleBoldCentered']))
         elements.append(Spacer(1, 4))
         elements.append(
             Paragraph(
-                u'Die Aufzeichnungen sind mindestens wöchentlich zu führen, denn es besteht '
-                u'die Verpflichtung </para><para fontName="OpenSans-Italic">"Beginn, Ende und Dauer '
-                u'der täglichen Arbeitszeit spätestens bis zum Ablauf des siebten auf den Tag der '
-                u'Arbeitsleistung folgenden Kalendertages aufzuzeichnen und diese Aufzeichnungen '
-                u'mindestens zwei Jahre beginnend ab dem für die Aufzeichnung maßgelblichen '
-                u'Zeitpunkt aufzubewahren.“', styles['TitleCentered']))
+                'Die Aufzeichnungen sind mindestens wöchentlich zu führen, denn es besteht '
+                'die Verpflichtung </para><para fontName="OpenSans-Italic">"Beginn, Ende und Dauer '
+                'der täglichen Arbeitszeit spätestens bis zum Ablauf des siebten auf den Tag der '
+                'Arbeitsleistung folgenden Kalendertages aufzuzeichnen und diese Aufzeichnungen '
+                'mindestens zwei Jahre beginnend ab dem für die Aufzeichnung maßgelblichen '
+                'Zeitpunkt aufzubewahren.“', styles['TitleCentered']))
         elements.append(Spacer(1, 6))
 
         # Add boxes above the table
@@ -221,15 +232,19 @@ class ShiftExport:
                 width=doc.width,
                 height=20,
                 text_label="FB / Institut / Abteilung",
-                text_box=self.context['department']), Spacer(1, 4), BoxyLine(
-                    width=doc.width,
-                    height=20,
-                    text_label="Name des Mitarbeiters",
-                    text_box=self.context['fullname']), Spacer(1, 4), BoxyLine(
-                        width=100 + 155,
-                        height=20,
-                        text_label="Pers. Nr. (falls vorhanden)",
-                        text_box=""),
+                text_box=self.context['department']),
+            Spacer(1, 4),
+            BoxyLine(
+                width=doc.width,
+                height=20,
+                text_label="Name des Mitarbeiters",
+                text_box=self.context['fullname']),
+            Spacer(1, 4),
+            BoxyLine(
+                width=100 + 155,
+                height=20,
+                text_label="Pers. Nr. (falls vorhanden)",
+                text_box=""),
             BoxyLine(
                 x=196,
                 y=+5,
@@ -259,19 +274,21 @@ class ShiftExport:
         i = 0
         for i, shift in enumerate(shifts):
             # Not sure why, but timezone.localtime() is not working here.
-            # Instead timezone.template_localtime() is, so we're using it.. dum-dee-doo..
+            # Instead timezone.template_localtime() is, so we're using it
             b1_date = timezone.template_localtime(
-                shift.shift_started).strftime('%d.%m.%Y')  # e.g. 24.12.2016
+                shift.shift_started).strftime('%d.%m.%Y')    # e.g. 24.12.2016
             b2_start = timezone.template_localtime(
-                shift.shift_started).strftime("%H:%M")  # e.g. 08:15
-            b3_pause = shift.pause_start_end  # e.g. 08:15 - 15:55
+                shift.shift_started).strftime("%H:%M")    # e.g. 08:15
+            b3_pause = shift.pause_start_end    # e.g. 08:15 - 15:55
             b4_end = timezone.template_localtime(
-                shift.shift_finished).strftime("%H:%M")  # e.g. 15:55
-            b5_total = format_dttd(shift.shift_duration, "%H:%M")  # e.g. 07:40
-            b6_cmnt = shift.key  # e.g. "K" or "U"
+                shift.shift_finished).strftime("%H:%M")    # e.g. 15:55
+            b5_total = format_dttd(shift.shift_duration,
+                                   "%H:%M")    # e.g. 07:40
+            b6_cmnt = shift.key    # e.g. "K" or "U"
 
-            # We want every cell content to be an own paragraph, so we can give it a certain style.
-            # As always there is probably some other smart solution, but this works.
+            # We want every cell content to be an own paragraph, so we can give
+            # it a certain style. As always there is probably some other smart
+            # solution, but this works.
             body_row = []
             body_cells = [
                 b1_date, b2_start, b3_pause, b4_end, b5_total, b6_cmnt
@@ -280,7 +297,8 @@ class ShiftExport:
                 body_row.append(Paragraph(cell, styles['NormalCenteredText']))
             table_data.append(body_row)
 
-        # Append new empty lines while we haven't reached the full page capacity!
+        # Append new empty lines while we haven't reached the full page
+        # capacity!
         if i < 18:
             f = i
             while f < 19:
@@ -293,7 +311,8 @@ class ShiftExport:
                 self.context['total_shift_duration'], "%H:%M")
         table_data.append(['', '', '', 'Summe:', total_shift_duration, ''])
 
-        # Create the table. Column width are set to fit the current data correctly.
+        # Create the table. Column width are set to fit the current data
+        # correctly.
         shift_table = Table(
             table_data,
             colWidths=(22.5 * mm, 22.5 * mm, 27.5 * mm, 22.5 * mm, 45 * mm,
@@ -303,9 +322,9 @@ class ShiftExport:
                 ('INNERGRID', (0, 0), (-1, -2), 0.25, colors.black),
                 ('BOX', (0, 0), (-1, -2), 0.25, colors.black),
                 ('INNERGRID', (3, -1), (4, -1), 0.25, colors.black
-                 ),  # Custom grid for last row
+                 ),    # Custom grid for last row
                 ('BOX', (3, -1), (4, -1), 0.25, colors.black
-                 ),  # Custom border for last row
+                 ),    # Custom border for last row
                 ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
                 ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),

@@ -11,16 +11,27 @@ services:
     ports:
       - "5432:5432"
 
+  assets:
+    build:
+      context: .
+      dockerfile: ./docker/local/Dockerfile.assets
+    volumes:
+      - .:/app
+    command: yarn watch
+
   web:
     build:
       context: .
-      dockerfile: ./docker/local/Dockerfile-dev
+      dockerfile: ./docker/local/Dockerfile.web
     command: /start.sh
     environment:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
     volumes:
       - .:/app
+    depends_on:
+      - db
+      - assets
     links:
       - db
     ports:

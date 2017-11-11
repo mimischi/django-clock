@@ -1,0 +1,449 @@
+/* General design
+------------------------- */
+
+html, body {
+    height: 100%;
+    /* The html and body elements cannot have any padding or margin. */
+    font-size: 14px;
+    font: "Helvetica Neue", Verdana, Arial, Helvetica, sans-serif !important;
+    color: #333;
+
+    padding: 0;
+}
+
+header {
+    padding: 20px 0 0;
+    margin-bottom: 0;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -80px;
+    /* Pad bottom by footer height */
+    padding: 0 0 110px;
+}
+
+.container > .row h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+    background-color: #f5f5f5;
+    height: 80px;
+    vertical-align: middle;
+}
+
+/* Vertically center footer content */
+
+#footer > .container {
+    padding-top: 30px;
+}
+
+.error-page {
+    margin-top: 30px;
+}
+
+.error-page img {
+    height: 150px;
+}
+
+.btn-app {
+    border-radius: 3px;
+    position: relative;
+    padding: 15px 5px;
+    margin: 0 0 10px 10px;
+    min-width: 80px;
+    height: 60px;
+    text-align: center;
+    color: #666;
+    border: 1px solid #ddd;
+    background-color: #f4f4f4;
+    font-size: 12px;
+}
+
+.btn-app .fa {
+    font-size: 20px;
+    display: block;
+}
+
+.verticaltext {
+    transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+
+    top: 5px;
+    left: 100px;
+    position: absolute;
+    color: #ed217c;
+}
+
+/* Navbar
+------------------------- */
+
+/* Adjust top margin of navbar on every other page than the landing page */
+
+body > header > .navbar {
+    margin: 20px 0;
+}
+
+.navbar {
+    font-size: 16px;
+}
+
+.navbar .btn {
+    margin: 5px 10px 0 10px;
+    padding: 10px;
+    height: 40px;
+}
+
+/* Set the height to 100%, so we can use an SVG logo! */
+.navbar-brand img {
+    height: 100%;
+}
+
+/* Fancy menu hamburger animation. Adapted from: http://julienmelissas.com/animated-x-icon-for-the-bootstrap-navbar-toggle/
+------------------------- */
+
+.navbar-toggle {
+    border: none;
+    background: transparent !important;
+}
+
+.navbar-toggle:hover {
+    background: transparent !important;
+}
+
+.navbar-toggle .icon-bar {
+    width: 22px;
+    transition: all 0.2s;
+}
+
+.navbar-toggle .top-bar {
+    -ms-transform: rorate(45deg);
+    -ms-transform-origin: 10% 10%;
+    -webkit-transform: rotate(45deg);
+    -webkit-transform-origin: 10% 10%;
+    transform: rotate(45deg);
+    transform-origin: 10% 10%;
+}
+
+.navbar-toggle .middle-bar {
+    opacity: 0;
+}
+
+.navbar-toggle .bottom-bar {
+    -ms-transform: rorate(-45deg);
+    -ms-transform-origin: 10% 90%;
+    -webkit-transform: rotate(-45deg);
+    -webkit-transform-origin: 10% 90%;
+    transform: rotate(-45deg);
+    transform-origin: 10% 90%;
+}
+
+.navbar-toggle.collapsed .top-bar {
+    -ms-transform: rorate(0);
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+}
+
+.navbar-toggle.collapsed .middle-bar {
+    opacity: 1;
+}
+
+.navbar-toggle.collapsed .bottom-bar {
+    -ms-transform: rorate(0);
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+}
+
+/* Eyecatcher
+------------------------- */
+
+.eyecatcher {
+    position: relative;
+    overflow: auto;
+    /* background-image: -webkit-linear-gradient(left, rgb(228, 227, 221) 25%, rgb(0, 97, 143) 100%); */
+    /* background-image: linear-gradient(to right, rgb(228, 227, 221) 25%, rgb(0, 97, 143) 100%); */
+    text-align: center;
+}
+
+.eyecatcher p {
+    font-size: 20px;
+    font-weight: 200;
+    margin-bottom: 30px;
+}
+
+.eyecatcher h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+.eyecatcher .screen {
+    height: 100px;
+    background: url('../images/clock.svg') no-repeat;
+    background-size: 100% 85%;
+    position: relative;
+    /*margin-top: 50px;*/
+}
+
+/* Featurettes
+------------------------- */
+
+.featurette-divider {
+    margin: 30px 0;
+    /* Space out the Bootstrap <hr> more */
+}
+
+/* Let's create some spacing between the first hidden divider and the text*/
+
+.featurette-divider:first-of-type {
+    margin: 0 0 10px;
+}
+
+/*
+HEX HEX - ABRAKADABRA - !!
+This condition looks for every h2.featurette-heading that is NOT in the first
+occurence of div .row .featurette and removes their top margin!
+*/
+
+div.container > div.row.featurette:not(:first-of-type) > div.col-md-7 > h2.featurette-heading {
+    margin-top: 0;
+}
+
+/* Thin out the marketing headings */
+
+.featurette-heading {
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -1px;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+div.row.featurette p.lead {
+    font-size: 18px;
+}
+
+div.row.featurette img {
+    border: 1px solid lightgrey;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    border-radius: 1em;
+}
+
+/* Login & Signup page
+-------------------------------------------------- */
+
+.form-halfpage {
+    max-width: 400px;
+}
+
+.form-halfpage .form-halfpage-heading, .form-halfpage .checkbox {
+    margin-bottom: 30px;
+}
+
+.form-halfpage .checkbox {
+    font-weight: normal;
+}
+
+.form-halfpage .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-halfpage .form-control:focus {
+    z-index: 2;
+}
+
+.form-halfpage input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-halfpage input[type="email"] {
+    margin-bottom: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-halfpage input[type="password"] {
+    margin-bottom: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-halfpage input[type="password"]:last-of-type {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-halfpage > p.pull-right {
+    margin-top: 5px;
+}
+
+.registrationInfo {
+    margin-top: 30px;
+}
+
+.registrationInfo h4 {
+    font-weight: 600;
+}
+
+.below-form {
+    padding-top: 20px;
+}
+
+/* Account settings
+-------------------------------------------------- */
+
+#add-mail {
+    margin-top: 20px;
+}
+
+#change-mail {
+
+}
+
+/* DataTables modifications
+-------------------------------------------------- */
+
+#clockTable > tbody > tr {
+    cursor: pointer;
+    text-align: center;
+}
+
+#clockTable > tbody > tr:active,
+#clockTable > tbody > tr:focus,
+#clockTable > tbody > tr:hover {
+    background-color: rgb(17, 146, 201);
+    color: white;
+}
+
+/* Only change color of the plus/minus sign, if the parent tr is focussed/active/hovered over! */
+#clockTable > tbody > tr:active td.control:before,
+#clockTable > tbody > tr:focus td.control:before,
+#clockTable > tbody > tr:hover td.control:before {
+    color: rgb(255, 255, 255);
+}
+
+#clockTable > tbody td {
+    vertical-align: middle;
+}
+
+#clockTable > tbody td.select-checkbox {
+    /*margin-left: 5px;*/
+    /*margin-right: 5px;*/
+    width: 30px;
+}
+
+tr.child > td.child > ul > li {
+    color: rgb(0, 0, 0);
+    text-align: left;
+}
+
+@media screen and (max-width: 640px) {
+    div.dt-buttons {
+        text-align: inherit;
+    }
+
+}
+
+@media screen and (max-width: 767px) {
+    div.dataTables_wrapper div.dataTables_filter {
+        text-align: right;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    /* Align the pseudo-element checkbox to be in the middle of the cell! */
+    #clockTable > tbody td::before {
+        margin-top: 5px;
+    }
+}
+
+/* Shift Datepicker
+-------------------------------------------------- */
+
+.objectList-topbar .form-group {
+    margin-bottom: 0;
+}
+
+/* Add margin to the bottom of the top menu, except for the last item! */
+.objectList-topbar .col-sm-12:not(:last-of-type) {
+    margin-bottom: 10px;
+}
+
+.second-button {
+    margin: 0 10px;
+}
+
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+
+@media (min-width: 768px) {
+    /* Lastly, apply responsive CSS fixes as necessary */
+    #footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .eyecatcher h1 {
+        font-size: 38px;
+    }
+
+    .eyecatcher p {
+        font-size: 22px;
+    }
+
+    .eyecatcher .screen {
+        height: 300px;
+        margin-top: 30px;
+    }
+
+    .eyecatcher .btn {
+        margin-right: 0;
+    }
+
+    .featurette-heading {
+        font-size: 40px;
+    }
+
+    .registrationInfo {
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 992px) {
+    /* Some spacing between first featurette and the top! */
+    div.row.featurette:first-of-type {
+        margin-top: 30px;
+    }
+
+    div.container > div.row.featurette:not(:first-of-type) > div.col-md-7 > h2.featurette-heading {
+        margin-top: 120px;
+    }
+
+    /* Get rid of the ugly bottom margin */
+    div.row.featurette > div > p.lead {
+        margin-bottom: 0;
+    }
+}

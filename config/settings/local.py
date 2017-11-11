@@ -30,7 +30,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'db_app',
-        'USER': 'db_user' if not env('TRAVIS_CI', default=False) else 'postgres',
+        'USER': 'db_user'
+        if not env('TRAVIS_CI', default=False) else 'postgres',
         'PASSWORD': 'db_pass',
         'HOST': 'db' if env('PYTHONBUFFERED', default=False) else 'localhost',
         'PORT': 5432,
@@ -53,8 +54,8 @@ INSTALLED_APPS += ('debug_toolbar', )
 
 INTERNAL_IPS = ['127.0.0.1', '192.168.99.100', '192.168.99.101']
 
-# tricks to have debug toolbar when developing with docker
-if os.environ.get('USE_DOCKER') == 'yes':
+# Fix django-debug-toolbar when running Django in a Docker container
+if env('INSIDE_DOCKER', default=False):
     ip = socket.gethostbyname(socket.gethostname())
     INTERNAL_IPS += [ip[:-1] + "1"]
 
@@ -63,6 +64,7 @@ DEBUG_TOOLBAR_CONFIG = {
         'debug_toolbar.panels.redirects.RedirectsPanel',
     ],
     'SHOW_TEMPLATE_CONTEXT': True,
+    'JQUERY_URL': '',
 }
 
 # django-extensions

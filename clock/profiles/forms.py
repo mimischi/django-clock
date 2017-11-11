@@ -11,7 +11,9 @@ from clock.users.models import User
 class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', )
+        fields = (
+            'first_name',
+            'last_name', )
 
     def __init__(self, *args, **kwargs):
         super(UpdateUserForm, self).__init__(*args, **kwargs)
@@ -24,12 +26,13 @@ class UpdateUserForm(forms.ModelForm):
 
     def clean(self):
         super(UpdateUserForm, self).clean()
+        first = self.cleaned_data['first_name']
+        last = self.cleaned_data['last_name']
 
-        if self.cleaned_data['first_name'] and not self.cleaned_data['last_name'] \
-           or not self.cleaned_data['first_name'] and self.cleaned_data['last_name']:
+        if (first and not last) or (not first and last):
             raise ValidationError(
-                _('When specifying your real name, you must give both your first and last name.'
-                  ))
+                _('When specifying your real name, you must give both your '
+                  'first and last name.'))
 
 
 class DeleteUserForm(forms.Form):

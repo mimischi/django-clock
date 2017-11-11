@@ -7,7 +7,7 @@ name = "pypi"
 
 [packages]
 
-django = "*"
+Django = "*"
 django-environ = "*"
 whitenoise = "*"
 django-braces = "*"
@@ -17,7 +17,6 @@ django-allauth = "*"
 pytz = "*"
 django-bootstrap-breadcrumbs = "*"
 "django-bootstrap3" = "*"
-"django-bootstrap3-datetimepicker" = {git = "git://github.com/blag/django-bootstrap3-datetimepicker.git", ref = "f8a78b231b75c331c143d5461456f663827a8af6"}
 reportlab = "*"
 lxml = "*"
 django-recaptcha = "*"
@@ -26,16 +25,17 @@ raven = "*"
 gunicorn = "*"
 gevent = "*"
 django-anymail = "*"
+django-webpack-loader = "*"
 
 
 [dev-packages]
 
 coverage = "*"
-django-coverage-plugin = "*"
+django_coverage_plugin = "*"
 django-extensions = "*"
-werkzeug = "*"
+Werkzeug = "*"
 django-test-plus = "*"
-factory-boy = "*"
+factory_boy = "*"
 django-debug-toolbar = "*"
 ipython = "*"
 ipdb = "*"
