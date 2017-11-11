@@ -1,6 +1,6 @@
 {
   "name": "django-clock",
-  "version": "2.0.0",
+  "version": "2.1",
   "main": "webpack.config.js",
   "repository": "git@github.com:mimischi/django-clock",
   "author": "Michael Gecht <gecht.m@gmail.com>",
