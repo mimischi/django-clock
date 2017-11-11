@@ -58,7 +58,7 @@ class ShiftFormTest(TestCase):
 
         start = timezone.now() - timezone.timedelta(0, 3600)
         stop = timezone.now()
-        pause = timezone.timedelta(0, 600)
+        pause = '00:10'
 
         data = {
             'shift_started': start,
@@ -130,7 +130,8 @@ class ShiftFormTest(TestCase):
         data = {
             'shift_started': start,
             'shift_finished': stop,
-            'pause_duration': timezone.timedelta(0, 3000),
+            'pause_duration': '00:50',    # The user input is defined in
+    # "%HH:%mm", so this is 50 minutes.
             'contract': None,
             'key': '',
             'tags': '',
@@ -143,7 +144,6 @@ class ShiftFormTest(TestCase):
         }
         form = ShiftForm(data=data, instance=shift, **kwargs)
         assert form.is_valid()
-
         form.save()
 
         shift = Shift.objects.get(pk=shift.pk)

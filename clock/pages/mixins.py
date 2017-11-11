@@ -3,8 +3,8 @@ from django.views.generic.detail import SingleObjectMixin
 
 
 class UserObjectOwnerMixin(SingleObjectMixin):
-    """
-    Overrides SingleObjectMixin and checks if the user actually created the requested object.
+    """Overrides SingleObjectMixin and checks if the user actually created the
+    requested object.
     """
 
     def get_object(self, queryset=None):

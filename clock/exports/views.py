@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from braces.views import JSONResponseMixin
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest
-from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext_lazy as _
 from django.views.generic.dates import MonthArchiveView
 
 from clock.contracts.models import Contract
@@ -53,7 +50,7 @@ class ExportMonth(PdfResponseMixin, MonthArchiveView):
 class ExportMonthClass(JSONResponseMixin, MonthArchiveView):
     model = Shift
     date_field = "shift_started"
-    json_dumps_kwargs = {u"indent": 2}
+    json_dumps_kwargs = {"indent": 2}
     json_encoder_class = ShiftJSONEncoder
 
     def get_queryset(self):
@@ -66,12 +63,12 @@ class ExportMonthClass(JSONResponseMixin, MonthArchiveView):
             context_dict = ['No shifts available for this given query.']
         else:
             context_dict = [{
-                u"employee": shift.employee.username,
-                u"contract": shift.contract_or_none,
-                u"shift_started": shift.shift_started,
-                u"shift_finished": shift.shift_finished,
-                u"pause_duration": shift.pause_duration,
-                u"shift_duration": shift.shift_duration
+                "employee": shift.employee.username,
+                "contract": shift.contract_or_none,
+                "shift_started": shift.shift_started,
+                "shift_finished": shift.shift_finished,
+                "pause_duration": shift.pause_duration,
+                "shift_duration": shift.shift_duration
             } for shift in self.object]
 
         return self.render_json_response(context_dict)

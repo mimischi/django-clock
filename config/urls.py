@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# from config.favicon_urls import favicon_urlpatters
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
@@ -10,7 +11,6 @@ from django.http import HttpResponse
 from django.views import defaults as default_views
 
 import clock.profiles.views
-from config.favicon_urls import favicon_urlpatters
 
 urlpatterns = [
                   url(r'^', include("clock.pages.urls"), name='pages'),
@@ -37,22 +37,19 @@ urlpatterns = [
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Add all needed favicon redirects to comply with todays OS/browser standards
-urlpatterns += favicon_urlpatters
+# urlpatterns += favicon_urlpatters
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
     # these url in browser to see how these error pages look like.
     urlpatterns += [
-        url(
-            r'^400/$',
+        url(r'^400/$',
             default_views.bad_request,
             kwargs={'exception': Exception("Bad Request!")}),
-        url(
-            r'^403/$',
+        url(r'^403/$',
             default_views.permission_denied,
             kwargs={'exception': Exception("Permission Denied")}),
-        url(
-            r'^404/$',
+        url(r'^404/$',
             default_views.page_not_found,
             kwargs={'exception': Exception("Page not Found")}),
         url(r'^500/$', default_views.server_error),

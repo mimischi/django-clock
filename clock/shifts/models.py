@@ -70,21 +70,27 @@ class Shift(models.Model):
         self.shift_time_validation()
 
     def save(self, *args, **kwargs):
-        """
-        If either the shift_finished or shift_started values were changed,
+        """If either the shift_finished or shift_started values were changed,
         then we'll calculate the shift_duration. Also substract the
         pause_duration while we're at it. This accounts for both the
         quick-action buttons and manual edits in the admin-backend
         or dashboard-frontend.
-        """
-        """
-        The following code block does some rounding to the start and end times of the shifts.
-        It does it as following and only if the shift is newly added:
-            1) Round shift_started, shift_finished and pause_duration by 5 or 1 minute(s), respectively.
-            2) The shift_finished is set to the most logic (up/down) value. Now check if it is the same as the
-            shift_started value (if shift_started and shift_finished were set to the same value). In this case, add 5
-            minutes to the shift_finished value.
-            3) If shift_started is somehow bigger than shift_finished, set shift_finished to be 5 minutes bigger.
+
+        The following code block does some rounding to the start and end times
+        of the shifts. It does it as following and only if the shift is newly
+        added:
+
+            1) Round shift_started, shift_finished and pause_duration by 5 or 1
+            minute(s), respectively.
+
+            2) The shift_finished is set to the most logic (up/down) value. Now
+            check if it is the same as the shift_started value (if
+            shift_started and shift_finished were set to the same value). In
+            this case, add 5 minutes to the shift_finished value.
+
+            3) If shift_started is somehow bigger than shift_finished, set
+        shift_finished to be 5 minutes bigger.
+
         """
         if self.bool_finished is True:
             self.shift_started = round_time(self.shift_started)
@@ -94,14 +100,10 @@ class Shift(models.Model):
             # we will reset the former
             self.pause_duration = round_time(
                 dt=self.pause_duration, date_delta=timedelta(minutes=5))
-            # if self.current_duration > (timezone.now() - self.shift_started):
-            #     self.pause_duration = round_time(
-            #         self.pause_duration, timedelta(minutes=1))
-            # else:
-            #     self.pause_duration = timedelta(minutes=0)
 
-            # account for the case that a user pauses his shift longer than he actually worked. This will make sure
-            # the shift duration is always longer than the pause duration by 5 minutes.
+            # account for the case that a user pauses his shift longer than he
+            # actually worked. This will make sure the shift duration is always
+            # longer than the pause duration by 5 minutes.
             if self.total_pause_time == (
                     self.shift_finished - self.shift_started):
                 self.shift_finished += timedelta(minutes=5)
@@ -118,7 +120,8 @@ class Shift(models.Model):
                 or self.pause_duration != self.__old_pause_duration):
             self.shift_duration = (
                 self.shift_finished - self.shift_started) - self.pause_duration
-        # Lets check if this shift did not exists before and was just added from the shell!
+        # Lets check if this shift did not exists before and was just added
+        # from the shell!
         elif self.pk is None and self.shift_finished is not None:
             self.shift_duration = (
                 self.shift_finished - self.shift_started) - self.pause_duration
@@ -133,19 +136,14 @@ class Shift(models.Model):
         errors = {}
         if self.shift_started and self.shift_finished:
             if self.shift_started > timezone.now():
-                errors['shift_started'] = _('Your shift must not start in the \
-                    future!')
+                errors['shift_started'] = _('Your shift must not start '
+                                            'in the future!')
             if self.shift_finished > timezone.now():
-                errors['shift_finished'] = _('Your shift must not finish in \
-                    the future!')
+                errors['shift_finished'] = _('Your shift must not finish '
+                                             'in the future!')
             if self.shift_finished < self.shift_started:
-                errors['shift_finished'] = _('A shift must not finish, before \
-                    it has even started!')
-
-            # if (self.shift_finished - self.shift_started) > \
-            # timedelta(hours=6):
-            #    errors['shift_finished'] = _('Your shift may not be \
-            # longer than 6 hours.')
+                errors['shift_finished'] = _('A shift must not finish, before '
+                                             'it has even started!')
 
             if errors:
                 raise ValidationError(errors)
@@ -176,16 +174,19 @@ class Shift(models.Model):
     def pause_start_end(self):
         if self.pause_duration.total_seconds() > 0:
             pause_begin = self.shift_finished - self.pause_duration
-            return time.strftime("%H:%M", pause_begin.utctimetuple()) + " - " + \
-                   time.strftime("%H:%M", self.shift_finished.utctimetuple())
+            first = time.strftime("%H:%M", pause_begin.utctimetuple())
+            last = time.strftime("%H:%M", self.shift_finished.utctimetuple())
+            return '{} - {}'.format(first, last)
+
         return "-"
 
     @property
     def contract_or_none(self):
+        """Returns the name of the contract connected to the shift or a string
+        containing "None". :return: Contract name or "None"-string
+
         """
-        Returns the name of the contract connected to the shift or a string containing "None".
-        :return: Contract name or "None"-string
-        """
+        # TODO: This is awful
         if self.contract is None:
             return "None"
         return self.contract.department

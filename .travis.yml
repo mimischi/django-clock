@@ -12,8 +12,11 @@ env:
 
 cache:
   apt: true
+  yarn: true
   directories:
     - $HOME/.cache/pip
+    - node_modules
+
 
 install:
   - make

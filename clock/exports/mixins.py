@@ -7,7 +7,8 @@ from clock.exports.printing import ShiftExport
 
 class PdfResponseMixin(object):
     def render_to_response(self, context, **response_kwargs):
-        filename = "Stundenzettel_" + context['month'].strftime('%Y%m') + ".pdf"
+        filename = "Stundenzettel_{}_.pdf".format(
+            context['month'].strftime('%Y%m'))
 
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=' + filename

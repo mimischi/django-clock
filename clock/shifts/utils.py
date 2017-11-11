@@ -7,13 +7,19 @@ from clock.shifts.models import Shift
 
 
 def get_return_url(request, default_success):
-    """
-    Checks whether the user should be returned to the default_success view or to a special one. Is mostly used for the
-    shift list views, as they can get filtered by month/year and contract ID. After updating/adding one, the user should
-    be redirected to either:
+    """Checks whether the user should be returned to the default_success view or to
+    a special one. Is mostly used for the shift list views, as they can get
+    filtered by month/year and contract ID. After updating/adding one, the user
+    should be redirected to either:
+
         1) The standard shift list view (if no filters were specified)
-        2) The previous visited view (if he updated / created a shift in the same month / contract)
-        3) A filtered view which corresponds to the date/contract of the updated/added shift
+
+        2) The previous visited view (if he updated / created a shift in the
+        same month / contract)
+
+        3) A filtered view which corresponds to the date/contract of the
+        updated/added shift
+
     """
     try:
         last_visited = "shift" in request.session['last_visited']
@@ -51,11 +57,14 @@ def get_return_url(request, default_success):
 
 
 def set_correct_session(request, k):
-    """
-    Method to correctly set the 'last_kwargs' session key, so we can use MonthView filtering.
+    """Method to correctly set the 'last_kwargs' session key, so we can use
+    MonthView filtering.
+
     :param request: request object
     :param k: Key for session
+
     :return: int 00, datetime or None
+
     """
     try:
         return request.session['last_kwargs'][k]
