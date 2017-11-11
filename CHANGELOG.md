@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.1 (2017-11-11)
+
+Small rework of the frontend foundation of the project (no direct frontend changes).
+
+* Use `yarn` to pull in all frontend dependencies.
+* Use `webpack` to compile a `main.js` bundle including JavaScript code and CSS (minified in `production`).
+    * The user only makes one HTTP request to the server and not several to retrieve the frontend libraries.
+   * It's more convinient to add new JavaScript dependencies, as long as we are using this frontend
+* Get rid of the unmaintained `django-bootstrap-datetimepicker3` package. Replace with normally embedded `bootstrap-datetimepicker3`.
+* Change the DateTimePickers to be `inline` always, thus hiding the `input` field from the user.
+* Update formatting and translations.
+* Get rid of `from __future__` imports. The codebase should be Python 3 only now.
+
 ## 2.0 (2017-11-01)
 
 ### Release 2.0
