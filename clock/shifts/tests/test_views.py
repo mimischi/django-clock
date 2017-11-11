@@ -1,12 +1,13 @@
+"""Test shift app views.
+
+All messages are tested for the default English strings.
+"""
 from django.contrib.messages import get_messages
-from django.utils import timezone
+from django.utils import timezone, translation
 from test_plus.test import TestCase
 
 from clock.contracts.models import Contract
 from clock.shifts.models import Shift
-
-"""Test shift app views."""
-
 
 
 class ManualShiftViewTest(TestCase):
@@ -20,16 +21,20 @@ class ManualShiftViewTest(TestCase):
             employee=self.user, department='Test department', hours='50')
 
     def test_manual_shift_start(self):
-        """
-        Assert that we can start a shift when logged in and without having a current shift.
+        """Assert that we can start a shift when logged in and without having a
+        current shift.
         """
         with self.login(username=self.user.username, password='password'):
             response = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_start': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
 
-        messages = [msg for msg in get_messages(response.wsgi_request)]
+        with translation.override('en'):
+            messages = [msg for msg in get_messages(response.wsgi_request)]
 
         shift = Shift.objects.all()[0]
         self.assertFalse(shift.bool_finished)
@@ -42,13 +47,19 @@ class ManualShiftViewTest(TestCase):
         """Assert that we cannot have two shifts running at the same time."""
         with self.login(username=self.user.username, password='password'):
             response1 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_start': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
             response2 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_start': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
 
         messages = [msg for msg in get_messages(response2.wsgi_request)]
 
@@ -66,13 +77,19 @@ class ManualShiftViewTest(TestCase):
         """
         with self.login(username=self.user.username, password='password'):
             response1 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_start': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
             response2 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_pause': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
 
             messages = [msg for msg in get_messages(response2.wsgi_request)]
 
@@ -85,9 +102,12 @@ class ManualShiftViewTest(TestCase):
             self.assertEqual(messages[0].__str__(), 'Your shift was paused.')
 
             response3 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_pause': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
 
             messages = [msg for msg in get_messages(response3.wsgi_request)]
 
@@ -106,13 +126,19 @@ class ManualShiftViewTest(TestCase):
         """
         with self.login(username=self.user.username, password='password'):
             response1 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_start': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
             response2 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_stop': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
 
             messages = [msg for msg in get_messages(response2.wsgi_request)]
 
@@ -130,13 +156,19 @@ class ManualShiftViewTest(TestCase):
         """
         with self.login(username=self.user.username, password='password'):
             response1 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_start': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
             response2 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_pause': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
 
             messages = [msg for msg in get_messages(response2.wsgi_request)]
 
@@ -149,9 +181,12 @@ class ManualShiftViewTest(TestCase):
             self.assertEqual(messages[0].__str__(), 'Your shift was paused.')
 
             response3 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_stop': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
 
             messages = [msg for msg in get_messages(response3.wsgi_request)]
 
@@ -169,9 +204,12 @@ class ManualShiftViewTest(TestCase):
         """
         with self.login(username=self.user.username, password='password'):
             response1 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_stop': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
 
             messages1 = [msg for msg in get_messages(response1.wsgi_request)]
             self.assertEqual(len(messages1), 1)
@@ -180,9 +218,12 @@ class ManualShiftViewTest(TestCase):
                 'You need an active shift to perform this action!')
 
             response2 = self.post(
-                'shift:quick_action', data={
+                'shift:quick_action',
+                data={
                     '_pause': True,
-                }, follow=True)
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'})
             messages2 = [msg for msg in get_messages(response2.wsgi_request)]
             self.assertEqual(len(messages2), 1)
             self.assertEqual(

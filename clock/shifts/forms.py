@@ -6,7 +6,6 @@ from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse_lazy
-from django.forms import DateTimeField
 from django.utils.translation import ugettext_lazy as _
 
 from clock.contracts.models import Contract
@@ -32,9 +31,9 @@ class QuickActionForm(forms.Form):
 
 
 class ShiftForm(forms.ModelForm):
-    shift_started = DateTimeField(
+    shift_started = forms.DateTimeField(
         input_formats=settings.DATETIME_INPUT_FORMATS)
-    shift_finished = DateTimeField(
+    shift_finished = forms.DateTimeField(
         input_formats=settings.DATETIME_INPUT_FORMATS)
 
     class Meta:
@@ -48,6 +47,9 @@ class ShiftForm(forms.ModelForm):
             'tags',
             'note', )
         widgets = {
+            'shift_started': forms.HiddenInput(),
+            'shift_finished': forms.HiddenInput(),
+            'pause_duration': forms.HiddenInput(),
             'contract': forms.Select(attrs={'class': 'selectpicker'}),
             'key': forms.Select(attrs={'class': 'selectpicker'}),
         }
@@ -58,11 +60,6 @@ class ShiftForm(forms.ModelForm):
         self.view = kwargs.pop('view')
         self.user = self.request.user
         super(ShiftForm, self).__init__(*args, **kwargs)
-
-        # Hide the actual input fields
-        self.fields['shift_started'].widget = forms.HiddenInput()
-        self.fields['shift_finished'].widget = forms.HiddenInput()
-        self.fields['pause_duration'].widget = forms.HiddenInput()
 
         # Retrieve all contracts that belong to the user
         self.fields['contract'].queryset = Contract.objects.filter(
@@ -112,7 +109,6 @@ class ShiftForm(forms.ModelForm):
 
     def clean_pause_duration(self):
         pause_duration = self.cleaned_data.get('pause_duration')
-
         return pause_duration * 60
 
     def clean(self):
