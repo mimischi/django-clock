@@ -41,7 +41,7 @@ RUN LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "pipenv install --system --deploy"
 # Copy dokku specific files to the project root
 COPY --chown=app:app docker/dokku/* /app/
 COPY --chown=app:app docker/dokku/entrypoint.sh /
-RUN chmod +x entrypoint.sh
+RUN chmod +x entrypoint.sh /app/deploy.sh
 
 USER app
 WORKDIR /app

@@ -1,6 +1,6 @@
 FROM python:alpine3.6
 # Tell python not to produce any `__pycache__` and `*.pyc` files
-ENV PYTHONBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 INSIDE_DOCKER=1
 
 # Install all dependencies needed to install our python requirements
 RUN apk update \

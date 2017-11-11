@@ -54,8 +54,8 @@ INSTALLED_APPS += ('debug_toolbar', )
 
 INTERNAL_IPS = ['127.0.0.1', '192.168.99.100', '192.168.99.101']
 
-# tricks to have debug toolbar when developing with docker
-if os.environ.get('USE_DOCKER') == 'yes':
+# Fix django-debug-toolbar when running Django in a Docker container
+if env('INSIDE_DOCKER', default=False):
     ip = socket.gethostbyname(socket.gethostname())
     INTERNAL_IPS += [ip[:-1] + "1"]
 
