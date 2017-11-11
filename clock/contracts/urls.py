@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from datetime import datetime
-
 from django.conf.urls import url
 
-from clock.contracts.views import ContractListView, ContractAddView, \
-    ContractUpdateView, ContractDeleteView
-
-# Data to display the current year-month inside the shift_list
-currentDate = datetime.now()
-currentYear = currentDate.strftime("%Y")
-currentMonth = currentDate.strftime("%m")
+from clock.contracts.views import (
+    ContractAddView,
+    ContractDeleteView,
+    ContractListView,
+    ContractUpdateView,
+)
 
 urlpatterns = [
     # Contract URLs

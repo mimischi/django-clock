@@ -52,9 +52,8 @@ class ContractUpdateView(UpdateView, UserObjectOwnerMixin):
     success_url = reverse_lazy('contract:list')
 
     def get_initial(self):
-        """
-        Sets initial data for the ModelForm, so we can use the user object and know which view created this form
-        (CreateView in this case)
+        """Sets initial data for the ModelForm, so we can use the user object and know
+        which view created this form (CreateView in this case)
         """
         return {
             'user': self.request.user,

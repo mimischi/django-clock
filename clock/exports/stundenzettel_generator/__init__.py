@@ -1,4 +1,0 @@
-from opendocument import OpenDocument
-from strategy import Strategy
-from standupstrategy import StandupStrategy
-from StundenzettelGenerator import StundenzettelGenerator

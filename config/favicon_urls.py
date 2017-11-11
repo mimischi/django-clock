@@ -3,11 +3,11 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic import RedirectView
 
 favicon_urlpatters = [
-    url(r'^android-chrome-36x36.png',
-        RedirectView.as_view(
-            url=staticfiles_storage.url(
-                'common/favicons/android-chrome-36x36.png'),
-            permanent=False)),
+    # url(r'^android-chrome-36x36.png',
+    #     RedirectView.as_view(
+    #         url=staticfiles_storage.url(
+    #             'common/favicons/android-chrome-36x36.png'),
+    #         permanent=False)),
     url(r'^android-chrome-48x48.png',
         RedirectView.as_view(
             url=staticfiles_storage.url(

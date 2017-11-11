@@ -1,17 +1,29 @@
-sudo: true
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq build-essential gettext python-dev zlib1g-dev libpq-dev xvfb
-  - sudo apt-get install -qq libtiff4-dev libjpeg8-dev libfreetype6-dev liblcms1-dev libwebp-dev
-  - sudo apt-get install -qq graphviz-dev python-setuptools python3-dev python-virtualenv python-pip
-  - sudo apt-get install -qq firefox automake libtool libreadline6 libreadline6-dev libreadline-dev
-  - sudo apt-get install -qq libsqlite3-dev libxml2 libxml2-dev libssl-dev libbz2-dev wget curl llvm
+sudo: false
+
+services:
+  - postgresql
+
 language: python
 python:
-  - "2.7"
+  - "3.6"
+
+env:
+  - TRAVIS_CI=True
+
+cache:
+  apt: true
+  yarn: true
+  directories:
+    - $HOME/.cache/pip
+    - node_modules
+
+
 install:
-  - "pip install -r requirements/local.txt"
+  - make
+before_script:
+  - psql -c "CREATE DATABASE test_db_app;" -U postgres
+  - psql -c "CREATE USER db_user WITH PASSWORD 'db_pass';" -U postgres
 script:
-  - "py.test --cov=./"
+  - make ci
 after_success:
-  - "codecov"
+  - codecov

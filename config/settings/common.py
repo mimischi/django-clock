@@ -13,11 +13,10 @@ from __future__ import absolute_import, unicode_literals
 import environ
 from django.utils.translation import ugettext_lazy as _
 
-ROOT_DIR = environ.Path(__file__) - 3  # (/settings/config/common.py - 3 = /)
+ROOT_DIR = environ.Path(__file__) - 3    # (/settings/config/common.py - 3 = /)
 APPS_DIR = ROOT_DIR.path('clock')
 
 env = environ.Env()
-#env.read_env()
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -37,19 +36,20 @@ DJANGO_APPS = (
     # Admin
     'django.contrib.admin', )
 THIRD_PARTY_APPS = (
-    'crispy_forms',  # Form layouts
-    'allauth',  # registration
-    'allauth.account',  # registration
-    'allauth.socialaccount',  # registration
+    'webpack_loader',
+    'crispy_forms',    # Form layouts
+    'allauth',    # registration
+    'allauth.account',    # registration
+    'allauth.socialaccount',    # registration
     'django_bootstrap_breadcrumbs',
     'bootstrap3',
-    'bootstrap3_datetime',
+    # 'bootstrap3_datetime',
     'captcha',
     'taggit', )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
-    'clock.users',  # custom users app
+    'clock.users',    # custom users app
     # Your stuff: custom apps go here
     'clock.pages',
     'clock.shifts',
@@ -105,17 +105,6 @@ ADMINS = (("""Michael Gecht""", 'mgecht@stud.uni-frankfurt.de'), )
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
 
-# DATABASE CONFIGURATION
-# ------------------------------------------------------------------------------
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {
-    # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-    'default':
-    env.db(
-        "DATABASE_URL", default="postgres://postgres@localhost:5432/postgres"),
-}
-DATABASES['default']['ATOMIC_REQUESTS'] = True
-
 # GENERAL CONFIGURATION
 # ------------------------------------------------------------------------------
 # Local time zone for this installation. Choices can be found here:
@@ -149,23 +138,23 @@ USE_TZ = True
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#templates
 TEMPLATES = [
     {
-        # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
         'DIRS': [
             str(APPS_DIR.path('templates')),
         ],
         'OPTIONS': {
-            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
             'debug':
             DEBUG,
-            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
-            # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
+    # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',
             ],
-            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
+    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -175,7 +164,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                # Your stuff: custom template context processors go here
+    # Your stuff: custom template context processors go here
                 'django.template.context_processors.request',
             ],
         },
@@ -188,13 +177,15 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # STATIC FILE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = str(ROOT_DIR('staticfiles'))
+STATIC_ROOT = str(ROOT_DIR.path('staticfiles'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = (str(APPS_DIR.path('static')), )
+STATICFILES_DIRS = (
+    str(APPS_DIR.path('static')),
+    str(ROOT_DIR.path('assets')), )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
@@ -272,8 +263,41 @@ ACCOUNT_FORMS = {
 CONTACT_FORM_SUBJECT = _('A new message has arrived!')
 CONTACT_FORM_RECIPIENT = ['clock-kontakt@dlist.server.uni-frankfurt.de']
 
+DATETIME_INPUT_FORMATS = [
+    '%Y-%m-%d %H:%M:%S',
+    '%Y-%m-%d %H:%M:%S.%f',
+    '%Y-%m-%d %H:%M',
+    '%Y-%m-%d',
+    '%m/%d/%Y %H:%M:%S',
+    '%m/%d/%Y %H:%M:%S.%f',
+    '%m/%d/%Y %H:%M',
+    '%m/%d/%Y',
+    '%m/%d/%y %H:%M:%S',
+    '%m/%d/%y %H:%M:%S.%f',
+    '%m/%d/%y %H:%M',
+    '%m/%d/%y',
+    '%m/%d/%Y %H:%M %p',
+    '%m/%d/%y %H:%M %p',
+    '%d.%m.%Y %H:%M',
+    '%d.%m.%Y %H:%M:%s',
+    '%d.%m.%y %H:%M',
+    '%d.%m.%y %H:%M:%s',
+]
+
 # reCAPTCHA settings
 RECAPTCHA_PUBLIC_KEY = '6LdceCITAAAAALjjBfVAxF4gCw-11zB3cclDfAsf'
 RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE_KEY", default=None)
 NOCAPTCHA = True
 RECAPTCHA_USE_SSL = True
+
+# Webpack
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': False,
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': str(ROOT_DIR.path('webpack-stats-local.json')),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}
