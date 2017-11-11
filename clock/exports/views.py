@@ -50,7 +50,7 @@ class ExportMonth(PdfResponseMixin, MonthArchiveView):
 class ExportMonthClass(JSONResponseMixin, MonthArchiveView):
     model = Shift
     date_field = "shift_started"
-    json_dumps_kwargs = {u"indent": 2}
+    json_dumps_kwargs = {"indent": 2}
     json_encoder_class = ShiftJSONEncoder
 
     def get_queryset(self):

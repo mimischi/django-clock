@@ -40,7 +40,7 @@ class WorkingHoursFieldForm(CharField):
         value = super(CharField, self).clean(value)
 
         try:
-            hours, minutes = map(int, value.split(':'))
+            hours, minutes = list(map(int, value.split(':')))
         except ValueError:
             try:
                 hours = int(value)
@@ -86,7 +86,7 @@ class WorkingHoursField(IntegerField):
         # Split into two values and return the duration in minutes!
         if isinstance(value, str):
             try:
-                hours, minutes = map(int, value.split(':'))
+                hours, minutes = list(map(int, value.split(':')))
             except ValueError:
                 raise ValidationError(
                     _('Working hours entered must be in format HH:MM'))
