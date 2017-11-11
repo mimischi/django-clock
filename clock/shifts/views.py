@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib import messages
@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
-from django.utils.timezone import activate
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
 from django.views.generic.dates import (
@@ -247,25 +246,14 @@ class ShiftMonthView(MonthArchiveView):
         return year
 
     def get_month(self):
-        """Returns the current month if none was specified inside the kwargs."""
+        """
+        Returns the current month if none was specified inside the kwargs.
+        """
         if 'month' not in self.kwargs:
             month = timezone.now().strftime("%m")
         else:
             month = super(ShiftMonthView, self).get_month()
         return month
-
-    @property
-    def prev_next_shift(self):
-        context = {}
-        try:
-            month = int(self.kwargs['month'])
-            year = int(self.kwargs['year'])
-        except KeyError:
-            d = date.today()
-            month = d.month
-            year = d.year
-
-        return context
 
     def get_queryset(self):
         return Shift.objects.filter(

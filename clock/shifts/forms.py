@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Field, Fieldset, Layout, Submit
+from crispy_forms.layout import HTML, Field, Layout, Submit
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -71,7 +71,8 @@ class ShiftForm(forms.ModelForm):
         if not self.fields['contract'].queryset:
             self.fields['contract'].widget.attrs['disabled'] = True
 
-        # Set the delete input to be empty. If we are not on an update page, the button will not be shown!
+        # Set the delete input to be empty. If we are not on an update page,
+        # the button will not be shown!
         delete_html_inject = ""
 
         # Are we creating a new shift or updating an existing one?
@@ -79,17 +80,12 @@ class ShiftForm(forms.ModelForm):
             add_input_text = _('Create new shift')
         elif self.view == 'shift_update':
             add_input_text = _('Update')
-            delete_html_inject = u'<a href="%(delete_url)s" class="btn btn-danger pull-right second-button"> \
-                                %(delete_translation)s</a>' % {
-                'delete_url':
+            delete_html_inject = '<a href="{}" class="{}">{}</a>'.format(
                 reverse_lazy('shift:delete', kwargs={'pk': self.instance.pk}),
-                'delete_translation':
-                _('Delete')
-            }
+                'btn btn-danger pull-right second-button', _('Delete'))
 
-        cancel_html_inject = '<a href="%(cancel_url)s" class="btn btn-default">%(cancel_translation)s</a>' % \
-                             {'cancel_url': get_return_url(self.request, 'shift:list'),
-                              'cancel_translation': _('Cancel')}
+        cancel_html = '<a href="{}" class="btn btn-default">{}</a>'.format(
+            get_return_url(self.request, 'shift:list'), _('Cancel'))
 
         self.helper = FormHelper(self)
         self.helper.form_action = '.'
@@ -107,7 +103,7 @@ class ShiftForm(forms.ModelForm):
             Field('contract'), Field('key'), Field('tags'), Field('note'))
         self.helper.layout.append(
             FormActions(
-                HTML(cancel_html_inject),
+                HTML(cancel_html),
                 Submit(
                     'submit',
                     add_input_text,
@@ -134,8 +130,9 @@ class ShiftForm(forms.ModelForm):
                 employee, shift_started, shift_finished)
             if check_for_overlaps:
                 raise ValidationError(
-                    _('Your selected starting/finishing time overlaps with at least one\
-                     finished shift of yours. Please adjust the times.'))
+                    _('Your selected starting/finishing time overlaps with at '
+                      'least one finished shift of yours. '
+                      'Please adjust the times.'))
 
             if (shift_finished - shift_started) < pause_duration:
                 raise ValidationError(
@@ -159,11 +156,13 @@ class ShiftForm(forms.ModelForm):
             shift_started__lte=shift_finished,
             shift_finished__gte=shift_started)
 
-        # Check if the retrieved shifts contain the shift we're trying to update. If yes: pass.
+        # Check if the retrieved shifts contain the shift we're trying to
+        # update.
         for shift in shifts:
             if shift.pk == self.instance.pk:
                 pass
-            elif shift.shift_finished == shift_started or shift.shift_started == shift_finished:
+            elif (shift.shift_finished == shift_started) or (
+                    shift.shift_started == shift_finished):
                 pass
             else:
                 return shifts

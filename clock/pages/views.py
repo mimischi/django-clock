@@ -4,8 +4,12 @@ from django.shortcuts import render
 
 from clock.contracts.models import Contract
 from clock.shifts.forms import QuickActionForm
-from clock.shifts.utils import get_all_contracts, get_current_shift, \
-    get_default_contract, get_last_shifts, get_all_shifts
+from clock.shifts.utils import (
+    get_all_contracts,
+    get_current_shift,
+    get_default_contract,
+    get_last_shifts,
+)
 
 
 def home(request):
