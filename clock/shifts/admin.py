@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from clock.shifts.models import Shift
 
 

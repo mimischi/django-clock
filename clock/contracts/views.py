@@ -4,9 +4,9 @@ from django.utils.decorators import method_decorator
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from clock.pages.mixins import UserObjectOwnerMixin
 from clock.contracts.forms import ContractForm
 from clock.contracts.models import Contract
+from clock.pages.mixins import UserObjectOwnerMixin
 
 
 @method_decorator(login_required, name="dispatch")

@@ -1,10 +1,10 @@
 """Tests for the shift utilities."""
 from test_plus import TestCase
 
+from clock.contracts.models import Contract
 from clock.shifts.factories import ShiftFactory, UserFactory
 from clock.shifts.models import Shift
 from clock.shifts.utils import get_current_shift, get_last_shifts
-from clock.contracts.models import Contract
 
 
 class TestUtils(TestCase):
