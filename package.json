@@ -1,14 +1,14 @@
 {
   "name": "django-clock",
   "version": "2.1",
-  "main": "webpack.config.js",
+  "main": "webpack/webpack.config.js",
   "repository": "git@github.com:mimischi/django-clock",
   "author": "Michael Gecht <gecht.m@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --config webpack.dev.js --progress --colors",
-    "watch": "nodemon --watch webpack.dev.js --watch webpack.common.js --exec \"webpack --config webpack.dev.js --colors --watch\"",
-    "prod": "webpack --config webpack.prod.js --progress --colors"
+    "build": "webpack --config webpack/webpack.dev.js --progress --colors",
+    "watch": "nodemon --watch webpack/webpack.dev.js --watch webpack/webpack.common.js --exec \"webpack --config webpack/webpack.dev.js --colors --watch\"",
+    "prod": "webpack --config webpack/webpack.prod.js --progress --colors"
   },
   "devDependencies": {
     "bootstrap": "^3.3.7",

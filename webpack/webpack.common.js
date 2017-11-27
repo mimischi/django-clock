@@ -4,7 +4,7 @@ var webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-  context: __dirname,
+  context: path.join(__dirname, '..'),
   entry: './assets/js/index.js',
   output: {
     path: path.resolve('./assets/bundles/'),
@@ -57,7 +57,7 @@ module.exports = {
   resolve: {
     alias: {
       // Force all modules to use the same jquery version.
-      'jquery': path.join(__dirname, 'node_modules/jquery/src/jquery'),
+      'jquery': path.join(__dirname, '../node_modules/jquery/src/jquery'),
       'moment': 'moment/moment.js',
       'datetimepicker': 'eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js'
     }
