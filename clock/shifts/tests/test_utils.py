@@ -23,14 +23,15 @@ class TestUtils(TestCase):
         self.assertIsNone(no_shifts)
 
         # Function returns the last 5 shifts per default
-        shifts = ShiftFactory.create_batch(10, employee=employee)
+        ShiftFactory.create_batch(10, employee=employee)
         five_shifts = get_last_shifts(employee)
 
         self.assertEqual(len(five_shifts), 5)
         self.assertIsInstance(five_shifts[0], Shift)
         self.assertEqual(five_shifts[0].employee, employee)
 
-        # Assert we get the correct order, with the latest finished shift first.
+        # Assert we get the correct order, with the latest finished shift
+        # first.
         for i, shift in enumerate(five_shifts):
             try:
                 self.assertTrue(five_shifts[i].shift_finished >
@@ -57,7 +58,7 @@ class TestUtils(TestCase):
         self.assertIsNone(no_shift)
 
         with self.login(username=self.user.username, password='password'):
-            response = self.post(
+            self.post(
                 'shift:quick_action', data={
                     '_start': True,
                 }, follow=True)

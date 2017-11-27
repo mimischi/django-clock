@@ -7,8 +7,8 @@ from django import forms
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
-from django.utils.translation import get_language
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import get_language
 
 
 class ContactForm(forms.Form):
