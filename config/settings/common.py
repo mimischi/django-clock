@@ -71,8 +71,8 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # We're overriding the normal LocaleMiddleware with a small extension for our needs!
-    # 'django.middleware.locale.LocaleMiddleware',
+    # We're overriding the normal LocaleMiddleware with a small extension for
+    # our needs! 'django.middleware.locale.LocaleMiddleware',
     'clock.profiles.middleware.LocaleMiddlewareExtended',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'clock.pages.middleware.LastVisitedMiddleware', )
@@ -88,7 +88,8 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 
 # FIXTURE CONFIGURATION
 # ------------------------------------------------------------------------------
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
+# See:
+# https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
 FIXTURE_DIRS = (str(APPS_DIR.path('fixtures')), )
 
 # EMAIL CONFIGURATION
@@ -138,23 +139,17 @@ USE_TZ = True
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#templates
 TEMPLATES = [
     {
-    # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
         'DIRS': [
             str(APPS_DIR.path('templates')),
         ],
         'OPTIONS': {
-    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
             'debug':
             DEBUG,
-    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
-    # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',
             ],
-    # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -164,14 +159,14 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-    # Your stuff: custom template context processors go here
                 'django.template.context_processors.request',
             ],
         },
     },
 ]
 
-# See: http://django-crispy-forms.readthedocs.org/en/latest/install.html#template-packs
+# See:
+# http://django-crispy-forms.readthedocs.org/en/latest/install.html#template-packs
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # STATIC FILE CONFIGURATION
@@ -182,12 +177,14 @@ STATIC_ROOT = str(ROOT_DIR.path('staticfiles'))
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 
-# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
+# See:
+# https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (
     str(APPS_DIR.path('static')),
     str(ROOT_DIR.path('assets')), )
 
-# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
+# See:
+# https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder', )
@@ -214,7 +211,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME':
-        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',    # noqa
     },
     {
         'NAME':

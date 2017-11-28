@@ -3,10 +3,16 @@ from __future__ import unicode_literals
 
 from django.conf.urls import url
 
-from clock.shifts.views import ShiftManualCreate, \
-    ShiftManualEdit, ShiftManualDelete
-from clock.shifts.views import ShiftMonthContractView, ShiftWeekView, ShiftYearView, ShiftDayView, \
-    shift_action
+from clock.shifts.views import (
+    ShiftDayView,
+    ShiftManualCreate,
+    ShiftManualDelete,
+    ShiftManualEdit,
+    ShiftMonthContractView,
+    ShiftWeekView,
+    ShiftYearView,
+    shift_action,
+)
 
 urlpatterns = [
     # Shift URLs

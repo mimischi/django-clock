@@ -218,12 +218,15 @@ class ShiftExport:
         elements.append(Spacer(1, 4))
         elements.append(
             Paragraph(
-                'Die Aufzeichnungen sind mindestens wöchentlich zu führen, denn es besteht '
-                'die Verpflichtung </para><para fontName="OpenSans-Italic">"Beginn, Ende und Dauer '
-                'der täglichen Arbeitszeit spätestens bis zum Ablauf des siebten auf den Tag der '
-                'Arbeitsleistung folgenden Kalendertages aufzuzeichnen und diese Aufzeichnungen '
-                'mindestens zwei Jahre beginnend ab dem für die Aufzeichnung maßgelblichen '
-                'Zeitpunkt aufzubewahren.“', styles['TitleCentered']))
+                'Die Aufzeichnungen sind mindestens wöchentlich zu führen,'
+                'denn es besteht die Verpflichtung </para>'
+                '<para fontName="OpenSans-Italic">"Beginn, Ende und Dauer '
+                'der täglichen Arbeitszeit spätestens bis zum Ablauf des '
+                'siebten auf den Tag der Arbeitsleistung folgenden '
+                'Kalendertages aufzuzeichnen und diese Aufzeichnungen '
+                'mindestens zwei Jahre beginnend ab dem für die Aufzeichnung '
+                'maßgelblichen Zeitpunkt aufzubewahren.“', styles[
+                    'TitleCentered']))
         elements.append(Spacer(1, 6))
 
         # Add boxes above the table

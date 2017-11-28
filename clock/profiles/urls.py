@@ -5,6 +5,7 @@ from django.conf.urls import url
 from django.views.generic import TemplateView
 
 from clock.profiles.views import delete_user
+
 from . import views
 
 urlpatterns = [

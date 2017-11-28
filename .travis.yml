@@ -13,10 +13,10 @@ env:
 cache:
   apt: true
   yarn: true
+  pip: true
   directories:
     - $HOME/.cache/pip
     - node_modules
-
 
 install:
   - make
@@ -25,5 +25,6 @@ before_script:
   - psql -c "CREATE USER db_user WITH PASSWORD 'db_pass';" -U postgres
 script:
   - make ci
+  - make analyze
 after_success:
   - codecov
