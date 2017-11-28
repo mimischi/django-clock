@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mimischi/django-clock.svg?branch=develop)](https://travis-ci.org/mimischi/django-clock) [![Updates](https://pyup.io/repos/github/mimischi/django-clock/shield.svg)](https://pyup.io/repos/github/mimischi/django-clock/) [![codecov](https://codecov.io/gh/mimischi/django-clock/branch/develop/graph/badge.svg)](https://codecov.io/gh/mimischi/django-clock/branch/develop)
+[![Build Status](https://travis-ci.org/mimischi/django-clock.svg?branch=develop)](https://travis-ci.org/mimischi/django-clock) [![Updates](https://pyup.io/repos/github/mimischi/django-clock/shield.svg)](https://pyup.io/repos/github/mimischi/django-clock/) [![codecov](https://codecov.io/gh/mimischi/django-clock/branch/develop/graph/badge.svg)](https://codecov.io/gh/mimischi/django-clock/branch/develop) [![Maintainability](https://api.codeclimate.com/v1/badges/04b742b4ec8a2ea1bd51/maintainability)](https://codeclimate.com/github/mimischi/django-clock/maintainability)
 
 # Clock
 
