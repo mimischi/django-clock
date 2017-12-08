@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import url
+from django.urls import path
 
 from clock.contracts.views import (
     ContractAddView,
@@ -8,14 +8,15 @@ from clock.contracts.views import (
     ContractUpdateView,
 )
 
+app_name = 'contract'
 urlpatterns = [
     # Contract URLs
     # ListView for all contracts of one employee
-    url(r'^$', ContractListView.as_view(), name="list"),
+    path('', ContractListView.as_view(), name="list"),
     # CreateView to add a new contract
-    url(r'^new/$', ContractAddView.as_view(), name='new'),
+    path('new/', ContractAddView.as_view(), name='new'),
     # UpdateView to update an existing contract
-    url(r'^(?P<pk>\d+)/edit/$', ContractUpdateView.as_view(), name='edit'),
+    path('<int:pk>/edit/', ContractUpdateView.as_view(), name='edit'),
     # DeleteView to delete an existing contract
-    url(r'^(?P<pk>\d+)/delete/$', ContractDeleteView.as_view(), name='delete'),
+    path('<int:pk>/delete/', ContractDeleteView.as_view(), name='delete'),
 ]

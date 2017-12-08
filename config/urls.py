@@ -23,10 +23,10 @@ urlpatterns = [
                                content_type="text/plain")),
 
     # Django Admin
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
 
     # User management
-    url(r'^accounts/', include("clock.profiles.urls", namespace="profiles")),
+    url(r'^accounts/', include('clock.profiles.urls')),
     url(r'^accounts/', include('allauth.urls')),
 
     # Your stuff: custom urls includes go here
@@ -35,10 +35,10 @@ urlpatterns = [
         clock.profiles.views.update_language,
         name='update_language'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
-    url(r'^shift/', include("clock.shifts.urls", namespace="shift")),
-    url(r'^contract/', include("clock.contracts.urls", namespace="contract")),
-    url(r'^export/', include("clock.exports.urls", namespace="export")),
-    url(r'^contact/', include("clock.contact.urls", namespace="contact")),
+    url(r'^shift/', include("clock.shifts.urls")),
+    url(r'^contract/', include("clock.contracts.urls")),
+    url(r'^export/', include("clock.exports.urls")),
+    url(r'^contact/', include("clock.contact.urls"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Add all needed favicon redirects to comply with todays OS/browser standards

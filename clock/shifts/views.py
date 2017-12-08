@@ -237,23 +237,15 @@ class ShiftMonthView(MonthArchiveView):
     class Meta:
         ordering = ["-shift_started"]
 
-    def get_year(self):
-        """Returns the current year if none was specified inside the kwargs."""
-        if 'year' not in self.kwargs:
-            year = timezone.now().strftime("%Y")
-        else:
-            year = super(ShiftMonthView, self).get_year()
-        return year
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Set the current year and month, if those values were not supplied in
+        the URL.
+        """
+        self.year = kwargs.get('year', timezone.now().strftime("%Y"))
+        self.month = kwargs.get('month', timezone.now().strftime("%m"))
 
-    def get_month(self):
-        """
-        Returns the current month if none was specified inside the kwargs.
-        """
-        if 'month' not in self.kwargs:
-            month = timezone.now().strftime("%m")
-        else:
-            month = super(ShiftMonthView, self).get_month()
-        return month
+        return super(ShiftMonthView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         return Shift.objects.filter(
@@ -279,24 +271,21 @@ class ShiftMonthContractView(ShiftMonthView):
     """
     contract = '00'
 
-    def get_context_data(self, **kwargs):
-        context = super(ShiftMonthContractView, self).get_context_data()
+    def dispatch(self, request, *args, **kwargs):
+        """Grab contract numeric-string from URL if the value was passed. Otherwise
+        use a default of '00'.
+        """
+        self.contract = kwargs.get('contract', self.contract)
 
-        if 'contract' not in self.kwargs:
-            self.kwargs['contract'] = self.contract
-        return context
+        return super(ShiftMonthContractView, self).dispatch(
+            request, *args, **kwargs)
 
     def get_queryset(self):
-        try:
-            self.contract = str(self.kwargs['contract'])
-        except KeyError:
-            pass
-
         queryset = Shift.objects.filter(
             employee=self.request.user.pk, shift_finished__isnull=False)
-        if self.contract == "0":
+        if self.contract == '0':
             queryset = queryset.filter(contract__isnull=True)
-        elif self.contract == "00":
+        elif self.contract == '00':
             pass
         else:
             queryset = queryset.filter(contract=self.contract)

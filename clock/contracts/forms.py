@@ -3,7 +3,7 @@ from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Submit
 from django import forms
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from clock.contracts.models import Contract

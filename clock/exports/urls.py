@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
-
-from django.conf.urls import url
+from django.urls import path
 
 from clock.exports.views import (
     ExportContractMonthAPI,
@@ -9,16 +7,20 @@ from clock.exports.views import (
     ExportMonthAPI,
 )
 
+app_name = 'export'
 urlpatterns = [
     # Export URLs
-    url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<pk>\d+)/$',
+    path(
+        '<int:year>/<int:month>/contract/<int:pk>/',
         ExportMonth.as_view(month_format='%m'),
         name="contract"),
-    url(r'^api/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
+    path(
+        'api/<int:year>/<int:month>/',
         ExportMonthAPI.as_view(month_format='%m'),
         name="api_all"),
     # ListView for all shifts of a contract in a month
-    url(r'^api/(?P<year>[0-9]{4})/(?P<month>[0-9]+)/contract/(?P<pk>\d+)/$',
+    path(
+        'api/<int:year>/<int:month>/contract/<int:pk>/',
         ExportContractMonthAPI.as_view(month_format='%m'),
         name='api_contract')
 ]
