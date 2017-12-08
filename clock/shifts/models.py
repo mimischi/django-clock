@@ -19,7 +19,8 @@ class Shift(models.Model):
 
     KEY_CHOICES = ((_('S'), _('Sick')), (_('V'), _('Vacation')))
 
-    employee = models.ForeignKey(settings.AUTH_USER_MODEL)
+    employee = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     contract = models.ForeignKey(
         'contracts.Contract',
         null=True,
