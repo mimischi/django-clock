@@ -14,12 +14,14 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='shift',
-            options={'ordering': ['shift_finished']},
-        ),
+            options={'ordering': ['shift_finished']}, ),
         migrations.AlterField(
             model_name='shift',
             name='contract',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
-                                    to='contracts.Contract', verbose_name='Contract'),
-        ),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=models.deletion.CASCADE,
+                to='contracts.Contract',
+                verbose_name='Contract'), ),
     ]

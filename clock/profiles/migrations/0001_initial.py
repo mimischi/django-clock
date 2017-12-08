@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('fullname', models.CharField(blank=True, max_length=255, verbose_name='Full name')),
                 ('language',
-                 models.CharField(choices=[('de', 'German'), ('en', 'English')], default=b'de', max_length=2,
+                 models.CharField(choices=[('de', 'German'), ('en', 'English')], default='de', max_length=2,
                                   verbose_name='Site language')),
                 (
                 'user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
