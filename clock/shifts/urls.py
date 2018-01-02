@@ -2,12 +2,10 @@
 from django.urls import path
 
 from clock.shifts.views import (
-    ShiftDayView,
     ShiftManualCreate,
     ShiftManualDelete,
     ShiftManualEdit,
     ShiftMonthContractView,
-    ShiftWeekView,
     ShiftYearView,
     shift_action,
 )
@@ -27,14 +25,6 @@ urlpatterns = [
     path('<int:pk>/delete/', ShiftManualDelete.as_view(), name='delete'),
 
     # Shift Archive URLs
-    path(
-        '<int:year>/<str:month>/<int:day>/',
-        ShiftDayView.as_view(),
-        name="archive_day"),
-    path(
-        '<int:year>/week/<int:week>/',
-        ShiftWeekView.as_view(),
-        name="archive_week"),
     path(
         '<int:year>/<int:month>/',
         ShiftMonthContractView.as_view(month_format='%m'),

@@ -203,31 +203,6 @@ class ShiftManualDelete(DeleteView, UserObjectOwnerMixin):
 
 
 @method_decorator(login_required, name="dispatch")
-class ShiftDayView(DayArchiveView):
-    date_field = "shift_started"
-    allow_future = False
-    allow_empty = True
-    template_name = 'shift/day_archive_view.html'
-
-    def get_queryset(self):
-        return Shift.objects.filter(
-            employee=self.request.user).order_by('shift_started')
-
-
-@method_decorator(login_required, name="dispatch")
-class ShiftWeekView(WeekArchiveView):
-    date_field = "shift_started"
-    week_format = "%W"
-    allow_future = False
-    allow_empty = True
-    template_name = 'shift/week_archive_view.html'
-
-    def get_queryset(self):
-        return Shift.objects.filter(
-            employee=self.request.user).order_by('shift_started')
-
-
-@method_decorator(login_required, name="dispatch")
 class ShiftMonthView(MonthArchiveView):
     date_field = "shift_started"
     allow_empty = True

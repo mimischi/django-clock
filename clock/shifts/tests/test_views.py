@@ -256,9 +256,9 @@ class ShiftsViewTest(TestCase):
 
         # Test the other list views. Contract IDs used reflect non-existing
         # contracts!
-        self.assertLoginRequired(
-            'shift:archive_day', year=2016, month=6, day=10)
-        self.assertLoginRequired('shift:archive_week', year=2016, week=10)
+        # self.assertLoginRequired(
+        #     'shift:archive_day', year=2016, month=6, day=10)
+        # self.assertLoginRequired('shift:archive_week', year=2016, week=10)
         self.assertLoginRequired(
             'shift:archive_month_numeric', year=2016, month=5)
         self.assertLoginRequired(
@@ -290,10 +290,10 @@ class ShiftsViewTest(TestCase):
 
             # Test other list views. The template here is not working.
             # Therefore a 404 error is expected!
-            day = self.get('shift:archive_day', year=2016, month=5, day=1)
-            self.response_404(day)
+            # day = self.get('shift:archive_day', year=2016, month=5, day=1)
+            # self.response_404(day)
 
-            self.get_check_200('shift:archive_week', year=2016, week=10)
+            # self.get_check_200('shift:archive_week', year=2016, week=10)
             self.get_check_200(
                 'shift:archive_month_numeric', year=2016, month=5)
             self.get_check_200(
