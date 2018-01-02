@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 
 # from config.favicon_urls import favicon_urlpatters
 from django.conf import settings
