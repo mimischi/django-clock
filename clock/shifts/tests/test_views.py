@@ -38,7 +38,7 @@ class ManualShiftViewTest(TestCase):
 
         shift = Shift.objects.all()[0]
         self.assertFalse(shift.bool_finished)
-        self.assertIsNone(shift.shift_finished)
+        self.assertIsNone(shift.finished)
 
         self.assertEqual(len(messages), 1)
         self.assertEqual(messages[0].__str__(), 'Your shift has started!')
@@ -65,7 +65,7 @@ class ManualShiftViewTest(TestCase):
 
         shift = Shift.objects.all()[0]
         self.assertFalse(shift.bool_finished)
-        self.assertIsNone(shift.shift_finished)
+        self.assertIsNone(shift.finished)
 
         self.assertEqual(len(messages), 1)
         self.assertEqual(messages[0].__str__(),
@@ -95,7 +95,7 @@ class ManualShiftViewTest(TestCase):
 
             shift = Shift.objects.all()[0]
             self.assertFalse(shift.bool_finished)
-            self.assertIsNone(shift.shift_finished)
+            self.assertIsNone(shift.finished)
             self.assertTrue(shift.is_paused)
 
             self.assertEqual(len(messages), 1)
@@ -113,7 +113,7 @@ class ManualShiftViewTest(TestCase):
 
             shift = Shift.objects.all()[0]
             self.assertFalse(shift.bool_finished)
-            self.assertIsNone(shift.shift_finished)
+            self.assertIsNone(shift.finished)
             self.assertFalse(shift.is_paused)
 
             self.assertEqual(len(messages), 1)
@@ -144,7 +144,7 @@ class ManualShiftViewTest(TestCase):
 
             shift = Shift.objects.all()[0]
             self.assertTrue(shift.bool_finished)
-            self.assertIsNotNone(shift.shift_finished)
+            self.assertIsNotNone(shift.finished)
             self.assertFalse(shift.is_paused)
 
             self.assertEqual(len(messages), 1)
@@ -174,7 +174,7 @@ class ManualShiftViewTest(TestCase):
 
             shift = Shift.objects.all()[0]
             self.assertFalse(shift.bool_finished)
-            self.assertIsNone(shift.shift_finished)
+            self.assertIsNone(shift.finished)
             self.assertTrue(shift.is_paused)
 
             self.assertEqual(len(messages), 1)
@@ -192,7 +192,7 @@ class ManualShiftViewTest(TestCase):
 
             shift = Shift.objects.all()[0]
             self.assertTrue(shift.bool_finished)
-            self.assertIsNotNone(shift.shift_finished)
+            self.assertIsNotNone(shift.finished)
             self.assertFalse(shift.is_paused)
 
             self.assertEqual(len(messages), 1)
@@ -312,8 +312,8 @@ class ShiftsViewTest(TestCase):
         now = timezone.now()
         shift = Shift.objects.create(
             employee=user1,
-            shift_started=now,
-            shift_finished=now + timezone.timedelta(0, 3600))
+            started=now,
+            finished=now + timezone.timedelta(0, 3600))
         shift.save()
 
         with self.login(username=user1.username, password='password'):
@@ -334,8 +334,8 @@ class ShiftsViewTest(TestCase):
         now = timezone.now()
         shift = Shift.objects.create(
             employee=user1,
-            shift_started=now,
-            shift_finished=now + timezone.timedelta(0, 3600))
+            started=now,
+            finished=now + timezone.timedelta(0, 3600))
         shift.save()
 
         with self.login(username=user1.username, password='password'):
@@ -354,8 +354,8 @@ class ShiftsViewTest(TestCase):
         now = timezone.now()
         shift = Shift.objects.create(
             employee=user1,
-            shift_started=now,
-            shift_finished=now + timezone.timedelta(0, 3600),
+            started=now,
+            finished=now + timezone.timedelta(0, 3600),
             contract=self.contract1)
         shift.save()
 

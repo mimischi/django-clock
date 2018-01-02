@@ -278,15 +278,14 @@ class ShiftExport:
         for i, shift in enumerate(shifts):
             # Not sure why, but timezone.localtime() is not working here.
             # Instead timezone.template_localtime() is, so we're using it
-            b1_date = timezone.template_localtime(
-                shift.shift_started).strftime('%d.%m.%Y')    # e.g. 24.12.2016
-            b2_start = timezone.template_localtime(
-                shift.shift_started).strftime("%H:%M")    # e.g. 08:15
+            b1_date = timezone.template_localtime(shift.started).strftime(
+                '%d.%m.%Y')    # e.g. 24.12.2016
+            b2_start = timezone.template_localtime(shift.started).strftime(
+                "%H:%M")    # e.g. 08:15
             b3_pause = shift.pause_start_end    # e.g. 08:15 - 15:55
-            b4_end = timezone.template_localtime(
-                shift.shift_finished).strftime("%H:%M")    # e.g. 15:55
-            b5_total = format_dttd(shift.shift_duration,
-                                   "%H:%M")    # e.g. 07:40
+            b4_end = timezone.template_localtime(shift.finished).strftime(
+                "%H:%M")    # e.g. 15:55
+            b5_total = format_dttd(shift.duration, "%H:%M")    # e.g. 07:40
             b6_cmnt = shift.key    # e.g. "K" or "U"
 
             # We want every cell content to be an own paragraph, so we can give

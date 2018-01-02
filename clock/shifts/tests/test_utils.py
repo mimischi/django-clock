@@ -34,8 +34,8 @@ class TestUtils(TestCase):
         # first.
         for i, shift in enumerate(five_shifts):
             try:
-                self.assertTrue(five_shifts[i].shift_finished >
-                                five_shifts[i + 1].shift_finished)
+                self.assertTrue(
+                    five_shifts[i].finished > five_shifts[i + 1].finished)
             except IndexError:
                 pass
 
@@ -49,7 +49,7 @@ class TestUtils(TestCase):
 
         # Make sure we only retrieve finished shifts
         for shift in eleven_shifts:
-            self.assertIsNotNone(shift.shift_finished)
+            self.assertIsNotNone(shift.finished)
 
     def test_retrieve_current_running_shift(self):
         """Test that we can retrieve the currently running shift."""
@@ -65,4 +65,4 @@ class TestUtils(TestCase):
 
             last_shift = get_current_shift(self.user)
             self.assertIsNotNone(last_shift)
-            self.assertIsNone(last_shift.shift_finished, '')
+            self.assertIsNone(last_shift.finished, '')

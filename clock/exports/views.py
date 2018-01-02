@@ -15,7 +15,7 @@ from clock.shifts.models import Shift
 @method_decorator(login_required, name="dispatch")
 class ExportMonth(PdfResponseMixin, MonthArchiveView):
     model = Shift
-    date_field = "shift_started"
+    date_field = "started"
     allow_empty = True
 
     def get_context_data(self, **kwargs):
@@ -34,7 +34,7 @@ class ExportMonth(PdfResponseMixin, MonthArchiveView):
 
         total_shift_duration = timedelta(seconds=0)
         for shift in context['shift_list']:
-            total_shift_duration += shift.shift_duration
+            total_shift_duration += shift.duration
             context['total_shift_duration'] = total_shift_duration
         return context
 
@@ -43,13 +43,13 @@ class ExportMonth(PdfResponseMixin, MonthArchiveView):
         return Shift.objects.filter(
             employee=self.request.user.pk,
             contract=contract_pk,
-            shift_finished__isnull=False)
+            finished__isnull=False)
 
 
 @method_decorator(login_required, name="dispatch")
 class ExportMonthClass(JSONResponseMixin, MonthArchiveView):
     model = Shift
-    date_field = "shift_started"
+    date_field = "started"
     json_dumps_kwargs = {"indent": 2}
     json_encoder_class = ShiftJSONEncoder
 
@@ -65,10 +65,10 @@ class ExportMonthClass(JSONResponseMixin, MonthArchiveView):
             context_dict = [{
                 "employee": shift.employee.username,
                 "contract": shift.contract_or_none,
-                "shift_started": shift.shift_started,
-                "shift_finished": shift.shift_finished,
+                "started": shift.started,
+                "finished": shift.finished,
                 "pause_duration": shift.pause_duration,
-                "shift_duration": shift.shift_duration
+                "duration": shift.duration
             } for shift in self.object]
 
         return self.render_json_response(context_dict)

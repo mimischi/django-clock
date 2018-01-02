@@ -13,7 +13,7 @@ from clock.pages.utils import round_time
 
 class Shift(models.Model):
     """
-    Employees start/pause/stop shifts to track their worktime.
+    Employees begin and finish shifts to track their worktime.
     May be assigned to a contract.
     """
 
@@ -27,12 +27,12 @@ class Shift(models.Model):
         blank=True,
         on_delete=models.CASCADE,
         verbose_name=_('Contract'))
-    shift_started = models.DateTimeField(verbose_name=_('Shift started'))
-    shift_finished = models.DateTimeField(
+    started = models.DateTimeField(verbose_name=_('Shift started'))
+    finished = models.DateTimeField(
         null=True, verbose_name=_('Shift finished'))
     bool_finished = models.BooleanField(
         default=False, verbose_name=_('Shift completed?'))
-    shift_duration = models.DurationField(
+    duration = models.DurationField(
         blank=True, null=True, verbose_name=_('Shift duration'))
     pause_started = models.DateTimeField(blank=True, null=True)
     pause_duration = models.DurationField(
@@ -44,7 +44,7 @@ class Shift(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-shift_finished']
+        ordering = ['-finished']
 
     def __str__(self):
         """
@@ -54,14 +54,14 @@ class Shift(models.Model):
 
     def __init__(self, *args, **kwargs):
         """
-        Initialize the model with the old shift_started/shift_finished values,
+        Initialize the model with the old started/finished values,
         so we can compare them with the new ones in the save() method.
         """
         super(Shift, self).__init__(*args, **kwargs)
-        self.__old_shift_started = self.shift_started
-        self.__old_shift_finished = self.shift_finished
+        self.__old_started = self.started
+        self.__old_finished = self.finished
         self.__old_pause_duration = self.pause_duration
-        self.__old_shift_duration = self.shift_duration
+        self.__old_duration = self.duration
 
     def clean(self, *args, **kwargs):
         """
@@ -71,8 +71,8 @@ class Shift(models.Model):
         self.shift_time_validation()
 
     def save(self, *args, **kwargs):
-        """If either the shift_finished or shift_started values were changed,
-        then we'll calculate the shift_duration. Also substract the
+        """If either the finished or started values were changed,
+        then we'll calculate the duration. Also substract the
         pause_duration while we're at it. This accounts for both the
         quick-action buttons and manual edits in the admin-backend
         or dashboard-frontend.
@@ -81,21 +81,21 @@ class Shift(models.Model):
         of the shifts. It does it as following and only if the shift is newly
         added:
 
-            1) Round shift_started, shift_finished and pause_duration by 5 or 1
+            1) Round started, finished and pause_duration by 5 or 1
             minute(s), respectively.
 
-            2) The shift_finished is set to the most logic (up/down) value. Now
-            check if it is the same as the shift_started value (if
-            shift_started and shift_finished were set to the same value). In
-            this case, add 5 minutes to the shift_finished value.
+            2) The finished is set to the most logic (up/down) value. Now
+            check if it is the same as the started value (if
+            started and finished were set to the same value). In
+            this case, add 5 minutes to the finished value.
 
-            3) If shift_started is somehow bigger than shift_finished, set
-        shift_finished to be 5 minutes bigger.
+            3) If started is somehow bigger than finished, set
+        finished to be 5 minutes bigger.
 
         """
         if self.bool_finished is True:
-            self.shift_started = round_time(self.shift_started)
-            self.shift_finished = round_time(self.shift_finished)
+            self.started = round_time(self.started)
+            self.finished = round_time(self.finished)
 
             # If the pause duration is larger than the actual shift duration,
             # we will reset the former
@@ -105,27 +105,26 @@ class Shift(models.Model):
             # account for the case that a user pauses his shift longer than he
             # actually worked. This will make sure the shift duration is always
             # longer than the pause duration by 5 minutes.
-            if self.total_pause_time == (
-                    self.shift_finished - self.shift_started):
-                self.shift_finished += timedelta(minutes=5)
+            if self.total_pause_time == (self.finished - self.started):
+                self.finished += timedelta(minutes=5)
 
-            if self.shift_started == self.shift_finished:
-                self.shift_finished += timedelta(minutes=5)
-            elif self.shift_started > self.shift_finished:
-                self.shift_finished = self.shift_started + timedelta(minutes=5)
+            if self.started == self.finished:
+                self.finished += timedelta(minutes=5)
+            elif self.started > self.finished:
+                self.finished = self.started + timedelta(minutes=5)
 
         # Lets check if this shift is just being updated
-        if self.pk is not None and self.shift_finished is not None and (
-                self.shift_finished != self.__old_shift_finished or
-                self.shift_started != self.__old_shift_started or
-                self.pause_duration != self.__old_pause_duration):
-            self.shift_duration = (
-                self.shift_finished - self.shift_started) - self.pause_duration
+        if self.pk is not None and self.finished is not None and (
+                self.finished != self.__old_finished
+                or self.started != self.__old_started
+                or self.pause_duration != self.__old_pause_duration):
+            self.duration = (
+                self.finished - self.started) - self.pause_duration
         # Lets check if this shift did not exists before and was just added
         # from the shell!
-        elif self.pk is None and self.shift_finished is not None:
-            self.shift_duration = (
-                self.shift_finished - self.shift_started) - self.pause_duration
+        elif self.pk is None and self.finished is not None:
+            self.duration = (
+                self.finished - self.started) - self.pause_duration
 
         return super(Shift, self).save(*args, **kwargs)
 
@@ -135,16 +134,16 @@ class Shift(models.Model):
         and other violations.
         """
         errors = {}
-        if self.shift_started and self.shift_finished:
-            if self.shift_started > timezone.now():
-                errors['shift_started'] = _('Your shift must not start '
-                                            'in the future!')
-            if self.shift_finished > timezone.now():
-                errors['shift_finished'] = _('Your shift must not finish '
-                                             'in the future!')
-            if self.shift_finished < self.shift_started:
-                errors['shift_finished'] = _('A shift must not finish, before '
-                                             'it has even started!')
+        if self.started and self.finished:
+            if self.started > timezone.now():
+                errors['started'] = _('Your shift must not start '
+                                      'in the future!')
+            if self.finished > timezone.now():
+                errors['finished'] = _('Your shift must not finish '
+                                       'in the future!')
+            if self.finished < self.started:
+                errors['finished'] = _('A shift must not finish, before '
+                                       'it has even started!')
 
             if errors:
                 raise ValidationError(errors)
@@ -169,14 +168,14 @@ class Shift(models.Model):
 
     @property
     def current_duration(self):
-        return timezone.now() - self.shift_started - self.total_pause_time
+        return timezone.now() - self.started - self.total_pause_time
 
     @property
     def pause_start_end(self):
         if self.pause_duration.total_seconds() > 0:
-            pause_begin = self.shift_finished - self.pause_duration
+            pause_begin = self.finished - self.pause_duration
             first = time.strftime("%H:%M", pause_begin.utctimetuple())
-            last = time.strftime("%H:%M", self.shift_finished.utctimetuple())
+            last = time.strftime("%H:%M", self.finished.utctimetuple())
             return '{} - {}'.format(first, last)
 
         return "-"

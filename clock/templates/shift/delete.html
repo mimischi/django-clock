@@ -11,7 +11,7 @@
         {% csrf_token %}
         <div class="alert alert-danger">
             <p>{% trans "Are you sure you want to delete the following shift?" %}</p>
-            <p>{{ object.shift_started }}, {{ object.shift_finished }}, Duration: {{ object.shift_duration }}</p>
+            <p>{{ object.started }}, {{ object.finished }}, Duration: {{ object.duration }}</p>
         </div>
         {% buttons %}
             <button type="submit" class="btn btn-danger pull-right"><i

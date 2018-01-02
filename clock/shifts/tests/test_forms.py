@@ -34,8 +34,8 @@ class ShiftFormTest(TestCase):
         pause = timezone.timedelta(0, 0)
 
         data = {
-            'shift_started': start,
-            'shift_finished': stop,
+            'started': start,
+            'finished': stop,
             'pause_duration': pause,
             'contract': None,
             'key': '',
@@ -61,8 +61,8 @@ class ShiftFormTest(TestCase):
         pause = '00:10'
 
         data = {
-            'shift_started': start,
-            'shift_finished': stop,
+            'started': start,
+            'finished': stop,
             'pause_duration': pause,
             'contract': None,
             'key': '',
@@ -91,8 +91,8 @@ class ShiftFormTest(TestCase):
         pause = timezone.timedelta(0, 3601)
 
         data = {
-            'shift_started': start,
-            'shift_finished': stop,
+            'started': start,
+            'finished': stop,
             'pause_duration': pause,
             'contract': None,
             'key': '',
@@ -118,8 +118,8 @@ class ShiftFormTest(TestCase):
 
         shift = Shift.objects.create(
             employee=self.user,
-            shift_started=start,
-            shift_finished=stop,
+            started=start,
+            finished=stop,
             pause_duration=pause,
             bool_finished=True)
 
@@ -130,8 +130,8 @@ class ShiftFormTest(TestCase):
         # The user input is defined in "%HH:%mm", so the duration is set to
         # "00:50", which here translated to 50 minutes.
         data = {
-            'shift_started': start,
-            'shift_finished': stop,
+            'started': start,
+            'finished': stop,
             'pause_duration': '00:50',
             'contract': None,
             'key': '',
@@ -148,4 +148,4 @@ class ShiftFormTest(TestCase):
         form.save()
 
         shift = Shift.objects.get(pk=shift.pk)
-        assert shift.shift_duration == timezone.timedelta(0, 15000)
+        assert shift.duration == timezone.timedelta(0, 15000)

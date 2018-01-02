@@ -20,11 +20,11 @@ class ShiftTest(TestCase):
 
         shift = Shift.objects.create(
             employee=self.user,
-            shift_started=start,
-            shift_finished=stop,
+            started=start,
+            finished=stop,
             bool_finished=True)
 
-        assert shift.shift_duration == timezone.timedelta(0, 3600)
+        assert shift.duration == timezone.timedelta(0, 3600)
 
     def test_shift_duration_rounding(self):
         """Check that the rounding of shift start / finished times actually works as
@@ -37,11 +37,11 @@ class ShiftTest(TestCase):
 
         shift1 = Shift.objects.create(
             employee=self.user,
-            shift_started=start1,
-            shift_finished=stop1,
+            started=start1,
+            finished=stop1,
             bool_finished=True)
 
-        assert shift1.shift_duration == timezone.timedelta(0, 600)
+        assert shift1.duration == timezone.timedelta(0, 600)
 
         # Finish 8 minutes later. Total duration should be 10 minutes.
         start2 = timezone.make_aware(timezone.datetime(2017, 1, 1, 12, 0))
@@ -49,11 +49,11 @@ class ShiftTest(TestCase):
 
         shift2 = Shift.objects.create(
             employee=self.user,
-            shift_started=start2,
-            shift_finished=stop2,
+            started=start2,
+            finished=stop2,
             bool_finished=True)
 
-        assert shift2.shift_duration == timezone.timedelta(0, 600)
+        assert shift2.duration == timezone.timedelta(0, 600)
 
         # Finish 13 minutes later. Total duration should be 15 minutes.
         start3 = timezone.make_aware(timezone.datetime(2017, 1, 1, 12, 0))
@@ -61,11 +61,11 @@ class ShiftTest(TestCase):
 
         shift3 = Shift.objects.create(
             employee=self.user,
-            shift_started=start3,
-            shift_finished=stop3,
+            started=start3,
+            finished=stop3,
             bool_finished=True)
 
-        assert shift3.shift_duration == timezone.timedelta(0, 900)
+        assert shift3.duration == timezone.timedelta(0, 900)
 
     def test_minimum_shift_length(self):
         """Make sure that the minimum shift length is 5 minutes."""
@@ -74,11 +74,11 @@ class ShiftTest(TestCase):
 
         shift = Shift.objects.create(
             employee=self.user,
-            shift_started=start,
-            shift_finished=stop,
+            started=start,
+            finished=stop,
             bool_finished=True)
 
-        assert shift.shift_duration == timezone.timedelta(0, 300)
+        assert shift.duration == timezone.timedelta(0, 300)
 
     def test_pause_time(self):
         """
@@ -91,12 +91,12 @@ class ShiftTest(TestCase):
 
         shift = Shift.objects.create(
             employee=self.user,
-            shift_started=start,
-            shift_finished=stop,
+            started=start,
+            finished=stop,
             pause_duration=pause,
             bool_finished=True)
 
-        assert shift.shift_duration == timezone.timedelta(0, 3000)
+        assert shift.duration == timezone.timedelta(0, 3000)
 
     def test_update_pause_duration(self):
         """
@@ -110,12 +110,12 @@ class ShiftTest(TestCase):
 
         shift = Shift.objects.create(
             employee=self.user,
-            shift_started=start,
-            shift_finished=stop,
+            started=start,
+            finished=stop,
             pause_duration=pause,
             bool_finished=True)
 
-        assert shift.shift_duration == timezone.timedelta(0, 15000)
+        assert shift.duration == timezone.timedelta(0, 15000)
         assert shift.pause_duration == pause
 
         new_pause = timezone.timedelta(0, 1500)
@@ -123,7 +123,7 @@ class ShiftTest(TestCase):
         shift.save()
 
         assert shift.pause_duration == new_pause
-        assert shift.shift_duration == timezone.timedelta(0, 16500)
+        assert shift.duration == timezone.timedelta(0, 16500)
 
     @freeze_time("2017-01-01 12:00:00")
     def test_shift_methods(self):
@@ -133,8 +133,8 @@ class ShiftTest(TestCase):
 
         shift = Shift(
             employee=self.user,
-            shift_started=start,
-            shift_finished=stop, )
+            started=start,
+            finished=stop, )
 
         # Check default values for freshly started shift
         assert not shift.is_finished
@@ -175,6 +175,6 @@ class ShiftTest(TestCase):
         assert isinstance(shift.current_duration, timezone.timedelta)
         assert shift.current_duration == timezone.now() - start - pause
 
-        shift.shift_finished = stop
+        shift.finished = stop
         shift.bool_finished = True
         assert shift.is_finished

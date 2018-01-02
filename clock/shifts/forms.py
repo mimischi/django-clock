@@ -31,16 +31,16 @@ class QuickActionForm(forms.Form):
 
 
 class ShiftForm(forms.ModelForm):
-    shift_started = forms.DateTimeField(
+    started = forms.DateTimeField(
         input_formats=settings.DATETIME_INPUT_FORMATS)
-    shift_finished = forms.DateTimeField(
+    finished = forms.DateTimeField(
         input_formats=settings.DATETIME_INPUT_FORMATS)
 
     class Meta:
         model = Shift
         fields = (
-            'shift_started',
-            'shift_finished',
+            'started',
+            'finished',
             'pause_duration',
             'contract',
             'key',
@@ -58,8 +58,8 @@ class ShiftForm(forms.ModelForm):
         self.user = self.request.user
         super(ShiftForm, self).__init__(*args, **kwargs)
 
-        self.fields['shift_started'].widget = forms.HiddenInput()
-        self.fields['shift_finished'].widget = forms.HiddenInput()
+        self.fields['started'].widget = forms.HiddenInput()
+        self.fields['finished'].widget = forms.HiddenInput()
         self.fields['pause_duration'].widget = forms.HiddenInput()
 
         # Retrieve all contracts that belong to the user
@@ -90,11 +90,9 @@ class ShiftForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
             Field(
-                'shift_started',
-                template='shift/fields/datetimepicker_field.html'),
+                'started', template='shift/fields/datetimepicker_field.html'),
             Field(
-                'shift_finished',
-                template='shift/fields/datetimepicker_field.html'),
+                'finished', template='shift/fields/datetimepicker_field.html'),
             Field(
                 'pause_duration',
                 template='shift/fields/datetimepicker_field.html'),
@@ -116,22 +114,22 @@ class ShiftForm(forms.ModelForm):
         cleaned_data = super(ShiftForm, self).clean()
 
         employee = self.user
-        shift_started = cleaned_data.get('shift_started')
-        shift_finished = cleaned_data.get('shift_finished')
+        started = cleaned_data.get('started')
+        finished = cleaned_data.get('finished')
         pause_duration = cleaned_data.get('pause_duration')
 
         # If both values were entered into the form,
         # check if they overlap with any other shifts
-        if shift_finished and shift_started:
+        if finished and started:
             check_for_overlaps = self.check_for_overlaps(
-                employee, shift_started, shift_finished)
+                employee, started, finished)
             if check_for_overlaps:
                 raise ValidationError(
                     _('Your selected starting/finishing time overlaps with at '
                       'least one finished shift of yours. '
                       'Please adjust the times.'))
 
-            if (shift_finished - shift_started) < pause_duration:
+            if (finished - started) < pause_duration:
                 raise ValidationError(
                     _('A pause may not be longer than your actual shift.'))
 
@@ -141,7 +139,7 @@ class ShiftForm(forms.ModelForm):
 
     # This could go into models.. at some point? When we create a shift through
     # the shell, no checks will be performed for overlaps!
-    def check_for_overlaps(self, employee, shift_started, shift_finished):
+    def check_for_overlaps(self, employee, started, finished):
         """
         Check if the supplied starting/finishing DateTimes
         overlap with any shifts already present in our database.
@@ -149,17 +147,14 @@ class ShiftForm(forms.ModelForm):
         Quick reference: (StartA <= EndB)  and  (EndA >= StartB)
         """
         shifts = Shift.objects.filter(
-            employee=employee,
-            shift_started__lte=shift_finished,
-            shift_finished__gte=shift_started)
+            employee=employee, started__lte=finished, finished__gte=started)
 
         # Check if the retrieved shifts contain the shift we're trying to
         # update.
         for shift in shifts:
             if shift.pk == self.instance.pk:
                 pass
-            elif (shift.shift_finished == shift_started) or (
-                    shift.shift_started == shift_finished):
+            elif (shift.finished == started) or (shift.started == finished):
                 pass
             else:
                 return shifts

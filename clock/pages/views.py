@@ -41,7 +41,7 @@ def home(request):
             context['active_shift'] = shift
             context['current_shift'] = shift
             d = datetime.now()
-            s = shift.shift_started
+            s = shift.started
             context['current_duration'] = shift.current_duration
             context['current_duration_wp'] = (
                 d.replace(tzinfo=None) - s.replace(tzinfo=None))

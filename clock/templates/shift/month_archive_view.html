@@ -100,10 +100,10 @@
                 <td></td>
                 <td class="text-right">{{ forloop.revcounter }}</td>
                 <td class="text-right">{{ shift.contract|format_contract }}</td>
-                <td class="text-right">{{ shift.shift_started }}</td>
-                <td class="text-right">{{ shift.shift_finished }}</td>
+                <td class="text-right">{{ shift.started }}</td>
+                <td class="text-right">{{ shift.finished }}</td>
                 <td class="text-right">{{ shift.pause_duration|format_dttd:"%H:%M" }}</td>
-                <td class="text-right">{{ shift.shift_duration|format_dttd:"%H:%M" }}</td>
+                <td class="text-right">{{ shift.duration|format_dttd:"%H:%M" }}</td>
                 <td class="text-right">{{ shift.get_key_display }}</td>
             </tr>
         {% endfor %}
@@ -182,13 +182,13 @@
                     }, {
                         data: "contract"
                     }, {
-                        data: "shift_started"
+                        data: "started"
                     }, {
-                        data: "shift_finished"
+                        data: "finished"
                     }, {
                         data: "pause_duration"
                     }, {
-                        data: "shift_duration"
+                        data: "duration"
                     }, {
                         data: "key"
                     }],
