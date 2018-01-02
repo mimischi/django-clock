@@ -41,7 +41,6 @@ class ShiftForm(forms.ModelForm):
         fields = (
             'started',
             'finished',
-            'pause_duration',
             'contract',
             'key',
             'tags',
@@ -60,7 +59,6 @@ class ShiftForm(forms.ModelForm):
 
         self.fields['started'].widget = forms.HiddenInput()
         self.fields['finished'].widget = forms.HiddenInput()
-        self.fields['pause_duration'].widget = forms.HiddenInput()
 
         # Retrieve all contracts that belong to the user
         self.fields['contract'].queryset = Contract.objects.filter(
@@ -93,9 +91,6 @@ class ShiftForm(forms.ModelForm):
                 'started', template='shift/fields/datetimepicker_field.html'),
             Field(
                 'finished', template='shift/fields/datetimepicker_field.html'),
-            Field(
-                'pause_duration',
-                template='shift/fields/datetimepicker_field.html'),
             Field('contract'), Field('key'), Field('tags'), Field('note'))
         self.helper.layout.append(
             FormActions(
@@ -106,17 +101,12 @@ class ShiftForm(forms.ModelForm):
                     css_class='btn btn-primary pull-right'),
                 HTML(delete_html_inject), ))
 
-    def clean_pause_duration(self):
-        pause_duration = self.cleaned_data.get('pause_duration')
-        return pause_duration * 60
-
     def clean(self):
         cleaned_data = super(ShiftForm, self).clean()
 
         employee = self.user
         started = cleaned_data.get('started')
         finished = cleaned_data.get('finished')
-        pause_duration = cleaned_data.get('pause_duration')
 
         # If both values were entered into the form,
         # check if they overlap with any other shifts
@@ -128,12 +118,6 @@ class ShiftForm(forms.ModelForm):
                     _('Your selected starting/finishing time overlaps with at '
                       'least one finished shift of yours. '
                       'Please adjust the times.'))
-
-            if (finished - started) < pause_duration:
-                raise ValidationError(
-                    _('A pause may not be longer than your actual shift.'))
-
-        cleaned_data['bool_finished'] = True
 
         return cleaned_data
 

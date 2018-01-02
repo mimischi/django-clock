@@ -33,7 +33,7 @@ from clock.shifts.utils import (
 @require_POST
 @login_required
 def shift_action(request):
-    # Get the current shift (s) and the corresponding pauses (shift_pauses)
+    # Get the current Shift object
     shift = get_current_shift(request.user)
 
     if not shift and '_start' not in request.POST:
@@ -75,29 +75,13 @@ def shift_action(request):
 
     # Stop current shift
     elif '_stop' in request.POST:
-        # Unpause the shift, set the finished value
-        # to timezone.now() and save the updated shift
-        shift.unpause()
+        # Set the finished value to timezone.now() and save the updated shift
         shift.finished = timezone.now()
-        shift.bool_finished = True
         shift.save()
 
-        # Add a success message
         messages.add_message(
             request, messages.SUCCESS, _('Your shift has finished!')
         )
-
-    # Toggle pause on current shift
-    elif '_pause' in request.POST:
-        # Toggle the pause value and save it
-        shift.toggle_pause()
-        shift.save()
-
-        # Show a success message - either the pause was started or finished
-        action = _('paused') if shift.is_paused else _('continued')
-        message = _('Your shift was %s.') % action
-        messages.add_message(request, messages.SUCCESS, message)
-
     return redirect('home')
 
 
@@ -190,12 +174,8 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
         moment_format = "%Y-%m-%dT%H:%M"
         obj = self.get_object()
         dates = {
-            'started':
-            obj.started.astimezone(tz).strftime(moment_format),
-            'finished':
-            obj.finished.astimezone(tz).strftime(moment_format),
-            'paused': (datetime(1970, 1, 1) +
-                       obj.pause_duration).strftime(moment_format),
+            'started': obj.started.astimezone(tz).strftime(moment_format),
+            'finished': obj.finished.astimezone(tz).strftime(moment_format)
         }
         return dates
 

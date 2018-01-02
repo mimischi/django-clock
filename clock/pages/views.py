@@ -37,9 +37,7 @@ def home(request):
         # the template or use an empty context variable.
         if shift:
             context['shift_closed'] = bool(shift)
-            context['shift_paused'] = shift.is_paused
-            context['active_shift'] = shift
-            context['current_shift'] = shift
+            context['shift'] = shift
             d = datetime.now()
             s = shift.started
             context['current_duration'] = shift.current_duration

@@ -71,7 +71,6 @@
             <th>{% trans 'Contract' %}</th>
             <th>{% trans 'Shift started' %}</th>
             <th>{% trans 'Shift finished' %}</th>
-            <th>{% trans 'Pause duration' %}</th>
             <th>{% trans 'Shift duration' %}</th>
             <th>{% trans 'Key' %}</th>
         </tr>
@@ -87,7 +86,6 @@
             <th>{% trans 'Contract' %}</th>
             <th>{% trans 'Shift started' %}</th>
             <th>{% trans 'Shift finished' %}</th>
-            <th>{% trans 'Pause duration' %}</th>
             <th>{% trans 'Shift duration' %}</th>
             <th>{% trans 'Key' %}</th>
         </tr>
@@ -102,7 +100,6 @@
                 <td class="text-right">{{ shift.contract|format_contract }}</td>
                 <td class="text-right">{{ shift.started }}</td>
                 <td class="text-right">{{ shift.finished }}</td>
-                <td class="text-right">{{ shift.pause_duration|format_dttd:"%H:%M" }}</td>
                 <td class="text-right">{{ shift.duration|format_dttd:"%H:%M" }}</td>
                 <td class="text-right">{{ shift.get_key_display }}</td>
             </tr>
@@ -185,8 +182,6 @@
                         data: "started"
                     }, {
                         data: "finished"
-                    }, {
-                        data: "pause_duration"
                     }, {
                         data: "duration"
                     }, {

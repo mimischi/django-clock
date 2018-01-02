@@ -23,90 +23,6 @@ class ShiftFormTest(TestCase):
         middleware.process_request(request)
         request.session.save()
 
-    def test_form_valid_wo_pause(self):
-        """Test that our form is valid without a pause."""
-        url = reverse('shift:new')
-        request = self.factory.get(url)
-        self.setup_request(request)
-
-        start = timezone.now() - timezone.timedelta(0, 3600)
-        stop = timezone.now()
-        pause = timezone.timedelta(0, 0)
-
-        data = {
-            'started': start,
-            'finished': stop,
-            'pause_duration': pause,
-            'contract': None,
-            'key': '',
-            'tags': '',
-            'note': '',
-        }
-        kwargs = {
-            'view': 'shift_create',
-            'request': request,
-            'contract': None,
-        }
-        form = ShiftForm(data=data, **kwargs)
-        assert form.is_valid()
-
-    def test_form_valid_w_pause(self):
-        """Test that our form is valid with a pause."""
-        url = reverse('shift:new')
-        request = self.factory.get(url)
-        self.setup_request(request)
-
-        start = timezone.now() - timezone.timedelta(0, 3600)
-        stop = timezone.now()
-        pause = '00:10'
-
-        data = {
-            'started': start,
-            'finished': stop,
-            'pause_duration': pause,
-            'contract': None,
-            'key': '',
-            'tags': '',
-            'note': '',
-        }
-        kwargs = {
-            'view': 'shift_create',
-            'request': request,
-            'contract': None,
-        }
-        form = ShiftForm(data=data, **kwargs)
-        assert form.is_valid()
-
-    def test_form_not_valid_w_pause(self):
-        """
-        Test that our form is not valid with a pause bigger than the actual
-        shift.
-        """
-        url = reverse('shift:new')
-        request = self.factory.get(url)
-        self.setup_request(request)
-
-        start = timezone.now() - timezone.timedelta(0, 3600)
-        stop = timezone.now()
-        pause = timezone.timedelta(0, 3601)
-
-        data = {
-            'started': start,
-            'finished': stop,
-            'pause_duration': pause,
-            'contract': None,
-            'key': '',
-            'tags': '',
-            'note': '',
-        }
-        kwargs = {
-            'view': 'shift_create',
-            'request': request,
-            'contract': None,
-        }
-        form = ShiftForm(data=data, **kwargs)
-        assert not form.is_valid()
-
     def test_form_update_shift_instance(self):
         """
         Test that our form updates the shift instance correctly.
@@ -114,14 +30,10 @@ class ShiftFormTest(TestCase):
 
         start = timezone.now() - timezone.timedelta(0, 18000)
         stop = timezone.now()
-        pause = timezone.timedelta(0, 1800)
 
         shift = Shift.objects.create(
-            employee=self.user,
-            started=start,
-            finished=stop,
-            pause_duration=pause,
-            bool_finished=True)
+            employee=self.user, started=start, finished=stop
+        )
 
         url = reverse('shift:edit', kwargs={'pk': shift.pk})
         request = self.factory.get(url)
@@ -132,7 +44,6 @@ class ShiftFormTest(TestCase):
         data = {
             'started': start,
             'finished': stop,
-            'pause_duration': '00:50',
             'contract': None,
             'key': '',
             'tags': '',
@@ -148,4 +59,4 @@ class ShiftFormTest(TestCase):
         form.save()
 
         shift = Shift.objects.get(pk=shift.pk)
-        assert shift.duration == timezone.timedelta(0, 15000)
+        assert shift.duration == timezone.timedelta(0, 18000)
