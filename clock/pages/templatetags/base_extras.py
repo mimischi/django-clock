@@ -1,7 +1,7 @@
 import re
 
 from django import template
-from django.core.urlresolvers import NoReverseMatch, reverse
+from django.urls import NoReverseMatch, reverse
 from django.utils.translation import ugettext_lazy as _
 
 register = template.Library()

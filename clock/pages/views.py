@@ -20,7 +20,7 @@ def home(request):
 
     template_to_render = 'pages/frontend/index.html'
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         context['all_contracts'] = get_all_contracts(request.user)
         context['default_contract'] = get_default_contract(request.user)
         # context['git_revision_hash'] = GIT_REVISION_HASH

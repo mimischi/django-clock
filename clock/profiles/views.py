@@ -3,8 +3,8 @@ from django import http
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse_lazy, translate_url
 from django.shortcuts import redirect, render
+from django.urls import reverse_lazy, translate_url
 from django.utils.http import is_safe_url
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import LANGUAGE_SESSION_KEY, check_for_language

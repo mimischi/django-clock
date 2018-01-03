@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-from django.conf.urls import url
+from django.urls import path
 
 from clock.pages import views
 
 urlpatterns = [
-    url(r'^$', views.home, name='home'),
+    path('', views.home, name='home'),
 ]

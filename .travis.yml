@@ -25,6 +25,6 @@ before_script:
   - psql -c "CREATE USER db_user WITH PASSWORD 'db_pass';" -U postgres
 script:
   - make ci
-  - make analyze
+  # - make analyze
 after_success:
   - codecov
