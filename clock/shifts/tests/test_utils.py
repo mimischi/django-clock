@@ -13,7 +13,8 @@ class TestUtils(TestCase):
     def setUp(self):
         self.user = self.make_user()
         self.contract1 = Contract.objects.create(
-            employee=self.user, department='Test department', hours='50')
+            employee=self.user, department='Test department', hours='50'
+        )
 
     def test_get_last_shifts(self):
         employee = UserFactory()
@@ -34,8 +35,9 @@ class TestUtils(TestCase):
         # first.
         for i, shift in enumerate(five_shifts):
             try:
-                self.assertTrue(
-                    five_shifts[i].finished > five_shifts[i + 1].finished)
+                if shift.finished == five_shifts[i + 1].finished:
+                    continue
+                self.assertTrue(shift.finished > five_shifts[i + 1].finished)
             except IndexError:
                 pass
 
@@ -61,7 +63,8 @@ class TestUtils(TestCase):
             self.post(
                 'shift:quick_action', data={
                     '_start': True,
-                }, follow=True)
+                }, follow=True
+            )
 
             last_shift = get_current_shift(self.user)
             self.assertIsNotNone(last_shift)
