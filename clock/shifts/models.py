@@ -109,7 +109,7 @@ class Shift(models.Model):
         """Validate that the finish time is bigger than the start time.
         """
         errors = {}
-        if self.shift_is_finished and (self.finished < self.started):
+        if self.is_finished and (self.finished < self.started):
             errors['finished'] = _(
                 'A shift must not finish, before '
                 'it has even started!'
@@ -119,9 +119,13 @@ class Shift(models.Model):
             raise ValidationError(errors)
 
     @property
-    def shift_is_finished(self):
-        """Return True if `Shift` is finished."""
-        return (self.pk and self.finished)
+    def is_finished(self):
+        """Return True if `Shift` is finished. Otherwise return False.
+
+        Note: We need the extra `or False`, as this function would otherwise
+        return `None`.
+        """
+        return (self.pk and self.finished) or False
 
     @property
     def current_duration(self):
@@ -133,10 +137,3 @@ class Shift(models.Model):
         if self.contract:
             return self.contract.department
         return None
-
-    @property
-    def is_finished(self):
-        """
-        Determine if the current `Shift` is finished.
-        """
-        return self.finished
