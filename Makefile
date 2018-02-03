@@ -1,3 +1,5 @@
+.PHONY: init ci analyze build rebuild lang-make lang-compile clean-pyc
+
 init:
 	pip install pipenv --upgrade
 	pipenv install --dev --skip-lock
@@ -16,3 +18,8 @@ lang-make:
 	pipenv run python manage.py makemessages --no-location --no-wrap
 lang-compile:
 	pipenv run python manage.py compilemessages
+clean-pyc:
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -rf {} +

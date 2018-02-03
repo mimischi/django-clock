@@ -1,12 +1,9 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 django = "*"
 django-environ = "*"
 whitenoise = "*"
@@ -25,12 +22,11 @@ gevent = "*"
 django-anymail = "*"
 django-webpack-loader = "*"
 django-taggit = "*"
-"psycopg2-binary" = "*"
+python-dateutil = "*"
 "psycopg2" = "*"
-
+"psycopg2-binary" = "*"
 
 [dev-packages]
-
 coverage = "*"
 django-coverage-plugin = "*"
 django-extensions = "*"
@@ -49,3 +45,8 @@ freezegun = "*"
 pytest-isort = "*"
 "pytest-flake8" = "*"
 django-rosetta = "*"
+pylint = "*"
+pylint-django = "*"
+
+[pipenv]
+keep_outdated = true
