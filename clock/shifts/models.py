@@ -87,9 +87,18 @@ class Shift(models.Model):
             self.finished = round_time(self.finished)
 
             if self.started == self.finished:
-                self.finished += timedelta(minutes=5)
+                # self.finished += timedelta(minutes=5)
+                raise ValidationError(
+                    _('We cannot save a shift that is that short.')
+                )
             elif self.started > self.finished:
-                self.finished = self.started + timedelta(minutes=5)
+                # self.finished = self.started + timedelta(minutes=5)
+                raise ValidationError(
+                    _(
+                        'The shift cannot start, after it has '
+                        'already finished.'
+                    )
+                )
 
             # Update duration
             self.duration = (self.finished - self.started)

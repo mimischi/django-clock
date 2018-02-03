@@ -1,4 +1,6 @@
 """Test the Shift model"""
+import pytest
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 from freezegun import freeze_time
 from test_plus.test import TestCase
@@ -60,16 +62,44 @@ class ShiftTest(TestCase):
 
         assert shift3.duration == timezone.timedelta(0, 900)
 
+    @freeze_time("2017-01-01 12:00:00")
     def test_minimum_shift_length(self):
         """Make sure that the minimum shift length is 5 minutes."""
         start = timezone.now()
         stop = start + timezone.timedelta(0, 60)
 
+        with pytest.raises(ValidationError):
+            Shift.objects.create(
+                employee=self.user, started=start, finished=stop
+            )
         shift = Shift.objects.create(
-            employee=self.user, started=start, finished=stop
+            employee=self.user,
+            started=start,
+            finished=stop + timezone.timedelta(0, 240)
         )
 
         assert shift.duration == timezone.timedelta(0, 300)
+
+    @freeze_time("2017-01-01 12:00:00")
+    def test_shift_cannot_start_and_end_at_same_time(self):
+        """Make sure that a shift cannot start and end at the same time."""
+        start = timezone.now()
+        stop = timezone.now()
+
+        with pytest.raises(ValidationError):
+            Shift.objects.create(
+                employee=self.user, started=start, finished=stop
+            )
+
+    def test_shift_cannot_start_after_it_finished(self):
+        """Make sure that the start time is before the end time of a shift."""
+        start = timezone.now()
+        stop = start - timezone.timedelta(0, 300)
+
+        with pytest.raises(ValidationError):
+            Shift.objects.create(
+                employee=self.user, started=start, finished=stop
+            )
 
     @freeze_time("2017-01-01 12:00:00")
     def test_shift_methods(self):
@@ -89,4 +119,6 @@ class ShiftTest(TestCase):
         assert shift.current_duration == timezone.now() - start
 
         shift.finished = stop
+        assert not shift.is_finished
+        shift.save()
         assert shift.is_finished

@@ -2,8 +2,11 @@
 
 All messages are tested for the default English strings.
 """
+import pytest
 from django.contrib.messages import get_messages
+from django.core.exceptions import ValidationError
 from django.utils import timezone, translation
+from freezegun import freeze_time
 from test_plus.test import TestCase
 
 from clock.contracts.models import Contract
@@ -76,6 +79,7 @@ class ManualShiftViewTest(TestCase):
             messages[0].__str__(), 'You already have an active shift!'
         )
 
+    @freeze_time("2015-01-01 12:00")
     def test_start_stop_shift(self):
         """
         Assert that we can start and stop a shift.
@@ -89,7 +93,9 @@ class ManualShiftViewTest(TestCase):
                 follow=True,
                 extra={'HTTP_ACCEPT_LANGUAGE': 'en'}
             )
-            response2 = self.post(
+
+            # Check that we cannot finish the shift yet.
+            response = self.post(
                 'shift:quick_action',
                 data={
                     '_stop': True,
@@ -97,15 +103,35 @@ class ManualShiftViewTest(TestCase):
                 follow=True,
                 extra={'HTTP_ACCEPT_LANGUAGE': 'en'}
             )
-
-            messages = [msg for msg in get_messages(response2.wsgi_request)]
-
-            shift = Shift.objects.all()[0]
-            self.assertTrue(shift.is_finished)
-            self.assertIsNotNone(shift.finished)
-
+            messages = [msg for msg in get_messages(response.wsgi_request)]
             self.assertEqual(len(messages), 1)
-            self.assertEqual(messages[0].__str__(), 'Your shift has finished!')
+            self.assertEqual(
+                messages[0].__str__(),
+                'We cannot save shifts that are shorter than 5 minutes.'
+            )
+
+            with freeze_time("2015-01-01 12:40"):
+                response2 = self.post(
+                    'shift:quick_action',
+                    data={
+                        '_stop': True,
+                    },
+                    follow=True,
+                    extra={'HTTP_ACCEPT_LANGUAGE': 'en'}
+                )
+
+                messages = [
+                    msg for msg in get_messages(response2.wsgi_request)
+                ]
+
+                shift = Shift.objects.all().first()
+                self.assertTrue(shift.is_finished)
+                self.assertIsNotNone(shift.finished)
+
+                self.assertEqual(len(messages), 1)
+                self.assertEqual(
+                    messages[0].__str__(), 'Your shift has finished!'
+                )
 
 
 class ShiftsViewTest(TestCase):

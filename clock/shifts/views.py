@@ -3,6 +3,7 @@ from datetime import datetime
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -77,11 +78,17 @@ def shift_action(request):
     elif '_stop' in request.POST:
         # Set the finished value to timezone.now() and save the updated shift
         shift.finished = timezone.now()
-        shift.save()
+        try:
+            shift.save()
+            messages.add_message(
+                request, messages.SUCCESS, _('Your shift has finished!')
+            )
+        except ValidationError:
+            messages.add_message(
+                request, messages.ERROR,
+                _('We cannot save shifts that are shorter than 5 minutes.')
+            )
 
-        messages.add_message(
-            request, messages.SUCCESS, _('Your shift has finished!')
-        )
     return redirect('home')
 
 
