@@ -9,18 +9,13 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
-from django.views.generic.dates import (
-    DayArchiveView,
-    MonthArchiveView,
-    WeekArchiveView,
-    YearArchiveView,
-)
+from django.views.generic.dates import MonthArchiveView, YearArchiveView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from pytz import timezone as p_timezone
 
 from clock.pages.mixins import UserObjectOwnerMixin
-from clock.shifts.forms import QuickActionForm, ShiftForm
+from clock.shifts.forms import ClockInForm, ClockOutForm, ShiftForm
 from clock.shifts.models import Shift
 from clock.shifts.utils import (
     get_all_contracts,
@@ -52,41 +47,37 @@ def shift_action(request):
 
     # Start a new shift
     if '_start' in request.POST:
-        # Generate a new QuickActionForm, so we can retrieve the
-        # supplied institute/contract the user has selected.
-        # No other data will be looked at, as no validation of the
-        # starting data is needed.
-        form = QuickActionForm(request.POST, user=request.user)
+        contract = None
+        if 'contract' in request.POST:
+            contract = request.POST['contract']
+        form = ClockInForm(
+            data={'started': timezone.now(),
+                  'contract': contract},
+            user=request.user
+        )
 
         if form.is_valid():
-            # Create a new shift, if the data is valid
-            # (shouldn't this always be the case..?)
-            Shift.objects.create(
-                employee=request.user,
-                contract=form.cleaned_data['contract'],
-                started=timezone.now()
+            form.clock_in()
+            # Show a success message
+            messages.add_message(
+                request, messages.SUCCESS, _('Your shift has started!')
             )
         else:
-            Shift.objects.create(employee=request.user, started=timezone.now())
-
-        # Show a success message
-        messages.add_message(
-            request, messages.SUCCESS, _('Your shift has started!')
-        )
+            messages.add_message(request, messages.ERROR, form.errors)
 
     # Stop current shift
     elif '_stop' in request.POST:
         # Set the finished value to timezone.now() and save the updated shift
-        shift.finished = timezone.now()
-        try:
-            shift.save()
+        form = ClockOutForm(data={'finished': timezone.now()}, instance=shift)
+
+        if form.is_valid():
+            form.clock_out()
             messages.add_message(
                 request, messages.SUCCESS, _('Your shift has finished!')
             )
-        except ValidationError:
+        else:
             messages.add_message(
-                request, messages.ERROR,
-                _('We cannot save shifts that are shorter than 5 minutes.')
+                request, messages.WARNING, form.errors['__all__']
             )
 
     return redirect('home')
@@ -121,7 +112,8 @@ class ShiftManualCreate(CreateView):
         k = {
             'request': self.request,
             'view': 'shift_create',
-            'contract': set_correct_session(self.request, 'contract')
+            'contract': set_correct_session(self.request, 'contract'),
+            'user': self.request.user
         }
         kwargs.update(k)
         return kwargs
@@ -169,7 +161,8 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
         k = {
             'request': self.request,
             'view': 'shift_update',
-            'contract': set_correct_session(self.request, 'contract')
+            'contract': set_correct_session(self.request, 'contract'),
+            'user': self.request.user
         }
         kwargs.update(k)
         return kwargs

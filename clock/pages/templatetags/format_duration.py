@@ -43,10 +43,10 @@ def format_dttd(t, t_format="%H:%M:%S"):
         return value
     if isinstance(t, datetime):
         return t.strftime(t_format)
-    raise ValueError(
-        'The provided object {} does not match any accepted classes.'.
-        format(t)
-    )
+    # raise ValueError(
+    # 'The provided object {} does not match any accepted classes.'.
+    # format(t)
+    # )
 
 
 @register.filter

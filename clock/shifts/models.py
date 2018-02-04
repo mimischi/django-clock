@@ -1,4 +1,3 @@
-import time
 from datetime import timedelta
 
 from django.conf import settings
@@ -7,8 +6,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from taggit.managers import TaggableManager
-
-from clock.pages.utils import round_time
 
 
 class Shift(models.Model):
@@ -69,54 +66,25 @@ class Shift(models.Model):
         self.__old_finished = self.finished
         self.__old_duration = self.duration
 
-    def clean(self, *args, **kwargs):
-        """
-        Run the super clean() method and the custom validation that we need.
-        """
-        super(Shift, self).clean(*args, **kwargs)
-        self.shift_time_validation()
+    # def clean(self, *args, **kwargs):
+    #     """
+    #     Run the super clean() method and the custom validation that we need.
+    #     """
+    #     super(Shift, self).clean(*args, **kwargs)
+    #     # self.time_validation()
 
-    def save(self, *args, **kwargs):
-        """Save `Shift` object into database and do some modifications.
+    # def save(self, *args, **kwargs):
+    #     """Save `Shift` object into database and do some modifications.
 
-        If the `Shift` was finished, round the start and finish times up
-        to 5 minutes.
-        """
-        if self.finished:
-            self.started = round_time(self.started)
-            self.finished = round_time(self.finished)
+    #     If the `Shift` was finished, round the start and finish times up
+    #     to 5 minutes.
+    #     """
+    #     if self.finished:
+    #         self.duration = self.finished - self.started
 
-            if self.started == self.finished:
-                # self.finished += timedelta(minutes=5)
-                raise ValidationError(
-                    _('We cannot save a shift that is that short.')
-                )
-            elif self.started > self.finished:
-                # self.finished = self.started + timedelta(minutes=5)
-                raise ValidationError(
-                    _(
-                        'The shift cannot start, after it has '
-                        'already finished.'
-                    )
-                )
+    #         # self.time_validation()
 
-            # Update duration
-            self.duration = (self.finished - self.started)
-
-        return super(Shift, self).save(*args, **kwargs)
-
-    def shift_time_validation(self):
-        """Validate that the finish time is bigger than the start time.
-        """
-        errors = {}
-        if self.is_finished and (self.finished < self.started):
-            errors['finished'] = _(
-                'A shift must not finish, before '
-                'it has even started!'
-            )
-
-        if errors:
-            raise ValidationError(errors)
+    #     return super(Shift, self).save(*args, **kwargs)
 
     @property
     def is_finished(self):
@@ -125,7 +93,7 @@ class Shift(models.Model):
         Note: We need the extra `or False`, as this function would otherwise
         return `None`.
         """
-        return (self.pk and self.finished) or False
+        return bool(self.finished) or False
 
     @property
     def current_duration(self):

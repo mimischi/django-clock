@@ -3,7 +3,7 @@ from datetime import datetime
 from django.shortcuts import render
 
 from clock.contracts.models import Contract
-from clock.shifts.forms import QuickActionForm
+from clock.shifts.forms import ClockInForm, ClockOutForm
 from clock.shifts.utils import (
     get_all_contracts,
     get_current_shift,
@@ -27,8 +27,8 @@ def home(request):
         # context['git_commit_timestamp'] = GIT_COMMIT_TIMESTAMP
         template_to_render = 'pages/backend/index.html'
 
-        # Initialize the QuickActionForm
-        context['form'] = QuickActionForm(user=request.user)
+        # Initialize the ClockInForm
+        context['form'] = ClockInForm(user=request.user)
 
         # Get the current shift to display the possible quick-actions.
         shift = get_current_shift(request.user.id)
@@ -41,10 +41,10 @@ def home(request):
             d = datetime.now()
             s = shift.started
             context['current_duration'] = shift.current_duration
-            context['current_duration_wp'] = (
-                d.replace(tzinfo=None) - s.replace(tzinfo=None))
-            context['current_duration_wp_ms'] = context[
-                'current_duration_wp'].microseconds
+            context['current_duration_wp'
+                    ] = (d.replace(tzinfo=None) - s.replace(tzinfo=None))
+            context['current_duration_wp_ms'] = context['current_duration_wp'
+                                                        ].microseconds
 
             # Delete the 'all_contracts' key from the context dict,
             # so we can hide the <select>-element in the template.

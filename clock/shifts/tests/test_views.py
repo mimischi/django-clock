@@ -106,10 +106,21 @@ class ManualShiftViewTest(TestCase):
             messages = [msg for msg in get_messages(response.wsgi_request)]
             self.assertEqual(len(messages), 1)
             self.assertEqual(
-                messages[0].__str__(),
-                'We cannot save shifts that are shorter than 5 minutes.'
+                messages[0].message,
+                '<ul class="errorlist nonfield"><li>A shift cannot be shorter than 5 minutes. We deleted it for you :)</li></ul>'
             )
 
+            # Start shift again.
+            self.post(
+                'shift:quick_action',
+                data={
+                    '_start': True,
+                },
+                follow=True,
+                extra={'HTTP_ACCEPT_LANGUAGE': 'en'}
+            )
+
+            # Try and finish it later.
             with freeze_time("2015-01-01 12:40"):
                 response2 = self.post(
                     'shift:quick_action',
