@@ -1,4 +1,6 @@
 """Test the Shift forms"""
+from datetime import timedelta
+
 import pytz
 from django import forms
 from django.utils import timezone
@@ -8,6 +10,12 @@ from test_plus.test import TestCase
 from clock.contracts.models import Contract
 from clock.shifts.forms import ClockInForm, ClockOutForm, ShiftForm
 from clock.shifts.models import Shift
+
+
+def dt_wrapper(dt):
+    """Wrapper to make naive datetime aware."""
+
+    return timezone.make_aware(dt, timezone=pytz.timezone('UTC'))
 
 
 class ClockInOutFormTest(TestCase):
@@ -42,9 +50,8 @@ class ClockInOutFormTest(TestCase):
             assert form.errors['__all__'] == [
                 'You cannot clock into two shifts at once!'
             ]
-            assert form.cleaned_data.get('started') == timezone.make_aware(
+            assert form.cleaned_data.get('started') == dt_wrapper(
                 timezone.datetime(2018, 3, 1, 9, 2),
-                timezone=pytz.timezone('UTC')
             )
 
     def test_clock_out(self):
@@ -116,6 +123,152 @@ class ClockInOutFormTest(TestCase):
                                              )
             assert form_out.instance.duration == timezone.timedelta(minutes=10)
 
+    def test_split_shifts(self):
+        """Test that shifts spanning over two days are split at midnight."""
+        with freeze_time("2017-01-01 18:00"):
+            form = ClockInForm(
+                data={'started': timezone.now(),
+                      'contract': self.contract.pk},
+                user=self.user
+            )
+            assert form.is_valid()
+            form.clock_in()
+
+        with freeze_time("2017-01-02 02:00"):
+            shift = Shift.objects.get(
+                employee=self.user, finished__isnull=True
+            )
+            form_out = ClockOutForm(
+                data={'finished': timezone.now()}, instance=shift
+            )
+            assert form_out.is_valid()
+            form_out.clock_out()
+            assert form_out.instance.duration == timedelta(0, 21300)
+
+            new_shift = Shift.objects.get(
+                employee=self.user,
+                started=dt_wrapper(timezone.datetime(2017, 1, 2, 0, 0))
+            )
+            assert new_shift.started == dt_wrapper(
+                timezone.datetime(2017, 1, 2, 0, 0)
+            )
+            assert new_shift.finished == dt_wrapper(
+                timezone.datetime(2017, 1, 2, 2, 0)
+            )
+            assert new_shift.duration == timedelta(0, 7200)
+
+    def test_split_shifts_that_are_too_short(self):
+        """Test that we handle shifts that are too short after splitting correctly."""
+
+        # Make sure we do not create a new shift that is too short
+        with freeze_time("2017-01-01 23:00"):
+            form = ClockInForm(
+                data={'started': timezone.now(),
+                      'contract': self.contract.pk},
+                user=self.user
+            )
+            assert form.is_valid()
+            form.clock_in()
+
+        with freeze_time("2017-01-02 00:02"):
+            shift = Shift.objects.get(
+                employee=self.user, finished__isnull=True
+            )
+            form_out = ClockOutForm(
+                data={'finished': timezone.now()}, instance=shift
+            )
+            assert form_out.is_valid()
+            form_out.clock_out()
+
+            new_shift = Shift.objects.filter(
+                employee=self.user,
+                started=dt_wrapper(timezone.datetime(2017, 1, 2, 0, 0))
+            ).count()
+            assert new_shift == 0
+
+        # Make sure we do not create any shift if both ends are too short.
+        with freeze_time("2017-01-01 23:58"):
+            form = ClockInForm(
+                data={'started': timezone.now(),
+                      'contract': self.contract.pk},
+                user=self.user
+            )
+            assert form.is_valid()
+            form.clock_in()
+
+        with freeze_time("2017-01-02 00:02"):
+            shift = Shift.objects.get(
+                employee=self.user, finished__isnull=True
+            )
+            form_out = ClockOutForm(
+                data={'finished': timezone.now()}, instance=shift
+            )
+            assert form_out.is_valid()
+            form_out.clock_out()
+
+            old_shift = Shift.objects.filter(pk=shift.pk).count()
+            assert old_shift == 0
+            new_shift = Shift.objects.filter(
+                employee=self.user,
+                started=dt_wrapper(timezone.datetime(2017, 1, 2, 0, 0))
+            ).count()
+            assert new_shift == 0
+
+        # Make sure we only delete the first splitted Shift, but create the second.
+        with freeze_time("2017-01-01 23:58"):
+            form = ClockInForm(
+                data={'started': timezone.now(),
+                      'contract': self.contract.pk},
+                user=self.user
+            )
+            assert form.is_valid()
+            form.clock_in()
+
+        with freeze_time("2017-01-02 00:05"):
+            shift = Shift.objects.get(
+                employee=self.user, finished__isnull=True
+            )
+            form_out = ClockOutForm(
+                data={'finished': timezone.now()}, instance=shift
+            )
+            assert form_out.is_valid()
+            form_out.clock_out()
+
+            # Make sure the old shift that was too short was deleted!
+            old_shift = Shift.objects.filter(pk=shift.pk).count()
+            assert old_shift == 0
+            new_shift = Shift.objects.filter(
+                employee=self.user,
+                started=dt_wrapper(timezone.datetime(2017, 1, 2, 0, 0))
+            ).count()
+            assert new_shift == 1
+
+        # Make sure that a short new shift of 5 minutes on the next day works.
+        with freeze_time("2017-01-01 23:00"):
+            form = ClockInForm(
+                data={'started': timezone.now(),
+                      'contract': self.contract.pk},
+                user=self.user
+            )
+            assert form.is_valid()
+            form.clock_in()
+
+        with freeze_time("2017-01-02 00:03"):
+            shift = Shift.objects.get(
+                employee=self.user, finished__isnull=True
+            )
+            form_out = ClockOutForm(
+                data={'finished': timezone.now()}, instance=shift
+            )
+            assert form_out.is_valid()
+            form_out.clock_out()
+
+            new_shift = Shift.objects.filter(
+                employee=self.user,
+                started=dt_wrapper(timezone.datetime(2017, 1, 2, 0, 0))
+            ).count()
+            assert new_shift == 2
+
 
 class ShiftFormTest(TestCase):
     """Test ShiftForm for correct behavior."""
@@ -162,7 +315,6 @@ class ShiftFormTest(TestCase):
 
         form = self.prepare_form(ShiftForm, start, stop, self.user)
         form.is_valid()
-        print(form.errors)
         assert form.is_valid()
         assert form.instance.started == timezone.make_aware(start)
         assert form.instance.finished == timezone.make_aware(stop)

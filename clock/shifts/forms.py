@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
+import pytz
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Field, Layout, Submit
@@ -65,42 +66,118 @@ class ClockOutForm(forms.Form):
         super().__init__(*args, **kwargs)
 
     def clean(self):
-        cleaned_data = super().clean()
+        # Set a default whether we want to raise a ValidationError if the shift
+        # is shorter than five minutes.
+        raise_validation = False
 
+        # Chicken out, if we were not passed any Shift instance.
         if self.instance is None:
             raise forms.ValidationError(
                 _('You cannot clock out of a non-existent shift!')
             )
-        # Round times to nearest five minutes when finishing the shift
-        self.instance.started = round_time(self.instance.started)
+
+        cleaned_data = super().clean()
+
+        # We want to make sure that rounding our datetime objects does not move
+        # the `started` value into the next day (edge case if the shift was
+        # started on >=23:58). If it does not spill over, we round the time and
+        # show the ValidationError if needed.
+        if not self.spills_into_next_day(
+            self.instance.started, round_time(self.instance.started)
+        ):
+            raise_validation = True
+            self.instance.started = round_time(self.instance.started)
+
         cleaned_data['finished'] = round_time(cleaned_data['finished'])
 
+        # Check whether the `started` and `finished` datetimes are on different
+        # days. If yes, we need to split them into two own objects.
+        if self.spills_into_next_day():
+            # Save the finished time of the to-be created Shift object.
+            new_shift_finished = self.cleaned_data['finished']
+
+            # Set the finished time of the current shift to 23:55 of the
+            # current day.
+            cleaned_data['finished'] = timezone.make_aware(
+                timezone.datetime(
+                    self.instance.started.year, self.instance.started.month,
+                    self.instance.started.day, 23, 55, 00
+                ),
+                timezone=pytz.timezone('UTC')
+            )
+
+            # Define a starting time for the next day (00:00)
+            next_day_started = timezone.make_aware(
+                timezone.datetime(
+                    new_shift_finished.year, new_shift_finished.month,
+                    new_shift_finished.day, 0, 0
+                ),
+                timezone=pytz.timezone('UTC')
+            )
+            # Check whether the shift on the new day is actually longer than five minutes.
+            # If not, we do not attempt to create it.
+            if (new_shift_finished - next_day_started) >= timezone.timedelta(
+                minutes=5
+            ):
+                new_shift = ShiftForm(
+                    data={
+                        'started': next_day_started,
+                        'finished': new_shift_finished
+                    },
+                    **{
+                        'contract': self.instance.contract,
+                        'user': self.instance.employee
+                    }
+                )
+                if new_shift.is_valid():
+                    new_shift.save()
+
+        # If we came this far, then we were able to process the Shift,
+        # splitting of the residual datetime into a new day. We have not yet
+        # checked whether the duration on the actual starting day is >= five
+        # minutes.
         self.instance.duration = cleaned_data['finished'
                                               ] - self.instance.started
 
-        # Raise a ValidationError, if the shift is shorter than five minutes.
+        # Check whether the duration of the Shift object started on the actual
+        # day is >= than 5 minutes. Delete otherwise.
         if self.instance.duration < timezone.timedelta(minutes=5):
-            shift = self.get_shift(pk=self.instance.pk)
-            shift.delete()
-            raise forms.ValidationError(
-                _(
-                    'A shift cannot be shorter than 5 minutes. We deleted it for you :)'
+            Shift.objects.get(pk=self.instance.pk).delete()
+
+            # This is True if the Shift on the current day starts before 23:58.
+            # If it is False, it starts just before the day ends and we do not
+            # want to show this error.
+            if raise_validation:
+                # Raise a ValidationError, if the shift is shorter than five minutes.
+                raise forms.ValidationError(
+                    _(
+                        'A shift cannot be shorter than 5 minutes. '
+                        'We deleted it for you :)'
+                    )
                 )
-            )
 
         return cleaned_data
 
-    def get_shift(self, pk):
-        """Access the current shift object."""
-        return Shift.objects.get(pk=pk)
+    def spills_into_next_day(self, started=None, finished=None):
+        """Returns True if the shift finishes the same day it started."""
+        if not started:
+            started = self.instance.started
+        if not finished:
+            finished = self.cleaned_data.get('finished')
+        return not (
+            (started.year == finished.year) and
+            (started.month == finished.month) and
+            (started.day == finished.day)
+        )
 
     def clock_out(self):
         """Clock out the user again and update the corresponding fields."""
-        shift = self.get_shift(pk=self.instance.pk)
-        shift.started = self.instance.started
-        shift.finished = self.cleaned_data.get('finished')
-        shift.duration = self.instance.duration
-        shift.save()
+        shift = Shift.objects.filter(pk=self.instance.pk)
+        if shift:
+            shift[0].started = self.instance.started
+            shift[0].finished = self.cleaned_data.get('finished')
+            shift[0].duration = self.instance.duration
+            shift[0].save()
 
 
 class ShiftForm(forms.ModelForm):
