@@ -1,6 +1,6 @@
 {
   "name": "django-clock",
-  "version": "2.1",
+  "version": "2.1.1",
   "main": "webpack/webpack.config.js",
   "repository": "git@github.com:mimischi/django-clock",
   "author": "Michael Gecht <gecht.m@gmail.com>",
@@ -26,7 +26,7 @@
     "jquery": "^1.1.13",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
-    "moment": "2.18.1",
+    "moment": "2.21.0",
     "nodemon": "^1.12.1",
     "style-loader": "^0.19.0",
     "uglifyjs-webpack-plugin": "^1.0.1",
