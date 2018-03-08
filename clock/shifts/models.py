@@ -56,36 +56,6 @@ class Shift(models.Model):
         """
         return str(self.employee)
 
-    def __init__(self, *args, **kwargs):
-        """
-        Initialize the model with the old started/finished values,
-        so we can compare them with the new ones in the save() method.
-        """
-        super(Shift, self).__init__(*args, **kwargs)
-        self.__old_started = self.started
-        self.__old_finished = self.finished
-        self.__old_duration = self.duration
-
-    # def clean(self, *args, **kwargs):
-    #     """
-    #     Run the super clean() method and the custom validation that we need.
-    #     """
-    #     super(Shift, self).clean(*args, **kwargs)
-    #     # self.time_validation()
-
-    # def save(self, *args, **kwargs):
-    #     """Save `Shift` object into database and do some modifications.
-
-    #     If the `Shift` was finished, round the start and finish times up
-    #     to 5 minutes.
-    #     """
-    #     if self.finished:
-    #         self.duration = self.finished - self.started
-
-    #         # self.time_validation()
-
-    #     return super(Shift, self).save(*args, **kwargs)
-
     @property
     def is_finished(self):
         """Return True if `Shift` is finished. Otherwise return False.
