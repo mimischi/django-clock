@@ -189,10 +189,6 @@ class ShiftForm(forms.ModelForm):
         input_formats=settings.DATETIME_INPUT_FORMATS
     )
 
-    # contract = forms.ModelChoiceField(
-    #     queryset=Contract.objects.none(), empty_label=_('None defined')
-    # )
-
     class Meta:
         model = Shift
         fields = (
@@ -249,7 +245,6 @@ class ShiftForm(forms.ModelForm):
         else:
             add_input_text = ''
 
-        # TODO: We can probably remove this again
         cancel_html = ''
         if self.request:
             cancel_html = '<a href="{}" class="btn btn-default">{}</a>'.format(
@@ -280,7 +275,7 @@ class ShiftForm(forms.ModelForm):
         )
 
     def clean(self):
-        self.cleaned_data = super().clean()
+        cleaned_data = super().clean()
 
         self.instance.employee = self.user
         self.started = self.cleaned_data.get('started')
@@ -293,46 +288,9 @@ class ShiftForm(forms.ModelForm):
         else:
             self.instance.duration = timezone.now() - self.started
 
-        # Cache the work time a user has completed for today
-        work_time = self.work_time_current_day()
-        # Proceed if the work time does not exceed the maximal duration for
-        # today.
-        # if work_time >= max_shift_duration:
-        #     raise ValidationError(
-        #         _('You cannot work more than ten hours a day!'),
-        #         code='invalid'
-        #     )
-        # else:
-        #     self.started = timezone.now()
-
-        #     if not self.contract:
-        #         self.contract = None
-
-        # TODO: Remove this? We actually do not want to force such limits on the user.
-        # Limit the current shift to the residual time there is left
-        # for the day.
-        # if (self.instance.duration + work_time) > max_shift_duration:
-        #     self.finished = self.started + (max_shift_duration - work_time)
-        #     self.instance.duration = self.finished - self.started
-        #     self.cleaned_data['finished'] = self.finished
-        #     raise ValidationError('YOYOOYOY')
-
         self.time_validation()
 
-        # Check for overlaps
-        # check_for_overlaps = self.check_for_overlaps(
-        #     self.employee, self.started, self.finished
-        # )
-        # if check_for_overlaps:
-        #     raise ValidationError(
-        #         _(
-        #             'Your selected starting/finishing time overlaps with '
-        #             'at least one finished shift of yours. '
-        #             'Please adjust the times.'
-        #         )
-        #     )
-
-        return self.cleaned_data
+        return cleaned_data
 
     def is_too_long(self, worked_hours=None):
         """Return True/False if the total work time for a given day exceeds ten
@@ -397,6 +355,8 @@ class ShiftForm(forms.ModelForm):
         Logic according to: http://stackoverflow.com/a/325964/4791226
         Quick reference: (StartA <= EndB)  and  (EndA >= StartB)
         """
+        # TODO: Make this more efficient. We can make the database do all the
+        # hard work.
         shifts = Shift.objects.filter(
             employee=employee, started__lte=finished, finished__gte=started
         )
