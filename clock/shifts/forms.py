@@ -184,7 +184,10 @@ class ClockOutForm(forms.Form):
 
 
 REOCCURING_CHOICES = (
-    ('ONCE', _('Once')), ('DAILY', _('Daily')), ('WEEKLY', _('Weekly')),
+    # ('', '---------'),
+    ('ONCE', _('Once')),
+    ('DAILY', _('Daily')),
+    ('WEEKLY', _('Weekly')),
     ('MONTHLY', _('Monthly'))
 )
 FREQUENCIES = {'DAILY': DAILY, 'WEEKLY': WEEKLY, 'MONTHLY': MONTHLY}
@@ -199,7 +202,11 @@ class ShiftForm(forms.ModelForm):
         input_formats=settings.DATETIME_INPUT_FORMATS
     )
 
-    reoccuring = forms.ChoiceField(choices=REOCCURING_CHOICES)
+    reoccuring = forms.ChoiceField(
+        choices=REOCCURING_CHOICES,
+        required=False,
+        widget=forms.Select(attrs={'class': 'selectpicker'})
+    )
 
     class Meta:
         model = Shift
@@ -214,7 +221,6 @@ class ShiftForm(forms.ModelForm):
         )
         widgets = {
             'contract': forms.Select(attrs={'class': 'selectpicker'}),
-            'reoccuring': forms.Select(attrs={'class': 'selectpicker'}),
             'key': forms.Select(attrs={'class': 'selectpicker'})
         }
 
