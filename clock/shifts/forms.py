@@ -8,7 +8,6 @@ from crispy_forms.layout import HTML, Field, Layout, Submit
 from dateutil.rrule import DAILY, MONTHLY, WEEKLY, rrule
 from django import forms
 from django.conf import settings
-from django.contrib import messages
 from django.db.models import Sum
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -116,8 +115,8 @@ class ClockOutForm(forms.Form):
                 ),
                 timezone=pytz.timezone('UTC')
             )
-            # Check whether the shift on the new day is actually longer than five minutes.
-            # If not, we do not attempt to create it.
+            # Check whether the shift on the new day is actually longer than
+            # five minutes. If not, we do not attempt to create it.
             if (new_shift_finished - next_day_started) >= timezone.timedelta(
                 minutes=5
             ):
@@ -151,7 +150,8 @@ class ClockOutForm(forms.Form):
             # If it is False, it starts just before the day ends and we do not
             # want to show this error.
             if raise_validation:
-                # Raise a ValidationError, if the shift is shorter than five minutes.
+                # Raise a ValidationError, if the shift is shorter than five
+                # minutes.
                 raise forms.ValidationError(
                     _(
                         'A shift cannot be shorter than 5 minutes. '
