@@ -11,6 +11,7 @@ from django.conf import settings
 from django.db.models import Sum
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 from clock.contracts.models import Contract
@@ -226,7 +227,7 @@ class ShiftForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
-        self.contract = kwargs.pop('contract')
+        self.contract = kwargs.pop('contract', None)
         self.view = kwargs.pop('view', None)
         self.user = kwargs.pop('user')
         super(ShiftForm, self).__init__(*args, **kwargs)
@@ -301,15 +302,8 @@ class ShiftForm(forms.ModelForm):
 
         self.instance.employee = self.user
         self.started = cleaned_data.get('started')
-        self.finished = cleaned_data.get('finished', None)
-
-        # max_shift_duration = timezone.timedelta(minutes=600)
-
-        # First if-case is needed for the quick-action form.
-        if self.finished:
-            self.instance.duration = self.finished - self.started
-        else:
-            self.instance.duration = timezone.now() - self.started
+        self.finished = cleaned_data.get('finished')
+        self.instance.duration = self.finished - self.started
 
         self.time_validation()
 
@@ -423,31 +417,54 @@ class ShiftForm(forms.ModelForm):
                     None, _('We cannot save a shift that is this short.')
                 )
 
+            overlaps = self.check_for_overlaps
+            if overlaps:
+                shift_word = 'shifts' if len(overlaps) > 1 else 'shift'
+
+                self.add_error(
+                    None,
+                    _(
+                        'The current shift overlaps with the '
+                        'following saved {}:'.format(shift_word)
+                    )
+                )
+                for shift in overlaps:
+                    self.add_error(
+                        None,
+                        mark_safe(
+                            '<a href="#">{}</a>: {}, {}, {}'.format(
+                                shift.contract, shift.started, shift.duration,
+                                shift.finished
+                            )
+                        )
+                    )
+
         return
 
-    # This could go into models.. at some point? When we create a shift through
-    # the shell, no checks will be performed for overlaps!
-    def check_for_overlaps(self, employee, started, finished):
-        """
-        Check if the supplied starting/finishing DateTimes
+    @property
+    def check_for_overlaps(self):
+        """Check if the supplied starting/finishing DateTimes
         overlap with any shifts already present in our database.
+
+        We only check this if the current Shift belongs to some contract.
+        Further we ignore all Shifts that do not belong to any contract.
+
+        We want Shifts to be able to begin and end on the same minute.
+        Therefore we are using < and > instead of <= and >=.
+
         Logic according to: http://stackoverflow.com/a/325964/4791226
-        Quick reference: (StartA <= EndB)  and  (EndA >= StartB)
+        Quick reference: (StartA < EndB) and (EndA > StartB)
         """
-        # TODO: Make this more efficient. We can make the database do all the
-        # hard work.
-        shifts = Shift.objects.filter(
-            employee=employee, started__lte=finished, finished__gte=started
-        )
+        shifts = None
 
-        # Check if the retrieved shifts contain the shift we're trying to
-        # update.
-        for shift in shifts:
-            if shift.pk == self.instance.pk:
-                pass
-            elif (shift.finished == started) or (shift.started == finished):
-                pass
-            else:
-                return shifts
+        # Only perform the check if the current Shift belongs to some contract
+        contract = self.cleaned_data.get('contract', None)
+        if contract is not None:
+            shifts = Shift.objects.filter(
+                employee=self.instance.employee,
+                started__lt=self.finished,
+                finished__gt=self.started,
+                contract__isnull=False    # Ignore Shifts without contracts
+            ).exclude(pk=self.instance.pk)
 
-        return None
+        return shifts
