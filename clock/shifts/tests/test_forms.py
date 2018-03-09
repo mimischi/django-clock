@@ -275,6 +275,12 @@ class ShiftFormTest(TestCase):
 
     def setUp(self):
         self.user = self.make_user()
+        self.contract = Contract.objects.create(
+            employee=self.user, hours=40, department='Goethe'
+        )
+        self.contract2 = Contract.objects.create(
+            employee=self.user, hours=20, department='Goethe2'
+        )
 
     def prepare_form(
         self,
@@ -288,7 +294,7 @@ class ShiftFormTest(TestCase):
         kwargs=None
     ):
         if not kwargs:
-            kwargs = {'view': view, 'contract': None, 'user': self.user}
+            kwargs = {'view': view, 'contract': contract, 'user': self.user}
 
         data = {'contract': contract, 'reoccuring': 'ONCE'}
         for arg in ['employee', 'started', 'finished']:
@@ -367,3 +373,73 @@ class ShiftFormTest(TestCase):
         form.save()
         assert 'finished' in form.changed_data
         assert form.instance.duration == timezone.timedelta(minutes=125)
+
+    def test_overlaps(self):
+        """Test that we detect overlaps correctly."""
+        # First save some Shift without any contract
+        start = timezone.datetime(2018, 1, 1, 8, 0)
+        stop = timezone.datetime(2018, 1, 1, 10, 0)
+        initial_form = self.prepare_form(ShiftForm, start, stop, self.user)
+        initial_form.save()
+
+        # Now save a shift with a contract. This should not produce any
+        # collisions.
+        start = timezone.datetime(2018, 1, 1, 7, 0)
+        stop = timezone.datetime(2018, 1, 1, 11, 0)
+        form = ShiftForm(
+            data={
+                'started': start,
+                'finished': stop,
+                'reoccuring': 'ONCE',
+                'employee': self.user,
+                'contract': self.contract.pk
+            },
+            **{'user': self.user,
+               'view': None}
+        )
+        assert form.is_valid()
+        assert len(form.check_for_overlaps) == 0
+        form.save()
+
+        # Now try to save another Shift in the same contract. This should
+        # produce an error!
+        start = timezone.datetime(2018, 1, 1, 4, 0)
+        stop = timezone.datetime(2018, 1, 1, 11, 0)
+        form = ShiftForm(
+            data={
+                'started': start,
+                'finished': stop,
+                'reoccuring': 'ONCE',
+                'employee': self.user,
+                'contract': self.contract.pk
+            },
+            **{'user': self.user,
+               'view': None}
+        )
+        assert not form.is_valid()
+        assert len(form.check_for_overlaps) == 1
+
+        # Now try to save another Shift in a different contract. This should
+        # produce an error!
+        start = timezone.datetime(2018, 1, 1, 4, 0)
+        stop = timezone.datetime(2018, 1, 1, 11, 0)
+        form = ShiftForm(
+            data={
+                'started': start,
+                'finished': stop,
+                'reoccuring': 'ONCE',
+                'employee': self.user,
+                'contract': self.contract2.pk
+            },
+            **{'user': self.user,
+               'view': None}
+        )
+        assert not form.is_valid()
+        assert len(form.check_for_overlaps) == 1
+
+        # Check that we can save another shift without any contract.
+        start = timezone.datetime(2018, 1, 1, 6, 0)
+        stop = timezone.datetime(2018, 1, 1, 11, 0)
+        initial_form = self.prepare_form(ShiftForm, start, stop, self.user)
+        assert initial_form.is_valid()
+        assert initial_form.check_for_overlaps is None
