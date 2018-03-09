@@ -429,12 +429,29 @@ class ShiftForm(forms.ModelForm):
                     )
                 )
                 for shift in overlaps:
+                    started = timezone.localtime(shift.started
+                                                 ).strftime("%d.%m.%Y %H:%M")
+                    finished = timezone.localtime(shift.finished
+                                                  ).strftime("%d.%m.%Y %H:%M")
+                    duration = shift.duration
+                    days, seconds = duration.days, duration.seconds
+                    hours = days * 24 + seconds // 3600
+                    minutes = (seconds % 3600) // 60
+                    duration = "{:02}:{:02}".format(hours, minutes)
+
                     self.add_error(
                         None,
                         mark_safe(
-                            '<a href="#">{}</a>: {}, {}, {}'.format(
-                                shift.contract, shift.started, shift.duration,
-                                shift.finished
+                            _(
+                                '<a href="{}"><strong>Contract:</strong> {}; '
+                                '<strong>Started:</strong> {}; '
+                                '<strong>Duration:</strong> {}; '
+                                '<strong>Finished:</strong> {}</a>'.format(
+                                    reverse_lazy(
+                                        'shift:edit', args=[shift.pk]
+                                    ), shift.contract, started, duration,
+                                    finished
+                                )
                             )
                         )
                     )
