@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Submit
+from crispy_forms.layout import HTML, Field, Layout, Submit
 from django import forms
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
@@ -14,8 +14,10 @@ class ContractForm(forms.ModelForm):
         model = Contract
         fields = (
             'department',
-            'department_short',
-            'hours', )
+            'start_date',
+            'end_date',
+            'hours',
+        )
 
     def __init__(self, *args, **kwargs):
         super(ContractForm, self).__init__(*args, **kwargs)
@@ -32,20 +34,32 @@ class ContractForm(forms.ModelForm):
             add_input_text = _('Update contract')
             delete_html_inject = '<a href="{}" class="{}">{}</a>'.format(
                 reverse_lazy(
-                    'contract:delete', kwargs={'pk': self.instance.pk}),
-                'btn btn-danger pull-right second-button', _('Delete'))
+                    'contract:delete', kwargs={'pk': self.instance.pk}
+                ), 'btn btn-danger pull-right second-button', _('Delete')
+            )
 
         cancel_html_inject = '<a href="{}" class="{}">{}</a>'.format(
-            reverse_lazy('contract:list'), 'btn btn-default', _('Cancel'))
+            reverse_lazy('contract:list'), 'btn btn-default', _('Cancel')
+        )
 
         self.helper = FormHelper(self)
         self.helper.form_action = '.'
         self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Field('department'),
+            Field(
+                'start_date',
+                template='shift/fields/datetimepicker_field.html'
+            ), Field('end_date'), Field('hours')
+        )
         self.helper.layout.append(
             FormActions(
                 HTML(cancel_html_inject),
                 Submit(
                     'submit',
                     add_input_text,
-                    css_class='btn btn-primary pull-right'),
-                HTML(delete_html_inject), ))
+                    css_class='btn btn-primary pull-right'
+                ),
+                HTML(delete_html_inject),
+            )
+        )
