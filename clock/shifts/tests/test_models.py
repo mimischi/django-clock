@@ -1,5 +1,4 @@
 """Test the Shift model"""
-import pytest
 from django.utils import timezone
 from freezegun import freeze_time
 from test_plus.test import TestCase
@@ -28,8 +27,7 @@ class ShiftTest(TestCase):
         assert shift.shift_duration == timezone.timedelta(0, 3600)
 
     def test_shift_duration_rounding(self):
-        """
-        Check that the rounding of shift start / finished times actually works as
+        """Check that the rounding of shift start / finished times actually works as
         intended. We expect it to round to the closest 5 minutes.
         """
 

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
+from django.urls import path
 
+from clock.contact.views import ContactSuccessView, ContactView
 
-from django.conf.urls import url
-
-from clock.contact.views import ContactView, ContactSuccessView
-
+app_name = 'contact'
 urlpatterns = [
-    url(r'^$', ContactView.as_view(), name="form"),
-    url(r'^success/$', ContactSuccessView.as_view(), name="success"),
+    path('', ContactView.as_view(), name="form"),
+    path('success/', ContactSuccessView.as_view(), name="success"),
 ]

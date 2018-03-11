@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 
-from django.db import models, migrations
 import django.contrib.sites.models
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 'ordering': ('domain',),
             },
             managers=[
-                (b'objects', django.contrib.sites.models.SiteManager()),
+                ('objects', django.contrib.sites.models.SiteManager()),
             ],
         ),
     ]

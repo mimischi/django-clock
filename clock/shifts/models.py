@@ -19,7 +19,8 @@ class Shift(models.Model):
 
     KEY_CHOICES = ((_('S'), _('Sick')), (_('V'), _('Vacation')))
 
-    employee = models.ForeignKey(settings.AUTH_USER_MODEL)
+    employee = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     contract = models.ForeignKey(
         'contracts.Contract',
         null=True,
@@ -115,9 +116,9 @@ class Shift(models.Model):
 
         # Lets check if this shift is just being updated
         if self.pk is not None and self.shift_finished is not None and (
-                self.shift_finished != self.__old_shift_finished
-                or self.shift_started != self.__old_shift_started
-                or self.pause_duration != self.__old_pause_duration):
+                self.shift_finished != self.__old_shift_finished or
+                self.shift_started != self.__old_shift_started or
+                self.pause_duration != self.__old_pause_duration):
             self.shift_duration = (
                 self.shift_finished - self.shift_started) - self.pause_duration
         # Lets check if this shift did not exists before and was just added

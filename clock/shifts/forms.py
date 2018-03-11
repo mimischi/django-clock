@@ -5,7 +5,7 @@ from crispy_forms.layout import HTML, Field, Layout, Submit
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from clock.contracts.models import Contract

@@ -127,11 +127,12 @@ class ShiftFormTest(TestCase):
         request = self.factory.get(url)
         self.setup_request(request)
 
+        # The user input is defined in "%HH:%mm", so the duration is set to
+        # "00:50", which here translated to 50 minutes.
         data = {
             'shift_started': start,
             'shift_finished': stop,
-            'pause_duration': '00:50',    # The user input is defined in
-    # "%HH:%mm", so this is 50 minutes.
+            'pause_duration': '00:50',
             'contract': None,
             'key': '',
             'tags': '',

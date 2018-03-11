@@ -5,6 +5,9 @@ init:
 	yarn build
 ci:
 	pipenv run pytest --cov=./
+analyze:
+	pipenv run flake8 .
+	pipenv run isort -v
 build:
 	docker-compose build
 rebuild:

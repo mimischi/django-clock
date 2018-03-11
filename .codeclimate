@@ -1,0 +1,8 @@
+plugins:
+  pep8:
+    enabled: true
+  sonar-python:
+    enabled: true
+    config:
+      tests_patterns:
+        - clock/**/tests/**

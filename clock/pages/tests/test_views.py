@@ -2,8 +2,9 @@ from test_plus.test import TestCase
 
 
 class PagesViewTests(TestCase):
-    """
-    Tests the behaviour of the home view for guest users and authenticated users.
+    """Tests the behaviour of the home view for guest users and authenticated
+    users.
+
     """
 
     def setUp(self):

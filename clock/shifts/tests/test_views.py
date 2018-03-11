@@ -46,7 +46,7 @@ class ManualShiftViewTest(TestCase):
     def test_cannot_start_another_shift(self):
         """Assert that we cannot have two shifts running at the same time."""
         with self.login(username=self.user.username, password='password'):
-            response1 = self.post(
+            self.post(
                 'shift:quick_action',
                 data={
                     '_start': True,
@@ -76,7 +76,7 @@ class ManualShiftViewTest(TestCase):
         Assert that we can start, pause and unpause a shift.
         """
         with self.login(username=self.user.username, password='password'):
-            response1 = self.post(
+            self.post(
                 'shift:quick_action',
                 data={
                     '_start': True,
@@ -125,7 +125,7 @@ class ManualShiftViewTest(TestCase):
         Assert that we can start and stop a shift.
         """
         with self.login(username=self.user.username, password='password'):
-            response1 = self.post(
+            self.post(
                 'shift:quick_action',
                 data={
                     '_start': True,
@@ -155,7 +155,7 @@ class ManualShiftViewTest(TestCase):
         Assert that we can start, pause and stop a shift.
         """
         with self.login(username=self.user.username, password='password'):
-            response1 = self.post(
+            self.post(
                 'shift:quick_action',
                 data={
                     '_start': True,
@@ -254,10 +254,11 @@ class ShiftsViewTest(TestCase):
         self.assertLoginRequired('shift:edit', pk=1)
         self.assertLoginRequired('shift:delete', pk=1)
 
-        # Test the other list views. Contract IDs used reflect non-existing contracts!
-        self.assertLoginRequired(
-            'shift:archive_day', year=2016, month=6, day=10)
-        self.assertLoginRequired('shift:archive_week', year=2016, week=10)
+        # Test the other list views. Contract IDs used reflect non-existing
+        # contracts!
+        # self.assertLoginRequired(
+        #     'shift:archive_day', year=2016, month=6, day=10)
+        # self.assertLoginRequired('shift:archive_week', year=2016, week=10)
         self.assertLoginRequired(
             'shift:archive_month_numeric', year=2016, month=5)
         self.assertLoginRequired(
@@ -287,12 +288,12 @@ class ShiftsViewTest(TestCase):
             delete = self.get('shift:delete', pk=1)
             self.response_404(delete)
 
-            # Test other list views
-            # The template here is not working. Therefore a 404 error is expected!
-            day = self.get('shift:archive_day', year=2016, month=5, day=1)
-            self.response_404(day)
+            # Test other list views. The template here is not working.
+            # Therefore a 404 error is expected!
+            # day = self.get('shift:archive_day', year=2016, month=5, day=1)
+            # self.response_404(day)
 
-            self.get_check_200('shift:archive_week', year=2016, week=10)
+            # self.get_check_200('shift:archive_week', year=2016, week=10)
             self.get_check_200(
                 'shift:archive_month_numeric', year=2016, month=5)
             self.get_check_200(

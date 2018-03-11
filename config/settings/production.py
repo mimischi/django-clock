@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
+
 
 import logging
-import os
-
-from django.utils import six
 
 from .common import *  # noqa
 
@@ -25,7 +22,7 @@ WHITENOISE_MIDDLEWARE = ('whitenoise.middleware.WhiteNoiseMiddleware', )
 MIDDLEWARE = WHITENOISE_MIDDLEWARE + MIDDLEWARE
 RAVEN_MIDDLEWARE = (
     'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
-    'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
+    'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',    # noqa
 )
 MIDDLEWARE = RAVEN_MIDDLEWARE + MIDDLEWARE
 

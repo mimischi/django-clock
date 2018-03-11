@@ -15,7 +15,7 @@ class LocaleMiddlewareExtended(LocaleMiddleware):
     """
 
     def get_language_for_user(self, request):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             try:
                 account = UserProfile.objects.get(user=request.user)
                 return account.language
