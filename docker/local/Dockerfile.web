@@ -23,8 +23,9 @@ RUN cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
 
 # Copy Pipfile, install pipenv and then install all python dependencies
 COPY Pipfile Pipfile.lock /
-RUN pip install pipenv
-RUN LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "pipenv install --dev --system"
+RUN pip install --upgrade pip \
+    && pip install pipenv
+RUN LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "pipenv install --dev --system --ignore-pipfile"
 
 # Copy the entrypoint.sh and start.sh and make them executable
 COPY docker/local/entrypoint.sh docker/local/start.sh /
