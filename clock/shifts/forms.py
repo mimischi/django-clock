@@ -104,23 +104,20 @@ class ClockOutForm(forms.Form):
                 timezone.datetime(
                     self.instance.started.year, self.instance.started.month,
                     self.instance.started.day, 23, 55, 00
-                ),
-                timezone=pytz.timezone('UTC')
-            )
+                )
+            ).astimezone(pytz.utc)
 
             # Define a starting time for the next day (00:00)
             next_day_started = timezone.make_aware(
                 timezone.datetime(
                     new_shift_finished.year, new_shift_finished.month,
                     new_shift_finished.day, 0, 0
-                ),
-                timezone=pytz.timezone('UTC')
-            )
+                )
+            ).astimezone(pytz.utc)
             # Check whether the shift on the new day is actually longer than
             # five minutes. If not, we do not attempt to create it.
-            if (new_shift_finished - next_day_started) >= timezone.timedelta(
-                minutes=5
-            ):
+            if (new_shift_finished -
+                next_day_started) >= timezone.timedelta(minutes=5):
                 new_shift = ShiftForm(
                     data={
                         'started': next_day_started,
@@ -281,9 +278,8 @@ class ShiftForm(forms.ModelForm):
             ),
             Field(
                 'finished', template='shift/fields/datetimepicker_field.html'
-            ),
-            Field('contract'),
-            Field('reoccuring'), Field('key'), Field('tags'), Field('note')
+            ), Field('contract'), Field('reoccuring'), Field('key'),
+            Field('tags'), Field('note')
         )
         self.helper.layout.append(
             FormActions(
@@ -353,8 +349,10 @@ class ShiftForm(forms.ModelForm):
                 )
                 form = ShiftForm(
                     data=data,
-                    **{'user': self.user,
-                       'contract': data['contract']}
+                    **{
+                        'user': self.user,
+                        'contract': data['contract']
+                    }
                 )
                 if form.is_valid():
                     form.save()
@@ -375,9 +373,8 @@ class ShiftForm(forms.ModelForm):
         if not self.instance.duration:
             self.instance.duration = timezone.now() - self.started
 
-        return (worked_hours + self.instance.duration) > timezone.timedelta(
-            minutes=600
-        )
+        return (worked_hours +
+                self.instance.duration) > timezone.timedelta(minutes=600)
 
     def work_time_current_day(self):
         """Return the total time worked for a given day."""
@@ -389,8 +386,9 @@ class ShiftForm(forms.ModelForm):
             employee=self.user,
             contract=self.contract,
             started__gte=timezone.make_aware(datetime(year, month, day, 0, 0)),
-            finished__lte=timezone.
-            make_aware(datetime(year, month, day, 23, 59))
+            finished__lte=timezone.make_aware(
+                datetime(year, month, day, 23, 59)
+            )
         )
         if self.instance.pk:
             work_time.exclude(pk=self.instance.pk)
@@ -410,9 +408,8 @@ class ShiftForm(forms.ModelForm):
                 self.add_error(
                     None, _('The shift cannot start after finishing.')
                 )
-            elif (self.finished - self.started) < timezone.timedelta(
-                minutes=5
-            ):
+            elif (self.finished -
+                  self.started) < timezone.timedelta(minutes=5):
                 self.add_error(
                     None, _('We cannot save a shift that is this short.')
                 )
