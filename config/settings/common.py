@@ -9,7 +9,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
-
 import environ
 from django.utils.translation import ugettext_lazy as _
 
@@ -34,7 +33,8 @@ DJANGO_APPS = (
     # 'django.contrib.humanize',
 
     # Admin
-    'django.contrib.admin', )
+    'django.contrib.admin',
+)
 THIRD_PARTY_APPS = (
     'webpack_loader',
     'crispy_forms',    # Form layouts
@@ -45,7 +45,8 @@ THIRD_PARTY_APPS = (
     'bootstrap3',
     # 'bootstrap3_datetime',
     'captcha',
-    'taggit', )
+    'taggit',
+)
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
@@ -55,7 +56,8 @@ LOCAL_APPS = (
     'clock.shifts',
     'clock.contracts',
     'clock.profiles',
-    'clock.contact', )
+    'clock.contact',
+)
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -75,7 +77,8 @@ MIDDLEWARE = (
     # our needs! 'django.middleware.locale.LocaleMiddleware',
     'clock.profiles.middleware.LocaleMiddlewareExtended',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'clock.pages.middleware.LastVisitedMiddleware', )
+    'clock.pages.middleware.LastVisitedMiddleware',
+)
 
 # MIGRATIONS CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -96,7 +99,8 @@ FIXTURE_DIRS = (str(APPS_DIR.path('fixtures')), )
 # ------------------------------------------------------------------------------
 EMAIL_BACKEND = env(
     'DJANGO_EMAIL_BACKEND',
-    default='django.core.mail.backends.smtp.EmailBackend')
+    default='django.core.mail.backends.smtp.EmailBackend'
+)
 
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -181,13 +185,15 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (
     str(APPS_DIR.path('static')),
-    str(ROOT_DIR.path('assets')), )
+    str(ROOT_DIR.path('assets')),
+)
 
 # See:
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder', )
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -231,15 +237,17 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend', )
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 # Some really nice defaults
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
-ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION',
-                                      True)
+ACCOUNT_ALLOW_REGISTRATION = env.bool(
+    'DJANGO_ACCOUNT_ALLOW_REGISTRATION', True
+)
 
 # Custom user app defaults
 # Select the correct user model
@@ -279,6 +287,12 @@ DATETIME_INPUT_FORMATS = [
     '%d.%m.%Y %H:%M:%s',
     '%d.%m.%y %H:%M',
     '%d.%m.%y %H:%M:%s',
+]
+
+DATE_INPUT_FORMATS = [
+    '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', '%b %d %Y', '%b %d, %Y', '%d %b %Y',
+    '%d %b, %Y', '%B %d %Y', '%B %d, %Y', '%d %B %Y', '%d %B, %Y', '%d/%m/%Y',
+    '%d/%m/%y', '%d.%m.%Y', '%d.%m.%y'
 ]
 
 # reCAPTCHA settings
