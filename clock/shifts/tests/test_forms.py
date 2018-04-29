@@ -290,7 +290,7 @@ class ShiftFormTest(TestCase):
         if not kwargs:
             kwargs = {'view': view, 'contract': None, 'user': self.user}
 
-        data = {'contract': contract}
+        data = {'contract': contract, 'reoccuring': 'ONCE'}
         for arg in ['employee', 'started', 'finished']:
             if eval(arg):
                 data[arg] = eval(arg)

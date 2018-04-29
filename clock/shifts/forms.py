@@ -5,8 +5,10 @@ import pytz
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Field, Layout, Submit
+from dateutil.rrule import DAILY, MONTHLY, WEEKLY, rrule
 from django import forms
 from django.conf import settings
+from django.contrib import messages
 from django.db.models import Sum
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -122,7 +124,8 @@ class ClockOutForm(forms.Form):
                 new_shift = ShiftForm(
                     data={
                         'started': next_day_started,
-                        'finished': new_shift_finished
+                        'finished': new_shift_finished,
+                        'reoccuring': 'ONCE'
                     },
                     **{
                         'contract': self.instance.contract,
@@ -180,6 +183,13 @@ class ClockOutForm(forms.Form):
             shift[0].save()
 
 
+REOCCURING_CHOICES = (
+    ('ONCE', _('Once')), ('DAILY', _('Daily')), ('WEEKLY', _('Weekly')),
+    ('MONTHLY', _('Monthly'))
+)
+FREQUENCIES = {'DAILY': DAILY, 'WEEKLY': WEEKLY, 'MONTHLY': MONTHLY}
+
+
 class ShiftForm(forms.ModelForm):
     started = forms.DateTimeField(
         input_formats=settings.DATETIME_INPUT_FORMATS
@@ -189,19 +199,23 @@ class ShiftForm(forms.ModelForm):
         input_formats=settings.DATETIME_INPUT_FORMATS
     )
 
+    reoccuring = forms.ChoiceField(choices=REOCCURING_CHOICES)
+
     class Meta:
         model = Shift
         fields = (
             'started',
             'finished',
             'contract',
+            'reoccuring',
             'key',
             'tags',
             'note',
         )
         widgets = {
             'contract': forms.Select(attrs={'class': 'selectpicker'}),
-            'key': forms.Select(attrs={'class': 'selectpicker'}),
+            'reoccuring': forms.Select(attrs={'class': 'selectpicker'}),
+            'key': forms.Select(attrs={'class': 'selectpicker'})
         }
 
     def __init__(self, *args, **kwargs):
@@ -260,7 +274,9 @@ class ShiftForm(forms.ModelForm):
             ),
             Field(
                 'finished', template='shift/fields/datetimepicker_field.html'
-            ), Field('contract'), Field('key'), Field('tags'), Field('note')
+            ),
+            Field('contract'),
+            Field('reoccuring'), Field('key'), Field('tags'), Field('note')
         )
         self.helper.layout.append(
             FormActions(
@@ -278,8 +294,9 @@ class ShiftForm(forms.ModelForm):
         cleaned_data = super().clean()
 
         self.instance.employee = self.user
-        self.started = self.cleaned_data.get('started')
-        self.finished = self.cleaned_data.get('finished', None)
+        self.started = cleaned_data.get('started')
+        self.finished = cleaned_data.get('finished', None)
+
         # max_shift_duration = timezone.timedelta(minutes=600)
 
         # First if-case is needed for the quick-action form.
@@ -291,6 +308,62 @@ class ShiftForm(forms.ModelForm):
         self.time_validation()
 
         return cleaned_data
+
+    def save(self, commit=True):
+        # Perform saving of the super save() method.
+        shiftform = super().save(commit=False)
+
+        # Grab the value for the reoccuring field.
+        reoccuring = self.cleaned_data.get('reoccuring')
+
+        # Check, if the Shift is reoccuring. If yes, save it several times.
+        # Otherwise save it only once.
+        if reoccuring != 'ONCE':
+            # Populate a dictionary with all values that we need to create new
+            # Shifts.
+            data = {}
+            for field in ['contract', 'key', 'note', 'tags']:
+                data[field] = self.cleaned_data.get(field)
+            data['duration'] = self.instance.duration
+            data['reoccuring'] = 'ONCE'
+            started = self.cleaned_data.get('started')
+            finished = self.cleaned_data.get('finished')
+
+            # Grab all dates that we need to consider
+            dates = list(
+                rrule(
+                    freq=FREQUENCIES[reoccuring],
+                    dtstart=started,
+                    until=timezone.make_aware(
+                        timezone.datetime(2018, 3, 31),
+                        timezone=pytz.timezone('UTC')
+                    )
+                )
+            )
+
+            # TODO: Decide what to do, if we have any collisions.
+            for date in dates:
+                data['started'] = timezone.datetime(
+                    date.year, date.month, date.day, started.hour,
+                    started.minute
+                )
+                data['finished'] = timezone.datetime(
+                    date.year, date.month, date.day, finished.hour,
+                    finished.minute
+                )
+                form = ShiftForm(
+                    data=data,
+                    **{'user': self.user,
+                       'contract': data['contract']}
+                )
+                if form.is_valid():
+                    form.save()
+
+        # Check if we want to save the form now.
+        if commit:
+            shiftform.save()
+
+        return shiftform
 
     def is_too_long(self, worked_hours=None):
         """Return True/False if the total work time for a given day exceeds ten

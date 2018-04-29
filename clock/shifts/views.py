@@ -135,12 +135,12 @@ class ShiftManualCreate(CreateView):
 
         return d
 
-    def form_valid(self, form):
-        shift = form.save(commit=False)
-        shift.employee = self.request.user
+    # def form_valid(self, form):
+    #     shift = form.save(commit=False)
+    #     shift.employee = self.request.user
 
-        shift.save()
-        return super(ShiftManualCreate, self).form_valid(form)
+    #     shift.save()
+    #     return super(ShiftManualCreate, self).form_valid(form)
 
 
 @method_decorator(login_required, name="dispatch")
