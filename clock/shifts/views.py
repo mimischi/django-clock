@@ -3,7 +3,7 @@ from datetime import datetime
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -14,6 +14,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from pytz import timezone as p_timezone
 
+from clock.contracts.models import Contract
 from clock.pages.mixins import UserObjectOwnerMixin
 from clock.shifts.forms import ClockInForm, ClockOutForm, ShiftForm
 from clock.shifts.models import Shift
@@ -24,6 +25,32 @@ from clock.shifts.utils import (
     get_return_url,
     set_correct_session,
 )
+
+
+def get_contract_end_date(request):
+    if request.method == 'POST':
+        contract_id = request.POST.get('contract', 0)
+        user_id = request.POST.get('user_id', 0)
+        contract = Contract.objects.get(pk=contract_id)
+
+        # Only show data to users that own the requested contract
+        if contract.employee.pk == int(user_id):
+            return JsonResponse({'end_date': contract.end_date})
+
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        contract_id = request.GET.get('contract', 0)
+        user_id = request.GET.get('user_id', 0)
+        contract = Contract.objects.get(pk=contract_id)
+        return JsonResponse(
+            {
+                'end_date': contract.end_date,
+                'user_id': user_id
+            }
+        )
+
+    return HttpResponse(status=403)
 
 
 @require_POST
@@ -40,8 +67,8 @@ def shift_action(request):
         return redirect('home')
     elif shift and '_start' in request.POST:
         messages.add_message(
-            request, messages.ERROR,
-            _('You already have an active shift!'), 'danger'
+            request, messages.ERROR, _('You already have an active shift!'),
+            'danger'
         )
         return redirect('home')
 
@@ -51,8 +78,10 @@ def shift_action(request):
         if 'contract' in request.POST:
             contract = request.POST['contract']
         form = ClockInForm(
-            data={'started': timezone.now(),
-                  'contract': contract},
+            data={
+                'started': timezone.now(),
+                'contract': contract
+            },
             user=request.user
         )
 

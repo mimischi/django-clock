@@ -206,6 +206,9 @@ class ShiftForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'selectpicker'})
     )
 
+    end_date = forms.DateTimeField(input_formats=settings.DATE_INPUT_FORMATS)
+    user_id = forms.IntegerField()
+
     class Meta:
         model = Shift
         fields = (
@@ -213,6 +216,8 @@ class ShiftForm(forms.ModelForm):
             'finished',
             'contract',
             'reoccuring',
+            'end_date',
+            'user_id',
             'key',
             'tags',
             'note',
@@ -228,6 +233,12 @@ class ShiftForm(forms.ModelForm):
         self.view = kwargs.pop('view', None)
         self.user = kwargs.pop('user')
         super(ShiftForm, self).__init__(*args, **kwargs)
+
+        for field_to_hide in ['end_date', 'user_id']:
+            self.fields[field_to_hide].required = False
+            self.fields[field_to_hide].widget = forms.HiddenInput()
+
+        self.fields['user_id'].initial = self.user.pk
 
         if self.view is None:
             self.finished = None
@@ -278,8 +289,10 @@ class ShiftForm(forms.ModelForm):
             ),
             Field(
                 'finished', template='shift/fields/datetimepicker_field.html'
-            ), Field('contract'), Field('reoccuring'), Field('key'),
-            Field('tags'), Field('note')
+            ), Field('contract'), Field('reoccuring'),
+            Field(
+                'end_date', template='shift/fields/datetimepicker_field.html'
+            ), Field('user_id'), Field('key'), Field('tags'), Field('note')
         )
         self.helper.layout.append(
             FormActions(
@@ -318,8 +331,9 @@ class ShiftForm(forms.ModelForm):
             # Populate a dictionary with all values that we need to create new
             # Shifts.
             data = {}
-            for field in ['contract', 'key', 'note', 'tags']:
+            for field in ['key', 'note', 'tags']:
                 data[field] = self.cleaned_data.get(field)
+            data['contract'] = self.cleaned_data.get('contract').pk
             data['duration'] = self.instance.duration
             data['reoccuring'] = 'ONCE'
             started = self.cleaned_data.get('started')
@@ -330,15 +344,13 @@ class ShiftForm(forms.ModelForm):
                 rrule(
                     freq=FREQUENCIES[reoccuring],
                     dtstart=started,
-                    until=timezone.make_aware(
-                        timezone.datetime(2018, 3, 31),
-                        timezone=pytz.timezone('UTC')
+                    until=self.cleaned_data.get('end_date').astimezone(
+                        pytz.utc
                     )
                 )
             )
 
-            # TODO: Decide what to do, if we have any collisions.
-            for date in dates:
+            for date in dates[1:]:
                 data['started'] = timezone.datetime(
                     date.year, date.month, date.day, started.hour,
                     started.minute

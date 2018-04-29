@@ -288,6 +288,13 @@ class ShiftFormTest(TestCase):
         self.contract2 = Contract.objects.create(
             employee=self.user, hours=20, department='Goethe2'
         )
+        self.contract3 = Contract.objects.create(
+            employee=self.user,
+            hours=40,
+            department='Goethe3',
+            start_date='2018-04-01',
+            end_date='2018-05-31'
+        )
 
     def prepare_form(
         self,
@@ -456,3 +463,38 @@ class ShiftFormTest(TestCase):
         initial_form = self.prepare_form(ShiftForm, start, stop, self.user)
         assert initial_form.is_valid()
         assert initial_form.check_for_overlaps is None
+
+    def test_can_create_reoccuring_shifts(self):
+        start_date = timezone.datetime(2018, 4, 1, 8, 0)
+        stop_date = timezone.datetime(2018, 4, 1, 16, 0)
+        form = ShiftForm(
+            data={
+                'started': start_date,
+                'finished': stop_date,
+                'reoccuring': 'WEEKLY',
+                'end_date': '01.05.2018',
+                'employee': self.user,
+                'contract': self.contract3.pk
+            },
+            **{
+                'user': self.user,
+                'view': None
+            }
+        )
+        assert form.is_valid()
+        form.save()
+
+        shifts = Shift.objects.filter(
+            employee=self.user, contract=self.contract3.pk
+        )
+        assert shifts.count() == 5
+        expected_days = [29, 22, 15, 8, 1]
+        start_hour = start_date.astimezone(pytz.utc).hour
+        stop_hour = stop_date.astimezone(pytz.utc).hour
+        for i, shift in enumerate(shifts):
+            assert shift.started == timezone.datetime(
+                2018, 4, expected_days[i], start_hour, 0, tzinfo=pytz.utc
+            )
+            assert shift.finished == timezone.datetime(
+                2018, 4, expected_days[i], stop_hour, 0, tzinfo=pytz.utc
+            )

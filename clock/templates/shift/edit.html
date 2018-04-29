@@ -31,6 +31,73 @@
 
 {% block extra_js %}
     <script type="text/javascript">
+      // Taken from the Django documentation
+      const csrftoken = $("[name=csrfmiddlewaretoken]").val();
+      function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+      $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        }
+      });
+      const url = `{% url 'shift:get_contract_id' %}`;
+      const contract_select = $("#id_contract");
+      const contract_div = $("#div_id_end_date");
+      const end_date_input = $("#id_end_date");
+      const reoccuring = $("#id_reoccuring");
+      const user_id = $("#id_user_id");
+
+      const resetContractEndDate = function (contract_div, end_date) {
+        contract_div.hide();
+        end_date.attr('type', 'hidden');
+        end_date.val('');
+      }
+      const showContractEndDate = function (data) {
+        end_date_input.val(data['end_date']);
+        end_date_input.attr('type', 'input');
+        contract_div.show();
+      }
+      const grabContractEndDate = function (contractID) {
+        if (reoccuring.val() !== 'ONCE' && contract_select.val() !== '' && user_id.val() !== '') {
+          $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+              'contract': contractID,
+              'user_id': user_id.val()
+            },
+            success: function (data) {
+              showContractEndDate(data);
+            },
+            error: function (data) {
+              console.log('No contract ID found.');
+            },
+          });
+        }
+      }
+
+      reoccuring.change(function () {
+        if (reoccuring.val() === 'ONCE') {
+          resetContractEndDate(contract_div, end_date_input);
+        } else {
+          grabContractEndDate(contract_select.val());
+        }
+      });
+
+      contract_select.change(function () {
+        let contractID = contract_select.val();
+        if (contractID === '') {
+          resetContractEndDate(contract_div, end_date_input);
+        } else {
+          grabContractEndDate(contractID);
+        }
+      });
+
+      contract_div.hide();
       var tags = $('input[type="text"]#id_tags').tagEditor();
       var now = moment("2017-11-05T13:37");
       $(function () {

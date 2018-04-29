@@ -312,3 +312,5 @@ WEBPACK_LOADER = {
         'IGNORE': ['.+\.hot-update.js', '.+\.map']
     }
 }
+
+CSRF_USE_SESSIONS = True
