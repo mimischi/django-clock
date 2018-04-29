@@ -8,7 +8,6 @@ from crispy_forms.layout import HTML, Field, Layout, Submit
 from dateutil.rrule import DAILY, MONTHLY, WEEKLY, rrule
 from django import forms
 from django.conf import settings
-from django.contrib import messages
 from django.db.models import Sum
 from django.urls import reverse_lazy
 from django.utils import timezone
