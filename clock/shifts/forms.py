@@ -8,6 +8,7 @@ from crispy_forms.layout import HTML, Field, Layout, Submit
 from dateutil.rrule import DAILY, MONTHLY, WEEKLY, rrule
 from django import forms
 from django.conf import settings
+from django.contrib import messages
 from django.db.models import Sum
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -314,6 +315,16 @@ class ShiftForm(forms.ModelForm):
         self.finished = cleaned_data.get('finished')
         self.instance.duration = self.finished - self.started
 
+        # Do not allow a manually created Shift to spill into the next day.
+        if not (
+            (self.started.year == self.finished.year) and
+            (self.started.month == self.finished.month) and
+            (self.started.day == self.finished.day)
+        ):
+            self.add_error(
+                'finished', _('A shift can never end on the next day.')
+            )
+
         reoccuring = self.cleaned_data.get('reoccuring')
         if reoccuring != 'ONCE':
             if self.cleaned_data.get('end_date') > self.cleaned_data.get(
@@ -505,3 +516,15 @@ class ShiftForm(forms.ModelForm):
             ).exclude(pk=self.instance.pk)
 
         return shifts
+
+    def spills_into_next_day(self, started=None, finished=None):
+        """Returns True if the shift finishes the same day it started."""
+        if not started:
+            started = self.instance.started
+        if not finished:
+            finished = self.cleaned_data.get('finished')
+        return not (
+            (started.year == finished.year) and
+            (started.month == finished.month) and
+            (started.day == finished.day)
+        )

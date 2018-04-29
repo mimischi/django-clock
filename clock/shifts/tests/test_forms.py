@@ -464,6 +464,20 @@ class ShiftFormTest(TestCase):
         assert initial_form.is_valid()
         assert initial_form.check_for_overlaps is None
 
+    def test_shift_cannot_span_two_days(self):
+        form = ShiftForm(
+            data={
+                'started': timezone.datetime(2018, 1, 1, 6),
+                'finished': timezone.datetime(2018, 1, 2, 6),
+                'reoccuring': 'ONCE'
+            },
+            **{
+                'user': self.user,
+                'view': None
+            }
+        )
+        assert not form.is_valid()
+
     def test_can_create_reoccuring_shifts(self):
         start_date = timezone.datetime(2018, 4, 1, 8, 0)
         stop_date = timezone.datetime(2018, 4, 1, 16, 0)
