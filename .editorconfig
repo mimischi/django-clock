@@ -12,7 +12,7 @@ trim_trailing_whitespace = true
 [*.py]
 # https://github.com/timothycrosley/isort/wiki/isort-Settings
 indent_size = 4
-line_length=79
+line_length=100
 known_first_party=clock
 multi_line_output=3
 default_section=THIRDPARTY
