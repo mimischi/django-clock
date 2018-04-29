@@ -25,7 +25,7 @@ class ContractFormTest(TestCase):
         assert not form.is_valid()
 
     def test_cannot_create_contract_only_with_start_or_end_date(self):
-        expected_error = 'You need to specify both an end date for the contract.'
+        expected_error = 'You need to specify an end date for the contract.'
         form = ContractForm(
             data={
                 'department': 'GU',
@@ -38,7 +38,7 @@ class ContractFormTest(TestCase):
         assert 'end_date' in form.errors
         assert form.errors['__all__'][0] == expected_error
 
-        expected_error = 'You need to specify both a start date for the contract.'
+        expected_error = 'You need to specify a start date for the contract.'
         form = ContractForm(
             data={
                 'department': 'GU',

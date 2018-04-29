@@ -11,6 +11,7 @@ from clock.contracts.models import Contract
 
 
 class ContractForm(forms.ModelForm):
+    show_start_end_date = forms.BooleanField()
     start_date = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS)
     end_date = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS)
 
@@ -19,6 +20,7 @@ class ContractForm(forms.ModelForm):
         fields = (
             'department',
             'start_date',
+            'show_start_end_date',
             'end_date',
             'hours',
         )
@@ -29,8 +31,11 @@ class ContractForm(forms.ModelForm):
         self.user = kwargs.pop('user')
         super().__init__(*args, **kwargs)
 
+        self.fields['start_date'].widget = forms.HiddenInput()
+        self.fields['end_date'].widget = forms.HiddenInput()
         self.fields['start_date'].required = False
         self.fields['end_date'].required = False
+        self.fields['show_start_end_date'].required = False
 
         delete_html_inject = ''
         add_input_text = ''
@@ -54,11 +59,14 @@ class ContractForm(forms.ModelForm):
         self.helper.form_action = '.'
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
-            Field('department'),
+            Field('department'), Field('hours'), Field('show_start_end_date'),
             Field(
                 'start_date',
                 template='shift/fields/datetimepicker_field.html'
-            ), Field('end_date'), Field('hours')
+            ),
+            Field(
+                'end_date', template='shift/fields/datetimepicker_field.html'
+            )
         )
         self.helper.layout.append(
             FormActions(
