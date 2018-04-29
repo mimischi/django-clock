@@ -206,7 +206,7 @@ class ShiftForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'selectpicker'})
     )
 
-    end_date = forms.DateTimeField(input_formats=settings.DATE_INPUT_FORMATS)
+    end_date = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS)
     user_id = forms.IntegerField()
 
     class Meta:
@@ -314,6 +314,16 @@ class ShiftForm(forms.ModelForm):
         self.finished = cleaned_data.get('finished')
         self.instance.duration = self.finished - self.started
 
+        reoccuring = self.cleaned_data.get('reoccuring')
+        if reoccuring != 'ONCE':
+            if self.cleaned_data.get('end_date') > self.cleaned_data.get(
+                'contract'
+            ).end_date:
+                self.add_error(
+                    'end_date',
+                    _('You cannot plan shifts after the end of a contract.')
+                )
+
         self.time_validation()
 
         return cleaned_data
@@ -331,7 +341,7 @@ class ShiftForm(forms.ModelForm):
             # Populate a dictionary with all values that we need to create new
             # Shifts.
             data = {}
-            for field in ['key', 'note', 'tags']:
+            for field in ['key', 'note', 'tags', 'end_date']:
                 data[field] = self.cleaned_data.get(field)
             data['contract'] = self.cleaned_data.get('contract').pk
             data['duration'] = self.instance.duration
@@ -340,13 +350,14 @@ class ShiftForm(forms.ModelForm):
             finished = self.cleaned_data.get('finished')
 
             # Grab all dates that we need to consider
+            end_date_datetime = datetime.combine(
+                data['end_date'], datetime.min.time()
+            )
             dates = list(
                 rrule(
                     freq=FREQUENCIES[reoccuring],
                     dtstart=started,
-                    until=self.cleaned_data.get('end_date').astimezone(
-                        pytz.utc
-                    )
+                    until=end_date_datetime.astimezone(pytz.utc)
                 )
             )
 

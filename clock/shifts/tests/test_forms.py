@@ -498,3 +498,24 @@ class ShiftFormTest(TestCase):
             assert shift.finished == timezone.datetime(
                 2018, 4, expected_days[i], stop_hour, 0, tzinfo=pytz.utc
             )
+
+    def test_cannot_create_reoccuring_shifts_after_end_of_contract(self):
+        start_date = timezone.datetime(2018, 4, 1, 8, 0)
+        stop_date = timezone.datetime(2018, 4, 1, 16, 0)
+        form = ShiftForm(
+            data={
+                'started': start_date,
+                'finished': stop_date,
+                'reoccuring': 'WEEKLY',
+                'end_date': '01.08.2018',
+                'employee': self.user,
+                'contract': self.contract3.pk
+            },
+            **{
+                'user': self.user,
+                'view': None
+            }
+        )
+        assert not form.is_valid()
+        assert form.errors['end_date'][0] == 'You cannot plan shifts after ' \
+                                             'the end of a contract.'
