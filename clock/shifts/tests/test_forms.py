@@ -276,6 +276,43 @@ class ClockInOutFormTest(TestCase):
         ).count()
         assert new_shift == 2
 
+    def test_split_shifts_that_are_way_too_long(self):
+        started_first = timezone.make_aware(timezone.datetime(2017, 1, 1, 8))
+        initial_finished = timezone.make_aware(
+            timezone.datetime(2017, 1, 3, 10)
+        )
+        form = ClockInForm(
+            data={
+                'started': started_first,
+                'contract': self.contract.pk
+            },
+            user=self.user
+        )
+        assert form.is_valid()
+        form.clock_in()
+
+        shift = Shift.objects.get(employee=self.user, finished__isnull=True)
+        form_out = ClockOutForm(
+            data={'finished': initial_finished}, instance=shift
+        )
+        assert form_out.is_valid()
+        form_out.clock_out()
+
+        shifts = Shift.objects.filter(employee=self.user)
+        assert shifts.count() == 2
+
+        assert shifts[1].started == started_first.astimezone(pytz.utc)
+        assert shifts[1].finished == timezone.make_aware(
+            timezone.datetime(2017, 1, 1, 23, 55)
+        ).astimezone(pytz.utc)
+
+        assert shifts[0].started == timezone.make_aware(
+            timezone.datetime(2017, 1, 2, 0, 00)
+        ).astimezone(pytz.utc)
+        assert shifts[0].finished == timezone.make_aware(
+            timezone.datetime(2017, 1, 2, 23, 55)
+        ).astimezone(pytz.utc)
+
 
 class ShiftFormTest(TestCase):
     """Test ShiftForm for correct behavior."""

@@ -97,7 +97,25 @@ class ClockOutForm(forms.Form):
         # days. If yes, we need to split them into two own objects.
         if self.spills_into_next_day():
             # Save the finished time of the to-be created Shift object.
-            new_shift_finished = self.cleaned_data['finished']
+            next_day_finished = self.cleaned_data['finished']
+
+            # Check whether the new shift will finish tomorrow or later.
+            # If it is some day after tomorrow, we set it to tomorrow 23:55.
+            year = self.instance.started.year
+            month = self.instance.started.month
+            day = self.instance.started.day
+            started_date = timezone.datetime(year, month, day)
+            reference_next_day = timezone.make_aware(
+                datetime.combine(started_date, datetime.max.time())
+            ) + timezone.timedelta(days=1)
+
+            if next_day_finished > reference_next_day:
+                next_day_finished = timezone.make_aware(
+                    timezone.datetime(
+                        reference_next_day.year, reference_next_day.month,
+                        reference_next_day.day, 23, 55
+                    )
+                )
 
             # Set the finished time of the current shift to 23:55 of the
             # current day.
@@ -111,18 +129,18 @@ class ClockOutForm(forms.Form):
             # Define a starting time for the next day (00:00)
             next_day_started = timezone.make_aware(
                 timezone.datetime(
-                    new_shift_finished.year, new_shift_finished.month,
-                    new_shift_finished.day, 0, 0
+                    next_day_finished.year, next_day_finished.month,
+                    next_day_finished.day, 0, 0
                 )
-            ).astimezone(pytz.utc)
+            )
             # Check whether the shift on the new day is actually longer than
             # five minutes. If not, we do not attempt to create it.
-            if (new_shift_finished -
-                next_day_started) >= timezone.timedelta(minutes=5):
+            next_day_duration = next_day_finished - next_day_started
+            if next_day_duration >= timezone.timedelta(minutes=5):
                 new_shift = ShiftForm(
                     data={
                         'started': next_day_started,
-                        'finished': new_shift_finished,
+                        'finished': next_day_finished,
                         'reoccuring': 'ONCE'
                     },
                     **{
