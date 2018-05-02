@@ -344,13 +344,16 @@ class ShiftForm(forms.ModelForm):
 
         reoccuring = self.cleaned_data.get('reoccuring')
         if reoccuring != 'ONCE':
-            if self.cleaned_data.get('end_date') > self.cleaned_data.get(
-                'contract'
-            ).end_date:
-                self.add_error(
-                    'end_date',
-                    _('You cannot plan shifts after the end of a contract.')
-                )
+            if self.cleaned_data.get('contract').end_date:
+                if self.cleaned_data.get('end_date') > self.cleaned_data.get(
+                    'contract'
+                ).end_date:
+                    self.add_error(
+                        'end_date',
+                        _(
+                            'You cannot plan shifts after the end of a contract.'
+                        )
+                    )
 
         self.time_validation()
 
