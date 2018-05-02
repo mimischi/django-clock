@@ -75,6 +75,7 @@
               success: function (data) {
                 showContractEndDate();
                 end_date_input.val(data['end_date']);
+                end_date_div.data("DateTimePicker").date(data['end_date']);
               },
               error: function (data) {
                 console.log('No contract ID found.');
@@ -106,13 +107,11 @@
 
         end_date_div.hide();
         var tags = $('input[type="text"]#id_tags').tagEditor();
-        var now = moment("2017-11-05T13:37");
         end_date_div.datetimepicker({
           locale: '{{ LANGUAGE_CODE }}',
-          format: 'DD.MM.YYYY',
-          inline: true,
-          showClear: true,
-          keepOpen: true
+          useCurrent: false,
+          format: 'YYYY-MM-DD',
+          inline: true
         });
         var shiftStartedPicker = $("#div_id_started");
         var shiftFinishedPicker = $("#div_id_finished");
