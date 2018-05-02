@@ -27,6 +27,7 @@ from clock.shifts.utils import (
 )
 
 
+@login_required
 def get_contract_end_date(request):
     if request.method == 'POST':
         contract_id = request.POST.get('contract', 0)
@@ -38,17 +39,6 @@ def get_contract_end_date(request):
             return JsonResponse({'end_date': contract.end_date})
 
         return HttpResponse(status=404)
-
-    if request.method == 'GET':
-        contract_id = request.GET.get('contract', 0)
-        user_id = request.GET.get('user_id', 0)
-        contract = Contract.objects.get(pk=contract_id)
-        return JsonResponse(
-            {
-                'end_date': contract.end_date,
-                'user_id': user_id
-            }
-        )
 
     return HttpResponse(status=403)
 
