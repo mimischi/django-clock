@@ -225,7 +225,6 @@ class ShiftForm(forms.ModelForm):
     )
 
     end_date = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS)
-    user_id = forms.IntegerField()
 
     class Meta:
         model = Shift
@@ -235,7 +234,6 @@ class ShiftForm(forms.ModelForm):
             'contract',
             'reoccuring',
             'end_date',
-            'user_id',
             'key',
             'tags',
             'note',
@@ -252,11 +250,9 @@ class ShiftForm(forms.ModelForm):
         self.user = kwargs.pop('user')
         super(ShiftForm, self).__init__(*args, **kwargs)
 
-        for field_to_hide in ['end_date', 'user_id']:
+        for field_to_hide in ['end_date']:
             self.fields[field_to_hide].required = False
             self.fields[field_to_hide].widget = forms.HiddenInput()
-
-        self.fields['user_id'].initial = self.user.pk
 
         if self.view is None:
             self.finished = None
@@ -310,7 +306,7 @@ class ShiftForm(forms.ModelForm):
             ), Field('contract'), Field('reoccuring'),
             Field(
                 'end_date', template='shift/fields/datetimepicker_field.html'
-            ), Field('user_id'), Field('key'), Field('tags'), Field('note')
+            ), Field('key'), Field('tags'), Field('note')
         )
         self.helper.layout.append(
             FormActions(

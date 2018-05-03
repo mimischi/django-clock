@@ -31,11 +31,10 @@ from clock.shifts.utils import (
 def get_contract_end_date(request):
     if request.method == 'POST':
         contract_id = request.POST.get('contract', 0)
-        user_id = request.POST.get('user_id', 0)
         contract = Contract.objects.get(pk=contract_id)
 
         # Only show data to users that own the requested contract
-        if contract.employee.pk == int(user_id):
+        if contract.employee.pk == request.user.pk:
             return JsonResponse({'end_date': contract.end_date})
 
         return HttpResponse(status=404)
