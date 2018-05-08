@@ -98,10 +98,9 @@ class ContractForm(forms.ModelForm):
                 _('You need to specify a start date for the contract.')
             )
 
-        if start and end:
-            if end <= start:
-                self.add_error('start_date', '')
-                self.add_error('end_date', '')
-                raise forms.ValidationError(
-                    _('The end date must be bigger than the start date.')
-                )
+        if (start and end) and (end <= start):
+            self.add_error('start_date', '')
+            self.add_error('end_date', '')
+            raise forms.ValidationError(
+                _('The end date must be bigger than the start date.')
+            )

@@ -339,17 +339,16 @@ class ShiftForm(forms.ModelForm):
             )
 
         reoccuring = self.cleaned_data.get('reoccuring')
-        if reoccuring != 'ONCE':
-            if self.cleaned_data.get('contract').end_date:
-                if self.cleaned_data.get('end_date') > self.cleaned_data.get(
-                    'contract'
-                ).end_date:
-                    self.add_error(
-                        'end_date',
-                        _(
-                            'You cannot plan shifts after the end of a contract.'
-                        )
-                    )
+        if reoccuring != 'ONCE' and self.cleaned_data.get(
+            'contract'
+        ).end_date and (
+            self.cleaned_data.get('end_date') >
+            self.cleaned_data.get('contract').end_date
+        ):
+            self.add_error(
+                'end_date',
+                _('You cannot plan shifts after the end of a contract.')
+            )
 
         self.time_validation()
 
@@ -453,57 +452,49 @@ class ShiftForm(forms.ModelForm):
     def time_validation(self):
         """Validate that the finish time is bigger than the start time.
         """
-        if self.finished:
-            if self.finished < self.started:
-                self.add_error(
-                    None, _('The shift cannot start after finishing.')
-                )
-            elif (self.finished -
-                  self.started) < timezone.timedelta(minutes=5):
-                self.add_error(
-                    None, _('We cannot save a shift that is this short.')
-                )
 
-            overlaps = self.check_for_overlaps
-            if overlaps:
-                shift_word = 'shifts' if len(overlaps) > 1 else 'shift'
+        if not self.finished:
+            return
 
-                self.add_error(
-                    None,
-                    _(
-                        'The current shift overlaps with the '
-                        'following saved {}:'.format(shift_word)
-                    )
-                )
-                for shift in overlaps:
-                    started = timezone.localtime(shift.started
-                                                 ).strftime("%d.%m.%Y %H:%M")
-                    finished = timezone.localtime(shift.finished
-                                                  ).strftime("%d.%m.%Y %H:%M")
-                    duration = shift.duration
-                    days, seconds = duration.days, duration.seconds
-                    hours = days * 24 + seconds // 3600
-                    minutes = (seconds % 3600) // 60
-                    duration = "{:02}:{:02}".format(hours, minutes)
+        if self.finished < self.started:
+            self.add_error(None, _('The shift cannot start after finishing.'))
+        elif (self.finished - self.started) < timezone.timedelta(minutes=5):
+            self.add_error(
+                None, _('We cannot save a shift that is this short.')
+            )
 
-                    self.add_error(
-                        None,
-                        mark_safe(
-                            _(
-                                '<a href="{}"><strong>Contract:</strong> {}; '
-                                '<strong>Started:</strong> {}; '
-                                '<strong>Duration:</strong> {}; '
-                                '<strong>Finished:</strong> {}</a>'.format(
-                                    reverse_lazy(
-                                        'shift:edit', args=[shift.pk]
-                                    ), shift.contract, started, duration,
-                                    finished
-                                )
-                            )
-                        )
-                    )
+        overlaps = self.check_for_overlaps
+        if not overlaps:
+            return
 
-        return
+        shift_word = 'shifts' if len(overlaps) > 1 else 'shift'
+
+        self.add_error(
+            None,
+            _(
+                'The current shift overlaps with the '
+                'following saved {}:'.format(shift_word)
+            )
+        )
+        for shift in overlaps:
+            started = timezone.localtime(shift.started
+                                         ).strftime("%d.%m.%Y %H:%M")
+            finished = timezone.localtime(shift.finished
+                                          ).strftime("%d.%m.%Y %H:%M")
+            duration = shift.duration
+            days, seconds = duration.days, duration.seconds
+            hours = days * 24 + seconds // 3600
+            minutes = (seconds % 3600) // 60
+            duration = "{:02}:{:02}".format(hours, minutes)
+
+            error_string = '<a href="{}"><strong>Contract:</strong> {}; ' \
+                           '<strong>Started:</strong> {}; ' \
+                           '<strong>Duration:</strong> {}; ' \
+                           '<strong>Finished:</strong> {}</a>'.format(
+                               reverse_lazy('shift:edit', args=[shift.pk]),
+                               shift.contract, started, duration, finished
+                           )
+            self.add_error(None, mark_safe(_(error_string)))
 
     @property
     def check_for_overlaps(self):
