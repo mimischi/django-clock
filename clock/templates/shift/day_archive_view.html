@@ -4,8 +4,8 @@
 {% block container %}
 <ul>
     {% for shift in object_list %}
-        <li><a href="{% url 'shift:edit' pk=shift.pk %}">{{ forloop.counter }} - Start: {{ shift.shift_started }} -
-            Ende: {{ shift.shift_finished }} - {{ shift.shift_duration|format_dttd }}</a></li>
+        <li><a href="{% url 'shift:edit' pk=shift.pk %}">{{ forloop.counter }} - Start: {{ shift.started }} -
+            Ende: {{ shift.finished }} - {{ shift.duration|format_dttd }}</a></li>
     {% endfor %}
 </ul>
 

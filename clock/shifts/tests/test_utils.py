@@ -13,7 +13,8 @@ class TestUtils(TestCase):
     def setUp(self):
         self.user = self.make_user()
         self.contract1 = Contract.objects.create(
-            employee=self.user, department='Test department', hours='50')
+            employee=self.user, department='Test department', hours='50'
+        )
 
     def test_get_last_shifts(self):
         employee = UserFactory()
@@ -34,8 +35,9 @@ class TestUtils(TestCase):
         # first.
         for i, shift in enumerate(five_shifts):
             try:
-                self.assertTrue(five_shifts[i].shift_finished >
-                                five_shifts[i + 1].shift_finished)
+                if shift.finished == five_shifts[i + 1].finished:
+                    continue
+                self.assertTrue(shift.finished > five_shifts[i + 1].finished)
             except IndexError:
                 pass
 
@@ -49,7 +51,7 @@ class TestUtils(TestCase):
 
         # Make sure we only retrieve finished shifts
         for shift in eleven_shifts:
-            self.assertIsNotNone(shift.shift_finished)
+            self.assertIsNotNone(shift.finished)
 
     def test_retrieve_current_running_shift(self):
         """Test that we can retrieve the currently running shift."""
@@ -61,8 +63,9 @@ class TestUtils(TestCase):
             self.post(
                 'shift:quick_action', data={
                     '_start': True,
-                }, follow=True)
+                }, follow=True
+            )
 
             last_shift = get_current_shift(self.user)
             self.assertIsNotNone(last_shift)
-            self.assertIsNone(last_shift.shift_finished, '')
+            self.assertIsNone(last_shift.finished, '')

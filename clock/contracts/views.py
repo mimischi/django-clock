@@ -25,16 +25,15 @@ class ContractAddView(CreateView):
     form_class = ContractForm
     success_url = reverse_lazy('contract:list')
 
-    def get_initial(self):
+    def get_form_kwargs(self):
         """
-        Sets initial data for the ModelForm, so we can use the user
-        object and know which view created this form (CreateView in
-        this case)
+        Add some specific kwargs that our Form needs to display everything
+        correctly.
         """
-        return {
-            'user': self.request.user,
-            'view': 'contract_create',
-        }
+        kwargs = super().get_form_kwargs()
+        k = {'view': 'create', 'user': self.request.user}
+        kwargs.update(k)
+        return kwargs
 
     def form_valid(self, form):
         contract = form.save(commit=False)
@@ -51,14 +50,15 @@ class ContractUpdateView(UpdateView, UserObjectOwnerMixin):
     form_class = ContractForm
     success_url = reverse_lazy('contract:list')
 
-    def get_initial(self):
-        """Sets initial data for the ModelForm, so we can use the user object and know
-        which view created this form (CreateView in this case)
+    def get_form_kwargs(self):
         """
-        return {
-            'user': self.request.user,
-            'view': 'contract_update',
-        }
+        Add some specific kwargs that our Form needs to display everything
+        correctly.
+        """
+        kwargs = super().get_form_kwargs()
+        k = {'view': 'update', 'user': self.request.user}
+        kwargs.update(k)
+        return kwargs
 
 
 @method_decorator(login_required, name="dispatch")

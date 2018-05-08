@@ -31,12 +31,90 @@
 
 {% block extra_js %}
     <script type="text/javascript">
-      var tags = $('input[type="text"]#id_tags').tagEditor();
-      var now = moment("2017-11-05T13:37");
       $(function () {
-        var shiftStartedPicker = $("#div_id_shift_started");
-        var shiftFinishedPicker = $("#div_id_shift_finished");
-        var pauseDurationPicker = $("#div_id_pause_duration");
+        // Taken from the Django documentation
+        const csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        function csrfSafeMethod(method) {
+          // these HTTP methods do not require CSRF protection
+          return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+          }
+        });
+        const url = `{% url 'shift:get_contract_id' %}`;
+        const contract_select = $("#id_contract");
+        const end_date_div = $("#div_id_end_date");
+        const end_date_input = $("#id_end_date");
+        const reoccuring = $("#id_reoccuring");
+        const user_id = $("#id_user_id");
+
+        const resetContractEndDate = function () {
+          end_date_div.hide();
+          end_date_input.attr('type', 'hidden');
+          resetContractEndDateValue();
+        }
+        const resetContractEndDateValue = function () {
+          end_date_input.val('');
+        }
+        const showContractEndDate = function () {
+          end_date_div.show();
+        }
+        const grabContractEndDate = function (contractID) {
+          if (reoccuring.val() !== 'ONCE' && contract_select.val() !== '' && user_id.val() !== '') {
+            $.ajax({
+              type: 'POST',
+              url: url,
+              data: {
+                'contract': contractID,
+                'user_id': user_id.val()
+              },
+              success: function (data) {
+                showContractEndDate();
+                end_date_input.val(data['end_date']);
+                end_date_div.data("DateTimePicker").date(data['end_date']);
+              },
+              error: function (data) {
+                console.log('No contract ID found.');
+              },
+            });
+          }
+        }
+
+        reoccuring.change(function () {
+          if (reoccuring.val() === 'ONCE') {
+            resetContractEndDate();
+          } else {
+            if (contract_select.val() === '') {
+              showContractEndDate()
+            } else {
+              grabContractEndDate(contract_select.val());
+            }
+          }
+        });
+
+        contract_select.change(function () {
+          let contractID = contract_select.val();
+          if (contractID === '') {
+            resetContractEndDateValue();
+          } else {
+            grabContractEndDate(contractID);
+          }
+        });
+
+        end_date_div.hide();
+        var tags = $('input[type="text"]#id_tags').tagEditor();
+        end_date_div.datetimepicker({
+          locale: '{{ LANGUAGE_CODE }}',
+          useCurrent: false,
+          format: 'YYYY-MM-DD',
+          inline: true
+        });
+        var shiftStartedPicker = $("#div_id_started");
+        var shiftFinishedPicker = $("#div_id_finished");
         shiftStartedPicker.datetimepicker({
           inline: true,
           sideBySide: true,
@@ -49,15 +127,9 @@
           locale: '{{ LANGUAGE_CODE }}',
           stepping: 5
         });
-        pauseDurationPicker.datetimepicker({
-          inline: true,
-          stepping: 5,
-          format: 'HH:mm'
-        });
       {% if not shift %}
         shiftStartedPicker.data("DateTimePicker").defaultDate(moment("{{ view.start_datetime }}"));
         shiftFinishedPicker.data("DateTimePicker").defaultDate(moment("{{ view.start_datetime }}"));
-        pauseDurationPicker.data("DateTimePicker").defaultDate(moment("1970-01-01T00:00"));
         shiftStartedPicker.on("dp.change", function (e) {
           shiftFinishedPicker.data("DateTimePicker").minDate(e.date);
         });
@@ -67,7 +139,6 @@
       {% else %}
         shiftStartedPicker.data("DateTimePicker").defaultDate(moment("{{ view.get_shift.started }}"));
         shiftFinishedPicker.data("DateTimePicker").defaultDate(moment("{{ view.get_shift.finished }}"));
-        pauseDurationPicker.data("DateTimePicker").defaultDate(moment("{{ view.get_shift.paused }}"));
       {% endif %}
       });
     </script>

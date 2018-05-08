@@ -86,7 +86,7 @@ def get_current_shift(user):
     :return: Shift object or None
     """
     try:
-        return Shift.objects.get(employee=user, shift_finished__isnull=True)
+        return Shift.objects.get(employee=user, finished__isnull=True)
     except Shift.DoesNotExist:
         return None
 
@@ -112,8 +112,7 @@ def get_default_contract(user):
     """
     # Filter all shifts (finished or not) from the current user
     try:
-        finished_shifts = Shift.objects.filter(
-            employee=user).latest('shift_started')
+        finished_shifts = Shift.objects.filter(employee=user).latest('started')
     except Shift.DoesNotExist:
         # If the user just registered and does not have any shifts!
         return None
@@ -138,7 +137,7 @@ def get_last_shifts(user, count=5):
     :return: Shift objects or None
     """
     finished_shifts = Shift.objects.filter(
-        employee=user, shift_finished__isnull=False)[:count]
+        employee=user, finished__isnull=False)[:count]
 
     if not finished_shifts:
         return None
@@ -152,13 +151,13 @@ def get_all_shifts(user):
     :param user: User object
     :return: List of dicts with 'year' and 'month' keys or None
     """
-    shifts = Shift.objects.filter(employee=user, shift_finished__isnull=False)
+    shifts = Shift.objects.filter(employee=user, finished__isnull=False)
 
     months_with_shifts = []
 
     for shift in shifts:
-        year = shift.shift_started.year
-        month = shift.shift_started.month
+        year = shift.started.year
+        month = shift.started.month
         shift_dict = {'year': year, 'month': month}
 
         if shift_dict not in months_with_shifts:

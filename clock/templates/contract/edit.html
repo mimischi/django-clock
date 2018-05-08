@@ -27,6 +27,7 @@
 
 {% block extra_js %}
     <script type="text/javascript">
+      $(function () {
         /**
          * Checks whether the supplied data is in the HH:MM format and will try to force it that way.
          * Accepts everything between 00:00 to 80:00 (80 hours and 00 minutes).
@@ -80,5 +81,57 @@
         $('#id_hours').focusout(function () {
             check_contract_hours($(this));
         });
+
+        const div_start_date = $("#div_id_start_date");
+        const div_end_date = $("#div_id_end_date");
+        const input_start_date = $("#id_start_date");
+        const input_end_date = $("#id_end_date");
+        const checkbox_start_end_date = $("#id_show_start_end_date");
+        let start_picker
+        let end_picker;
+
+        const hideDateTimePickers = function (start_picker, end_picker) {
+          div_start_date.hide();
+          div_end_date.hide();
+          input_start_date.val('');
+          input_end_date.val('');
+          if (start_picker !== undefined && end_picker !== undefined) {
+            start_picker.destroy();
+            end_picker.destroy();
+          }
+        }
+        const showDateTimePickers = function (start_picker, end_picker) {
+          start_picker = div_start_date.datetimepicker({
+            inline: true,
+            sideBySide: true,
+            format: 'YYYY-MM-DD',
+            locale: '{{ LANGUAGE_CODE }}',
+            showClear: true
+          });
+          end_picker = div_end_date.datetimepicker({
+            inline: true,
+            format: 'YYYY-MM-DD',
+            locale: '{{ LANGUAGE_CODE }}',
+            showClear: true
+          });
+          div_start_date.show();
+          div_end_date.show();
+        }
+        if (input_start_date.val() !== '' || input_end_date.val() !== '') {
+          checkbox_start_end_date.prop('checked', true);
+          showDateTimePickers(start_picker, end_picker);
+        } else {
+          hideDateTimePickers(start_picker, end_picker);
+        }
+
+        checkbox_start_end_date.change(function () {
+          if ($(this).is(':checked')) {
+            showDateTimePickers()
+          } else {
+            hideDateTimePickers()
+          }
+        });
+
+      });
     </script>
 {% endblock extra_js %}

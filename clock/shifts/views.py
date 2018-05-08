@@ -3,23 +3,20 @@ from datetime import datetime
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
-from django.views.generic.dates import (
-    DayArchiveView,
-    MonthArchiveView,
-    WeekArchiveView,
-    YearArchiveView,
-)
+from django.views.generic.dates import MonthArchiveView, YearArchiveView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from pytz import timezone as p_timezone
 
+from clock.contracts.models import Contract
 from clock.pages.mixins import UserObjectOwnerMixin
-from clock.shifts.forms import QuickActionForm, ShiftForm
+from clock.shifts.forms import ClockInForm, ClockOutForm, ShiftForm
 from clock.shifts.models import Shift
 from clock.shifts.utils import (
     get_all_contracts,
@@ -30,68 +27,76 @@ from clock.shifts.utils import (
 )
 
 
+@login_required
+def get_contract_end_date(request):
+    if request.method == 'POST':
+        contract_id = request.POST.get('contract', 0)
+        contract = Contract.objects.get(pk=contract_id)
+
+        # Only show data to users that own the requested contract
+        if contract.employee.pk == request.user.pk:
+            return JsonResponse({'end_date': contract.end_date})
+
+        return HttpResponse(status=404)
+
+    return HttpResponse(status=403)
+
+
 @require_POST
 @login_required
 def shift_action(request):
-    # Get the current shift (s) and the corresponding pauses (shift_pauses)
+    # Get the current Shift object
     shift = get_current_shift(request.user)
 
     if not shift and '_start' not in request.POST:
         messages.add_message(
             request, messages.ERROR,
-            _('You need an active shift to perform this action!'), 'danger')
+            _('You need an active shift to perform this action!'), 'danger'
+        )
         return redirect('home')
     elif shift and '_start' in request.POST:
-        messages.add_message(request, messages.ERROR,
-                             _('You already have an active shift!'), 'danger')
+        messages.add_message(
+            request, messages.ERROR, _('You already have an active shift!'),
+            'danger'
+        )
         return redirect('home')
 
     # Start a new shift
     if '_start' in request.POST:
-        # Generate a new QuickActionForm, so we can retrieve the
-        # supplied institute/contract the user has selected.
-        # No other data will be looked at, as no validation of the
-        # starting data is needed.
-        form = QuickActionForm(request.POST, user=request.user)
+        contract = None
+        if 'contract' in request.POST:
+            contract = request.POST['contract']
+        form = ClockInForm(
+            data={
+                'started': timezone.now(),
+                'contract': contract
+            },
+            user=request.user
+        )
 
         if form.is_valid():
-            # Create a new shift, if the data is valid
-            # (shouldn't this always be the case..?)
-            Shift.objects.create(
-                employee=request.user,
-                contract=form.cleaned_data['contract'],
-                shift_started=timezone.now())
+            form.clock_in()
+            # Show a success message
+            messages.add_message(
+                request, messages.SUCCESS, _('Your shift has started!')
+            )
         else:
-            Shift.objects.create(
-                employee=request.user, shift_started=timezone.now())
-
-        # Show a success message
-        messages.add_message(request, messages.SUCCESS,
-                             _('Your shift has started!'))
+            messages.add_message(request, messages.ERROR, form.errors)
 
     # Stop current shift
     elif '_stop' in request.POST:
-        # Unpause the shift, set the shift_finished value
-        # to timezone.now() and save the updated shift
-        shift.unpause()
-        shift.shift_finished = timezone.now()
-        shift.bool_finished = True
-        shift.save()
+        # Set the finished value to timezone.now() and save the updated shift
+        form = ClockOutForm(data={'finished': timezone.now()}, instance=shift)
 
-        # Add a success message
-        messages.add_message(request, messages.SUCCESS,
-                             _('Your shift has finished!'))
-
-    # Toggle pause on current shift
-    elif '_pause' in request.POST:
-        # Toggle the pause value and save it
-        shift.toggle_pause()
-        shift.save()
-
-        # Show a success message - either the pause was started or finished
-        action = _('paused') if shift.is_paused else _('continued')
-        message = _('Your shift was %s.') % action
-        messages.add_message(request, messages.SUCCESS, message)
+        if form.is_valid():
+            form.clock_out()
+            messages.add_message(
+                request, messages.SUCCESS, _('Your shift has finished!')
+            )
+        else:
+            messages.add_message(
+                request, messages.WARNING, form.errors['__all__']
+            )
 
     return redirect('home')
 
@@ -103,7 +108,8 @@ class ShiftListView(ListView):
 
     def get_queryset(self):
         return Shift.objects.filter(
-            employee=self.request.user.id, shift_finished__isnull=False)
+            employee=self.request.user.id, finished__isnull=False
+        )
 
 
 @method_decorator(login_required, name="dispatch")
@@ -124,7 +130,8 @@ class ShiftManualCreate(CreateView):
         k = {
             'request': self.request,
             'view': 'shift_create',
-            'contract': set_correct_session(self.request, 'contract')
+            'contract': set_correct_session(self.request, 'contract'),
+            'user': self.request.user
         }
         kwargs.update(k)
         return kwargs
@@ -136,21 +143,15 @@ class ShiftManualCreate(CreateView):
                 int(self.request.session['last_kwargs']['year']),
                 int(self.request.session['last_kwargs']['month']),
                 1,
-                hour=8).strftime("%Y-%m-%dT%H:%M")
-            if self.request.session['last_kwargs'][
-                    'month'] == datetime.now().strftime("%m"):
+                hour=8
+            ).strftime("%Y-%m-%dT%H:%M")
+            if self.request.session['last_kwargs']['month'] == datetime.now(
+            ).strftime("%m"):
                 d = datetime.now().strftime("%Y-%m-%dT%H:%M")
         except KeyError:
             d = datetime.now().strftime("%Y-%m-%dT%H:%M")
 
         return d
-
-    def form_valid(self, form):
-        shift = form.save(commit=False)
-        shift.employee = self.request.user
-
-        shift.save()
-        return super(ShiftManualCreate, self).form_valid(form)
 
 
 @method_decorator(login_required, name="dispatch")
@@ -171,7 +172,8 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
         k = {
             'request': self.request,
             'view': 'shift_update',
-            'contract': set_correct_session(self.request, 'contract')
+            'contract': set_correct_session(self.request, 'contract'),
+            'user': self.request.user
         }
         kwargs.update(k)
         return kwargs
@@ -183,12 +185,8 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
         moment_format = "%Y-%m-%dT%H:%M"
         obj = self.get_object()
         dates = {
-            'started':
-            obj.shift_started.astimezone(tz).strftime(moment_format),
-            'finished':
-            obj.shift_finished.astimezone(tz).strftime(moment_format),
-            'paused': (datetime(1970, 1, 1) +
-                       obj.pause_duration).strftime(moment_format),
+            'started': obj.started.astimezone(tz).strftime(moment_format),
+            'finished': obj.finished.astimezone(tz).strftime(moment_format)
         }
         return dates
 
@@ -204,13 +202,13 @@ class ShiftManualDelete(DeleteView, UserObjectOwnerMixin):
 
 @method_decorator(login_required, name="dispatch")
 class ShiftMonthView(MonthArchiveView):
-    date_field = "shift_started"
+    date_field = "started"
     allow_empty = True
     allow_future = True
     template_name = 'shift/month_archive_view.html'
 
     class Meta:
-        ordering = ["-shift_started"]
+        ordering = ["-started"]
 
     def dispatch(self, request, *args, **kwargs):
         """
@@ -224,7 +222,8 @@ class ShiftMonthView(MonthArchiveView):
 
     def get_queryset(self):
         return Shift.objects.filter(
-            employee=self.request.user, shift_finished__isnull=False)
+            employee=self.request.user, finished__isnull=False
+        )
 
     @property
     def get_all_contracts(self):
@@ -252,13 +251,14 @@ class ShiftMonthContractView(ShiftMonthView):
         """
         self.contract = kwargs.get('contract', self.contract)
 
-        return super(ShiftMonthContractView, self).dispatch(
-            request, *args, **kwargs)
+        return super(ShiftMonthContractView,
+                     self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         queryset = Shift.objects.filter(
-            employee=self.request.user.pk, shift_finished__isnull=False)
-        if self.contract == '0':
+            employee=self.request.user.pk, finished__isnull=False
+        )
+        if self.contract == "0":
             queryset = queryset.filter(contract__isnull=True)
         elif self.contract == '00':
             pass
@@ -269,11 +269,11 @@ class ShiftMonthContractView(ShiftMonthView):
 
 @method_decorator(login_required, name="dispatch")
 class ShiftYearView(YearArchiveView):
-    date_field = "shift_started"
+    date_field = "started"
     allow_future = False
     allow_empty = True
     template_name = 'shift/year_archive_view.html'
 
     def get_queryset(self):
-        return Shift.objects.filter(
-            employee=self.request.user).order_by('shift_started')
+        return Shift.objects.filter(employee=self.request.user
+                                    ).order_by('started')

@@ -9,13 +9,9 @@
             <h3>{% trans 'No active shift running!' %}</h3>
         {% else %}
             <h4>{% trans 'Current duration:' %} <span id="current_duration">{{ current_duration|format_dttd }}</span>
-            </h4>
-            {% if current_shift.is_paused %}
-                <h5>({% trans 'Currently paused for:' %} <span
-                        id="current_pause_duration">{{ current_shift.total_pause_time|format_dttd }}</span>)</h5>
-            {% endif %}
+
             <p>{% trans 'Your current shift started at' %}<br/>
-                {{ current_shift.shift_started }}</p>
+                {{ shift.started }}</p>
         {% endif %}
     </div>
     {% include 'pages/backend/quick_action.html' %}
@@ -59,7 +55,6 @@
                 <th>{% trans 'Contract' %}</th>
                 <th>{% trans 'Shift started' %}</th>
                 <th>{% trans 'Shift finished' %}</th>
-                <th>{% trans 'Pause duration' %}</th>
                 <th>{% trans 'Shift duration' %}</th>
                 <th>{% trans 'Key' %}</th>
             </tr>
@@ -70,10 +65,9 @@
                     <td></td>
                     <td class="text-right">{{ forloop.counter }}</td>
                     <td class="text-right">{{ shift.contract|format_contract }}</td>
-                    <td class="text-right">{{ shift.shift_started }}</td>
-                    <td class="text-right">{{ shift.shift_finished }}</td>
-                    <td class="text-right">{{ shift.pause_duration|format_dttd:"%H:%M" }}</td>
-                    <td class="text-right">{{ shift.shift_duration|format_dttd:"%H:%M" }}</td>
+                    <td class="text-right">{{ shift.started }}</td>
+                    <td class="text-right">{{ shift.finished }}</td>
+                    <td class="text-right">{{ shift.duration|format_dttd:"%H:%M" }}</td>
                     <td class="text-right">{{ shift.get_key_display }}</td>
                 </tr>
             {% endfor %}
@@ -88,9 +82,6 @@
             (function () {
                 // JS from here: http://cssdeck.com/labs/minimal-css3-digital-clock
                 var clock = document.querySelector('span#current_duration');
-                {% if current_shift.is_paused %}
-                    var clock = document.querySelector('span#current_pause_duration');
-                {% endif %}
                 // But there is a little problem
                 // we need to pad 0-9 with an extra
                 // 0 on the left for hours, seconds, minutes
@@ -103,9 +94,6 @@
                 ;
 
                 var d = new Date(0, 0, d_day, {{ current_duration|format_dttd:"%H" }}, {{ current_duration|format_dttd:"%M" }}, {{ current_duration|format_dttd:"%S" }});
-                {% if current_shift.is_paused %}
-                    var d = new Date(0, 0, d_day, {{ current_shift.total_pause_time|format_dttd:"%H" }}, {{ current_shift.total_pause_time|format_dttd:"%M" }}, {{ current_shift.total_pause_time|format_dttd:"%M" }});
-                {% endif %}
 
                 var ticktock = function () {
                     d.setSeconds(d.getSeconds() + 1);
@@ -149,13 +137,11 @@
                         }, {
                             data: "contract"
                         }, {
-                            data: "shift_started"
+                            data: "started"
                         }, {
-                            data: "shift_finished"
-                        }, {
-                            data: "pause_duration"
-                        }, {
-                            data: "shift_duration"
+                            data: "finished"
+                        },{
+                            data: "duration"
                         }, {
                             data: "key"
                         }],
