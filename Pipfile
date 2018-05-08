@@ -25,6 +25,7 @@ django-taggit = "*"
 python-dateutil = "*"
 "psycopg2" = "*"
 "psycopg2-binary" = "*"
+djangorestframework = "*"
 
 [dev-packages]
 coverage = "*"
