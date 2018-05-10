@@ -45,7 +45,6 @@
             }
           }
         });
-        const url = `{% url 'shift:get_contract_id' %}`;
         const contract_select = $("#id_contract");
         const end_date_div = $("#div_id_end_date");
         const end_date_input = $("#id_end_date");
@@ -65,8 +64,10 @@
         }
         const grabContractEndDate = function (contractID) {
           if (reoccuring.val() !== 'ONCE' && contract_select.val() !== '' && user_id.val() !== '') {
+            let url = `{% url 'api:end_date-detail' '0' %}`;
+            url = url.substring(0, url.length - 2) + contractID + '/';
             $.ajax({
-              type: 'POST',
+              type: 'GET',
               url: url,
               data: {
                 'contract': contractID,
