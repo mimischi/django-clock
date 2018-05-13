@@ -1,9 +1,83 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
+import pytz
+from dateutil.rrule import DAILY, MONTHLY, WEEKLY, rrule
 from django.urls import reverse_lazy
+from django.utils import timezone
 
+# from clock.shifts.forms import FREQUENCIES
 from clock.shifts.models import Shift
+
+FREQUENCIES = {'DAILY': DAILY, 'WEEKLY': WEEKLY, 'MONTHLY': MONTHLY}
+
+
+def get_shifts_to_check_for_overlaps(
+    start_date, end_date, user, contract, reoccuring, exclude_shift=None
+):
+    # Grab all dates that are between `start_date` and `end_date`
+    dates = list(
+        rrule(
+            freq=FREQUENCIES[reoccuring], dtstart=start_date, until=end_date
+        )
+    )
+    first_reoccuring_date = dates[0]
+    last_reoccuring_date = dates[-1]
+
+    # Convert all dates into datetimes
+    min_time = datetime.min.time()
+    max_time = datetime.max.time()
+    first_reoccuring_date = timezone.make_aware(
+        datetime.combine(first_reoccuring_date, min_time)
+    )
+    last_reoccuring_date = timezone.make_aware(
+        datetime.combine(last_reoccuring_date, max_time)
+    )
+
+    # Grabs all shifts that are within `first_reoccuring_date` and
+    # `last_reoccuring_date`
+    shifts = Shift.objects.filter(
+        employee=user.pk,
+        started__lte=last_reoccuring_date,
+        finished__gte=first_reoccuring_date,
+        contract__pk=contract
+    )
+
+    if exclude_shift:
+        shifts = shifts.exclude(pk=exclude_shift)
+
+    # Filter shifts to those on the day of reoccurence
+    dates = [datetime.date() for datetime in dates]
+    shifts = shifts.filter(started__date__in=dates)
+
+    return shifts
+
+
+def sort_overlapping_shifts(started, finished, user, contract, shifts):
+    """Sort all shifts by non-overlapping and overlapping ones.
+
+    Returns two sorted QuerySets.
+    """
+    good_shifts = []
+    bad_shifts = []
+
+    for shift in shifts:
+        # Set start and finish datetime for the to-be-created Shift
+        start = datetime.combine(shift.started.date(),
+                                 started.time()).astimezone(pytz.utc)
+        finish = datetime.combine(shift.started.date(),
+                                  finished.time()).astimezone(pytz.utc)
+        s = Shift(
+            employee=user, started=start, finished=finish, contract=contract
+        )
+
+        if (shift.started <= finish.astimezone(pytz.utc)
+            ) and (shift.finished >= start.astimezone(pytz.utc)):
+            bad_shifts.append(s)
+        else:
+            good_shifts.append(s)
+
+    return good_shifts, bad_shifts
 
 
 def get_return_url(request, default_success):
@@ -47,8 +121,8 @@ def get_return_url(request, default_success):
             }
 
         try:
-            return_kwargs['contract'] = request.session['last_kwargs'][
-                'contract']
+            return_kwargs['contract'] = request.session['last_kwargs'
+                                                        ]['contract']
         except KeyError:
             return_kwargs['contract'] = '00'
 
@@ -137,7 +211,8 @@ def get_last_shifts(user, count=5):
     :return: Shift objects or None
     """
     finished_shifts = Shift.objects.filter(
-        employee=user, finished__isnull=False)[:count]
+        employee=user, finished__isnull=False
+    )[:count]
 
     if not finished_shifts:
         return None

@@ -7,7 +7,6 @@ from clock.shifts.views import (
     ShiftManualEdit,
     ShiftMonthContractView,
     ShiftYearView,
-    get_contract_end_date,
     shift_action,
 )
 
