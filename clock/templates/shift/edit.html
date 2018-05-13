@@ -123,7 +123,10 @@
           let finished = moment($("#id_finished").val());
           const contract = $("#id_contract").val() || 0;
           const end_date = $("#id_end_date").val();
-          const shift_id = 0;
+          let shift_id = 0;
+          if (location.pathname.indexOf('edit') > -1) {
+            shift_id = location.pathname.split('/')[2];
+          }
 
           finished = moment(new Date(`${end_date} ${finished.hour()}:${finished.minute()}`));
 
