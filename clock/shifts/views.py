@@ -3,7 +3,6 @@ from datetime import datetime
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -14,7 +13,6 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from pytz import timezone as p_timezone
 
-from clock.contracts.models import Contract
 from clock.pages.mixins import UserObjectOwnerMixin
 from clock.shifts.forms import ClockInForm, ClockOutForm, ShiftForm
 from clock.shifts.models import Shift
@@ -25,21 +23,6 @@ from clock.shifts.utils import (
     get_return_url,
     set_correct_session,
 )
-
-
-@login_required
-def get_contract_end_date(request):
-    if request.method == 'POST':
-        contract_id = request.POST.get('contract', 0)
-        contract = Contract.objects.get(pk=contract_id)
-
-        # Only show data to users that own the requested contract
-        if contract.employee.pk == request.user.pk:
-            return JsonResponse({'end_date': contract.end_date})
-
-        return HttpResponse(status=404)
-
-    return HttpResponse(status=403)
 
 
 @require_POST
