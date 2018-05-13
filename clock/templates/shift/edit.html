@@ -193,9 +193,15 @@
           end_date_div.show();
         }
 
+        $(document).ready(() => {
+          if (reoccuring.val() !== 'ONCE') {
+            showContractEndDate();
+          }
+        });
+
         function setReoccuringEndDate(date) {
-            end_date_input.val(date);
-            end_date_div.data("DateTimePicker").date(date);
+          end_date_input.val(date);
+          end_date_div.data("DateTimePicker").date(date);
         }
 
         const grabContractEndDate = function (contractID) {
