@@ -24,8 +24,8 @@
                 </div>
                 <div class="modal-body"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
-                    <button type="button" class="btn btn-primary">{% trans 'Save' %}</button>
+                    <button type="button" class="btn btn-default" id="cancel-modal" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                    <button type="button" class="btn btn-primary" id="submit-modal">{% trans 'Save' %}</button>
                 </div>
             </div>
         </div>
@@ -63,8 +63,6 @@
           }
         };
 
-        const submitButton = $("#submit_id");
-
         function toggleModal() {
           $("#shiftOverlap").modal('toggle');
         };
@@ -73,9 +71,12 @@
           $("#shiftOverlap").modal('show');
         };
 
-        function submitShiftForm (event) {
-          event.preventDefault();
-        }
+        let allowFormSubmit = true;
+        $("#submit-modal").click(function() {
+          if (allowFormSubmit) {
+            $("#shiftForm").submit();
+          }
+        });
 
         function addShiftsToModal (shifts, type) {
             const modal = document.querySelector('#shiftOverlap').getElementsByClassName('modal-body')[0];
@@ -107,13 +108,16 @@
         function clearModal () {
           const modal = document.querySelector('#shiftOverlap').getElementsByClassName('modal-body')[0];
           modal.innerHTML = '';
+          allowFormSubmit = true;
+          $('#submit-modal').show();
+          $('#cancel-modal').html(`{% trans 'Cancel' %}`);
         }
 
         $('#shiftOverlap').on('hidden.bs.modal', function (e) {
           clearModal();
         })
 
-        $("#submit-id-submit").on('click', function (event) {
+        $("#submit-id-submitshiftform").on('click', function (event) {
           const reoccuring = $("#id_reoccuring").val() || 'ONCE';
           if (reoccuring === 'ONCE') {
             return;
@@ -137,6 +141,10 @@
             success: function (data) {
               if (data.without_overlap && data.without_overlap.length) {
                 addShiftsToModal(data.without_overlap, type='wo_overlap');
+              } else {
+                allowFormSubmit = false;
+                $('#submit-modal').hide();
+                $('#cancel-modal').html(`{% trans 'OK' %}`);
               }
               if (data.with_overlap && data.with_overlap.length) {
                 const warn = `{% trans 'Warning' %}`

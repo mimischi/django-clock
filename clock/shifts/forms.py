@@ -297,6 +297,8 @@ class ShiftForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_action = '.'
         self.helper.form_method = 'post'
+        self.helper.attrs = {'name': 'shiftForm'}
+        self.helper.form_id = 'shiftForm'
         self.helper.layout = Layout(
             Field(
                 'started', template='shift/fields/datetimepicker_field.html'
@@ -312,7 +314,7 @@ class ShiftForm(forms.ModelForm):
             FormActions(
                 HTML(cancel_html),
                 Submit(
-                    'submit',
+                    'submitShiftForm',
                     add_input_text,
                     css_class='btn btn-primary pull-right'
                 ),
