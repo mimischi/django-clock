@@ -4,7 +4,7 @@ from dateutil import parser
 from dateutil.rrule import rrule
 from django.http import Http404
 from django.utils import timezone
-from rest_framework import permissions
+from rest_framework import permissions, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -34,9 +34,6 @@ class ShiftOverlapView(APIView):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_object(self, started, finished, contract, reoccuring, pk=None):
-        if started >= finished:
-            raise Http404
-
         shifts = get_shifts_to_check_for_overlaps(
             started,
             finished,
@@ -49,11 +46,12 @@ class ShiftOverlapView(APIView):
         return shifts
 
     def get(self, request, started, finished, contract, reoccuring, pk):
-        if reoccuring not in FREQUENCIES:
-            raise Http404
-
         started = parser.parse(started, fuzzy=True)
         finished = parser.parse(finished, fuzzy=True)
+
+        if (started >= finished) or (reoccuring not in FREQUENCIES):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
         try:
             contract = Contract.objects.get(pk=contract)
         except Contract.DoesNotExist:
