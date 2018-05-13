@@ -191,12 +191,6 @@
         }
 
         const grabContractEndDate = function (contractID) {
-          if (reoccuring.val() !== 'ONCE' && contract_select.val() == '') {
-            const date = moment(new Date()).endOf('month').format('YYYY-MM-DD');
-            showContractEndDate();
-            setReoccuringEndDate(data['end_date']);
-          }
-
           if (reoccuring.val() !== 'ONCE' && contract_select.val() !== '' && user_id.val() !== '') {
             let url = `{% url 'api:end_date-detail' '0' %}`;
             url = url.substring(0, url.length - 2) + contractID + '/';
@@ -211,12 +205,11 @@
                 showContractEndDate();
                 if (data['end_date'] == null) {
                   if (end_date_input.val() === '') {
-                    const date = moment(new Date()).endOf('month').format('YYYY-MM-DD');
+                    const date = moment($('#id_started').val()).endOf('month').format('YYYY-MM-DD');
                     setReoccuringEndDate(date);
-
                     return;
                   } else {
-                    return
+                    return;
                   }
                 }
                 setReoccuringEndDate(data['end_date']);
@@ -233,7 +226,12 @@
             resetContractEndDate();
           } else {
             if (contract_select.val() === '') {
-              showContractEndDate()
+              if (reoccuring.val() !== 'ONCE' && contract_select.val() == '') {
+                const date = moment($('#id_started').val()).endOf('month').format('YYYY-MM-DD');
+                showContractEndDate();
+                setReoccuringEndDate(date);
+              }
+              showContractEndDate();
             } else {
               grabContractEndDate(contract_select.val());
             }
