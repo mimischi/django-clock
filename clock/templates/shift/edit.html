@@ -271,6 +271,11 @@
           format: 'YYYY-MM-DD HH:mm',
           stepping: 5
         });
+      shiftStartedPicker.on("dp.change", function (e) {
+        end_date_div.data("DateTimePicker").minDate(e.date);
+        let tomorrow = moment(e.date).add(1, 'days').endOf('month');
+        end_date_div.data("DateTimePicker").date(tomorrow);
+      });
       {% if not shift %}
         shiftStartedPicker.data("DateTimePicker").defaultDate(moment("{{ view.start_datetime }}"));
         shiftFinishedPicker.data("DateTimePicker").defaultDate(moment("{{ view.start_datetime }}"));
