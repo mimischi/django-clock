@@ -1,7 +1,11 @@
+from datetime import datetime
+
 from dateutil import parser
+from dateutil.rrule import rrule
 from django.http import Http404
-from rest_framework import permissions, viewsets
-from rest_framework.decorators import action, api_view
+from django.utils import timezone
+from rest_framework import permissions
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
@@ -41,8 +45,6 @@ class ShiftOverlapView(APIView):
             reoccuring=reoccuring,
             exclude_shift=pk
         )
-        if not shifts:
-            raise Http404
 
         return shifts
 
@@ -58,13 +60,40 @@ class ShiftOverlapView(APIView):
             started.date(), finished.date(), contract, reoccuring, pk
         )
 
-        good_shifts, bad_shifts = sort_overlapping_shifts(
-            started, finished, self.request.user, contract, shifts
+        if shifts:
+            good_shifts, bad_shifts = sort_overlapping_shifts(
+                started, finished, self.request.user, contract, shifts
+            )
+            serialized_data = {
+                'without_overlap': ShiftSerializer(good_shifts,
+                                                   many=True).data,
+                'with_overlap': ShiftSerializer(bad_shifts, many=True).data,
+            }
+            return Response(serialized_data)
+
+        dates = list(
+            rrule(
+                freq=FREQUENCIES[reoccuring], dtstart=started, until=finished
+            )
         )
+        start_time = started.time()
+        finish_time = finished.time()
+
+        good_shifts = []
+        for date in dates:
+            started = timezone.make_aware(datetime.combine(date, start_time))
+            finished = timezone.make_aware(datetime.combine(date, finish_time))
+            shift = Shift(
+                employee=request.user,
+                contract=contract,
+                started=started,
+                finished=finished
+            )
+            good_shifts.append(shift)
 
         serialized_data = {
             'without_overlap': ShiftSerializer(good_shifts, many=True).data,
-            'with_overlap': ShiftSerializer(bad_shifts, many=True).data,
+            'with_overlap': []
         }
 
         return Response(serialized_data)
