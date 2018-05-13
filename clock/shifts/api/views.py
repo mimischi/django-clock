@@ -41,7 +41,7 @@ class ShiftOverlapView(APIView):
             started,
             finished,
             self.request.user,
-            contract.pk,
+            contract,
             reoccuring=reoccuring,
             exclude_shift=pk
         )
@@ -54,7 +54,10 @@ class ShiftOverlapView(APIView):
 
         started = parser.parse(started, fuzzy=True)
         finished = parser.parse(finished, fuzzy=True)
-        contract = Contract.objects.get(pk=contract)
+        try:
+            contract = Contract.objects.get(pk=contract)
+        except Contract.DoesNotExist:
+            contract = None
 
         shifts = self.get_object(
             started.date(), finished.date(), contract, reoccuring, pk

@@ -40,8 +40,10 @@ def get_shifts_to_check_for_overlaps(
         employee=user.pk,
         started__lte=last_reoccuring_date,
         finished__gte=first_reoccuring_date,
-        contract__pk=contract
     )
+
+    if contract is not None:
+        shifts.filter(contract=contract)
 
     if exclude_shift:
         shifts = shifts.exclude(pk=exclude_shift)
