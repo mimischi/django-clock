@@ -5,19 +5,17 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('contracts', '0002_auto_20160606_1320'),
-    ]
+    dependencies = [("contracts", "0002_auto_20160606_1320")]
 
     operations = [
         migrations.AddField(
-            model_name='contract',
-            name='end_date',
-            field=models.DateField(blank=True, null=True, verbose_name='End date'),
+            model_name="contract",
+            name="end_date",
+            field=models.DateField(blank=True, null=True, verbose_name="End date"),
         ),
         migrations.AddField(
-            model_name='contract',
-            name='start_date',
-            field=models.DateField(blank=True, null=True, verbose_name='Start date'),
+            model_name="contract",
+            name="start_date",
+            field=models.DateField(blank=True, null=True, verbose_name="Start date"),
         ),
     ]

@@ -12,7 +12,7 @@ from clock.pages.mixins import UserObjectOwnerMixin
 @method_decorator(login_required, name="dispatch")
 class ContractListView(ListView):
     model = Contract
-    template_name = 'contract/list.html'
+    template_name = "contract/list.html"
 
     def get_queryset(self):
         return Contract.objects.filter(employee=self.request.user.id)
@@ -21,9 +21,9 @@ class ContractListView(ListView):
 @method_decorator(login_required, name="dispatch")
 class ContractAddView(CreateView):
     model = Contract
-    template_name = 'contract/edit.html'
+    template_name = "contract/edit.html"
     form_class = ContractForm
-    success_url = reverse_lazy('contract:list')
+    success_url = reverse_lazy("contract:list")
 
     def get_form_kwargs(self):
         """
@@ -31,7 +31,7 @@ class ContractAddView(CreateView):
         correctly.
         """
         kwargs = super().get_form_kwargs()
-        k = {'view': 'create', 'user': self.request.user}
+        k = {"view": "create", "user": self.request.user}
         kwargs.update(k)
         return kwargs
 
@@ -46,9 +46,9 @@ class ContractAddView(CreateView):
 @method_decorator(login_required, name="dispatch")
 class ContractUpdateView(UpdateView, UserObjectOwnerMixin):
     model = Contract
-    template_name = 'contract/edit.html'
+    template_name = "contract/edit.html"
     form_class = ContractForm
-    success_url = reverse_lazy('contract:list')
+    success_url = reverse_lazy("contract:list")
 
     def get_form_kwargs(self):
         """
@@ -56,7 +56,7 @@ class ContractUpdateView(UpdateView, UserObjectOwnerMixin):
         correctly.
         """
         kwargs = super().get_form_kwargs()
-        k = {'view': 'update', 'user': self.request.user}
+        k = {"view": "update", "user": self.request.user}
         kwargs.update(k)
         return kwargs
 
@@ -64,8 +64,8 @@ class ContractUpdateView(UpdateView, UserObjectOwnerMixin):
 @method_decorator(login_required, name="dispatch")
 class ContractDeleteView(DeleteView, UserObjectOwnerMixin):
     model = Contract
-    success_url = reverse_lazy('contract:list')
-    template_name = 'contract/delete.html'
+    success_url = reverse_lazy("contract:list")
+    template_name = "contract/delete.html"
 
     def get_queryset(self):
         """

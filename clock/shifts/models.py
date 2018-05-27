@@ -13,41 +13,35 @@ class Shift(models.Model):
     May be assigned to a contract.
     """
 
-    KEY_CHOICES = ((_('S'), _('Sick')), (_('V'), _('Vacation')))
+    KEY_CHOICES = ((_("S"), _("Sick")), (_("V"), _("Vacation")))
 
-    employee = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
-    )
+    employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     contract = models.ForeignKey(
-        'contracts.Contract',
+        "contracts.Contract",
         null=True,
         blank=True,
         on_delete=models.CASCADE,
-        verbose_name=_('Contract')
+        verbose_name=_("Contract"),
     )
-    started = models.DateTimeField(verbose_name=_('Shift started'))
-    finished = models.DateTimeField(
-        null=True, verbose_name=_('Shift finished')
-    )
+    started = models.DateTimeField(verbose_name=_("Shift started"))
+    finished = models.DateTimeField(null=True, verbose_name=_("Shift finished"))
     bool_finished = models.BooleanField(
-        default=False, verbose_name=_('Shift completed?')
+        default=False, verbose_name=_("Shift completed?")
     )
     duration = models.DurationField(
-        blank=True, null=True, verbose_name=_('Shift duration')
+        blank=True, null=True, verbose_name=_("Shift duration")
     )
     pause_started = models.DateTimeField(blank=True, null=True)
     pause_duration = models.DurationField(
-        default=timedelta(seconds=0), verbose_name=_('Pause duration')
+        default=timedelta(seconds=0), verbose_name=_("Pause duration")
     )
-    key = models.CharField(
-        _('Key'), max_length=2, choices=KEY_CHOICES, blank=True
-    )
-    note = models.TextField(_('Note'), blank=True)
+    key = models.CharField(_("Key"), max_length=2, choices=KEY_CHOICES, blank=True)
+    note = models.TextField(_("Note"), blank=True)
     tags = TaggableManager(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-finished']
+        ordering = ["-finished"]
 
     def __str__(self):
         """

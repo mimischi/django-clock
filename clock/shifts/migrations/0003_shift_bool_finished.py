@@ -6,14 +6,12 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ('shifts', '0002_auto_20160606_1320'),
-    ]
+    dependencies = [("shifts", "0002_auto_20160606_1320")]
 
     operations = [
         migrations.AddField(
-            model_name='shift',
-            name='bool_finished',
+            model_name="shift",
+            name="bool_finished",
             field=models.BooleanField(default=False),
-        ),
+        )
     ]

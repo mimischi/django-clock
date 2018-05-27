@@ -29,13 +29,13 @@ from clock.shifts.utils import (
 
 @login_required
 def get_contract_end_date(request):
-    if request.method == 'POST':
-        contract_id = request.POST.get('contract', 0)
+    if request.method == "POST":
+        contract_id = request.POST.get("contract", 0)
         contract = Contract.objects.get(pk=contract_id)
 
         # Only show data to users that own the requested contract
         if contract.employee.pk == request.user.pk:
-            return JsonResponse({'end_date': contract.end_date})
+            return JsonResponse({"end_date": contract.end_date})
 
         return HttpResponse(status=404)
 
@@ -48,63 +48,58 @@ def shift_action(request):
     # Get the current Shift object
     shift = get_current_shift(request.user)
 
-    if not shift and '_start' not in request.POST:
+    if not shift and "_start" not in request.POST:
         messages.add_message(
-            request, messages.ERROR,
-            _('You need an active shift to perform this action!'), 'danger'
+            request,
+            messages.ERROR,
+            _("You need an active shift to perform this action!"),
+            "danger",
         )
-        return redirect('home')
-    elif shift and '_start' in request.POST:
+        return redirect("home")
+    elif shift and "_start" in request.POST:
         messages.add_message(
-            request, messages.ERROR, _('You already have an active shift!'),
-            'danger'
+            request, messages.ERROR, _("You already have an active shift!"), "danger"
         )
-        return redirect('home')
+        return redirect("home")
 
     # Start a new shift
-    if '_start' in request.POST:
+    if "_start" in request.POST:
         contract = None
-        if 'contract' in request.POST:
-            contract = request.POST['contract']
+        if "contract" in request.POST:
+            contract = request.POST["contract"]
         form = ClockInForm(
-            data={
-                'started': timezone.now(),
-                'contract': contract
-            },
-            user=request.user
+            data={"started": timezone.now(), "contract": contract}, user=request.user
         )
 
         if form.is_valid():
             form.clock_in()
             # Show a success message
             messages.add_message(
-                request, messages.SUCCESS, _('Your shift has started!')
+                request, messages.SUCCESS, _("Your shift has started!")
             )
         else:
             messages.add_message(request, messages.ERROR, form.errors)
 
     # Stop current shift
-    elif '_stop' in request.POST:
+    elif "_stop" in request.POST:
         # Set the finished value to timezone.now() and save the updated shift
-        form = ClockOutForm(data={'finished': timezone.now()}, instance=shift)
+        form = ClockOutForm(data={"finished": timezone.now()}, instance=shift)
 
         if form.is_valid():
             form.clock_out()
             messages.add_message(
-                request, messages.SUCCESS, _('Your shift has finished!')
+                request, messages.SUCCESS, _("Your shift has finished!")
             )
         else:
-            messages.add_message(
-                request, messages.WARNING, form.errors['__all__']
-            )
+            messages.add_message(request, messages.WARNING, form.errors["__all__"])
 
-    return redirect('home')
+    return redirect("home")
 
 
 @method_decorator(login_required, name="dispatch")
 class ShiftListView(ListView):
     model = Shift
-    template_name = 'shift/list.html'
+    template_name = "shift/list.html"
 
     def get_queryset(self):
         return Shift.objects.filter(
@@ -116,10 +111,10 @@ class ShiftListView(ListView):
 class ShiftManualCreate(CreateView):
     model = Shift
     form_class = ShiftForm
-    template_name = 'shift/edit.html'
+    template_name = "shift/edit.html"
 
     def get_success_url(self):
-        return get_return_url(self.request, 'shift:list')
+        return get_return_url(self.request, "shift:list")
 
     def get_form_kwargs(self):
         """
@@ -128,10 +123,10 @@ class ShiftManualCreate(CreateView):
         """
         kwargs = super(ShiftManualCreate, self).get_form_kwargs()
         k = {
-            'request': self.request,
-            'view': 'shift_create',
-            'contract': set_correct_session(self.request, 'contract'),
-            'user': self.request.user
+            "request": self.request,
+            "view": "shift_create",
+            "contract": set_correct_session(self.request, "contract"),
+            "user": self.request.user,
         }
         kwargs.update(k)
         return kwargs
@@ -140,13 +135,14 @@ class ShiftManualCreate(CreateView):
     def start_datetime(self):
         try:
             d = datetime(
-                int(self.request.session['last_kwargs']['year']),
-                int(self.request.session['last_kwargs']['month']),
+                int(self.request.session["last_kwargs"]["year"]),
+                int(self.request.session["last_kwargs"]["month"]),
                 1,
-                hour=8
+                hour=8,
             ).strftime("%Y-%m-%dT%H:%M")
-            if self.request.session['last_kwargs']['month'] == datetime.now(
-            ).strftime("%m"):
+            if self.request.session["last_kwargs"]["month"] == datetime.now().strftime(
+                "%m"
+            ):
                 d = datetime.now().strftime("%Y-%m-%dT%H:%M")
         except KeyError:
             d = datetime.now().strftime("%Y-%m-%dT%H:%M")
@@ -158,10 +154,10 @@ class ShiftManualCreate(CreateView):
 class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
     model = Shift
     form_class = ShiftForm
-    template_name = 'shift/edit.html'
+    template_name = "shift/edit.html"
 
     def get_success_url(self):
-        return get_return_url(self.request, 'shift:list')
+        return get_return_url(self.request, "shift:list")
 
     def get_form_kwargs(self):
         """
@@ -170,10 +166,10 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
         """
         kwargs = super(ShiftManualEdit, self).get_form_kwargs()
         k = {
-            'request': self.request,
-            'view': 'shift_update',
-            'contract': set_correct_session(self.request, 'contract'),
-            'user': self.request.user
+            "request": self.request,
+            "view": "shift_update",
+            "contract": set_correct_session(self.request, "contract"),
+            "user": self.request.user,
         }
         kwargs.update(k)
         return kwargs
@@ -185,8 +181,8 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
         moment_format = "%Y-%m-%dT%H:%M"
         obj = self.get_object()
         dates = {
-            'started': obj.started.astimezone(tz).strftime(moment_format),
-            'finished': obj.finished.astimezone(tz).strftime(moment_format)
+            "started": obj.started.astimezone(tz).strftime(moment_format),
+            "finished": obj.finished.astimezone(tz).strftime(moment_format),
         }
         return dates
 
@@ -194,10 +190,10 @@ class ShiftManualEdit(UpdateView, UserObjectOwnerMixin):
 @method_decorator(login_required, name="dispatch")
 class ShiftManualDelete(DeleteView, UserObjectOwnerMixin):
     model = Shift
-    template_name = 'shift/delete.html'
+    template_name = "shift/delete.html"
 
     def get_success_url(self):
-        return get_return_url(self.request, 'shift:list')
+        return get_return_url(self.request, "shift:list")
 
 
 @method_decorator(login_required, name="dispatch")
@@ -205,7 +201,7 @@ class ShiftMonthView(MonthArchiveView):
     date_field = "started"
     allow_empty = True
     allow_future = True
-    template_name = 'shift/month_archive_view.html'
+    template_name = "shift/month_archive_view.html"
 
     class Meta:
         ordering = ["-started"]
@@ -215,15 +211,13 @@ class ShiftMonthView(MonthArchiveView):
         Set the current year and month, if those values were not supplied in
         the URL.
         """
-        self.year = kwargs.get('year', timezone.now().strftime("%Y"))
-        self.month = kwargs.get('month', timezone.now().strftime("%m"))
+        self.year = kwargs.get("year", timezone.now().strftime("%Y"))
+        self.month = kwargs.get("month", timezone.now().strftime("%m"))
 
         return super(ShiftMonthView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        return Shift.objects.filter(
-            employee=self.request.user, finished__isnull=False
-        )
+        return Shift.objects.filter(employee=self.request.user, finished__isnull=False)
 
     @property
     def get_all_contracts(self):
@@ -243,16 +237,15 @@ class ShiftMonthContractView(ShiftMonthView):
         '00': Show all shifts without any contract filtering (default)
         '<contract>': Show shifts assigned to contract with the id <contract>
     """
-    contract = '00'
+    contract = "00"
 
     def dispatch(self, request, *args, **kwargs):
         """Grab contract numeric-string from URL if the value was passed. Otherwise
         use a default of '00'.
         """
-        self.contract = kwargs.get('contract', self.contract)
+        self.contract = kwargs.get("contract", self.contract)
 
-        return super(ShiftMonthContractView,
-                     self).dispatch(request, *args, **kwargs)
+        return super(ShiftMonthContractView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         queryset = Shift.objects.filter(
@@ -260,7 +253,7 @@ class ShiftMonthContractView(ShiftMonthView):
         )
         if self.contract == "0":
             queryset = queryset.filter(contract__isnull=True)
-        elif self.contract == '00':
+        elif self.contract == "00":
             pass
         else:
             queryset = queryset.filter(contract=self.contract)
@@ -272,8 +265,7 @@ class ShiftYearView(YearArchiveView):
     date_field = "started"
     allow_future = False
     allow_empty = True
-    template_name = 'shift/year_archive_view.html'
+    template_name = "shift/year_archive_view.html"
 
     def get_queryset(self):
-        return Shift.objects.filter(employee=self.request.user
-                                    ).order_by('started')
+        return Shift.objects.filter(employee=self.request.user).order_by("started")

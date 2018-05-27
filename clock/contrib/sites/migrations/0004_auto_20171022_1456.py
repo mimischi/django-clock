@@ -8,15 +8,11 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('sites', '0003_auto_20160606_1320'),
-    ]
+    dependencies = [("sites", "0003_auto_20160606_1320")]
 
     operations = [
         migrations.AlterModelManagers(
-            name='site',
-            managers=[
-                ('objects', django.contrib.sites.models.SiteManager()),
-            ],
-        ),
+            name="site",
+            managers=[("objects", django.contrib.sites.models.SiteManager())],
+        )
     ]

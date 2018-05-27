@@ -10,24 +10,24 @@ register = template.Library()
 @register.simple_tag(takes_context=True)
 def active(context, pattern_or_urlname):
     try:
-        pattern = '^' + reverse(pattern_or_urlname)
+        pattern = "^" + reverse(pattern_or_urlname)
     except NoReverseMatch:
         pattern = pattern_or_urlname
 
-    path = ''
+    path = ""
 
     try:
-        path = context['request'].path
+        path = context["request"].path
     except KeyError:
         pass
 
     if re.search(pattern, path):
-        return 'active'
-    return ''
+        return "active"
+    return ""
 
 
 @register.filter
 def format_contract(contract):
     if contract is None:
-        contract = _('None defined')
+        contract = _("None defined")
     return contract

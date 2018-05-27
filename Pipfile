@@ -38,15 +38,14 @@ ipython = "*"
 ipdb = "*"
 pytest-django = "*"
 pytest-sugar = "*"
-maildump = "*"
 pytest-cov = "*"
 codecov = "*"
 freezegun = "*"
-pytest-isort = "*"
-"pytest-flake8" = "*"
 django-rosetta = "*"
 pylint = "*"
 pylint-django = "*"
+"flake8" = "*"
+isort = "*"
 
 [pipenv]
 keep_outdated = true

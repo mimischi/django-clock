@@ -5,9 +5,9 @@ from clock.contact.forms import ContactForm
 
 
 class ContactView(FormView):
-    template_name = 'contact/form.html'
+    template_name = "contact/form.html"
     form_class = ContactForm
-    success_url = reverse_lazy('contact:success')
+    success_url = reverse_lazy("contact:success")
 
     def form_valid(self, form):
         form.send_mail(form)
@@ -15,4 +15,4 @@ class ContactView(FormView):
 
 
 class ContactSuccessView(TemplateView):
-    template_name = 'contact/success.html'
+    template_name = "contact/success.html"

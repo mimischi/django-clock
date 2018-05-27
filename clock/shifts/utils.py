@@ -22,14 +22,14 @@ def get_return_url(request, default_success):
 
     """
     try:
-        last_visited = "shift" in request.session['last_visited']
+        last_visited = "shift" in request.session["last_visited"]
     except KeyError:
         last_visited = False
 
-    if last_visited and request.session['last_kwargs']:
-        last_view = request.session['current_view_name']
+    if last_visited and request.session["last_kwargs"]:
+        last_view = request.session["current_view_name"]
         try:
-            last_view = request.session['last_view_name']
+            last_view = request.session["last_view_name"]
         except KeyError:
             pass
 
@@ -37,20 +37,19 @@ def get_return_url(request, default_success):
 
         try:
             return_kwargs = {
-                'year': request.session['last_kwargs']['year'],
-                'month': request.session['last_kwargs']['month'],
+                "year": request.session["last_kwargs"]["year"],
+                "month": request.session["last_kwargs"]["month"],
             }
         except KeyError:
             return_kwargs = {
-                'year': datetime.now().strftime("%Y"),
-                'month': datetime.now().strftime("%m")
+                "year": datetime.now().strftime("%Y"),
+                "month": datetime.now().strftime("%m"),
             }
 
         try:
-            return_kwargs['contract'] = request.session['last_kwargs'][
-                'contract']
+            return_kwargs["contract"] = request.session["last_kwargs"]["contract"]
         except KeyError:
-            return_kwargs['contract'] = '00'
+            return_kwargs["contract"] = "00"
 
         return reverse_lazy(last_view, kwargs=return_kwargs)
     return reverse_lazy(default_success)
@@ -67,14 +66,14 @@ def set_correct_session(request, k):
 
     """
     try:
-        return request.session['last_kwargs'][k]
+        return request.session["last_kwargs"][k]
     except KeyError:
         value = None
-        if k == 'contract':
-            value = '00'
-        elif k == 'year':
+        if k == "contract":
+            value = "00"
+        elif k == "year":
             value = datetime.now().strftime("%Y")
-        elif k == 'month':
+        elif k == "month":
             value = datetime.now().strftime("%m")
         return value
 
@@ -95,7 +94,7 @@ def get_all_contracts(user):
     """
     Returns all contracts a user has signed.
     """
-    q = user.contract_set.all().order_by('id')
+    q = user.contract_set.all().order_by("id")
     if len(q) < 1:
         return None
     return q
@@ -112,7 +111,7 @@ def get_default_contract(user):
     """
     # Filter all shifts (finished or not) from the current user
     try:
-        finished_shifts = Shift.objects.filter(employee=user).latest('started')
+        finished_shifts = Shift.objects.filter(employee=user).latest("started")
     except Shift.DoesNotExist:
         # If the user just registered and does not have any shifts!
         return None
@@ -136,8 +135,9 @@ def get_last_shifts(user, count=5):
     :param count: Number of shifts to return. Default is 5
     :return: Shift objects or None
     """
-    finished_shifts = Shift.objects.filter(
-        employee=user, finished__isnull=False)[:count]
+    finished_shifts = Shift.objects.filter(employee=user, finished__isnull=False)[
+        :count
+    ]
 
     if not finished_shifts:
         return None
@@ -158,7 +158,7 @@ def get_all_shifts(user):
     for shift in shifts:
         year = shift.started.year
         month = shift.started.month
-        shift_dict = {'year': year, 'month': month}
+        shift_dict = {"year": year, "month": month}
 
         if shift_dict not in months_with_shifts:
             months_with_shifts.append(shift_dict)

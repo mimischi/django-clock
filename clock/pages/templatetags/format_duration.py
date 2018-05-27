@@ -25,20 +25,18 @@ def format_dttd(t, t_format="%H:%M:%S"):
 
     """
     if isinstance(t, timedelta):
-        value = time.strftime(
-            t_format, time.gmtime(t.seconds + t.days * 86400)
-        )
+        value = time.strftime(t_format, time.gmtime(t.seconds + t.days * 86400))
         if t.days > 0:
             hours = t.days * 24
-            s = value.split(':')
+            s = value.split(":")
             if 1 < len(s) < 4:
                 value = str(int(value[0:2]) + hours) + value[2:]
             elif len(s) == 1:
                 value = int(s[0]) + hours
             else:
                 raise ValueError(
-                    'We are having a problem handling the input {} and'
-                    'converting it into {}.'.format(str(t), t_format)
+                    "We are having a problem handling the input {} and"
+                    "converting it into {}.".format(str(t), t_format)
                 )
         return value
     if isinstance(t, datetime):

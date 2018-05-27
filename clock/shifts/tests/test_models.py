@@ -1,6 +1,4 @@
 """Test the Shift model"""
-import pytest
-from django.core.exceptions import ValidationError
 from django.utils import timezone
 from freezegun import freeze_time
 from test_plus.test import TestCase
@@ -10,10 +8,11 @@ from clock.shifts.models import Shift
 
 
 class ShiftTest(TestCase):
+
     def setUp(self):
         self.user = self.make_user()
         self.contract = Contract.objects.create(
-            department='Test', employee=self.user, hours=40
+            department="Test", employee=self.user, hours=40
         )
 
     @freeze_time("2017-01-01 12:00:00")

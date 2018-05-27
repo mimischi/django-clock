@@ -7,16 +7,11 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('shifts', '0006_auto_20170513_1059'),
-    ]
+    dependencies = [("shifts", "0006_auto_20170513_1059")]
 
     operations = [
-        migrations.RenameField('Shift', 'shift_started', 'started'),
-        migrations.RenameField('Shift', 'shift_finished', 'finished'),
-        migrations.RenameField('Shift', 'shift_duration', 'duration'),
-        migrations.AlterModelOptions(
-            name='shift',
-            options={'ordering': ['-finished']},
-        )
+        migrations.RenameField("Shift", "shift_started", "started"),
+        migrations.RenameField("Shift", "shift_finished", "finished"),
+        migrations.RenameField("Shift", "shift_duration", "duration"),
+        migrations.AlterModelOptions(name="shift", options={"ordering": ["-finished"]}),
     ]

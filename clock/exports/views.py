@@ -22,28 +22,29 @@ class ExportMonth(PdfResponseMixin, MonthArchiveView):
         context = super(ExportMonth, self).get_context_data(**kwargs)
 
         # TODO: Can result in text overflowing the drawn box!
-        context['fullname'] = '{} {}'.format(self.request.user.first_name,
-                                             self.request.user.last_name)
+        context["fullname"] = "{} {}".format(
+            self.request.user.first_name, self.request.user.last_name
+        )
 
-        if not context['shift_list']:
-            context['department'] = Contract.objects.get(
-                pk=int(self.kwargs['pk'])).department
-            context['total_shift_duration'] = timedelta(seconds=0)
+        if not context["shift_list"]:
+            context["department"] = Contract.objects.get(
+                pk=int(self.kwargs["pk"])
+            ).department
+            context["total_shift_duration"] = timedelta(seconds=0)
         else:
-            context['department'] = context['shift_list'][0].contract_or_none
+            context["department"] = context["shift_list"][0].contract_or_none
 
         total_shift_duration = timedelta(seconds=0)
-        for shift in context['shift_list']:
+        for shift in context["shift_list"]:
             total_shift_duration += shift.duration
-            context['total_shift_duration'] = total_shift_duration
+            context["total_shift_duration"] = total_shift_duration
         return context
 
     def get_queryset(self):
-        contract_pk = self.kwargs['pk']
+        contract_pk = self.kwargs["pk"]
         return Shift.objects.filter(
-            employee=self.request.user.pk,
-            contract=contract_pk,
-            finished__isnull=False)
+            employee=self.request.user.pk, contract=contract_pk, finished__isnull=False
+        )
 
 
 @method_decorator(login_required, name="dispatch")
@@ -60,25 +61,28 @@ class ExportMonthClass(JSONResponseMixin, MonthArchiveView):
         self.object = self.get_queryset()
 
         if not self.object:
-            context_dict = ['No shifts available for this given query.']
+            context_dict = ["No shifts available for this given query."]
         else:
-            context_dict = [{
-                "employee": shift.employee.username,
-                "contract": shift.contract_or_none,
-                "started": shift.started,
-                "finished": shift.finished,
-                "pause_duration": shift.pause_duration,
-                "duration": shift.duration
-            } for shift in self.object]
+            context_dict = [
+                {
+                    "employee": shift.employee.username,
+                    "contract": shift.contract_or_none,
+                    "started": shift.started,
+                    "finished": shift.finished,
+                    "pause_duration": shift.pause_duration,
+                    "duration": shift.duration,
+                }
+                for shift in self.object
+            ]
 
         return self.render_json_response(context_dict)
 
 
 class ExportContractMonthAPI(ExportMonthClass):
+
     def get_queryset(self):
-        contract_pk = self.kwargs['pk']
-        return Shift.objects.filter(
-            employee=self.request.user.pk, contract=contract_pk)
+        contract_pk = self.kwargs["pk"]
+        return Shift.objects.filter(employee=self.request.user.pk, contract=contract_pk)
 
 
 class ExportMonthAPI(ExportMonthClass):
