@@ -7,21 +7,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ('shifts', '0001_initial'),
-    ]
+    dependencies = [("shifts", "0001_initial")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='shift',
-            options={'ordering': ['shift_finished']}, ),
+            name="shift", options={"ordering": ["shift_finished"]}
+        ),
         migrations.AlterField(
-            model_name='shift',
-            name='contract',
+            model_name="shift",
+            name="contract",
             field=models.ForeignKey(
                 blank=True,
                 null=True,
                 on_delete=models.deletion.CASCADE,
-                to='contracts.Contract',
-                verbose_name='Contract'), ),
+                to="contracts.Contract",
+                verbose_name="Contract",
+            ),
+        ),
     ]

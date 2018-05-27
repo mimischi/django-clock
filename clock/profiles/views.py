@@ -15,19 +15,19 @@ from clock.profiles.forms import DeleteUserForm, UpdateUserForm
 from clock.profiles.models import UserProfile
 from clock.users.models import User
 
-LANGUAGE_QUERY_PARAMETER = 'language'
+LANGUAGE_QUERY_PARAMETER = "language"
 
 
 class AccountView(LoginRequiredMixin, TemplateView):
-    template_name = 'profiles/profile.html'
+    template_name = "profiles/profile.html"
 
 
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     """View to update some profile information."""
     model = User
     form_class = UpdateUserForm
-    template_name = 'profiles/profile.html'
-    success_url = reverse_lazy('profiles:account_view')
+    template_name = "profiles/profile.html"
+    success_url = reverse_lazy("profiles:account_view")
 
     def get_object(self):
         return User.objects.get(pk=self.request.user.pk)
@@ -45,22 +45,22 @@ def update_language(request):
     shorter and not having to copy the whole function. But this seems to work
     so far.
     """
-    next = request.POST.get('next', request.GET.get('next'))
+    next = request.POST.get("next", request.GET.get("next"))
     if not is_safe_url(url=next, host=request.get_host()):
-        next = request.META.get('HTTP_REFERER')
+        next = request.META.get("HTTP_REFERER")
         if not is_safe_url(url=next, host=request.get_host()):
-            next = '/'
+            next = "/"
     response = http.HttpResponseRedirect(next)
-    if request.method == 'POST':
+    if request.method == "POST":
         lang_code = request.POST.get(LANGUAGE_QUERY_PARAMETER)
         if lang_code and check_for_language(lang_code):
             next_trans = translate_url(next, lang_code)
             if next_trans != next:
                 response = http.HttpResponseRedirect(next_trans)
-            if hasattr(request, 'session'):
+            if hasattr(request, "session"):
                 obj, created = UserProfile.objects.get_or_create(
-                    user=request.user,
-                    defaults={'language': lang_code}, )
+                    user=request.user, defaults={"language": lang_code}
+                )
                 if not created:
                     obj.language = lang_code
                     obj.save()
@@ -71,31 +71,32 @@ def update_language(request):
                     lang_code,
                     max_age=settings.LANGUAGE_COOKIE_AGE,
                     path=settings.LANGUAGE_COOKIE_PATH,
-                    domain=settings.LANGUAGE_COOKIE_DOMAIN)
+                    domain=settings.LANGUAGE_COOKIE_DOMAIN,
+                )
     return response
 
 
 @login_required()
 def delete_user(request):
-    template_name = 'profiles/delete.html'
+    template_name = "profiles/delete.html"
     context = {
-        'text':
-        _('<p>Are you sure you want to delete this profile? Please type in '
-          'your username <strong>{}</strong> to confirm.</p>').format(
-              request.user)
+        "text": _(
+            "<p>Are you sure you want to delete this profile? Please type in "
+            "your username <strong>{}</strong> to confirm.</p>"
+        ).format(request.user)
     }
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = DeleteUserForm(request.POST, user=request.user)
 
         if form.is_valid():
             User = get_user_model()
 
             User.objects.get(username=request.user).delete()
-            return redirect('goodbye')
+            return redirect("goodbye")
 
     else:
         form = DeleteUserForm()
 
-    context['form'] = form
+    context["form"] = form
     return render(request, template_name=template_name, context=context)

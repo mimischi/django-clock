@@ -6,15 +6,13 @@ from clock.profiles.views import delete_user
 
 from . import views
 
-app_name = 'profiles'
+app_name = "profiles"
 urlpatterns = [
+    path("profiles/", view=views.AccountUpdateView.as_view(), name="account_view"),
+    path("delete/", delete_user, name="delete"),
     path(
-        'profiles/',
-        view=views.AccountUpdateView.as_view(),
-        name='account_view'),
-    path('delete/', delete_user, name="delete"),
-    path(
-        'goodbye/',
-        TemplateView.as_view(template_name='profiles/goodbye.html'),
-        name="goodbye"),
+        "goodbye/",
+        TemplateView.as_view(template_name="profiles/goodbye.html"),
+        name="goodbye",
+    ),
 ]

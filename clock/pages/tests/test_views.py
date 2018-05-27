@@ -14,10 +14,10 @@ class PagesViewTests(TestCase):
         """
         An unauthenticated user should see the normal landing page.
         """
-        self.get_check_200('home')
+        self.get_check_200("home")
 
-        self.assertInContext('template_to_render')
-        self.assertContext('template_to_render', 'pages/frontend/index.html')
+        self.assertInContext("template_to_render")
+        self.assertContext("template_to_render", "pages/frontend/index.html")
 
     def test_dashboard(self):
         """
@@ -25,21 +25,20 @@ class PagesViewTests(TestCase):
             1) An authenticated user should see the dashboard.
             2) The context keys regarding contracts should be 'None'.
         """
-        with self.login(username=self.user1, password='password'):
-            self.get_check_200('home')
+        with self.login(username=self.user1, password="password"):
+            self.get_check_200("home")
 
-            self.assertInContext('template_to_render')
-            self.assertContext('template_to_render',
-                               'pages/backend/index.html')
+            self.assertInContext("template_to_render")
+            self.assertContext("template_to_render", "pages/backend/index.html")
 
-            self.assertInContext('form')
+            self.assertInContext("form")
 
             # The current user should not have any contracts/shifts yet
-            self.assertInContext('all_contracts')
-            self.assertContext('all_contracts', None)
+            self.assertInContext("all_contracts")
+            self.assertContext("all_contracts", None)
 
-            self.assertInContext('default_contract')
-            self.assertContext('default_contract', None)
+            self.assertInContext("default_contract")
+            self.assertContext("default_contract", None)
 
-            self.assertInContext('last_shifts')
-            self.assertContext('last_shifts', None)
+            self.assertInContext("last_shifts")
+            self.assertContext("last_shifts", None)

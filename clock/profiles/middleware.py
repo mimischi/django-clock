@@ -22,7 +22,8 @@ class LocaleMiddlewareExtended(LocaleMiddleware):
             except UserProfile.DoesNotExist:
                 pass
         return translation.get_language_from_request(
-            request, check_path=is_language_prefix_patterns_used)
+            request, check_path=is_language_prefix_patterns_used
+        )
 
     def process_request(self, request):
         language = self.get_language_for_user(request)

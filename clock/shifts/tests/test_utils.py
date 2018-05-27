@@ -13,7 +13,7 @@ class TestUtils(TestCase):
     def setUp(self):
         self.user = self.make_user()
         self.contract1 = Contract.objects.create(
-            employee=self.user, department='Test department', hours='50'
+            employee=self.user, department="Test department", hours="50"
         )
 
     def test_get_last_shifts(self):
@@ -59,13 +59,9 @@ class TestUtils(TestCase):
         no_shift = get_current_shift(self.user)
         self.assertIsNone(no_shift)
 
-        with self.login(username=self.user.username, password='password'):
-            self.post(
-                'shift:quick_action', data={
-                    '_start': True,
-                }, follow=True
-            )
+        with self.login(username=self.user.username, password="password"):
+            self.post("shift:quick_action", data={"_start": True}, follow=True)
 
             last_shift = get_current_shift(self.user)
             self.assertIsNotNone(last_shift)
-            self.assertIsNone(last_shift.finished, '')
+            self.assertIsNone(last_shift.finished, "")

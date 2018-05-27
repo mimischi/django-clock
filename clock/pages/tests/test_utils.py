@@ -15,8 +15,7 @@ def test_round_down():
     assert round_time(dt=time) == timezone.datetime(2017, 1, 1, 12, 0)
 
     time = timezone.datetime(2017, 1, 1, 12, 4)
-    assert round_time(
-        dt=time, to='down') == timezone.datetime(2017, 1, 1, 12, 0)
+    assert round_time(dt=time, to="down") == timezone.datetime(2017, 1, 1, 12, 0)
 
 
 def test_round_up():
@@ -28,4 +27,4 @@ def test_round_up():
     assert round_time(dt=time) == timezone.datetime(2017, 1, 1, 12, 5)
 
     time = timezone.datetime(2017, 1, 1, 12, 2)
-    assert round_time(dt=time, to='up') == timezone.datetime(2017, 1, 1, 12, 5)
+    assert round_time(dt=time, to="up") == timezone.datetime(2017, 1, 1, 12, 5)

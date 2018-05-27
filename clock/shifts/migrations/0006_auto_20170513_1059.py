@@ -7,13 +7,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('shifts', '0005_auto_20160613_1203'),
-    ]
+    dependencies = [("shifts", "0005_auto_20160613_1203")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='shift',
-            options={'ordering': ['-shift_finished']},
-        ),
+            name="shift", options={"ordering": ["-shift_finished"]}
+        )
     ]

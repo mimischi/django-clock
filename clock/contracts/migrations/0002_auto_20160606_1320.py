@@ -8,29 +8,31 @@ import clock.contracts.fields
 
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ('contracts', '0001_initial'),
-    ]
+    dependencies = [("contracts", "0001_initial")]
 
     operations = [
         migrations.AlterField(
-            model_name='contract',
-            name='contact',
-            field=models.EmailField(blank=True, max_length=254, verbose_name='Contract'),
+            model_name="contract",
+            name="contact",
+            field=models.EmailField(
+                blank=True, max_length=254, verbose_name="Contract"
+            ),
         ),
         migrations.AlterField(
-            model_name='contract',
-            name='department',
-            field=models.CharField(max_length=200, verbose_name='Department'),
+            model_name="contract",
+            name="department",
+            field=models.CharField(max_length=200, verbose_name="Department"),
         ),
         migrations.AlterField(
-            model_name='contract',
-            name='department_short',
-            field=models.CharField(blank=True, max_length=100, null=True, verbose_name='Abbreviation'),
+            model_name="contract",
+            name="department_short",
+            field=models.CharField(
+                blank=True, max_length=100, null=True, verbose_name="Abbreviation"
+            ),
         ),
         migrations.AlterField(
-            model_name='contract',
-            name='hours',
-            field=clock.contracts.fields.WorkingHoursField(verbose_name='Work hours'),
+            model_name="contract",
+            name="hours",
+            field=clock.contracts.fields.WorkingHoursField(verbose_name="Work hours"),
         ),
     ]

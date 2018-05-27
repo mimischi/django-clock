@@ -13,11 +13,11 @@ class ShiftJSONEncoder(DjangoJSONEncoder):
 
     def default(self, obj):
         if isinstance(obj, datetime):
-            r = obj.isoformat(' ')
+            r = obj.isoformat(" ")
             if obj.microsecond:
                 r = r[:23] + r[26:]
-            if r.endswith('+00:00'):
-                r = r[:-6] + 'Z'
+            if r.endswith("+00:00"):
+                r = r[:-6] + "Z"
             return r
         elif isinstance(obj, timedelta):
             return format_dttd(obj, "%H:%M")
