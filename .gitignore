@@ -37,6 +37,7 @@ webpack-stats-prod.json
 
 # Cache
 .cache/
+.pytest_cache/
 
 # OSX
 .DS_Store

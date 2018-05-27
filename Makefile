@@ -1,15 +1,20 @@
-.PHONY: init ci analyze build rebuild lang-make lang-compile clean-pyc
+.PHONY: init version ci analyze build rebuild lang-make lang-compile clean-pyc
 
 init:
 	pip install pipenv --upgrade
 	pipenv install --dev --skip-lock
 	yarn install --dev
 	yarn build
+version:
+	pipenv run flake8 --version
+	pipenv run isort --version
+	black --version
 ci:
 	pipenv run pytest --cov=./
 analyze:
 	pipenv run flake8 .
-	pipenv run isort -v
+	pipenv run isort --check-only
+	black --check clock/ config/ manage.py
 build:
 	docker-compose build
 rebuild:
