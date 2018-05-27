@@ -2,9 +2,7 @@
 
 All messages are tested for the default English strings.
 """
-import pytest
 from django.contrib.messages import get_messages
-from django.core.exceptions import ValidationError
 from django.utils import timezone, translation
 from freezegun import freeze_time
 from test_plus.test import TestCase

@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, translate_url
 from django.utils.http import is_safe_url
-from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import LANGUAGE_SESSION_KEY, check_for_language
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
 

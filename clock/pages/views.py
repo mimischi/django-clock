@@ -3,7 +3,7 @@ from datetime import datetime
 from django.shortcuts import render
 
 from clock.contracts.models import Contract
-from clock.shifts.forms import ClockInForm, ClockOutForm
+from clock.shifts.forms import ClockInForm
 from clock.shifts.utils import (
     get_all_contracts,
     get_current_shift,

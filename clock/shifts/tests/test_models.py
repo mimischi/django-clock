@@ -1,6 +1,4 @@
 """Test the Shift model"""
-import pytest
-from django.core.exceptions import ValidationError
 from django.utils import timezone
 from freezegun import freeze_time
 from test_plus.test import TestCase

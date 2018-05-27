@@ -2,7 +2,6 @@
 from datetime import timedelta
 
 import pytz
-from django import forms
 from django.utils import timezone
 from test_plus.test import TestCase
 
